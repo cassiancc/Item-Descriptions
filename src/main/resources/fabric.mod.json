@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "lore",
+  "version": "${version}",
+  "name": "Earthly Lore",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/cassian/Earthly-Lore"
+  },
+  "license": "MIT",
+  "icon": "assets/lore/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "cc.cassian.lore.client.EarthlyLoreClient"
+    ],
+    "main": [
+      "cc.cassian.lore.EarthlyLore"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
