@@ -3,8 +3,8 @@
   "id": "lore",
   "version": "${version}",
   "name": "Earthly Lore",
-  "description": "",
-  "authors": [],
+  "description": "Adds Lore inspired by Minecraft Earth to all items.",
+  "authors": ["cassiancc"],
   "contact": {
     "repo": "https://github.com/cassian/Earthly-Lore"
   },
@@ -14,9 +14,6 @@
   "entrypoints": {
     "client": [
       "cc.cassian.lore.client.EarthlyLoreClient"
-    ],
-    "main": [
-      "cc.cassian.lore.EarthlyLore"
     ]
   },
   "depends": {
