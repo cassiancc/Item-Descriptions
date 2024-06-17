@@ -1,8 +1,11 @@
 package cc.cassian.lore;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
 
+@Environment(EnvType.CLIENT)
 public class ModHelpers {
     public static String findLoreKey(ItemStack stack) {
         String translationKey = stack.getTranslationKey();
@@ -26,8 +29,29 @@ public class ModHelpers {
             else if (loreKey.contains("stripped_")) {
                 return "lore.generic.stripped_log";
             }
+            else if (loreKey.contains("horse_armor")) {
+                return "lore.generic.horse_armor";
+            }
+            else if (loreKey.contains("smithing_template")) {
+                return "lore.generic.smithing_template";
+            }
+            else if (loreKey.contains("helmet")) {
+                return "lore.generic.helmet";
+            }
+            else if (loreKey.contains("chestplate")) {
+                return "lore.generic.chestplate";
+            }
+            else if (loreKey.contains("leggings")) {
+                return "lore.generic.leggings";
+            }
+            else if (loreKey.contains("boots")) {
+                return "lore.generic.boots";
+            }
             else if (loreKey.contains("wool")) {
                 return "lore.generic.wool";
+            }
+            else if (loreKey.contains("carpet")) {
+                return "lore.generic.carpet";
             }
             else if (loreKey.contains("dead_")) {
                 return "lore.generic.dead_coral";
@@ -65,8 +89,20 @@ public class ModHelpers {
             else if (loreKey.contains("stair")) {
                 return "lore.generic.stairs";
             }
+            else if (loreKey.contains("wall")) {
+                return "lore.generic.wall";
+            }
+            else if (loreKey.contains("fence")) {
+                return "lore.generic.wall";
+            }
             else if (loreKey.contains("slab")) {
                 return "lore.generic.slab";
+            }
+            else if (loreKey.contains("stained_glass")) {
+                return "lore.generic.stained_glass";
+            }
+            else if (loreKey.contains("glass")) {
+                return "lore.generic.glass";
             }
             else if (loreKey.contains("sherd")) {
                 return "lore.generic.sherd";
@@ -89,6 +125,9 @@ public class ModHelpers {
             else if (loreKey.contains("cake")) {
                 return "lore.generic.cake";
             }
+            else if (loreKey.contains("candle")) {
+                return "lore.generic.candle";
+            }
             else if (loreKey.contains("dye")) {
                 return "lore.generic.dye";
             }
@@ -109,9 +148,6 @@ public class ModHelpers {
             }
             else if (loreKey.contains("terracotta")) {
                 return "lore.generic.terracotta";
-            }
-            else if (loreKey.contains("stained_glass")) {
-                return "lore.generic.stained_glass";
             }
             else if (loreKey.contains("bed")) {
                 return "lore.generic.bed";
