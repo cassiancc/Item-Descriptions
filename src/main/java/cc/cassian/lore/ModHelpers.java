@@ -1,17 +1,33 @@
 package cc.cassian.lore;
 
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class ModHelpers {
     public static String findLoreKey(ItemStack stack) {
-        if (stack.getTranslationKey().contains("block.")) {
-            return stack.getTranslationKey().replaceFirst("block", "lore");
+        String translationKey = stack.getTranslationKey();
+        String loreKey;
+        if (translationKey.contains("block.")) {
+            loreKey = translationKey.replaceFirst("block", "lore");
         }
-        else if ((stack.getTranslationKey().contains("item."))) {
-            return stack.getTranslationKey().replaceFirst("item", "lore");
+        else if ((translationKey.contains("item."))) {
+            loreKey = translationKey.replaceFirst("item", "lore");
         }
         else {
-            return stack.getTranslationKey();
+            loreKey = translationKey;
+        }
+        if (I18n.hasTranslation(loreKey)) {
+           return loreKey;
+        }
+        else {
+            if (loreKey.contains("planks")) {
+                return "lore.generic.planks";
+            }
+            else {
+                return "";
+            }
         }
     }
 }
