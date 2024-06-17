@@ -7,11 +7,11 @@ public class ModHelpers {
         if (stack.getTranslationKey().contains("block.")) {
             return stack.getTranslationKey().replaceFirst("block", "lore");
         }
-        else if ((stack.getTranslationKey().contains("block."))) {
+        else if ((stack.getTranslationKey().contains("item."))) {
             return stack.getTranslationKey().replaceFirst("item", "lore");
         }
         else {
-            return "lore.lore.unknown";
+            return stack.getTranslationKey();
         }
     }
 }
