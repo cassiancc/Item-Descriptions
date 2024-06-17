@@ -3,7 +3,7 @@
   "id": "lore",
   "version": "${version}",
   "name": "Earthly Lore",
-  "description": "Adds Lore inspired by Minecraft Earth to all items.",
+  "description": "Inspired by BTA and the Legacy Console Edition, this mod adds descriptions to all items.",
   "authors": ["cassiancc"],
   "contact": {
     "repo": "https://github.com/cassian/Earthly-Lore"
