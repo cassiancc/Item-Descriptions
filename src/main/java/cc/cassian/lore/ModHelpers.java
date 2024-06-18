@@ -32,6 +32,9 @@ public class ModHelpers {
             else if (loreKey.contains("horse_armor")) {
                 return "lore.generic.horse_armor";
             }
+            else if (loreKey.contains("tipped_arrow")) {
+                return "lore.minecraft.tipped_arrow";
+            }
             else if (loreKey.contains("smithing_template")) {
                 return "lore.generic.smithing_template";
             }
@@ -73,6 +76,9 @@ public class ModHelpers {
             }
             else if (loreKey.contains("spawn_egg")) {
                 return "lore.generic.spawn_egg";
+            }
+            else if (loreKey.contains("wood")) {
+                return "lore.generic.wood";
             }
             else if (loreKey.contains("log")) {
                 return "lore.generic.log";
@@ -170,10 +176,10 @@ public class ModHelpers {
             else if (loreKey.contains("bed")) {
                 return "lore.generic.bed";
             }
-            else if (loreKey.contains("chest_boat")) {
+            else if ((loreKey.contains("chest_boat")) || (loreKey.contains("chest_raft"))) {
                 return "lore.generic.chest_boat";
             }
-            else if (loreKey.contains("boat")) {
+            else if ((loreKey.contains("boat")) || (loreKey.contains("_raft"))) {
                 return "lore.generic.boat";
             }
             else if (loreKey.contains("bricks")) {
