@@ -2,18 +2,20 @@
   "schemaVersion": 1,
   "id": "lore",
   "version": "${version}",
-  "name": "Earthly Lore",
-  "description": "Inspired by BTA and the Legacy Console Edition, this mod adds descriptions to all items.",
+  "name": "Item Descriptions",
+  "description": "This mod adds unique descriptions to every Minecraft item. Generic descriptions are also included for modded compatibility.",
   "authors": ["cassiancc"],
   "contact": {
-    "repo": "https://github.com/cassian/Earthly-Lore"
+    "repo": "https://github.com/cassiancc/Item-Descriptions",
+    "issues": "https://github.com/cassiancc/Item-Descriptions/issues",
+    "homepage": "https://github.com/cassiancc/Item-Descriptions"
   },
   "license": "MIT",
   "icon": "assets/lore/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "cc.cassian.lore.client.EarthlyLoreClient"
+      "cc.cassian.lore.client.TooltipClient"
     ]
   },
   "depends": {

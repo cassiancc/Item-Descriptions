@@ -7,7 +7,7 @@ import net.minecraft.util.Formatting;
 
 import static cc.cassian.lore.ModHelpers.findLoreKey;
 
-public class EarthlyLoreClient implements ClientModInitializer {
+public class TooltipClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {

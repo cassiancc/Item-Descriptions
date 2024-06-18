@@ -50,6 +50,12 @@ public class ModHelpers {
             else if (loreKey.contains("wool")) {
                 return "lore.generic.wool";
             }
+            else if (loreKey.contains("lamp")) {
+                return "lore.generic.lamp";
+            }
+            else if (loreKey.contains("turf")) {
+                return "lore.generic.turf";
+            }
             else if (loreKey.contains("carpet")) {
                 return "lore.generic.carpet";
             }
@@ -77,10 +83,13 @@ public class ModHelpers {
             else if (loreKey.contains("shulker")) {
                 return "lore.generic.shulker_box";
             }
+            else if (loreKey.contains("lantern")) {
+                return "lore.generic.lantern";
+            }
             else if (loreKey.contains("button")) {
                 return "lore.generic.button";
             }
-            else if (loreKey.contains("sapling")) {
+            else if ((loreKey.contains("sapling")) || (loreKey.contains("propagule"))) {
                 return "lore.generic.sapling";
             }
             else if (loreKey.contains("pressure_plate")) {
@@ -89,14 +98,23 @@ public class ModHelpers {
             else if (loreKey.contains("stair")) {
                 return "lore.generic.stairs";
             }
+            else if (loreKey.contains("wall_gate")) {
+                return "lore.generic.wall_gate";
+            }
             else if (loreKey.contains("wall")) {
                 return "lore.generic.wall";
+            }
+            else if (loreKey.contains("fence_gate")) {
+                return "lore.generic.fence_gate";
             }
             else if (loreKey.contains("fence")) {
                 return "lore.generic.wall";
             }
             else if (loreKey.contains("slab")) {
                 return "lore.generic.slab";
+            }
+            else if (loreKey.contains("waxed")) {
+                return "lore.generic.waxed";
             }
             else if (loreKey.contains("stained_glass")) {
                 return "lore.generic.stained_glass";
@@ -154,6 +172,33 @@ public class ModHelpers {
             }
             else if (loreKey.contains("boat")) {
                 return "lore.generic.boat";
+            }
+            else if (loreKey.contains("bricks")) {
+                return "lore.generic.bricks";
+            }
+            else if (loreKey.contains("chiseled")) {
+                return "lore.generic.chiseled";
+            }
+            else if (loreKey.contains("smooth_")) {
+                return "lore.generic.smooth";
+            }
+            else if (loreKey.contains("bars")) {
+                return "lore.generic.bars";
+            }
+            else if (loreKey.contains("cut_")) {
+                return "lore.generic.cut";
+            }
+            else if (loreKey.contains("crafting_table")) {
+                return "lore.generic.crafting_table";
+            }
+            else if (loreKey.contains("torch_lever")) {
+                return "lore.generic.torch_lever";
+            }
+            else if (loreKey.contains("torch")) {
+                return "lore.generic.torch";
+            }
+            else if (loreKey.contains("ladder")) {
+                return "lore.generic.ladder";
             }
             else {
                 return "";
