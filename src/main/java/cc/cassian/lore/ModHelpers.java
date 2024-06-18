@@ -170,6 +170,9 @@ public class ModHelpers {
             else if (loreKey.contains("bed")) {
                 return "lore.generic.bed";
             }
+            else if (loreKey.contains("chest_boat")) {
+                return "lore.generic.chest_boat";
+            }
             else if (loreKey.contains("boat")) {
                 return "lore.generic.boat";
             }
