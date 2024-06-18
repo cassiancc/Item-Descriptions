@@ -77,7 +77,10 @@ public class ModHelpers {
             else if (loreKey.contains("spawn_egg")) {
                 return "lore.generic.spawn_egg";
             }
-            else if (loreKey.contains("wood")) {
+            else if (loreKey.contains("_stem")) {
+                return "lore.generic.stem";
+            }
+            else if (loreKey.contains("_wood")) {
                 return "lore.generic.wood";
             }
             else if (loreKey.contains("log")) {
