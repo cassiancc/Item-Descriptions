@@ -80,16 +80,19 @@ public class ModHelpers {
             else if (loreKey.contains("_stem")) {
                 return "lore.generic.stem";
             }
-            else if (loreKey.contains("_wood")) {
+            else if ((loreKey.contains("_wood")) || (loreKey.contains("_hyphae"))) {
                 return "lore.generic.wood";
             }
-            else if (loreKey.contains("log")) {
+            else if (loreKey.contains("_log")) {
                 return "lore.generic.log";
             }
-            else if (loreKey.contains("sign")) {
+            else if (loreKey.contains("_hanging_sign")) {
+                return "lore.generic.hanging_sign";
+            }
+            else if (loreKey.contains("_sign")) {
                 return "lore.generic.sign";
             }
-            else if (loreKey.contains("shulker")) {
+            else if (loreKey.contains("shulker_box")) {
                 return "lore.generic.shulker_box";
             }
             else if (loreKey.contains("lantern")) {
@@ -98,13 +101,13 @@ public class ModHelpers {
             else if (loreKey.contains("button")) {
                 return "lore.generic.button";
             }
-            else if ((loreKey.contains("sapling")) || (loreKey.contains("propagule"))) {
+            else if ((loreKey.contains("_sapling")) || (loreKey.contains("_propagule"))) {
                 return "lore.generic.sapling";
             }
-            else if (loreKey.contains("pressure_plate")) {
+            else if (loreKey.contains("_pressure_plate")) {
                 return "lore.generic.pressure_plate";
             }
-            else if (loreKey.contains("stair")) {
+            else if (loreKey.contains("_stairs")) {
                 return "lore.generic.stairs";
             }
             else if (loreKey.contains("wall_gate")) {
@@ -117,9 +120,9 @@ public class ModHelpers {
                 return "lore.generic.fence_gate";
             }
             else if (loreKey.contains("fence")) {
-                return "lore.generic.wall";
+                return "lore.generic.fence";
             }
-            else if (loreKey.contains("slab")) {
+            else if (loreKey.contains("_slab")) {
                 return "lore.generic.slab";
             }
             else if (loreKey.contains("waxed")) {
@@ -172,6 +175,9 @@ public class ModHelpers {
             }
             else if (loreKey.contains("concrete")) {
                 return "lore.generic.concrete";
+            }
+            else if (loreKey.contains("glazed_terracotta")) {
+                return "lore.generic.glazed_terracotta";
             }
             else if (loreKey.contains("terracotta")) {
                 return "lore.generic.terracotta";
