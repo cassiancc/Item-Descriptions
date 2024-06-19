@@ -10,7 +10,7 @@ import static cc.cassian.lore.ModHelpers.findLoreKey;
 public class TooltipClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
+        ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
             lines.add(Text.translatable(findLoreKey(stack)).formatted(Formatting.GRAY));
         });
     }
