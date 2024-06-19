@@ -35,6 +35,15 @@ public class ModHelpers {
             else if (loreKey.contains("tipped_arrow")) {
                 return "lore.minecraft.tipped_arrow";
             }
+            else if (loreKey.contains("splash_potion")) {
+                return "lore.minecraft.splash_potion";
+            }
+            else if (loreKey.contains("lingering_potion")) {
+                return "lore.minecraft.lingering_potion";
+            }
+            else if (loreKey.contains("potion")) {
+                return "lore.minecraft.potion";
+            }
             else if (loreKey.contains("smithing_template")) {
                 return "lore.generic.smithing_template";
             }
