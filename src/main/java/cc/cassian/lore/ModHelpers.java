@@ -134,6 +134,12 @@ public class ModHelpers {
             else if (loreKey.contains("_slab")) {
                 return "lore.generic.slab";
             }
+            else if (loreKey.contains("trapdoor")) {
+                return "lore.generic.trapdoor";
+            }
+            else if (loreKey.contains("door")) {
+                return "lore.generic.door";
+            }
             else if (loreKey.contains("waxed")) {
                 return "lore.generic.waxed";
             }
@@ -145,12 +151,6 @@ public class ModHelpers {
             }
             else if (loreKey.contains("sherd")) {
                 return "lore.generic.sherd";
-            }
-            else if (loreKey.contains("trapdoor")) {
-                return "lore.generic.trapdoor";
-            }
-            else if (loreKey.contains("door")) {
-                return "lore.generic.door";
             }
             else if (loreKey.contains("leaves")) {
                 return "lore.generic.leaves";
