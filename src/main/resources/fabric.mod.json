@@ -3,7 +3,7 @@
   "id": "item_descriptions",
   "version": "${version}",
   "name": "Item Descriptions",
-  "description": "This mod adds unique descriptions to every Minecraft item. Generic descriptions are also included for modded compatibility.",
+  "description": "This mod adds unique descriptions to every Minecraft item that can be seen when the Control key is pressed.",
   "authors": ["cassiancc"],
   "contact": {
     "repo": "https://github.com/cassiancc/Item-Descriptions",
@@ -29,6 +29,6 @@
   "recommends": {
     "tooltipfix": "*",
     "cloth-config": "*",
-    "mod-menu": "*"
+    "modmenu": "*"
   }
 }
