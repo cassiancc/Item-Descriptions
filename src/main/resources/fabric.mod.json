@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "lore",
+  "id": "item_descriptions",
   "version": "${version}",
   "name": "Item Descriptions",
   "description": "This mod adds unique descriptions to every Minecraft item. Generic descriptions are also included for modded compatibility.",
@@ -11,11 +11,14 @@
     "homepage": "https://github.com/cassiancc/Item-Descriptions"
   },
   "license": "MIT",
-  "icon": "assets/lore/icon.png",
+  "icon": "assets/item_descriptions/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "cc.cassian.lore.client.TooltipClient"
+      "cc.cassian.item_descriptions.client.TooltipClient"
+    ],
+    "modmenu": [
+      "cc.cassian.item_descriptions.client.config.ModMenuIntegration"
     ]
   },
   "depends": {
@@ -24,6 +27,8 @@
     "minecraft": "${minecraft_version}"
   },
   "recommends": {
-    "tooltipfix": "*"
+    "tooltipfix": "*",
+    "cloth-config": "*",
+    "mod-menu": "*"
   }
 }

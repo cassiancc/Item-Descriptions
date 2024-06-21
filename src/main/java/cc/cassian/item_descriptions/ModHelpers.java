@@ -1,12 +1,43 @@
-package cc.cassian.lore;
+package cc.cassian.item_descriptions;
 
+import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
 
 @Environment(EnvType.CLIENT)
 public class ModHelpers {
+    public static boolean clothConfigInstalled() {
+        return FabricLoader.getInstance().isModLoaded("cloth-config");
+    }
+
+    public static boolean tooltipKeyPressed() {
+        if (ModConfig.get().displayWhenControlIsHeld) {
+            if (Screen.hasControlDown()) {
+                return true;
+            }
+        }
+        if (ModConfig.get().displayWhenShiftIsHeld) {
+            if (Screen.hasShiftDown()) {
+                return true;
+            }
+        }
+        if (ModConfig.get().displayWhenAltIsHeld) {
+            if (Screen.hasAltDown()) {
+                return true;
+            }
+        }
+        if (ModConfig.get().displayAlways) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     public static String findLoreKey(ItemStack stack) {
         String translationKey = stack.getTranslationKey();
         String loreKey;

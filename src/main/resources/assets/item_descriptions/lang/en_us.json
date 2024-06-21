@@ -1,4 +1,9 @@
 {
+  "title.item_descriptions.config": "Item Descriptions",
+  "title.item_descriptions.config.displayWhenControlIsHeld": "Display the tooltip when the Control key is held.",
+  "title.item_descriptions.config.displayWhenShiftIsHeld": "Display the tooltip when the Shift key is held.",
+  "title.item_descriptions.config.displayWhenAltIsHeld": "Display the tooltip when the Alt key is held.",
+  "title.item_descriptions.config.displayAlways": "Always display the tooltip.",
   "lore.generic.banner": "A highly customizable free-standing decoration, made from coloured wool.",
   "lore.generic.banner_pattern": "A stencil that can be applied to Banners to give them unique designs.",
   "lore.generic.bars": "This block can be used as a barrier, but can be jumped over.",
@@ -610,4 +615,5 @@
   "lore.generic.wolf_armor": "This item can be equipped on your Wolf to protect them from damage. It can be repaired with Armadillo Scutes. ",
   "lore.minecraft.writable_book": "This item can be used to write in game lore or messages to other players.",
   "lore.minecraft.written_book": "This item has had custom text written to it. Open it and see what it says!"
+
 }
