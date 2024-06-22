@@ -7,11 +7,16 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Formatting;
 
 @Environment(EnvType.CLIENT)
 public class ModHelpers {
     public static boolean clothConfigInstalled() {
         return FabricLoader.getInstance().isModLoaded("cloth-config");
+    }
+
+    public static Formatting getColor() {
+        return Formatting.byCode(ModConfig.get().tooltipColor.charAt(0));
     }
 
     public static boolean tooltipKeyPressed() {

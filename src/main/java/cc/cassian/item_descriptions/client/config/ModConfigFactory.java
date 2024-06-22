@@ -34,7 +34,6 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
                         .setDefaultValue((String) fieldGet(DEFAULT_VALUES, field)).build());
             }
         }
-
         builder.setSavingRunnable(ModConfig::save);
         return builder.build();
     }
