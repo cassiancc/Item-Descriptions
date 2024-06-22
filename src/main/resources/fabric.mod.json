@@ -24,7 +24,7 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
-    "minecraft": ">=1.19.2"
+    "minecraft": ">=1.20.5"
   },
   "recommends": {
     "tooltipfix": "*",
