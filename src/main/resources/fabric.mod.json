@@ -22,9 +22,9 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=${loader_version}",
+    "fabricloader": ">=0.15.7",
     "fabric": "*",
-    "minecraft": ">=1.19.2"
+    "minecraft": ">=1.19"
   },
   "recommends": {
     "tooltipfix": "*",
