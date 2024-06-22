@@ -17,7 +17,7 @@ public class TooltipClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ModConfig.load();
-        ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
+        ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             if (tooltipKeyPressed()) {
                 lines.add(Text.translatable(findLoreKey(stack)).formatted(Formatting.GRAY));
             }
