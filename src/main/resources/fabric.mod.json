@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "item_descriptions",
+  "id": "item-descriptions",
   "version": "${version}",
   "name": "Item Descriptions",
   "description": "This mod adds unique descriptions to every Minecraft item that can be seen when the Control key is pressed.",

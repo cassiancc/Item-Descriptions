@@ -4,6 +4,7 @@
   "title.item_descriptions.config.displayWhenShiftIsHeld": "Display the tooltip when the Shift key is held.",
   "title.item_descriptions.config.displayWhenAltIsHeld": "Display the tooltip when the Alt key is held.",
   "title.item_descriptions.config.displayAlways": "Always display the tooltip.",
+  "title.item_descriptions.config.tooltipColor": "Tooltip color code.",
   "lore.generic.banner": "A highly customizable free-standing decoration, made from coloured wool.",
   "lore.generic.banner_pattern": "A stencil that can be applied to Banners to give them unique designs.",
   "lore.generic.bars": "This block can be used as a barrier, but can be jumped over.",

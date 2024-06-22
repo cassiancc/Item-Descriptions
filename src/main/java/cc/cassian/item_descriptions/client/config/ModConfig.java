@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static cc.cassian.item_descriptions.client.TooltipClient.MOD_ID;
+
 public class ModConfig {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
@@ -23,6 +25,7 @@ public class ModConfig {
     public boolean displayWhenShiftIsHeld = false;
     public boolean displayWhenAltIsHeld = false;
     public boolean displayAlways = false;
+    public String tooltipColor = "7";
 
     public static void load() {
         if (!Files.exists(configPath())) {
@@ -54,6 +57,6 @@ public class ModConfig {
     }
 
     private static Path configPath() {
-        return FabricLoader.getInstance().getConfigDir().resolve("item_descriptions.json");
+        return FabricLoader.getInstance().getConfigDir().resolve(MOD_ID+".json");
     }
 }
