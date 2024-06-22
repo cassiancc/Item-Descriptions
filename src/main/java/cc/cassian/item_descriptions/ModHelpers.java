@@ -258,6 +258,12 @@ public class ModHelpers {
             else if (loreKey.contains("ladder")) {
                 return "lore.generic.ladder";
             }
+            else if (loreKey.contains("splash_bottle_of_entity")) {
+                return "lore.generic.splash_bottle_of_entity";
+            }
+            else if (loreKey.contains("bottle_of_entity")) {
+                return "lore.generic.bottle_of_entity";
+            }
             else if (loreKey.contains("potato_peels_block")) {
                 return "lore.generic.potato_peels_block";
             }
