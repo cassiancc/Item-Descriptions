@@ -7,6 +7,7 @@ This mod adds a unique Item Description to all Vanilla items, displayed when pre
 ## Adding New Tooltips
 
 By default, the mod provides descriptions for all Vanilla Minecraft items, but it has been designed in a way that makes it extensible for use in modpacks. To add a tooltip to a block, just add the following to your lang file.
+
 ```"lore.<modid>:<youritemhere>": "A mysterious modded block."```
 
 When adding new tooltips, its recommended to keep them two sentences or less to match the ones present in the original mod.
