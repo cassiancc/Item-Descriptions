@@ -19,7 +19,10 @@ public class TooltipClient implements ClientModInitializer {
         ModConfig.load();
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             if (tooltipKeyPressed()) {
-                lines.add(Text.translatable(findLoreKey(stack)).formatted(Formatting.GRAY));
+                String translationKey = findLoreKey(stack);
+                if (!translationKey.isEmpty()) {
+                    lines.add(Text.translatable(translationKey).formatted(Formatting.GRAY));
+                }
             }
         });
     }
