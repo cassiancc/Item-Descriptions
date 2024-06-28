@@ -21,26 +21,34 @@ public class ModHelpers {
     }
 
     public static boolean tooltipKeyPressed() {
-        if (ModConfig.get().displayWhenControlIsHeld) {
-            if (Screen.hasControlDown()) {
-                return true;
-            }
+        ModConfig config = ModConfig.get();
+        if (config.displayWhenControlIsHeld) {
+            return checkKey(Screen.hasControlDown());
         }
-        if (ModConfig.get().displayWhenShiftIsHeld) {
-            if (Screen.hasShiftDown()) {
-                return true;
-            }
+        if (config.displayWhenShiftIsHeld) {
+            return checkKey(Screen.hasShiftDown());
         }
-        if (ModConfig.get().displayWhenAltIsHeld) {
-            if (Screen.hasAltDown()) {
-                return true;
-            }
+        if (config.displayWhenAltIsHeld) {
+            return checkKey(Screen.hasAltDown());
         }
-        if (ModConfig.get().displayAlways) {
+        if (config.displayAlways) {
             return true;
         }
 
         return false;
+    }
+
+    public static boolean checkKey(boolean key) {
+        boolean invert = ModConfig.get().invert;
+        if (key) {
+            return !invert;
+        }
+        else if (!key) {
+            return invert;
+        }
+        else {
+            return false;
+        }
     }
 
 
