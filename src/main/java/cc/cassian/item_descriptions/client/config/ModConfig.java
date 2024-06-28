@@ -25,6 +25,7 @@ public class ModConfig {
     public boolean displayWhenShiftIsHeld = false;
     public boolean displayWhenAltIsHeld = false;
     public boolean displayAlways = false;
+    public boolean invert = false;
     public String tooltipColor = "7";
 
     public static void load() {
