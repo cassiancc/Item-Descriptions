@@ -22,19 +22,19 @@ public class ModHelpers {
 
     public static boolean tooltipKeyPressed() {
         ModConfig config = ModConfig.get();
-        if (config.displayWhenControlIsHeld) {
-            return checkKey(Screen.hasControlDown());
-        }
-        if (config.displayWhenShiftIsHeld) {
-            return checkKey(Screen.hasShiftDown());
-        }
-        if (config.displayWhenAltIsHeld) {
-            return checkKey(Screen.hasAltDown());
-        }
         if (config.displayAlways) {
             return true;
         }
-
+        else {
+            if (config.displayWhenControlIsHeld) {
+                return checkKey(Screen.hasControlDown());
+            }
+            if (config.displayWhenShiftIsHeld) {
+                return checkKey(Screen.hasShiftDown());
+            }
+            if (config.displayWhenAltIsHeld) {
+                return checkKey(Screen.hasAltDown());
+            }}
         return false;
     }
 
@@ -69,6 +69,21 @@ public class ModHelpers {
         //Iterate through the provided generic keys.
         if (loreKey.contains("planks")) {
             return "lore.generic.planks";
+        }
+        else if (loreKey.contains("_sword")) {
+            return "lore.generic.sword";
+        }
+        else if (loreKey.contains("_hoe")) {
+            return "lore.generic.hoe";
+        }
+        else if (loreKey.contains("_shovel")) {
+            return "lore.generic.shovel";
+        }
+        else if (loreKey.contains("_pickaxe")) {
+            return "lore.generic.pickaxe";
+        }
+        else if (loreKey.contains("_axe")) {
+            return "lore.generic.axe";
         }
         else if (loreKey.contains("stripped_")) {
             return "lore.generic.stripped_log";
