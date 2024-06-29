@@ -1,12 +1,12 @@
 package cc.cassian.item_descriptions.client.config;
 
 
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 
 import java.lang.reflect.Field;
@@ -20,11 +20,11 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
     public Screen create(Screen parent) {
         final ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(new TranslatableText("title.item_descriptions.config"));
+                .setTitle(I18n.translate("title.item_descriptions.config"));
 
         final ConfigEntryBuilder entryBuilder = builder.entryBuilder();
         final ModConfig configInstance = ModConfig.get();
-        final ConfigCategory category = builder.getOrCreateCategory(Text.of("Item Descriptions"));
+        final ConfigCategory category = builder.getOrCreateCategory(I18n.translate("title.item_descriptions.config"));
 
         for (Field field : ModConfig.class.getFields()) {
             if (field.getType() == boolean.class) {
@@ -41,8 +41,8 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
         return builder.build();
     }
 
-    private static Text fieldName(Field field) {
-        return new TranslatableText("title.item_descriptions.config." + field.getName());
+    private static String fieldName(Field field) {
+        return I18n.translate("title.item_descriptions.config." + field.getName());
     }
 
     @SuppressWarnings("unchecked")

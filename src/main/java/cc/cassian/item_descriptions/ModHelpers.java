@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 @Environment(EnvType.CLIENT)
 public class ModHelpers {
     public static boolean clothConfigInstalled() {
-        return FabricLoader.getInstance().isModLoaded("cloth-config");
+        return FabricLoader.getInstance().isModLoaded("cloth");
     }
 
     public static Formatting getColor() {
