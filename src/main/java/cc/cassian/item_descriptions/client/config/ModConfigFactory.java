@@ -3,8 +3,11 @@ package cc.cassian.item_descriptions.client.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 import java.lang.reflect.Field;
 import java.util.function.Consumer;
@@ -15,15 +18,15 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
 
     @Override
     public Screen create(Screen parent) {
-        final var builder = ConfigBuilder.create()
+        final ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.translatable("title.item_descriptions.config"));
+                .setTitle(new TranslatableText("title.item_descriptions.config"));
 
-        final var entryBuilder = builder.entryBuilder();
-        final var configInstance = ModConfig.get();
-        final var category = builder.getOrCreateCategory(Text.of("Item Descriptions"));
+        final ConfigEntryBuilder entryBuilder = builder.entryBuilder();
+        final ModConfig configInstance = ModConfig.get();
+        final ConfigCategory category = builder.getOrCreateCategory(Text.of("Item Descriptions"));
 
-        for (var field : ModConfig.class.getFields()) {
+        for (Field field : ModConfig.class.getFields()) {
             if (field.getType() == boolean.class) {
                 category.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
                         .setSaveConsumer(fieldSetter(configInstance, field))
@@ -39,7 +42,7 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
     }
 
     private static Text fieldName(Field field) {
-        return Text.translatable("title.item_descriptions.config." + field.getName());
+        return new TranslatableText("title.item_descriptions.config." + field.getName());
     }
 
     @SuppressWarnings("unchecked")
