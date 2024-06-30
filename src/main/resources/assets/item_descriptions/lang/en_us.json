@@ -1,4 +1,4 @@
-{
+{ 
   "title.item_descriptions.config": "Item Descriptions",
   "title.item_descriptions.config.displayWhenControlIsHeld": "Display the tooltip when the Control key is held.",
   "title.item_descriptions.config.displayWhenShiftIsHeld": "Display the tooltip when the Shift key is held.",
