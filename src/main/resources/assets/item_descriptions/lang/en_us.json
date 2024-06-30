@@ -1,4 +1,4 @@
-{
+{ 
   "title.item_descriptions.config": "Item Descriptions",
   "title.item_descriptions.config.displayWhenControlIsHeld": "Display the tooltip when the Control key is held.",
   "title.item_descriptions.config.displayWhenShiftIsHeld": "Display the tooltip when the Shift key is held.",
@@ -90,7 +90,7 @@
   "lore.minecraft.andesite": "A solid block of Andesite.",
   "lore.minecraft.air_block": "This strange block can be eaten to regain air, or to inflate Moon Cows.",
   "lore.minecraft.packed_air_block": "This strange block will refill your air, but it will escape through any hole in your build.",
-  "lore.minecraft.ant": "This strange block rapidly moves, changing White Concrete to Black Concrete and back again.",
+  "lore.minecraft.ant": "This strange block rapidly moves, changing White Concrete to Black Concrete and back again, referencing \"Langton's ant\".",
   "lore.minecraft.anvil": "This block can be used to repair weapons, tools and armor.",
   "lore.minecraft.apple": "This foodstuff drops from Oak Leaves and can restore a small amount of saturation.",
   "lore.minecraft.armor_stand": "This convenient mannequin can be used to display your wearable items.",
