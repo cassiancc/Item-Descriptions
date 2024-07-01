@@ -24,12 +24,20 @@ public class TooltipClient implements ClientModInitializer {
 
                     String translatedKey =  I18n.translate(translationKey);
 
-                    while (translatedKey.length() >= 20) {
-                        lines.add(new Text.literal(translatedKey.substring(0, 20)).formatted(getColor()));
-                        translatedKey = translatedKey.substring(20);
+                    while (translatedKey.length() >= 25) {
+                        String subKey = translatedKey.substring(0, 25);
+                        int index;
+                        if (subKey.contains(" ")) {
+                            index = subKey.lastIndexOf(" ")+1;
+                        }
+                        else {
+                            index = 25;
+                        }
+                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                        translatedKey = translatedKey.substring(index);
                     }
 
-                    lines.add(new Text.literal(translatedKey).formatted(getColor()));
+                    lines.add(Text.literal(translatedKey).formatted(getColor()));
                 }
             }
         });
