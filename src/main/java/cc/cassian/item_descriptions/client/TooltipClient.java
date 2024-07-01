@@ -18,28 +18,31 @@ public class TooltipClient implements ClientModInitializer {
     public void onInitializeClient() {
         ModConfig.load();
         ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
+            //Only show tooltip if key is pressed or "always on" is enabled.
             if (tooltipKeyPressed()) {
+                //Convert the block/item key to a lore key or generic lore key.
                 String translationKey = findLoreKey(stack);
+                //Check if a translation exists.
                 if (!translationKey.isEmpty()) {
-
+                    //Translate the lore key.
                     String translatedKey =  I18n.translate(translationKey);
-
-                    while (translatedKey.length() >= 25) {
-                        String subKey = translatedKey.substring(0, 25);
-                        int index;
-                        if (subKey.contains(" ")) {
-                            index = subKey.lastIndexOf(" ")+1;
+                    //Check if tooltip fix is enabled. If so, its wrapping will be used. If not, a custom wrapping is used.
+                    if (!tooltipFixInstalled()) {
+                        //Any tooltip longer than 25 characters should be shortened.
+                        while (translatedKey.length() >= 25) {
+                            //Find how much to shorten the tooltip by.
+                            int index = getIndex(translatedKey);
+                            //Add a shortened tooltip.
+                            lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                            //Remove the shortened tooltip substring from the tooltip. Repeat.
+                            translatedKey = translatedKey.substring(index);
                         }
-                        else {
-                            index = 25;
-                        }
-                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
-                        translatedKey = translatedKey.substring(index);
                     }
-
+                    //Add the final tooltip.
                     lines.add(Text.literal(translatedKey).formatted(getColor()));
                 }
             }
         });
     }
+
 }

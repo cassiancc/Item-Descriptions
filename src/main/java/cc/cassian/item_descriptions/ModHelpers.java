@@ -15,9 +15,25 @@ public class ModHelpers {
     public static boolean clothConfigInstalled() {
         return FabricLoader.getInstance().isModLoaded("cloth-config");
     }
+    public static boolean tooltipFixInstalled() {
+        return FabricLoader.getInstance().isModLoaded("tooltipfix");
+    }
 
     public static Formatting getColor() {
         return Formatting.byCode(ModConfig.get().tooltipColor.charAt(0));
+    }
+
+    public static int getIndex(String translatedKey) {
+        String subKey = translatedKey.substring(0, 25);
+        int index;
+        //Find the last space character in the substring, if not, default to the length of the substring.
+        if (subKey.contains(" ")) {
+            index = subKey.lastIndexOf(" ")+1;
+        }
+        else {
+            index = 25;
+        }
+        return index;
     }
 
     public static boolean tooltipKeyPressed() {
