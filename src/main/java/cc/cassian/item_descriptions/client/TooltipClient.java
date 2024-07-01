@@ -3,6 +3,8 @@ package cc.cassian.item_descriptions.client;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +23,15 @@ public class TooltipClient implements ClientModInitializer {
             if (tooltipKeyPressed()) {
                 String translationKey = findLoreKey(stack);
                 if (!translationKey.isEmpty()) {
-                    lines.add(new TranslatableText(translationKey).formatted(getColor()));
+
+                    String translatedKey =  I18n.translate(translationKey);
+
+                    while (translatedKey.length() >= 20) {
+                        lines.add(new LiteralText(translatedKey.substring(0, 20)).formatted(getColor()));
+                        translatedKey = translatedKey.substring(20);
+                    }
+
+                    lines.add(new LiteralText(translatedKey).formatted(getColor()));
                 }
             }
         });
