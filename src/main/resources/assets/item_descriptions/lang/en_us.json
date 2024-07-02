@@ -443,6 +443,7 @@
   "lore.minecraft.netherite_stairs": "This strange, rare block is incredibly tough.",
   "lore.minecraft.netherite_scrap": "This scrap can be combined with gold to make a Netherite Ingot.",
   "lore.minecraft.netherrack": "This block will burn forever if set alight.",
+  "lore.minecraft.end_portal": "This block will transport the player to the End.",
   "lore.minecraft.nether_portal": "This block will transport the player to the Nether.",
   "lore.minecraft.note_block": "This block plays a note when triggered. Hit it to change the pitch of the note. Placing this on top of different blocks will change the type of instrument.",
   "lore.minecraft.observer": "Emits a Redstone Signal when adjacent blocks are updated.",

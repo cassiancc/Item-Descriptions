@@ -7,6 +7,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class ModHelpers {
@@ -76,6 +78,9 @@ public class ModHelpers {
     }
 
     public static String findLoreKey(ItemStack stack) {
+        if (stack.getComponents().contains(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            return "lore.custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
+        }
         //Find the tooltip translation key for the provided item stack.
         String loreKey = getLoreKey(stack);
         return findLoreKey(loreKey);
@@ -354,24 +359,27 @@ public class ModHelpers {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
         if (tooltipKeyPressed()) {
-            //Check if a translation exists.
+            //Check if the key exists.
             if (!loreKey.isEmpty()) {
                 //Translate the lore key.
                 String translatedKey =  I18n.translate(loreKey);
-                //Check if custom wrapping should be used.
-                if (wrap) {
-                    //Any tooltip longer than 25 characters should be shortened.
-                    while (translatedKey.length() >= 25) {
-                        //Find how much to shorten the tooltip by.
-                        int index = getIndex(translatedKey);
-                        //Add a shortened tooltip.
-                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
-                        //Remove the shortened tooltip substring from the tooltip. Repeat.
-                        translatedKey = translatedKey.substring(index);
+                //Check if the translated key exists.
+                if (!translatedKey.isEmpty()) {
+                    //Check if custom wrapping should be used.
+                    if (wrap) {
+                        //Any tooltip longer than 25 characters should be shortened.
+                        while (translatedKey.length() >= 25) {
+                            //Find how much to shorten the tooltip by.
+                            int index = getIndex(translatedKey);
+                            //Add a shortened tooltip.
+                            lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                            //Remove the shortened tooltip substring from the tooltip. Repeat.
+                            translatedKey = translatedKey.substring(index);
+                        }
                     }
+                    //Add the final tooltip.
+                    lines.add(Text.literal(translatedKey).formatted(getColor()));
                 }
-                //Add the final tooltip.
-                lines.add(Text.literal(translatedKey).formatted(getColor()));
             }
         }
         return lines;
