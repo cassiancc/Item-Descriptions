@@ -33,15 +33,15 @@ public class ModHelpers {
         return Formatting.byCode(ModConfig.get().tooltipColor.charAt(0));
     }
 
-    public static int getIndex(String translatedKey) {
-        String subKey = translatedKey.substring(0, 25);
+    public static int getIndex(String translatedKey, int maxLength) {
+        String subKey = translatedKey.substring(0, maxLength);
         int index;
         //Find the last space character in the substring, if not, default to the length of the substring.
         if (subKey.contains(" ")) {
             index = subKey.lastIndexOf(" ")+1;
         }
         else {
-            index = 25;
+            index = maxLength;
         }
         return index;
     }
@@ -358,6 +358,7 @@ public class ModHelpers {
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
+        int maxLength = 25;
         if (tooltipKeyPressed()) {
             //Check if the key exists.
             if (!loreKey.isEmpty()) {
@@ -368,9 +369,9 @@ public class ModHelpers {
                     //Check if custom wrapping should be used.
                     if (wrap) {
                         //Any tooltip longer than 25 characters should be shortened.
-                        while (translatedKey.length() >= 25) {
+                        while (translatedKey.length() >= maxLength) {
                             //Find how much to shorten the tooltip by.
-                            int index = getIndex(translatedKey);
+                            int index = getIndex(translatedKey, maxLength);
                             //Add a shortened tooltip.
                             lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
                             //Remove the shortened tooltip substring from the tooltip. Repeat.
