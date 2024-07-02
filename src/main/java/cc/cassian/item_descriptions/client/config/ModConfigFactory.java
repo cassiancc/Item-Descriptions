@@ -21,13 +21,28 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
 
         final var entryBuilder = builder.entryBuilder();
         final var configInstance = ModConfig.get();
-        final var category = builder.getOrCreateCategory(Text.of("Item Descriptions"));
+        final var category = builder.getOrCreateCategory(Text.translatable("config.item_descriptions.title"));
+        final var keyBindsCategory = builder.getOrCreateCategory(Text.translatable("config.item_descriptions.keybinds_title"));
+        final var blockCategory = builder.getOrCreateCategory(Text.translatable("config.item_descriptions.block_descriptions_title"));
 
         for (var field : ModConfig.class.getFields()) {
             if (field.getType() == boolean.class) {
-                category.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
-                        .setSaveConsumer(fieldSetter(configInstance, field))
-                        .setDefaultValue((boolean) fieldGet(DEFAULT_VALUES, field)).build());
+                if (field.getName().contains("keybind")) {
+                    keyBindsCategory.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
+                            .setSaveConsumer(fieldSetter(configInstance, field))
+                            .setDefaultValue((boolean) fieldGet(DEFAULT_VALUES, field)).build());
+                }
+                else if (field.getName().toLowerCase().contains("block")) {
+                    blockCategory.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
+                            .setSaveConsumer(fieldSetter(configInstance, field))
+                            .setDefaultValue((boolean) fieldGet(DEFAULT_VALUES, field)).build());
+                }
+                else {
+                    category.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
+                            .setSaveConsumer(fieldSetter(configInstance, field))
+                            .setDefaultValue((boolean) fieldGet(DEFAULT_VALUES, field)).build());
+                }
+
             } else if (field.getType() == String.class) {
                 category.addEntry(entryBuilder.startStrField(fieldName(field), fieldGet(configInstance, field))
                         .setSaveConsumer(fieldSetter(configInstance, field))

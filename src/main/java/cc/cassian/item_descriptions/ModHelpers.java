@@ -48,20 +48,20 @@ public class ModHelpers {
 
     public static boolean tooltipKeyPressed() {
         ModConfig config = ModConfig.get();
-        if (config.displayWhenControlIsHeld) {
+        if (config.keybind_displayWhenControlIsHeld) {
             return checkKey(Screen.hasControlDown());
         }
-        if (config.displayWhenShiftIsHeld) {
+        if (config.keybind_displayWhenShiftIsHeld) {
             return checkKey(Screen.hasShiftDown());
         }
-        if (config.displayWhenAltIsHeld) {
+        if (config.keybind_displayWhenAltIsHeld) {
             return checkKey(Screen.hasAltDown());
         }
         return false;
     }
 
     public static boolean checkKey(boolean key) {
-        boolean invert = ModConfig.get().invert;
+        boolean invert = ModConfig.get().keybind_invert;
         if (key) {
             return !invert;
         }
