@@ -3,7 +3,6 @@ package cc.cassian.item_descriptions.client.jade;
 import cc.cassian.item_descriptions.client.TooltipClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.util.Identifier;
 import snownee.jade.api.IWailaClientRegistration;
@@ -28,6 +27,7 @@ public class JadeIntegration implements IWailaPlugin {
         client = registration;
         //TODO register component providers, icon providers, callbacks, and config options here
         registration.registerBlockComponent(JadeTooltipProvider.INSTANCE, Block.class);
+
 
     }
 }

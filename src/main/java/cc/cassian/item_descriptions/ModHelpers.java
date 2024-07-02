@@ -4,11 +4,16 @@ import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Environment(EnvType.CLIENT)
 public class ModHelpers {
@@ -17,6 +22,9 @@ public class ModHelpers {
     }
     public static boolean tooltipFixInstalled() {
         return FabricLoader.getInstance().isModLoaded("tooltipfix");
+    }
+    public static boolean jadeInstalled() {
+        return FabricLoader.getInstance().isModLoaded("jade");
     }
 
     public static Formatting getColor() {
@@ -67,13 +75,22 @@ public class ModHelpers {
         }
     }
 
-
     public static String findLoreKey(ItemStack stack) {
         //Find the tooltip translation key for the provided item stack.
         String loreKey = getLoreKey(stack);
+        return findLoreKey(loreKey);
+    }
+
+    public static String findLoreKey(Block stack) {
+        //Find the tooltip translation key for the provided item stack.
+        String loreKey = getLoreKey(stack);
+        return findLoreKey(loreKey);
+    }
+
+    public static String findLoreKey(String loreKey) {
         //Check if the tooltip translation key exists. If so, use the provided tooltip.
         if (I18n.hasTranslation(loreKey)) {
-           return loreKey;
+            return loreKey;
         }
         //If the tooltip translation key does not exist, use one of the provided generic tooltips.
         else {
@@ -309,7 +326,14 @@ public class ModHelpers {
     }
 
     private static @NotNull String getLoreKey(ItemStack stack) {
-        String translationKey = stack.getTranslationKey();
+        return getLoreTranslationKey(stack.getTranslationKey());
+    }
+
+    private static @NotNull String getLoreKey(Block stack) {
+        return getLoreTranslationKey(stack.getTranslationKey());
+    }
+
+    private static @NotNull String getLoreTranslationKey(String translationKey) {
         String loreKey;
         //Find the translation key for blocks.
         if (translationKey.contains("block.")) {
@@ -324,5 +348,32 @@ public class ModHelpers {
             loreKey = translationKey;
         }
         return loreKey;
+    }
+
+    public static List<Text> createTooltip(String loreKey, boolean wrap) {
+        //Setup list to store (potentially multi-line) tooltip.
+        ArrayList<Text> lines = new ArrayList<>();
+        if (tooltipKeyPressed()) {
+            //Check if a translation exists.
+            if (!loreKey.isEmpty()) {
+                //Translate the lore key.
+                String translatedKey =  I18n.translate(loreKey);
+                //Check if custom wrapping should be used.
+                if (wrap) {
+                    //Any tooltip longer than 25 characters should be shortened.
+                    while (translatedKey.length() >= 25) {
+                        //Find how much to shorten the tooltip by.
+                        int index = getIndex(translatedKey);
+                        //Add a shortened tooltip.
+                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                        //Remove the shortened tooltip substring from the tooltip. Repeat.
+                        translatedKey = translatedKey.substring(index);
+                    }
+                }
+                //Add the final tooltip.
+                lines.add(Text.literal(translatedKey).formatted(getColor()));
+            }
+        }
+        return lines;
     }
 }
