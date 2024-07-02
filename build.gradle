@@ -18,9 +18,18 @@ repositories {
     // for more information about repositories.
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
-
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
-
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -33,6 +42,8 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
     modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
+    modImplementation "maven.modrinth:jade:${project.jade_version}+fabric"
+
 }
 
 processResources {

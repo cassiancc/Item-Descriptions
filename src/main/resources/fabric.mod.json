@@ -19,6 +19,9 @@
     ],
     "modmenu": [
       "cc.cassian.item_descriptions.client.config.ModMenuIntegration"
+    ],
+    "jade": [
+      "cc.cassian.item_descriptions.client.jade.JadeIntegration"
     ]
   },
   "depends": {
