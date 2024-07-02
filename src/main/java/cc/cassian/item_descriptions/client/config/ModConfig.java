@@ -20,7 +20,8 @@ public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private static ModConfig INSTANCE = new ModConfig();
-
+    public boolean itemDescriptions = true;
+    public boolean blockDescriptions = true;
     public boolean displayWhenControlIsHeld = true;
     public boolean displayWhenShiftIsHeld = false;
     public boolean displayWhenAltIsHeld = false;

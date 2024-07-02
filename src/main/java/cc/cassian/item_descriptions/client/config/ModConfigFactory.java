@@ -17,7 +17,7 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
     public Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.translatable("title.item_descriptions.config"));
+                .setTitle(Text.translatable("config.item_descriptions.title"));
 
         final var entryBuilder = builder.entryBuilder();
         final var configInstance = ModConfig.get();
@@ -39,7 +39,7 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
     }
 
     private static Text fieldName(Field field) {
-        return Text.translatable("title.item_descriptions.config." + field.getName());
+        return Text.translatable("config.item_descriptions.config." + field.getName());
     }
 
     @SuppressWarnings("unchecked")

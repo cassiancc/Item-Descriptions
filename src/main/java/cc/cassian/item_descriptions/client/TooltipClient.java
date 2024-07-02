@@ -3,7 +3,6 @@ package cc.cassian.item_descriptions.client;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,9 +18,11 @@ public class TooltipClient implements ClientModInitializer {
     public void onInitializeClient() {
         ModConfig.load();
         ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
-            //Only show tooltip if key is pressed or "always on" is enabled.
-            List<Text> tooltip = createTooltip(findLoreKey(stack), !tooltipFixInstalled());
-            lines.addAll(tooltip);
+            if (ModConfig.get().itemDescriptions) {
+                //Only show tooltip if key is pressed or "always on" is enabled.
+                List<Text> tooltip = createTooltip(findLoreKey(stack), !tooltipFixInstalled());
+                lines.addAll(tooltip);
+            }
         });
     }
 }
