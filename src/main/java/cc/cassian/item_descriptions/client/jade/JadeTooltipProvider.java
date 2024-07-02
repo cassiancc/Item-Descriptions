@@ -18,7 +18,7 @@ public enum JadeTooltipProvider implements IBlockComponentProvider {
     @Override
     public void appendTooltip(ITooltip lines, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         //Check if block descriptions are enabled in mod config.
-        if (ModConfig.get().blockDescriptions) {
+        if (ModConfig.get().blockDescriptions && (tooltipKeyPressed() || ModConfig.get().displayBlockDescriptionsAlways)) {
             //Convert block translation key to lore translation key.
             String loreKey = findLoreKey(blockAccessor.getBlock());
             //Check if translation exists. If not, see if an item exists for it - e.g. seeds.

@@ -48,19 +48,15 @@ public class ModHelpers {
 
     public static boolean tooltipKeyPressed() {
         ModConfig config = ModConfig.get();
-        if (config.displayAlways) {
-            return true;
+        if (config.displayWhenControlIsHeld) {
+            return checkKey(Screen.hasControlDown());
         }
-        else {
-            if (config.displayWhenControlIsHeld) {
-                return checkKey(Screen.hasControlDown());
-            }
-            if (config.displayWhenShiftIsHeld) {
-                return checkKey(Screen.hasShiftDown());
-            }
-            if (config.displayWhenAltIsHeld) {
-                return checkKey(Screen.hasAltDown());
-            }}
+        if (config.displayWhenShiftIsHeld) {
+            return checkKey(Screen.hasShiftDown());
+        }
+        if (config.displayWhenAltIsHeld) {
+            return checkKey(Screen.hasAltDown());
+        }
         return false;
     }
 
@@ -359,30 +355,29 @@ public class ModHelpers {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
         int maxLength = 25;
-        if (tooltipKeyPressed()) {
-            //Check if the key exists.
-            if (!loreKey.isEmpty()) {
-                //Translate the lore key.
-                String translatedKey =  I18n.translate(loreKey);
-                //Check if the translated key exists.
-                if (!translatedKey.isEmpty()) {
-                    //Check if custom wrapping should be used.
-                    if (wrap) {
-                        //Any tooltip longer than 25 characters should be shortened.
-                        while (translatedKey.length() >= maxLength) {
-                            //Find how much to shorten the tooltip by.
-                            int index = getIndex(translatedKey, maxLength);
-                            //Add a shortened tooltip.
-                            lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
-                            //Remove the shortened tooltip substring from the tooltip. Repeat.
-                            translatedKey = translatedKey.substring(index);
-                        }
+        //Check if the key exists.
+        if (!loreKey.isEmpty()) {
+            //Translate the lore key.
+            String translatedKey =  I18n.translate(loreKey);
+            //Check if the translated key exists.
+            if (!translatedKey.isEmpty()) {
+                //Check if custom wrapping should be used.
+                if (wrap) {
+                    //Any tooltip longer than 25 characters should be shortened.
+                    while (translatedKey.length() >= maxLength) {
+                        //Find how much to shorten the tooltip by.
+                        int index = getIndex(translatedKey, maxLength);
+                        //Add a shortened tooltip.
+                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                        //Remove the shortened tooltip substring from the tooltip. Repeat.
+                        translatedKey = translatedKey.substring(index);
                     }
-                    //Add the final tooltip.
-                    lines.add(Text.literal(translatedKey).formatted(getColor()));
                 }
+                //Add the final tooltip.
+                lines.add(Text.literal(translatedKey).formatted(getColor()));
             }
         }
+
         return lines;
     }
 }

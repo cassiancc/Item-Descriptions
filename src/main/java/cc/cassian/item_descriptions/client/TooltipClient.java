@@ -18,7 +18,7 @@ public class TooltipClient implements ClientModInitializer {
     public void onInitializeClient() {
         ModConfig.load();
         ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
-            if (ModConfig.get().itemDescriptions) {
+            if (ModConfig.get().itemDescriptions && (tooltipKeyPressed() || ModConfig.get().displayAlways)) {
                 //Only show tooltip if key is pressed or "always on" is enabled.
                 List<Text> tooltip = createTooltip(findLoreKey(stack), !tooltipFixInstalled());
                 lines.addAll(tooltip);
