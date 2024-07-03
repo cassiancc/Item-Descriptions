@@ -74,25 +74,23 @@ public class ModHelpers {
         }
     }
 
-    public static String findLoreKey(ItemStack stack) {
+    public static String findItemLoreKey(ItemStack stack) {
         NbtCompound s = stack.getNbt();
         if (s != null) {
             if (s.contains("CUSTOM_MODEL_DATA", NbtElement.NUMBER_TYPE)) {
-                return "lore.custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA"));
             }
+            return getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA"));
         }
         //Find the tooltip translation key for the provided item stack.
-        String loreKey = getLoreKey(stack);
-        return findLoreKey(loreKey);
+        return checkLoreKey(getLoreKey(stack));
     }
 
-    public static String findLoreKey(Block stack) {
-        //Find the tooltip translation key for the provided item stack.
-        String loreKey = getLoreKey(stack);
-        return findLoreKey(loreKey);
+    public static String findBlockLoreKey(Block block) {
+        //Find the tooltip translation key for the provided block.
+        return checkLoreKey(getLoreKey(block));
     }
 
-    public static String findLoreKey(String loreKey) {
+    public static String checkLoreKey(String loreKey) {
         //Check if the tooltip translation key exists. If so, use the provided tooltip.
         if (I18n.hasTranslation(loreKey)) {
             return loreKey;
