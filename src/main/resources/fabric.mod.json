@@ -27,7 +27,6 @@
     "minecraft": ">=1.19"
   },
   "recommends": {
-    "tooltipfix": "*",
     "cloth-config": "*",
     "modmenu": "*"
   }
