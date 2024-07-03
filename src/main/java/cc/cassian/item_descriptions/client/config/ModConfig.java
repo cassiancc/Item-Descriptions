@@ -20,12 +20,14 @@ public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private static ModConfig INSTANCE = new ModConfig();
-
-    public boolean displayWhenControlIsHeld = true;
-    public boolean displayWhenShiftIsHeld = false;
-    public boolean displayWhenAltIsHeld = false;
+    public boolean itemDescriptions = true;
+    public boolean blockDescriptions = true;
+    public boolean keybind_displayWhenControlIsHeld = true;
+    public boolean keybind_displayWhenShiftIsHeld = false;
+    public boolean keybind_displayWhenAltIsHeld = false;
     public boolean displayAlways = false;
-    public boolean invert = false;
+    public boolean displayBlockDescriptionsAlways = false;
+    public boolean keybind_invert = false;
     public String tooltipColor = "7";
 
     public static void load() {

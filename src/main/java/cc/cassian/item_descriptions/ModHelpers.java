@@ -4,42 +4,65 @@ import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
+import net.minecraft.text.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class ModHelpers {
     public static boolean clothConfigInstalled() {
         return FabricLoader.getInstance().isModLoaded("cloth-config");
     }
+    public static boolean tooltipFixInstalled() {
+        return FabricLoader.getInstance().isModLoaded("tooltipfix");
+    }
+    public static boolean jadeInstalled() {
+        return FabricLoader.getInstance().isModLoaded("jade");
+    }
 
     public static Formatting getColor() {
         return Formatting.byCode(ModConfig.get().tooltipColor.charAt(0));
     }
 
-    public static boolean tooltipKeyPressed() {
-        ModConfig config = ModConfig.get();
-        if (config.displayAlways) {
-            return true;
+    public static int getIndex(String translatedKey, int maxLength) {
+        String subKey = translatedKey.substring(0, maxLength);
+        int index;
+        //Find the last space character in the substring, if not, default to the length of the substring.
+        if (subKey.contains(" ")) {
+            index = subKey.lastIndexOf(" ")+1;
         }
         else {
-            if (config.displayWhenControlIsHeld) {
-                return checkKey(Screen.hasControlDown());
-            }
-            if (config.displayWhenShiftIsHeld) {
-                return checkKey(Screen.hasShiftDown());
-            }
-            if (config.displayWhenAltIsHeld) {
-                return checkKey(Screen.hasAltDown());
-            }}
+            index = maxLength;
+        }
+        return index;
+    }
+
+    public static boolean tooltipKeyPressed() {
+        ModConfig config = ModConfig.get();
+        if (config.keybind_displayWhenControlIsHeld) {
+            return checkKey(Screen.hasControlDown());
+        }
+        if (config.keybind_displayWhenShiftIsHeld) {
+            return checkKey(Screen.hasShiftDown());
+        }
+        if (config.keybind_displayWhenAltIsHeld) {
+            return checkKey(Screen.hasAltDown());
+        }
         return false;
     }
 
     public static boolean checkKey(boolean key) {
-        boolean invert = ModConfig.get().invert;
+        boolean invert = ModConfig.get().keybind_invert;
         if (key) {
             return !invert;
         }
@@ -51,18 +74,88 @@ public class ModHelpers {
         }
     }
 
-
     public static String findLoreKey(ItemStack stack) {
+        NbtCompound s = stack.getNbt();
+        if (s != null) {
+            if (s.contains("CUSTOM_MODEL_DATA", NbtElement.NUMBER_TYPE)) {
+                return "lore.custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA"));
+            }
+        }
         //Find the tooltip translation key for the provided item stack.
         String loreKey = getLoreKey(stack);
+        return findLoreKey(loreKey);
+    }
+
+    public static String findLoreKey(Block stack) {
+        //Find the tooltip translation key for the provided item stack.
+        String loreKey = getLoreKey(stack);
+        return findLoreKey(loreKey);
+    }
+
+    public static String findLoreKey(String loreKey) {
         //Check if the tooltip translation key exists. If so, use the provided tooltip.
         if (I18n.hasTranslation(loreKey)) {
-           return loreKey;
+            return loreKey;
         }
         //If the tooltip translation key does not exist, use one of the provided generic tooltips.
         else {
             return getGenericKey(loreKey);
         }
+    }
+
+    private static @NotNull String getLoreKey(ItemStack stack) {
+        return getLoreTranslationKey(stack.getTranslationKey());
+    }
+
+    private static @NotNull String getLoreKey(Block stack) {
+        return getLoreTranslationKey(stack.getTranslationKey());
+    }
+
+    private static @NotNull String getLoreTranslationKey(String translationKey) {
+        String loreKey;
+        //Find the translation key for blocks.
+        if (translationKey.contains("block.")) {
+            loreKey = translationKey.replaceFirst("block", "lore");
+        }
+        //Find the translation key for items.
+        else if ((translationKey.contains("item."))) {
+            loreKey = translationKey.replaceFirst("item", "lore");
+        }
+        //In case the translation key somehow does not contain a
+        else {
+            loreKey = translationKey;
+        }
+        return loreKey;
+    }
+
+    public static List<Text> createTooltip(String loreKey, boolean wrap) {
+        //Setup list to store (potentially multi-line) tooltip.
+        ArrayList<Text> lines = new ArrayList<>();
+        int maxLength = 25;
+        //Check if the key exists.
+        if (!loreKey.isEmpty()) {
+            //Translate the lore key.
+            String translatedKey =  I18n.translate(loreKey);
+            //Check if the translated key exists.
+            if (!translatedKey.isEmpty()) {
+                //Check if custom wrapping should be used.
+                if (wrap) {
+                    //Any tooltip longer than 25 characters should be shortened.
+                    while (translatedKey.length() >= maxLength) {
+                        //Find how much to shorten the tooltip by.
+                        int index = getIndex(translatedKey, maxLength);
+                        //Add a shortened tooltip.
+                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                        //Remove the shortened tooltip substring from the tooltip. Repeat.
+                        translatedKey = translatedKey.substring(index);
+                    }
+                }
+                //Add the final tooltip.
+                lines.add(Text.literal(translatedKey).formatted(getColor()));
+            }
+        }
+
+        return lines;
     }
 
     private static @NotNull String getGenericKey(String loreKey) {
@@ -302,23 +395,5 @@ public class ModHelpers {
         else {
             return "";
         }
-    }
-
-    private static @NotNull String getLoreKey(ItemStack stack) {
-        String translationKey = stack.getTranslationKey();
-        String loreKey;
-        //Find the translation key for blocks.
-        if (translationKey.contains("block.")) {
-            loreKey = translationKey.replaceFirst("block", "lore");
-        }
-        //Find the translation key for items.
-        else if ((translationKey.contains("item."))) {
-            loreKey = translationKey.replaceFirst("item", "lore");
-        }
-        //In case the translation key somehow does not contain a
-        else {
-            loreKey = translationKey;
-        }
-        return loreKey;
     }
 }

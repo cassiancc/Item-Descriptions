@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.List;
 
 import static cc.cassian.item_descriptions.ModHelpers.*;
 
@@ -17,10 +18,11 @@ public class TooltipClient implements ClientModInitializer {
     public void onInitializeClient() {
         ModConfig.load();
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
-            if (tooltipKeyPressed()) {
-                String translationKey = findLoreKey(stack);
-                if (!translationKey.isEmpty()) {
-                    lines.add(Text.translatable(translationKey).formatted(getColor()));
+            if (ModConfig.get().itemDescriptions && (tooltipKeyPressed() || ModConfig.get().displayAlways)) {
+                //Only show tooltip if key is pressed or "always on" is enabled.
+                List<Text> tooltip = createTooltip(findLoreKey(stack), !tooltipFixInstalled());
+                for (Text text : tooltip) {
+                    lines.add(text);
                 }
             }
         });
