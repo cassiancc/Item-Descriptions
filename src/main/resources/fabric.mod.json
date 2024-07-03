@@ -30,7 +30,6 @@
     "minecraft": ">=1.20.5"
   },
   "recommends": {
-    "tooltipfix": "*",
     "cloth-config": "*",
     "modmenu": "*"
   }
