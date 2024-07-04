@@ -31,6 +31,8 @@ When [Mod Menu](https://modrinth.com/mod/mod-menu) and [Cloth Config](https://mo
 
 When [Jade](https://modrinth.com/mod/jade) is installed, Jade will show item and block descriptions in its informational HUD.
 
+When [WTHIT](https://modrinth.com/mod/wthit) is installed, WTHIT will show item and block descriptions in its informational HUD.
+
 When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrapping is used instead of the built in wrapper.
 
 </details>
