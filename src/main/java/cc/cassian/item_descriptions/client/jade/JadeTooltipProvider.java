@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import snownee.jade.api.BlockAccessor;
@@ -22,7 +21,7 @@ public enum JadeTooltipProvider implements IBlockComponentProvider {
             //Convert block translation key to lore translation key.
             String loreKey = findBlockLoreKey(blockAccessor.getBlock());
             //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
-            if (!I18n.hasTranslation(loreKey)) {
+            if (!hasTranslation(loreKey)) {
                 loreKey = findItemLoreKey(blockAccessor.getBlock().getPickStack(blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState()));
             }
             //Create and add tooltip.
