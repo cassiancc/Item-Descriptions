@@ -38,10 +38,5 @@ public class WTHITPlugin implements IWailaPlugin, IBlockComponentProvider {
         }
     }
 
-    public boolean isHarvestable(IBlockAccessor accessor) {
-        return !accessor.getBlockState().isToolRequired() || accessor.getPlayer().canHarvest( accessor.getBlockState() );
-    }
-
-
 
 }
