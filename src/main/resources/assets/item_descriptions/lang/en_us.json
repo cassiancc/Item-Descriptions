@@ -18,7 +18,7 @@
   "config.item-descriptions.config.itemDescriptions": "Enable Item Descriptions.",
   "config.item-descriptions.config.itemDescriptions.tooltip": "The main feature of the mod, Item Descriptions are shown as tooltips below all items.",
   "config.item-descriptions.config.blockDescriptions": "Enable Block Descriptions.",
-  "config.item-descriptions.config.blockDescriptions.tooltip": "This will show Block Descriptions in HWYLA's informational HUD. This can also be disabled in Jade/WTHIT's settings.",
+  "config.item-descriptions.config.blockDescriptions.tooltip": "This will show Block Descriptions in HWYLA's informational HUD. This can also be disabled in HWYLA's settings.",
   "config.item-descriptions.config.displayBlockDescriptionsAlways": "Always show Block Descriptions.",
   "config.item-descriptions.config.displayBlockDescriptionsAlways.tooltip": "By default, descriptions are only shown when a keybind is pressed. This is intended, but can be changed so that they are always visible.",
   "config.item-descriptions.config.developer_dontTranslate": "Disable translating lore tags.",
