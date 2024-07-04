@@ -20,15 +20,22 @@ public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private static ModConfig INSTANCE = new ModConfig();
+    //General settings
     public boolean itemDescriptions = true;
-    public boolean blockDescriptions = true;
+    public boolean displayAlways = false;
+    public String tooltipColor = "7";
+    //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;
     public boolean keybind_displayWhenAltIsHeld = false;
-    public boolean displayAlways = false;
-    public boolean displayBlockDescriptionsAlways = false;
     public boolean keybind_invert = false;
-    public String tooltipColor = "7";
+    //Block descriptions
+    public boolean blockDescriptions = true;
+    public boolean displayBlockDescriptionsAlways = false;
+    //Developer settings
+    public boolean developer_showUntranslated = false;
+    public boolean developer_dontTranslate = false;
+    public boolean developer_disableGenericKeys = false;
 
     public static void load() {
         if (!Files.exists(configPath())) {
@@ -39,7 +46,7 @@ public class ModConfig {
         try (var input = Files.newInputStream(configPath())) {
             INSTANCE = GSON.fromJson(new InputStreamReader(input, StandardCharsets.UTF_8), ModConfig.class);
         } catch (IOException e) {
-            TooltipClient.LOGGER.warn("Could not load config");
+            TooltipClient.LOGGER.warn("Unable to load config file!");
         }
     }
 
@@ -47,15 +54,12 @@ public class ModConfig {
         try (var output = Files.newOutputStream(configPath()); var writer = new OutputStreamWriter(output, StandardCharsets.UTF_8)) {
             GSON.toJson(INSTANCE, writer);
         } catch (IOException e) {
-            TooltipClient.LOGGER.warn("Could not save config!");
+            TooltipClient.LOGGER.warn("Unable to save config file!");
         }
     }
 
     public static ModConfig get() {
-        if (INSTANCE == null) {
-            INSTANCE = new ModConfig();
-        }
-
+        if (INSTANCE == null) INSTANCE = new ModConfig();
         return INSTANCE;
     }
 

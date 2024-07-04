@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.config;
 
+import cc.cassian.item_descriptions.client.TooltipClient;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
@@ -9,7 +10,11 @@ public class ModMenuIntegration implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        if (!clothConfigInstalled()) return parent -> null;
-        return new ModConfigFactory();
+        //Display Cloth Config screen if mod present, else error.
+        if (clothConfigInstalled()) return new ModConfigFactory();
+        else {
+            TooltipClient.LOGGER.warn("User attempted to edit config, but Cloth Config is not present!");
+            return parent -> null;
+        }
     }
 }
