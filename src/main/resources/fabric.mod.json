@@ -27,11 +27,14 @@
     "minecraft": "<1.19"
   },
   "recommends": {
-    "tooltipfix": "*",
     "cloth-config": "*",
     "modmenu": "*"
   },
   "custom": {
-    "modmenu:clientsideOnly": true
+    "modmenu:clientsideOnly": true,
+    "waila:plugins": {
+      "id": "item-descriptions:block_descriptions",
+      "initializer": "cc.cassian.item_descriptions.client.hwyla.HWYLAPlugin"
+    }
   }
 }

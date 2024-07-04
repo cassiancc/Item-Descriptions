@@ -3,44 +3,28 @@ package cc.cassian.item_descriptions.client;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.List;
 
 import static cc.cassian.item_descriptions.ModHelpers.*;
 
 public class TooltipClient implements ClientModInitializer {
     public static final String MOD_ID = "item-descriptions";
-    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+    public static final String MOD_NAME = "Item Descriptions";
+    public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
     @Override
     public void onInitializeClient() {
         ModConfig.load();
+        LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
-            if (tooltipKeyPressed()) {
-                String translationKey = findLoreKey(stack);
-                if (!translationKey.isEmpty()) {
-
-                    String translatedKey =  I18n.translate(translationKey);
-
-                    while (translatedKey.length() >= 25) {
-                        String subKey = translatedKey.substring(0, 25);
-                        int index;
-                        if (subKey.contains(" ")) {
-                            index = subKey.lastIndexOf(" ")+1;
-                        }
-                        else {
-                            index = 25;
-                        }
-                        lines.add(new LiteralText(translatedKey.substring(0, index)).formatted(getColor()));
-                        translatedKey = translatedKey.substring(index);
-                    }
-
-                    lines.add(new LiteralText(translatedKey).formatted(getColor()));
-                }
+            //Only show tooltip if key is pressed or "always on" is enabled.
+            if (ModConfig.get().itemDescriptions && (tooltipKeyPressed() || ModConfig.get().displayAlways)) {
+                //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
+                List<Text> tooltip = (List<Text>) createTooltip(findItemLoreKey(stack), !tooltipFixInstalled(), "text");
+                lines.addAll(tooltip);
             }
         });
     }

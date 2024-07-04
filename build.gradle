@@ -21,8 +21,25 @@ repositories {
         dirs 'lib'
     }
 
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+    maven {
+        url "https://maven2.bai.lol"
+        content {
+            includeGroup "lol.bai"
+            includeGroup "mcp.mobius.waila"
+        }
+    }
 }
-
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -45,6 +62,9 @@ dependencies {
     }
     modImplementation "net.fabricmc:fabric-item-api:20w14infinite"
     modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
+    modImplementation "maven.modrinth:hwyla:${project.hwyla_version}-fabric"
+
+
 }
 
 processResources {
