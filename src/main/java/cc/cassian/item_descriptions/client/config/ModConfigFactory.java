@@ -50,11 +50,18 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
                         .setTooltip(fieldTooltip(field))
                         .setDefaultValue((boolean) fieldGet(DEFAULT_VALUES, field)).build());
 
-            } else if (field.getType() == String.class) {
+            }
+            else if (field.getType() == String.class) {
                 category.addEntry(entryBuilder.startStrField(fieldName(field), fieldGet(configInstance, field))
                         .setSaveConsumer(fieldSetter(configInstance, field))
                         .setTooltip(fieldTooltip(field))
                         .setDefaultValue((String) fieldGet(DEFAULT_VALUES, field)).build());
+            }
+            else if (field.getType() == int.class) {
+                category.addEntry(entryBuilder.startIntField(fieldName(field), fieldGet(configInstance, field))
+                        .setSaveConsumer(fieldSetter(configInstance, field))
+                        .setTooltip(fieldTooltip(field))
+                        .setDefaultValue((int) fieldGet(DEFAULT_VALUES, field)).build());
             }
         }
         builder.setSavingRunnable(ModConfig::save);

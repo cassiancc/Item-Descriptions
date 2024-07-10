@@ -24,6 +24,7 @@ public class ModConfig {
     public boolean itemDescriptions = true;
     public boolean displayAlways = false;
     public String tooltipColor = "7";
+    public int maxTooltipLength = 40;
     //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;

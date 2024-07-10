@@ -150,7 +150,7 @@ public class ModHelpers {
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
-        int maxLength = 25;
+        int maxLength = ModConfig.get().maxTooltipLength;
         //Check if the key exists.
         if (!loreKey.isEmpty()) {
             //Translate the lore key.
