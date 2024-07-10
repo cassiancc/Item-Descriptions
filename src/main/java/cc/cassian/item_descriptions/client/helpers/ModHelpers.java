@@ -66,6 +66,7 @@ public class ModHelpers {
     }
 
     public static String findItemLoreKey(ItemStack stack) {
+        //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         if (stack.getComponents().contains(DataComponentTypes.CUSTOM_MODEL_DATA)) {
             return getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
         }
@@ -87,7 +88,6 @@ public class ModHelpers {
             else return getGenericLoreKey(loreKey);
         }
         else return loreKey;
-
     }
 
 
@@ -97,7 +97,7 @@ public class ModHelpers {
             return key;
         }
         else {
-            return getGenericItemKey(stack);
+            return getGenericKey(stack);
         }
     }
 
@@ -107,23 +107,29 @@ public class ModHelpers {
             return key;
         }
         else {
-            return getGenericBlockKey(block);
+            return getGenericKey(block);
         }
     }
 
     public static boolean checkCommonTag(Object object, String tag) {
+        return checkNamespacedTag("c", object, tag);
+    }
+
+    public static boolean checkVanillaTag(Object object, String tag) {
+        return checkNamespacedTag("minecraft", object, tag);
+    }
+
+    public static boolean checkNamespacedTag(String namespace, Object object, String tag) {
         if (object instanceof ItemStack stack) {
-            return stack.isIn(TagKey.of(RegistryKeys.ITEM, Identifier.of("c", tag)));
+            return stack.isIn(TagKey.of(RegistryKeys.ITEM, Identifier.of(namespace, tag)));
         }
         else if (object instanceof BlockState state) {
-            return state.isIn(TagKey.of(RegistryKeys.BLOCK, Identifier.of("c", tag)));
-
+            return state.isIn(TagKey.of(RegistryKeys.BLOCK, Identifier.of(namespace, tag)));
         }
         else {
             return false;
         }
     }
-
 
     public static @NotNull String getLoreTranslationKey(String translationKey) {
         String loreKey;
@@ -137,8 +143,7 @@ public class ModHelpers {
     }
 
     public static @NotNull String getLoreTranslationKey(ItemStack stack) {
-        String loreKey = stack.getTranslationKey();
-        return getLoreTranslationKey(loreKey);
+        return getLoreTranslationKey(stack.getTranslationKey());
     }
 
     public static @NotNull String getLoreTranslationKey(Block block) {
@@ -181,7 +186,6 @@ public class ModHelpers {
                 lines.add(Text.literal(translatedKey).formatted(getColor()));
             }
         }
-
         return lines;
     }
 }
