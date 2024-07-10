@@ -1,8 +1,6 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -146,16 +144,7 @@ public class GenericKeys {
     }
 
     public static String getGenericKey(Object object) {
-        @NotNull final String loreKey;
-        if (object instanceof ItemStack stack) {
-            loreKey = getLoreTranslationKey(stack);
-        }
-        else if (object instanceof Block block) {
-            loreKey = getLoreTranslationKey(block);
-        }
-        else {
-            loreKey = "";
-        }
+        String loreKey = getLoreTranslationKey(object);
         if (!ModConfig.get().developer_disableGenericTagDescriptions) {
             //Iterate through the provided generic tag list.
             String generic = checkGenericTagList(object);

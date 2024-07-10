@@ -90,24 +90,13 @@ public class ModHelpers {
         else return loreKey;
     }
 
-
-    private static @NotNull String getLoreKey(ItemStack stack) {
-        @NotNull String key = getLoreTranslationKey(stack);
+    private static @NotNull String getLoreKey(Object object) {
+        @NotNull String key = getLoreTranslationKey(object);
         if (hasTranslation(key)) {
             return key;
         }
         else {
-            return getGenericKey(stack);
-        }
-    }
-
-    private static @NotNull String getLoreKey(Block block) {
-        @NotNull String key = getLoreTranslationKey(block);
-        if (hasTranslation(key)) {
-            return key;
-        }
-        else {
-            return getGenericKey(block);
+            return getGenericKey(object);
         }
     }
 
@@ -131,7 +120,7 @@ public class ModHelpers {
         }
     }
 
-    public static @NotNull String getLoreTranslationKey(String translationKey) {
+    public static @NotNull String convertToLoreKey(String translationKey) {
         String loreKey;
         //Find the translation key for blocks.
         if (translationKey.contains("block.")) loreKey = translationKey.replaceFirst("block", "lore");
@@ -142,12 +131,10 @@ public class ModHelpers {
         return loreKey;
     }
 
-    public static @NotNull String getLoreTranslationKey(ItemStack stack) {
-        return getLoreTranslationKey(stack.getTranslationKey());
-    }
-
-    public static @NotNull String getLoreTranslationKey(Block block) {
-        return getLoreTranslationKey(block.getTranslationKey());
+    public static @NotNull String getLoreTranslationKey(Object object) {
+        if (object instanceof ItemStack stack) return convertToLoreKey(stack.getTranslationKey());
+        else if (object instanceof Block block) return convertToLoreKey(block.getTranslationKey());
+        else return "";
     }
 
     public static String translate(String key) {
