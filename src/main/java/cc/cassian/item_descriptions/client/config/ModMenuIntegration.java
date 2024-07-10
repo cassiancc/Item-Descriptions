@@ -4,7 +4,7 @@ import cc.cassian.item_descriptions.client.TooltipClient;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
-import static cc.cassian.item_descriptions.ModHelpers.clothConfigInstalled;
+import static cc.cassian.item_descriptions.client.helpers.ModHelpers.clothConfigInstalled;
 
 public class ModMenuIntegration implements ModMenuApi {
 

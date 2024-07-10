@@ -35,7 +35,9 @@ public class ModConfig {
     //Developer settings
     public boolean developer_showUntranslated = false;
     public boolean developer_dontTranslate = false;
-    public boolean developer_disableGenericKeys = false;
+    public boolean developer_disableGenericStringDescriptions = false;
+    public boolean developer_disableGenericTagDescriptions = false;
+
 
     public static void load() {
         if (!Files.exists(configPath())) {

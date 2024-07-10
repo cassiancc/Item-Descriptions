@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-import static cc.cassian.item_descriptions.ModHelpers.*;
+import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class WTHITPlugin implements IWailaPlugin, IBlockComponentProvider {
     public static final Identifier BLOCK_TOOLTIP = Identifier.of(TooltipClient.MOD_ID, "block_tooltip");

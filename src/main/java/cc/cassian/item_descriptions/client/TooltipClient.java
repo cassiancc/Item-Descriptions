@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.List;
 
-import static cc.cassian.item_descriptions.ModHelpers.*;
+import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class TooltipClient implements ClientModInitializer {
     public static final String MOD_ID = "item-descriptions";

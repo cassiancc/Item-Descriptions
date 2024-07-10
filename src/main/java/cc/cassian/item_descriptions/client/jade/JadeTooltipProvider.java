@@ -9,7 +9,7 @@ import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 import java.util.List;
 
-import static cc.cassian.item_descriptions.ModHelpers.*;
+import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public enum JadeTooltipProvider implements IBlockComponentProvider {
     INSTANCE;
