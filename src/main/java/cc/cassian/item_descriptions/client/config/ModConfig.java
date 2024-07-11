@@ -36,7 +36,7 @@ public class ModConfig {
     //Developer settings
     public boolean developer_showUntranslated = false;
     public boolean developer_dontTranslate = false;
-    public boolean developer_disableGenericStringDescriptions = false;
+    public boolean developer_disableGenericStringDescriptions = true;
     public boolean developer_disableGenericTagDescriptions = false;
 
 

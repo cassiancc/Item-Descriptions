@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
-import net.minecraft.registry.tag.ItemTags;
 import org.jetbrains.annotations.NotNull;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -125,7 +124,7 @@ public class GenericKeys {
         else if (checkVanillaTag(stack, "leg_armor")) return "lore.generic.leggings";
         else if (checkVanillaTag(stack, "foot_armor")) return "lore.generic.boots";
         else if (checkVanillaTag(stack, "decorated_pot_sherds")) return "lore.generic.sherd";
-        else if (checkVanillaTag(stack, "creeper_drop_music_disc")) return "lore.generic.music_disc";
+        else if (checkVanillaTag(stack, "creeper_drop_music_disc")) return "lore.generic.music_disc_creeper";
         else if (checkVanillaTag(stack, "chest_boats")) return "lore.generic.chest_boat";
         else if (checkVanillaTag(stack, "boats")) return "lore.generic.boat";
         else if (checkCommonTag(stack, "shulker_boxes")) return "lore.generic.shulker_box";
@@ -138,11 +137,12 @@ public class GenericKeys {
         else if (checkCommonTag(stack, "cobblestones")) return "lore.minecraft.cobblestone";
         else if (checkCommonTag(stack, "bookshelves")) return "lore.minecraft.bookshelf";
         else if (checkCommonTag(stack, "player_workstations/crafting_tables")) return "lore.generic.crafting_table";
-        else if (checkCommonTag(stack, "chests/wooden")) return "lore.minecraft.chest";
-        else if (checkCommonTag(stack, "barrels/wooden")) return "lore.minecraft.barrel";
+        else if (checkCommonTag(stack, "chests")) return "lore.minecraft.chest";
+        else if (checkCommonTag(stack, "barrels")) return "lore.minecraft.barrel";
         else if (checkCommonTag(stack, "chains")) return "lore.minecraft.chain";
         else if (checkCommonTag(stack, "ropes")) return "lore.generic.rope";
-        ItemTags.PRES;
+        else if (checkCommonTag(stack, "music_disc")) return "lore.generic.music_disc_common";
+
             //If no tag key matches, return empty so a string match can be found.
         else return "";
     }
