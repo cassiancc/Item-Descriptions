@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
+import net.minecraft.registry.tag.ItemTags;
 import org.jetbrains.annotations.NotNull;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -139,7 +140,10 @@ public class GenericKeys {
         else if (checkCommonTag(stack, "player_workstations/crafting_tables")) return "lore.generic.crafting_table";
         else if (checkCommonTag(stack, "chests/wooden")) return "lore.minecraft.chest";
         else if (checkCommonTag(stack, "barrels/wooden")) return "lore.minecraft.barrel";
-        //If no tag key matches, return empty so a string match can be found.
+        else if (checkCommonTag(stack, "chains")) return "lore.minecraft.chain";
+        else if (checkCommonTag(stack, "ropes")) return "lore.generic.rope";
+        ItemTags.PRES;
+            //If no tag key matches, return empty so a string match can be found.
         else return "";
     }
 
