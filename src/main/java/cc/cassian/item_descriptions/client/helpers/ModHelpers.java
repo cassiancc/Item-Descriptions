@@ -49,10 +49,10 @@ public class ModHelpers {
 
     public static boolean tooltipKeyPressed() {
         ModConfig config = ModConfig.get();
-        if (config.keybind_displayWhenControlIsHeld) return checkKey(Screen.hasControlDown());
-        if (config.keybind_displayWhenShiftIsHeld) return checkKey(Screen.hasShiftDown());
-        if (config.keybind_displayWhenAltIsHeld) return checkKey(Screen.hasAltDown());
-        return false;
+        if (config.keybind_displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
+        else if (config.keybind_displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
+        else if (config.keybind_displayWhenAltIsHeld && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
+        else return false;
     }
 
     @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
