@@ -18,7 +18,7 @@
   "config.item-descriptions.config.itemDescriptions": "Enable Item Descriptions.",
   "config.item-descriptions.config.itemDescriptions.tooltip": "The main feature of the mod, Item Descriptions are shown as tooltips below all items.",
   "config.item-descriptions.config.keybind_displayWhenAltIsHeld": "Show when the Alt key is held.",
-  "config.item-descriptions.config.keybind_displayWhenAltIsHeld.tooltip": "Display descriptions when the Shift key is held.",
+  "config.item-descriptions.config.keybind_displayWhenAltIsHeld.tooltip": "Display descriptions when the Alt key is held.",
   "config.item-descriptions.config.keybind_displayWhenControlIsHeld": "Show when the Control key is held.",
   "config.item-descriptions.config.keybind_displayWhenControlIsHeld.tooltip": "Display descriptions when the Control key is held.",
   "config.item-descriptions.config.keybind_displayWhenShiftIsHeld": "Show when the Shift key is held.",
