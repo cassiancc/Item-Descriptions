@@ -7,8 +7,8 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 
-import static cc.cassian.item_descriptions.client.TooltipClient.BLOCK_DESCRIPTIONS;
-import static cc.cassian.item_descriptions.client.TooltipClient.ENTITY_DESCRIPTIONS;
+import static cc.cassian.item_descriptions.client.ModClient.BLOCK_DESCRIPTIONS;
+import static cc.cassian.item_descriptions.client.ModClient.ENTITY_DESCRIPTIONS;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider {

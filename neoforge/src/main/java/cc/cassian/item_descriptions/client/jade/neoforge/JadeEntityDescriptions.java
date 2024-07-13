@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.jade.neoforge;
 
-import cc.cassian.item_descriptions.client.TooltipClient;
+import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import snownee.jade.api.*;
@@ -27,7 +27,7 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
 
     @Override
     public Identifier getUid() {
-        return TooltipClient.ENTITY_DESCRIPTIONS;
+        return ModClient.ENTITY_DESCRIPTIONS;
     }
 
 }

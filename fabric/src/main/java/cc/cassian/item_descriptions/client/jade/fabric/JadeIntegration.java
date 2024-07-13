@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.jade.fabric;
 
-import cc.cassian.item_descriptions.client.TooltipClient;
+import cc.cassian.item_descriptions.client.ModClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -17,9 +17,9 @@ public class JadeIntegration implements IWailaPlugin {
     @Environment(EnvType.CLIENT)
     public void registerClient(IWailaClientRegistration registration) {
         client = registration;
-        registration.markAsClientFeature(TooltipClient.BLOCK_DESCRIPTIONS);
+        registration.markAsClientFeature(ModClient.BLOCK_DESCRIPTIONS);
         registration.registerBlockComponent(JadeBlockDescriptions.INSTANCE, Block.class);
-        registration.markAsClientFeature(TooltipClient.ENTITY_DESCRIPTIONS);
+        registration.markAsClientFeature(ModClient.ENTITY_DESCRIPTIONS);
         registration.registerEntityComponent(JadeEntityDescriptions.INSTANCE, Entity.class);
 
     }

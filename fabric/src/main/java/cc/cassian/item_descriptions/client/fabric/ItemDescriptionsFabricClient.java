@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.fabric;
 
-import cc.cassian.item_descriptions.client.TooltipClient;
+import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -15,7 +15,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
     public void onInitializeClient() {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
         ModConfig.load();
-        TooltipClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
+        ModClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
         ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
             //Only show tooltip if key is pressed or "always on" is enabled.
             if (showItemDescriptions()) {

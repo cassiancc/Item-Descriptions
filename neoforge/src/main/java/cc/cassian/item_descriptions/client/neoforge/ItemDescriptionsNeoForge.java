@@ -13,7 +13,7 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 import java.util.List;
 
-import static cc.cassian.item_descriptions.client.TooltipClient.*;
+import static cc.cassian.item_descriptions.client.ModClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 @Mod(MOD_ID_NEO)

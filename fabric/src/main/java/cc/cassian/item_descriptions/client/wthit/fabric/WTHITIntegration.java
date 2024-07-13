@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.wthit.fabric;
 
-import cc.cassian.item_descriptions.client.TooltipClient;
+import cc.cassian.item_descriptions.client.ModClient;
 import mcp.mobius.waila.api.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,8 +14,8 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
 
     @Override
     public void register(IRegistrar registrar) {
-        registrar.addConfig( TooltipClient.BLOCK_DESCRIPTIONS, true );
-        registrar.addConfig( TooltipClient.ENTITY_DESCRIPTIONS, true );
+        registrar.addConfig( ModClient.BLOCK_DESCRIPTIONS, true );
+        registrar.addConfig( ModClient.ENTITY_DESCRIPTIONS, true );
         registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.BODY, Block.class, 2000 );
         registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, Entity.class, 2000 );
 
