@@ -69,7 +69,10 @@ public class ModHelpers {
     public static String findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         if (stack.getComponents().contains(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            return getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
+            String modelKey = getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
+            if (hasTranslation(modelKey)) {
+                return modelKey;
+            }
         }
         //Ensure player heads with Profile components get a custom key instead of a vanilla one.
         else if (stack.getComponents().contains(DataComponentTypes.PROFILE)) {
@@ -78,9 +81,6 @@ public class ModHelpers {
                 String profileKey =  getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
                 if (hasTranslation(profileKey)) {
                     return profileKey;
-                }
-                else {
-                    return checkLoreKey(getLoreKey(stack));
                 }
             }
         }
