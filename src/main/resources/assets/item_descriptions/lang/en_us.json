@@ -497,7 +497,7 @@
   "lore.minecraft.netherite_stairs": "This strange, rare block is incredibly tough.",
   "lore.minecraft.netherrack": "This block will burn forever if set alight.",
   "lore.minecraft.note_block": "This block plays a note when triggered. Hit it to change the pitch of the note. Placing this on top of different blocks will change the type of instrument.",
-  "lore.minecraft.observer": "Emits a Redstone Signal when adjacent blocks are updated.",
+  "lore.minecraft.observer": "This block emits a Redstone Signal when adjacent blocks are updated.",
   "lore.minecraft.obsidian": "Mixing Lava with Water gets you this tough, blast resistant block. It's a key ingredient in Nether Portals and Enchanting Tables.",
   "lore.minecraft.ochre_froglight": "A bright yellowish light source somehow obtained from a Frog eating a Magma Cube.",
   "lore.minecraft.ominous_bottle": "This strange potion will give you the Bad Omen effect.",

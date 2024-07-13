@@ -9,17 +9,18 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
@@ -70,12 +71,29 @@ public class ModHelpers {
         if (stack.getComponents().contains(DataComponentTypes.CUSTOM_MODEL_DATA)) {
             return getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
         }
+        //Ensure player heads with Profile components get a custom key instead of a vanilla one.
+        else if (stack.getComponents().contains(DataComponentTypes.PROFILE)) {
+            Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
+            if (optionalProfileName.isPresent()) {
+                return getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
+            }
+        }
         //Find the tooltip translation key for the provided item stack.
         return checkLoreKey(getLoreKey(stack));
     }
 
+    public static String getProfileName(Optional<String> optionalProfileName) {
+        String profileName;
+        if (optionalProfileName.isPresent()) {
+            profileName = optionalProfileName.get();
+            return profileName;
+        }
+        else {
+            return "";
+        }
+    }
+
     public static String findBlockLoreKey(Block block) {
-        //Find the tooltip translation key for the provided block.
         return checkLoreKey(getLoreKey(block));
     }
 
