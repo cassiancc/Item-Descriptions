@@ -75,7 +75,13 @@ public class ModHelpers {
         else if (stack.getComponents().contains(DataComponentTypes.PROFILE)) {
             Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
             if (optionalProfileName.isPresent()) {
-                return getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
+                String profileKey =  getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
+                if (hasTranslation(profileKey)) {
+                    return profileKey;
+                }
+                else {
+                    return checkLoreKey(getLoreKey(stack));
+                }
             }
         }
         //Find the tooltip translation key for the provided item stack.
