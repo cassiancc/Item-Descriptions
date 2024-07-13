@@ -119,12 +119,19 @@ public class ModHelpers {
     }
 
     public static String getProfile(BlockEntity blockEntity, String loreKey) {
-        Optional<String> optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
+        Optional<String> optionalProfileName;
+        try {
+             optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
+
+        }
+        catch (NullPointerException nullPointerException) {
+            return loreKey;
+        }
         String profileKey = loreKey + ".profile." + getProfileName(optionalProfileName);
         if (hasTranslation(profileKey)) {
             return profileKey;
         }
-        else return "";
+        else return loreKey;
     }
 
     public static boolean showBlockDescriptions() {
