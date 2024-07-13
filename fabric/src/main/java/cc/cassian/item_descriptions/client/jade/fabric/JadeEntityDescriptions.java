@@ -27,6 +27,6 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
 
     @Override
     public Identifier getUid() {
-        return TooltipClient.BLOCK_DESCRIPTIONS;
+        return TooltipClient.ENTITY_DESCRIPTIONS;
     }
 }
