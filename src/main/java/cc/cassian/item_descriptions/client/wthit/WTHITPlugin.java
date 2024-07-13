@@ -1,16 +1,12 @@
 package cc.cassian.item_descriptions.client.wthit;
 
 import cc.cassian.item_descriptions.client.TooltipClient;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import mcp.mobius.waila.api.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -26,22 +22,8 @@ public class WTHITPlugin implements IWailaPlugin, IBlockComponentProvider {
     @Override
     public void appendBody(ITooltip lines, IBlockAccessor blockAccessor, IPluginConfig config) {
         //Check if block descriptions are enabled in mod config.
-        if (ModConfig.get().blockDescriptions && (tooltipKeyPressed() || ModConfig.get().displayBlockDescriptionsAlways)) {
-            //Convert block translation key to lore translation key.
-            String loreKey = findBlockLoreKey(blockAccessor.getBlock());
-            //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
-            if (!hasTranslation(loreKey)) {
-                loreKey = findItemLoreKey(blockAccessor.getBlock().getPickStack(blockAccessor.getWorld(), blockAccessor.getPosition(), blockAccessor.getBlockState()));
-            }
-            if (blockAccessor.getBlockEntity() instanceof SkullBlockEntity) {
-                Optional<String> optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockAccessor.getBlockEntity()).getOwner()).name();
-                String profileKey = loreKey + ".profile." + getProfileName(optionalProfileName);
-                if (hasTranslation(profileKey)) {
-                    loreKey = profileKey;
-                }
-            }
-            //Create and add tooltip.
-            List<Text> tooltip = createTooltip(loreKey, true);
+        if (showBlockDescriptions()) {
+            List<Text> tooltip = createTooltip(getBlockAccessorLoreKey(blockAccessor.getBlock(), blockAccessor.getWorld(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()), true);
             for (Text text : tooltip) {
                 lines.addLine(text);
             }

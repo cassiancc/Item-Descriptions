@@ -6,18 +6,20 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -68,24 +70,65 @@ public class ModHelpers {
 
     public static String findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
-        if (stack.getComponents().contains(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+        if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
             String modelKey = getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
             if (hasTranslation(modelKey)) {
                 return modelKey;
             }
         }
         //Ensure player heads with Profile components get a custom key instead of a vanilla one.
-        else if (stack.getComponents().contains(DataComponentTypes.PROFILE)) {
-            Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
-            if (optionalProfileName.isPresent()) {
-                String profileKey =  getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
-                if (hasTranslation(profileKey)) {
-                    return profileKey;
-                }
+        else if (hasComponent(stack, DataComponentTypes.PROFILE)) {
+            String profileKey = getProfile(stack);
+            if (hasTranslation(profileKey)) {
+                return profileKey;
             }
         }
         //Find the tooltip translation key for the provided item stack.
         return checkLoreKey(getLoreKey(stack));
+    }
+
+    public static String getBlockAccessorLoreKey(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+        //Convert block translation key to lore translation key.
+        String loreKey = findBlockLoreKey(block);
+        //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
+        if (blockEntity instanceof SkullBlockEntity) {
+            String profileKey = getProfile(blockEntity, loreKey);
+            if (hasTranslation(profileKey)) {
+                return profileKey;
+            }
+        }
+        if (!hasTranslation(loreKey)) {
+            return findItemLoreKey(block.getPickStack(world, pos, state));
+        }
+        return loreKey;
+    }
+
+    public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
+        return stack.getComponents().contains(type);
+    }
+
+    public static String getProfile(ItemStack stack) {
+        Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
+        if (optionalProfileName.isPresent()) {
+            String profileKey = getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
+            if (hasTranslation(profileKey)) {
+                return profileKey;
+            }
+        }
+        return "";
+    }
+
+    public static String getProfile(BlockEntity blockEntity, String loreKey) {
+        Optional<String> optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
+        String profileKey = loreKey + ".profile." + getProfileName(optionalProfileName);
+        if (hasTranslation(profileKey)) {
+            return profileKey;
+        }
+        else return "";
+    }
+
+    public static boolean showBlockDescriptions() {
+        return ModConfig.get().blockDescriptions && (tooltipKeyPressed() || ModConfig.get().displayBlockDescriptionsAlways);
     }
 
     public static String getProfileName(Optional<String> optionalProfileName) {
