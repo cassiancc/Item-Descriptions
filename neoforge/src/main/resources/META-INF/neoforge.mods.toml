@@ -18,11 +18,18 @@ modId = "neoforge"
 type = "required"
 versionRange = "[21.0,)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
 
 [[dependencies.item_descriptions]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21,)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
+
+[[dependencies.item_descriptions]]
+modId = "cloth_config"
+type = "required"
+versionRange = "*"
+ordering = "NONE"
+side = "CLIENT"

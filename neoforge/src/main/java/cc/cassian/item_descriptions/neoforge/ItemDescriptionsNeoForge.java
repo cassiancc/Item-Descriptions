@@ -3,11 +3,15 @@ package cc.cassian.item_descriptions.neoforge;
 import cc.cassian.item_descriptions.client.TooltipClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.text.Text;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.moddiscovery.ModInfo;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
@@ -22,6 +26,7 @@ public final class ItemDescriptionsNeoForge {
         ModConfig.load();
         TooltipClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
         NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
+        registerModsPage();
 
     }
 
@@ -34,5 +39,8 @@ public final class ItemDescriptionsNeoForge {
             event.getToolTip().addAll(tooltip);
 
         }
+    }
+    public void registerModsPage() {
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, ModConfigFactory::new);
     }
 }

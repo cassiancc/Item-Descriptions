@@ -5,6 +5,6 @@ public class ModHelpersImpl {
         return true;
     }
     public static boolean tooltipFixInstalled() {
-        return true;
+        return false;
     }
 }
