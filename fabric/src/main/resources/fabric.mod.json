@@ -20,7 +20,10 @@
       "cc.cassian.item_descriptions.fabric.client.ItemDescriptionsFabricClient"
     ],
     "modmenu": [
-      "cc.cassian.item_descriptions.client.config.ModMenuIntegration"
+      "cc.cassian.item_descriptions.fabric.client.ModMenuIntegration"
+    ],
+    "jade": [
+      "cc.cassian.item_descriptions.fabric.client.jade.JadeIntegration"
     ]
   },
   "depends": {
