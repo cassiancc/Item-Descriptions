@@ -16,7 +16,7 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
     @Override
     public void appendTooltip(ITooltip lines, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         //Check if block descriptions are enabled in mod config.
-        if (showBlockDescriptions()) {
+        if (showEntityDescriptions()) {
             //Create and add tooltip.
             List<Text> tooltip = createTooltip(getEntityAccessorLoreKey(entityAccessor.getEntity()), true);
             for (Text text : tooltip) {
