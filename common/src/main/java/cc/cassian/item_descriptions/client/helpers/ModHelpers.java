@@ -150,7 +150,7 @@ public class ModHelpers {
     }
 
     public static boolean showEntityDescriptions() {
-        return config.developer_entityDescriptions && (tooltipKeyPressed() || config.displayAlways);
+        return config.entityDescriptions && (tooltipKeyPressed() || config.displayEntityDescriptionsAlways);
     }
 
     public static String getProfileName(Optional<String> optionalProfileName) {

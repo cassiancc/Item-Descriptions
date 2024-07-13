@@ -30,6 +30,7 @@ public class ModConfigFactory implements IConfigScreenFactory {
         final var generalCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.title"));
         final var keyBindsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.keybinds_title"));
         final var blockCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.block_descriptions_title"));
+        final var entityCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.entity_descriptions_title"));
         final var developerCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.developer_options_title"));
 
 
@@ -40,6 +41,9 @@ public class ModConfigFactory implements IConfigScreenFactory {
             }
             else if (field.getName().toLowerCase().contains("block")) {
                 category = blockCategory;
+            }
+            else if (field.getName().toLowerCase().contains("entity")) {
+                category = entityCategory;
             }
             else if (field.getName().toLowerCase().contains("developer")) {
                 category = developerCategory;
