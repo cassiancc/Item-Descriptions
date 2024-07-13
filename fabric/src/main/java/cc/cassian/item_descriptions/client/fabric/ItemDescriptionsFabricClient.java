@@ -18,7 +18,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         TooltipClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
         ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
             //Only show tooltip if key is pressed or "always on" is enabled.
-            if (ModConfig.get().itemDescriptions && (tooltipKeyPressed() || ModConfig.get().displayAlways)) {
+            if (showItemDescriptions()) {
                 //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
                 List<Text> tooltip = createTooltip(findItemLoreKey(stack), !tooltipFixInstalled());
                 lines.addAll(tooltip);

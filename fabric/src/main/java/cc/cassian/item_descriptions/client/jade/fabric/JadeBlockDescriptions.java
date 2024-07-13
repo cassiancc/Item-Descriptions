@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.jade.fabric;
 
+import cc.cassian.item_descriptions.client.TooltipClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import snownee.jade.api.BlockAccessor;
@@ -10,7 +11,7 @@ import java.util.List;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-public enum JadeTooltipProvider implements IBlockComponentProvider {
+public enum JadeBlockDescriptions implements IBlockComponentProvider {
     INSTANCE;
 
     @Override
@@ -27,6 +28,6 @@ public enum JadeTooltipProvider implements IBlockComponentProvider {
 
     @Override
     public Identifier getUid() {
-        return JadeIntegration.BLOCK_TOOLTIP;
+        return TooltipClient.BLOCK_DESCRIPTIONS;
     }
 }

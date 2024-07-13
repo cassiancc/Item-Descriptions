@@ -36,6 +36,7 @@
     "modmenu": "*"
   },
   "suggests": {
-    "tooltipfix": "*"
+    "tooltipfix": "*",
+    "jade": "*"
   }
 }

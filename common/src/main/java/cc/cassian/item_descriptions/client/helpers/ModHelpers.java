@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -25,6 +26,9 @@ import java.util.*;
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
 public class ModHelpers {
+    public static final ModConfig config = ModConfig.get();
+
+
     @ExpectPlatform
     public static boolean clothConfigInstalled() {
         throw new AssertionError();
@@ -35,7 +39,7 @@ public class ModHelpers {
     }
 
     public static Formatting getColor() {
-        return Formatting.byCode(ModConfig.get().tooltipColor.charAt(0));
+        return Formatting.byCode(config.tooltipColor.charAt(0));
     }
 
     public static int getIndex(String translatedKey, int maxLength) {
@@ -50,7 +54,6 @@ public class ModHelpers {
     }
 
     public static boolean tooltipKeyPressed() {
-        ModConfig config = ModConfig.get();
         if (config.keybind_displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
         else if (config.keybind_displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
         else if (config.keybind_displayWhenAltIsHeld && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
@@ -59,7 +62,7 @@ public class ModHelpers {
 
     @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
     public static boolean checkKey(boolean key) {
-        boolean invert = ModConfig.get().keybind_invert;
+        boolean invert = config.keybind_invert;
         //If key is pressed, display the tooltip unless inverted.
         if (key) return !invert;
         //If key is not pressed, don't display the tooltip unless inverted.
@@ -102,6 +105,11 @@ public class ModHelpers {
         return loreKey;
     }
 
+    public static String getEntityAccessorLoreKey(Entity entity) {
+        //Convert block translation key to lore translation key.
+        return findEntityLoreKey(entity);
+    }
+
     public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
         return stack.getComponents().contains(type);
     }
@@ -134,7 +142,15 @@ public class ModHelpers {
     }
 
     public static boolean showBlockDescriptions() {
-        return ModConfig.get().blockDescriptions && (tooltipKeyPressed() || ModConfig.get().displayBlockDescriptionsAlways);
+        return config.blockDescriptions && (tooltipKeyPressed() || config.displayBlockDescriptionsAlways);
+    }
+
+    public static boolean showItemDescriptions() {
+        return config.itemDescriptions && (tooltipKeyPressed() || config.displayAlways);
+    }
+
+    public static boolean showEntityDescriptions() {
+        return config.developer_entityDescriptions && (tooltipKeyPressed() || config.displayAlways);
     }
 
     public static String getProfileName(Optional<String> optionalProfileName) {
@@ -152,9 +168,14 @@ public class ModHelpers {
         return checkLoreKey(getLoreKey(block));
     }
 
+    public static String findEntityLoreKey(Entity entity) {
+        return checkLoreKey(getLoreKey(entity));
+    }
+
+
     public static String checkLoreKey(String loreKey) {
         //This function handles whether a generic tooltip should be used, or if a tooltip exists.
-        if (!ModConfig.get().developer_dontTranslate) {
+        if (!config.developer_dontTranslate) {
             //Check if the tooltip translation key exists. If so, use the provided tooltip.
             if (hasTranslation(loreKey)) return loreKey;
             //If the tooltip translation key does not exist, use one of the provided generic tooltips.
@@ -199,31 +220,56 @@ public class ModHelpers {
         if (translationKey.contains("block.")) loreKey = translationKey.replaceFirst("block", "lore");
         //Find the translation key for items.
         else if ((translationKey.contains("item."))) loreKey = translationKey.replaceFirst("item", "lore");
-        //In case the translation key somehow does not contain a block/item.
+        //Find the translation key for entities.
+        else if ((translationKey.contains("entity."))) {
+            //Entity descriptions use a different format as to avoiding colliding with items of the same name.
+            String oldKey = translationKey.replaceFirst("entity", "lore");
+            String newKey = translationKey + ".description";
+            if (newKey.contains("tropical_fish")) {
+                newKey = "entity.minecraft.tropical_fish";
+            }
+            //In case an entity tooltip is misregistered, try checking for an "old style" key.
+            if (hasTranslation(newKey)) return newKey;
+            else if (hasTranslation(oldKey)) return oldKey;
+            else return newKey;
+        }
+        //In case the translation key somehow does not contain a block/item/entity.
         else loreKey = translationKey;
         return loreKey;
     }
 
     public static @NotNull String getLoreTranslationKey(Object object) {
-        if (object instanceof ItemStack stack) return convertToLoreKey(stack.getTranslationKey());
-        else if (object instanceof Block block) return convertToLoreKey(block.getTranslationKey());
-        else return "";
+        return switch (object) {
+            case ItemStack stack -> convertToLoreKey(stack.getTranslationKey());
+            case Block block -> convertToLoreKey(block.getTranslationKey());
+            case Entity entity -> convertToLoreKey(getEntityTranslationKey(entity));
+            case null, default -> "";
+        };
+    }
+
+    public static String getEntityTranslationKey(Entity entity) {
+        String translatedString = String.valueOf(entity.getName());
+        translatedString = translatedString.substring(translatedString.indexOf("{"));
+        translatedString = translatedString.substring(translatedString.indexOf("'")+1);
+        translatedString = translatedString.substring(0, translatedString.indexOf("'"));
+
+        return translatedString;
     }
 
     public static String translate(String key) {
-        if (!ModConfig.get().developer_dontTranslate) return I18n.translate(key);
+        if (!config.developer_dontTranslate) return I18n.translate(key);
         else return key;
     }
 
     public static boolean hasTranslation(String key) {
-        if (!ModConfig.get().developer_showUntranslated) return I18n.hasTranslation(key);
+        if (!config.developer_showUntranslated) return I18n.hasTranslation(key);
         else return true;
     }
 
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
-        int maxLength = ModConfig.get().maxTooltipLength;
+        int maxLength = config.maxTooltipLength;
         //Check if the key exists.
         if (!loreKey.isEmpty()) {
             //Translate the lore key.

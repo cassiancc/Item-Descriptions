@@ -1,11 +1,9 @@
 package cc.cassian.item_descriptions.client.neoforge;
 
-import cc.cassian.item_descriptions.client.TooltipClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
 import net.minecraft.text.Text;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 
@@ -15,14 +13,15 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 import java.util.List;
 
+import static cc.cassian.item_descriptions.client.TooltipClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-@Mod("item_descriptions")
+@Mod(MOD_ID_NEO)
 public final class ItemDescriptionsNeoForge {
-    public ItemDescriptionsNeoForge(ModContainer container) {
+    public ItemDescriptionsNeoForge() {
         // Run our common setup.
         ModConfig.load();
-        TooltipClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
+        LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
         NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
         registerModsPage();
 
@@ -31,11 +30,10 @@ public final class ItemDescriptionsNeoForge {
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
         //Only show tooltip if key is pressed or "always on" is enabled.
-        if (ModConfig.get().itemDescriptions && (tooltipKeyPressed() || ModConfig.get().displayAlways)) {
+        if (showItemDescriptions()) {
             //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
             List<Text> tooltip = createTooltip(findItemLoreKey(event.getItemStack()), !tooltipFixInstalled());
             event.getToolTip().addAll(tooltip);
-
         }
     }
     public void registerModsPage() {

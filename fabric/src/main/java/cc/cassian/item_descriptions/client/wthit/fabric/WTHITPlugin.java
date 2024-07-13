@@ -11,11 +11,10 @@ import java.util.List;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class WTHITPlugin implements IWailaPlugin, IBlockComponentProvider {
-    public static final Identifier BLOCK_TOOLTIP = Identifier.of(TooltipClient.MOD_ID, "block_tooltip");
 
     @Override
     public void register(IRegistrar registrar) {
-        registrar.addConfig( BLOCK_TOOLTIP, true );
+        registrar.addConfig( TooltipClient.BLOCK_DESCRIPTIONS, true );
         registrar.addComponent( this, TooltipPosition.BODY, Block.class, 2000 );
     }
 

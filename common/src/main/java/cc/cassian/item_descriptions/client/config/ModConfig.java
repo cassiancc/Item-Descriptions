@@ -39,6 +39,7 @@ public class ModConfig {
     public boolean developer_dontTranslate = false;
     public boolean developer_disableGenericStringDescriptions = true;
     public boolean developer_disableGenericTagDescriptions = false;
+    public boolean developer_entityDescriptions = false;
 
 
     public static void load() {
