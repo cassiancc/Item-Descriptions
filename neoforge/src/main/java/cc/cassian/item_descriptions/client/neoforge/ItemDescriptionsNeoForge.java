@@ -1,16 +1,14 @@
-package cc.cassian.item_descriptions.neoforge;
+package cc.cassian.item_descriptions.client.neoforge;
 
 import cc.cassian.item_descriptions.client.TooltipClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
+import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
 import net.minecraft.text.Text;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.fml.loading.moddiscovery.ModInfo;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;

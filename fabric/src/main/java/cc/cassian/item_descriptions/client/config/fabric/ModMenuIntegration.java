@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.fabric.client;
+package cc.cassian.item_descriptions.client.config.fabric;
 
 import cc.cassian.item_descriptions.client.TooltipClient;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;

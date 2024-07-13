@@ -1,26 +1,24 @@
-package cc.cassian.item_descriptions.neoforge;
+package cc.cassian.item_descriptions.client.config.fabric;
 
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
-import static cc.cassian.item_descriptions.client.helpers.ModHelpers.createTooltip;
+import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-public class ModConfigFactory implements IConfigScreenFactory {
+public class ModConfigFactory implements ConfigScreenFactory<Screen> {
 
     private static final ModConfig DEFAULT_VALUES = new ModConfig();
 
     @Override
-    public @NotNull Screen createScreen(@NotNull MinecraftClient arg, @NotNull Screen parent) {
+    public Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
                 .setTitle(Text.translatable("config.item-descriptions.title"));
@@ -97,6 +95,4 @@ public class ModConfigFactory implements IConfigScreenFactory {
             }
         };
     }
-
-
 }

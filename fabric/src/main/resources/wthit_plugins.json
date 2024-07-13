@@ -1,0 +1,6 @@
+{
+  "item-descriptions:block_descriptions": {
+    "initializer": "cc.cassian.item_descriptions.client.wthit.fabric.WTHITPlugin",
+    "side": "client"
+  }
+}

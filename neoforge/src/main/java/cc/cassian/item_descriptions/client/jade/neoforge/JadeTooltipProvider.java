@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.fabric.client.jade;
+package cc.cassian.item_descriptions.client.jade.neoforge;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -6,6 +6,7 @@ import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
+
 import java.util.List;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;

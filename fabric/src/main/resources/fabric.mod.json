@@ -17,13 +17,13 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "cc.cassian.item_descriptions.fabric.client.ItemDescriptionsFabricClient"
+      "cc.cassian.item_descriptions.client.fabric.ItemDescriptionsFabricClient"
     ],
     "modmenu": [
-      "cc.cassian.item_descriptions.fabric.client.ModMenuIntegration"
+      "cc.cassian.item_descriptions.client.config.fabric.ModMenuIntegration"
     ],
     "jade": [
-      "cc.cassian.item_descriptions.fabric.client.jade.JadeIntegration"
+      "cc.cassian.item_descriptions.client.jade.fabric.JadeIntegration"
     ]
   },
   "depends": {

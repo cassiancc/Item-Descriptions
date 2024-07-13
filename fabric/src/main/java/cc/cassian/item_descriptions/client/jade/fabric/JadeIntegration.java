@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.fabric.client.jade;
+package cc.cassian.item_descriptions.client.jade.fabric;
 
 import cc.cassian.item_descriptions.client.TooltipClient;
 import net.fabricmc.api.EnvType;

@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.fabric.client.wthit;
+package cc.cassian.item_descriptions.client.wthit.fabric;
 
 import cc.cassian.item_descriptions.client.TooltipClient;
 import mcp.mobius.waila.api.*;
