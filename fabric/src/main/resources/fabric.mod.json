@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "item-descriptions",
+  "version": "${version}",
+  "name": "Item Descriptions",
+  "description": "This mod adds unique descriptions to every Minecraft item that can be seen when the Control key is pressed.",
+  "authors": [
+    "cassiancc"
+  ],
+  "contact": {
+    "repo": "https://github.com/cassiancc/Item-Descriptions",
+    "issues": "https://github.com/cassiancc/Item-Descriptions/issues",
+    "homepage": "https://github.com/cassiancc/Item-Descriptions"
+  },
+  "license": "MIT",
+  "icon": "assets/item-descriptions/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "cc.cassian.item_descriptions.fabric.client.ItemDescriptionsFabricClient"
+    ],
+    "modmenu": [
+      "cc.cassian.item_descriptions.client.config.ModMenuIntegration"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.7",
+    "minecraft": ">=1.20.5",
+    "fabric-api": "*"
+  },
+  "recommends": {
+    "cloth-config": "*",
+    "modmenu": "*"
+  },
+  "suggests": {
+    "tooltipfix": "*"
+  }
+}

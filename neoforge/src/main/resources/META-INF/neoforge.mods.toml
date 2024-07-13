@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "item_descriptions"
+version = "${version}"
+displayName = "Item Descriptions"
+authors = "cassiancc"
+description = '''
+This mod adds unique descriptions to every Minecraft item that can be seen when the Control key is pressed.
+'''
+#logoFile = ""
+
+[[dependencies.item_descriptions]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.item_descriptions]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
