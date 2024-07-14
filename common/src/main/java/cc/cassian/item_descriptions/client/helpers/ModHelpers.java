@@ -21,7 +21,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.Consumer;
 
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
@@ -293,5 +295,33 @@ public class ModHelpers {
             }
         }
         return lines;
+    }
+
+
+    public static Text fieldName(Field field) {
+        return Text.translatable("config.item-descriptions.config." + field.getName());
+    }
+    public static Text[] fieldTooltip(Field field) {
+        String tooltipKey = "config.item-descriptions.config." + field.getName() + ".tooltip";
+        return createTooltip(tooltipKey, true).toArray(new Text[0]);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T fieldGet(Object instance, Field field) {
+        try {
+            return (T) field.get(instance);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> Consumer<T> fieldSetter(Object instance, Field field) {
+        return t -> {
+            try {
+                field.set(instance, t);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        };
     }
 }

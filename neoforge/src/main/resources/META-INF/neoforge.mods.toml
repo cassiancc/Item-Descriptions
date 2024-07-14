@@ -1,6 +1,5 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
-#issueTrackerURL = ""
 license = "MIT"
 
 [[mods]]
@@ -11,7 +10,11 @@ authors = "cassiancc"
 description = '''
 This mod adds unique descriptions to every Minecraft item that can be seen when the Control key is pressed.
 '''
-#logoFile = ""
+logoFile = "assets/item_descriptions/icon.png"
+issueTrackerURL = "https://github.com/cassiancc/Item-Descriptions/issues"
+displayURL="https://github.com/cassiancc/Item-Descriptions/wiki"
+modURL="https://github.com/cassiancc/Item-Descriptions/wiki"
+
 
 [[dependencies.item_descriptions]]
 modId = "neoforge"
