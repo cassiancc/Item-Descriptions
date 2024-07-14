@@ -19,14 +19,17 @@ import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 @Mod(MOD_ID_NEO)
 public final class ItemDescriptionsNeoForge {
     public ItemDescriptionsNeoForge() {
-        // Run our common setup.
+        // Load config.
         ModConfig.load();
         LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
+        //Add Tooltips
         NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
+        //Register config screen.
         registerModsPage();
 
     }
 
+    //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
         //Only show tooltip if key is pressed or "always on" is enabled.
@@ -36,6 +39,8 @@ public final class ItemDescriptionsNeoForge {
             event.getToolTip().addAll(tooltip);
         }
     }
+
+    //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.
     public void registerModsPage() {
         if (clothConfigInstalled()) ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, ModConfigFactory::new);
     }

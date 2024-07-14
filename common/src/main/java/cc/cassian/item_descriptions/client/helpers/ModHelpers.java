@@ -25,25 +25,31 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
 public class ModHelpers {
+    //Shorthand for config.
     public static final ModConfig config = ModConfig.get();
 
-
+    //Check if Cloth Config is installed and its configuration can be used.
     @ExpectPlatform
     public static boolean clothConfigInstalled() {
         throw new AssertionError();
     }
+
+    //Check if ToolTipFix is installed and its wrapper should be used.
     @ExpectPlatform
     public static boolean tooltipFixInstalled() {
         throw new AssertionError();
     }
 
+    //Used in Config to change the tooltip's colour based off a Minecraft Colour Code.
     public static Formatting getColor() {
         return Formatting.byCode(config.tooltipColor.charAt(0));
     }
 
+    //Handles detection of when a line break should be added in a tooltip.
     public static int getIndex(String translatedKey, int maxLength) {
         String subKey = translatedKey.substring(0, maxLength);
         int index;
@@ -55,6 +61,7 @@ public class ModHelpers {
         return index;
     }
 
+    //Check if a keybind is pressed and a tooltip should be displayed.
     public static boolean tooltipKeyPressed() {
         if (config.keybind_displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
         else if (config.keybind_displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
@@ -62,6 +69,7 @@ public class ModHelpers {
         else return false;
     }
 
+    //Check if a keybind is pressed. Contains the handling for if the key is inverted.
     @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
     public static boolean checkKey(boolean key) {
         boolean invert = config.keybind_invert;
@@ -72,6 +80,7 @@ public class ModHelpers {
         else return false;
     }
 
+    //Create an item's lore key based off data from its Item Stack.
     public static String findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
@@ -91,31 +100,31 @@ public class ModHelpers {
         return checkLoreKey(getLoreKey(stack));
     }
 
+    //Create a block's lore key based off data from WAILA-based Block Accessors like Jade/WTHIT/HYWLA.
     public static String getBlockAccessorLoreKey(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         String loreKey = findBlockLoreKey(block);
-        //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
+        //Custom handling of Player Heads so custom profiles give custom descriptions.
         if (blockEntity instanceof SkullBlockEntity) {
             String profileKey = getProfile(blockEntity, loreKey);
+            //Only show custom descriptions if a translation is present.
             if (hasTranslation(profileKey)) {
                 return profileKey;
             }
         }
+        //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!hasTranslation(loreKey)) {
             return findItemLoreKey(block.getPickStack(world, pos, state));
         }
         return loreKey;
     }
 
-    public static String getEntityAccessorLoreKey(Entity entity) {
-        //Convert block translation key to lore translation key.
-        return findEntityLoreKey(entity);
-    }
-
+    //Check if an Item Stack has a particular component.
     public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
         return stack.getComponents().contains(type);
     }
 
+    //Find a profile name in a Player Head Item Stack.
     public static String getProfile(ItemStack stack) {
         Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
         if (optionalProfileName.isPresent()) {
@@ -127,6 +136,7 @@ public class ModHelpers {
         return "";
     }
 
+    //Find a profile name in a Player Head block.
     public static String getProfile(BlockEntity blockEntity, String loreKey) {
         Optional<String> optionalProfileName;
         try {
@@ -143,18 +153,21 @@ public class ModHelpers {
         else return loreKey;
     }
 
+    //Check if block descriptions should be shown based off configuration.
     public static boolean showBlockDescriptions() {
         return config.blockDescriptions && (tooltipKeyPressed() || config.displayBlockDescriptionsAlways);
     }
 
+    //Check if item descriptions should be shown based off configuration.
     public static boolean showItemDescriptions() {
         return config.itemDescriptions && (tooltipKeyPressed() || config.displayAlways);
     }
-
+    //Check if entity descriptions should be shown based off configuration.
     public static boolean showEntityDescriptions() {
         return config.entityDescriptions && (tooltipKeyPressed() || config.displayEntityDescriptionsAlways);
     }
 
+    //Find a profile name
     public static String getProfileName(Optional<String> optionalProfileName) {
         String profileName;
         if (optionalProfileName.isPresent()) {
@@ -166,15 +179,17 @@ public class ModHelpers {
         }
     }
 
+    //Shorthand to check a block's lore key.
     public static String findBlockLoreKey(Block block) {
         return checkLoreKey(getLoreKey(block));
     }
 
+    //Shorthand to check an entity's lore key.
     public static String findEntityLoreKey(Entity entity) {
         return checkLoreKey(getLoreKey(entity));
     }
 
-
+    //Check if a lore key exists or if a generic tooltip should be used.
     public static String checkLoreKey(String loreKey) {
         //This function handles whether a generic tooltip should be used, or if a tooltip exists.
         if (!config.developer_dontTranslate) {
@@ -186,6 +201,7 @@ public class ModHelpers {
         else return loreKey;
     }
 
+    //Check if a tag exists, or if a generic one should be used.
     private static @NotNull String getLoreKey(Object object) {
         @NotNull String key = getLoreTranslationKey(object);
         if (hasTranslation(key)) {
@@ -196,14 +212,17 @@ public class ModHelpers {
         }
     }
 
+    //Check if a block or item is in a common tag - helper for checkNamespacedTag.
     public static boolean checkCommonTag(Object object, String tag) {
         return checkNamespacedTag("c", object, tag);
     }
 
+    //Check if a block or item is in a vanilla tag - helper for checkNamespacedTag.
     public static boolean checkVanillaTag(Object object, String tag) {
         return checkNamespacedTag("minecraft", object, tag);
     }
 
+    //Check if a block or item is in a particular tag.
     public static boolean checkNamespacedTag(String namespace, Object object, String tag) {
         if (object instanceof ItemStack stack) {
             return stack.isIn(TagKey.of(RegistryKeys.ITEM, Identifier.of(namespace, tag)));
@@ -216,6 +235,7 @@ public class ModHelpers {
         }
     }
 
+    //Convert block/item/entity translation keys to lore translation keys.
     public static @NotNull String convertToLoreKey(String translationKey) {
         String loreKey;
         //Find the translation key for blocks.
@@ -227,10 +247,11 @@ public class ModHelpers {
             //Entity descriptions use a different format as to avoiding colliding with items of the same name.
             String oldKey = translationKey.replaceFirst("entity", "lore");
             String newKey = translationKey + ".description";
+            //Tropical fish have 20 different variants and their description should be the same.
             if (newKey.contains("tropical_fish")) {
                 newKey = "entity.minecraft.tropical_fish";
             }
-            //In case an entity tooltip is misregistered, try checking for an "old style" key.
+            //In case an entity tooltip is misconfigured, try checking for an "old style" key.
             if (hasTranslation(newKey)) return newKey;
             else if (hasTranslation(oldKey)) return oldKey;
             else return newKey;
@@ -240,6 +261,7 @@ public class ModHelpers {
         return loreKey;
     }
 
+    //Convert block/item/entity translation keys to lore translation keys.
     public static @NotNull String getLoreTranslationKey(Object object) {
         return switch (object) {
             case ItemStack stack -> convertToLoreKey(stack.getTranslationKey());
@@ -249,25 +271,28 @@ public class ModHelpers {
         };
     }
 
+    //Find an entity's translation key through substrings.
     public static String getEntityTranslationKey(Entity entity) {
         String translatedString = String.valueOf(entity.getName());
         translatedString = translatedString.substring(translatedString.indexOf("{"));
         translatedString = translatedString.substring(translatedString.indexOf("'")+1);
         translatedString = translatedString.substring(0, translatedString.indexOf("'"));
-
         return translatedString;
     }
 
+    //Translate key with I18n. Can be disabled with developer options.
     public static String translate(String key) {
         if (!config.developer_dontTranslate) return I18n.translate(key);
         else return key;
     }
 
+    //Check for translation with I18n. Can be disabled with developer options.
     public static boolean hasTranslation(String key) {
         if (!config.developer_showUntranslated) return I18n.hasTranslation(key);
         else return true;
     }
 
+    //Create a custom, potentially multi-line tooltip.
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
@@ -297,15 +322,18 @@ public class ModHelpers {
         return lines;
     }
 
-
+    //Automatically generate translation keys for config options.
     public static Text fieldName(Field field) {
-        return Text.translatable("config.item-descriptions.config." + field.getName());
+        return Text.translatable("config."+MOD_ID+".config." + field.getName());
     }
+    
+    //Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
     public static Text[] fieldTooltip(Field field) {
-        String tooltipKey = "config.item-descriptions.config." + field.getName() + ".tooltip";
+        String tooltipKey = "config."+MOD_ID+".config." + field.getName() + ".tooltip";
         return createTooltip(tooltipKey, true).toArray(new Text[0]);
     }
 
+    //Get the current value of a config field.
     @SuppressWarnings("unchecked")
     public static <T> T fieldGet(Object instance, Field field) {
         try {
@@ -315,6 +343,7 @@ public class ModHelpers {
         }
     }
 
+    //Set a config field.
     public static <T> Consumer<T> fieldSetter(Object instance, Field field) {
         return t -> {
             try {

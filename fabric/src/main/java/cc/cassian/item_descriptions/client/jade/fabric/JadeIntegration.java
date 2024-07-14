@@ -17,8 +17,10 @@ public class JadeIntegration implements IWailaPlugin {
     @Environment(EnvType.CLIENT)
     public void registerClient(IWailaClientRegistration registration) {
         client = registration;
+        //Register Block Descriptions plugin.
         registration.markAsClientFeature(ModClient.BLOCK_DESCRIPTIONS);
         registration.registerBlockComponent(JadeBlockDescriptions.INSTANCE, Block.class);
+        //Register Entity Descriptions plugin.
         registration.markAsClientFeature(ModClient.ENTITY_DESCRIPTIONS);
         registration.registerEntityComponent(JadeEntityDescriptions.INSTANCE, Entity.class);
 
