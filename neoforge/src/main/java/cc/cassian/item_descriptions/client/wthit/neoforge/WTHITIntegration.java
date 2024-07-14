@@ -24,7 +24,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
     @Override
     public void appendBody(ITooltip lines, IBlockAccessor blockAccessor, IPluginConfig config) {
         //Check if block descriptions are enabled in mod config.
-        if (showBlockDescriptions()) {
+        if (showBlockDescriptions() && config.getBoolean(BLOCK_DESCRIPTIONS)) {
             List<Text> tooltip = createTooltip(getBlockAccessorLoreKey(blockAccessor.getBlock(), blockAccessor.getWorld(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()), true);
             for (Text text : tooltip) {
                 lines.addLine(text);
@@ -35,7 +35,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
     @Override
     public void appendBody(ITooltip lines, IEntityAccessor entityAccessor, IPluginConfig config) {
         //Check if block descriptions are enabled in mod config.
-        if (showEntityDescriptions()) {
+        if (showEntityDescriptions() && config.getBoolean(ENTITY_DESCRIPTIONS)) {
             List<Text> tooltip = createTooltip(getEntityAccessorLoreKey(entityAccessor.getEntity()), true);
             for (Text text : tooltip) {
                 lines.addLine(text);
