@@ -29,10 +29,3 @@ type = "required"
 versionRange = "[1.21,)"
 ordering = "NONE"
 side = "CLIENT"
-
-[[dependencies.item_descriptions]]
-modId = "cloth_config"
-type = "required"
-versionRange = "*"
-ordering = "NONE"
-side = "CLIENT"

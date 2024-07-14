@@ -37,6 +37,6 @@ public final class ItemDescriptionsNeoForge {
         }
     }
     public void registerModsPage() {
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, ModConfigFactory::new);
+        if (clothConfigInstalled()) ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, ModConfigFactory::new);
     }
 }

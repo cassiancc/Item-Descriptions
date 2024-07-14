@@ -10,9 +10,6 @@ import net.minecraft.text.Text;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Field;
-import java.util.function.Consumer;
-
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class ModConfigFactory implements IConfigScreenFactory {
