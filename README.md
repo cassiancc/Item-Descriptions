@@ -51,6 +51,3 @@ For more information, including details on support for Custom Model Data, see th
 
 ## Credits
 The descriptions present in the mod are inspired by the Minecraft Legacy Console Editions. The interface used was inspired by the one present in the Better Than Adventure mod for Minecraft b1.7.3. Mod Menu/Cloth Config integration is based on the integration present in [idwtialsimmoedm](https://modrinth.com/mod/idwtialsimmoedm) under its [MIT License](https://github.com/gliscowo/idwtialsimmoedm/blob/1.21/LICENSE).
-
-## Credits
-The descriptions present in the mod are inspired by the Minecraft Legacy Console Editions. The interface used was inspired by the one present in the Better Than Adventure mod for Minecraft b1.7.3. Mod Menu/Cloth Config integration is based on the integration present in [idwtialsimmoedm](https://modrinth.com/mod/idwtialsimmoedm) under its [MIT License](https://github.com/gliscowo/idwtialsimmoedm/blob/1.21/LICENSE).
