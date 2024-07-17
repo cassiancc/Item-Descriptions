@@ -273,8 +273,13 @@ public class ModHelpers {
 
     //Find an entity's translation key through substrings.
     public static String getEntityTranslationKey(Entity entity) {
+        //Player names do not follow the same format as other entities.
         if (entity.isPlayer()) {
-            return "entity.minecraft.player";
+            String playerKey = "entity.minecraft.player." + entity.getName().getLiteralString();
+            //Check if a custom player description exists.
+            if (hasTranslation(playerKey)) return playerKey;
+            //If not, use the default one.
+            else return "entity.minecraft.player";
         }
         else {
             try {
