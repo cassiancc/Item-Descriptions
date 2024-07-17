@@ -273,11 +273,22 @@ public class ModHelpers {
 
     //Find an entity's translation key through substrings.
     public static String getEntityTranslationKey(Entity entity) {
-        String translatedString = String.valueOf(entity.getName());
-        translatedString = translatedString.substring(translatedString.indexOf("{"));
-        translatedString = translatedString.substring(translatedString.indexOf("'")+1);
-        translatedString = translatedString.substring(0, translatedString.indexOf("'"));
-        return translatedString;
+        if (entity.isPlayer()) {
+            return "entity.minecraft.player";
+        }
+        else {
+            try {
+                String translatedString = String.valueOf(entity.getName());
+                translatedString = translatedString.substring(translatedString.indexOf("{"));
+                translatedString = translatedString.substring(translatedString.indexOf("'")+1);
+                translatedString = translatedString.substring(0, translatedString.indexOf("'"));
+                return translatedString;
+            }
+            catch (StringIndexOutOfBoundsException ignored) {
+                return "entity.minecraft.unknown";
+            }
+        }
+
     }
 
     //Translate key with I18n. Can be disabled with developer options.
