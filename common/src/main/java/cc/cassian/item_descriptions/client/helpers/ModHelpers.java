@@ -271,9 +271,9 @@ public class ModHelpers {
         };
     }
 
-    //Find an entity's translation key through substrings.
+    //Find an entity's translation key
     public static String getEntityTranslationKey(Entity entity) {
-        //Player names do not follow the same format as other entities.
+        //Allow for custom player descriptions
         if (entity.isPlayer()) {
             String playerKey = "entity.minecraft.player." + entity.getName().getLiteralString();
             //Check if a custom player description exists.
@@ -282,16 +282,7 @@ public class ModHelpers {
             else return "entity.minecraft.player";
         }
         else {
-            try {
-                String translatedString = String.valueOf(entity.getName());
-                translatedString = translatedString.substring(translatedString.indexOf("{"));
-                translatedString = translatedString.substring(translatedString.indexOf("'")+1);
-                translatedString = translatedString.substring(0, translatedString.indexOf("'"));
-                return translatedString;
-            }
-            catch (StringIndexOutOfBoundsException ignored) {
-                return "entity.minecraft.unknown";
-            }
+            return entity.getType().getTranslationKey();
         }
 
     }
