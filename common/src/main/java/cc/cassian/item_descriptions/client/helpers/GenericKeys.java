@@ -124,7 +124,6 @@ public class GenericKeys {
         else if (checkVanillaTag(stack, "leg_armor")) return "lore.generic.leggings";
         else if (checkVanillaTag(stack, "foot_armor")) return "lore.generic.boots";
         else if (checkVanillaTag(stack, "decorated_pot_sherds")) return "lore.generic.sherd";
-        else if (checkVanillaTag(stack, "creeper_drop_music_disc")) return "lore.generic.music_disc_creeper";
         else if (checkVanillaTag(stack, "chest_boats")) return "lore.generic.chest_boat";
         else if (checkVanillaTag(stack, "boats")) return "lore.generic.boat";
         else if (checkCommonTag(stack, "shulker_boxes")) return "lore.generic.shulker_box";
@@ -141,6 +140,7 @@ public class GenericKeys {
         else if (checkCommonTag(stack, "barrels")) return "lore.minecraft.barrel";
         else if (checkCommonTag(stack, "chains")) return "lore.minecraft.chain";
         else if (checkCommonTag(stack, "ropes")) return "lore.generic.rope";
+        else if (checkCommonTag(stack, "creeper_drop_music_disc")) return "lore.generic.music_disc_creeper";
         else if (checkCommonTag(stack, "music_disc")) return "lore.generic.music_disc_common";
         else if (checkCommonTag(stack, "villager_job_sites")) return "lore.generic.villager_workstations";
         else if (checkCommonTag(stack, "storage_blocks")) return "lore.generic.storage_blocks";

@@ -13,7 +13,7 @@
     "homepage": "https://github.com/cassiancc/Item-Descriptions"
   },
   "license": "MIT",
-  "icon": "assets/item-descriptions/icon.png",
+  "icon": "assets/item_descriptions/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
