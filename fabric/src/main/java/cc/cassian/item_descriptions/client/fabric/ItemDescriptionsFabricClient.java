@@ -16,7 +16,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
         ModConfig.load();
         ModClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
-        ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
+        ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             //Only show tooltip if key is pressed or "always on" is enabled.
             if (showItemDescriptions()) {
                 //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.

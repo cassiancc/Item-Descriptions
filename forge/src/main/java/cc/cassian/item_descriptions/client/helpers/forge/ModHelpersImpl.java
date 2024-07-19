@@ -1,6 +1,7 @@
-package cc.cassian.item_descriptions.client.helpers.neoforge;
+package cc.cassian.item_descriptions.client.helpers.forge;
 
-import net.neoforged.fml.ModList;
+
+import net.minecraftforge.fml.ModList;
 
 public class ModHelpersImpl {
     public static boolean clothConfigInstalled() {

@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.client.wthit.neoforge;
+package cc.cassian.item_descriptions.client.wthit.forge;
 
 import mcp.mobius.waila.api.*;
 import net.minecraft.block.Block;

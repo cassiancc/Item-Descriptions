@@ -1,15 +1,18 @@
-package cc.cassian.item_descriptions.client.neoforge;
+package cc.cassian.item_descriptions.client.forge;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
-import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
+import cc.cassian.item_descriptions.client.config.forge.ModConfigFactory;
 import net.minecraft.text.Text;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
-
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.List;
 
@@ -17,18 +20,19 @@ import static cc.cassian.item_descriptions.client.ModClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 @Mod(MOD_ID_NEO)
-public final class ItemDescriptionsNeoForge {
-    public ItemDescriptionsNeoForge() {
+public final class ItemDescriptionsForge {
+
+    public ItemDescriptionsForge() {
         // Load config.
         ModConfig.load();
         LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
         //Add Tooltips
-        NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
+        MinecraftForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
         //Register config screen.
         registerModsPage();
 
     }
-
+    
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
@@ -41,7 +45,7 @@ public final class ItemDescriptionsNeoForge {
     }
 
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.
-    public void registerModsPage() {
-        if (clothConfigInstalled()) ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, ModConfigFactory::new);
+    public static void registerModsPage() {
+        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(ModConfigFactory::createScreen));
     }
 }

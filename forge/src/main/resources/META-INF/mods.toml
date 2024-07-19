@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[4,)"
+loaderVersion = "[47,)"
 license = "MIT"
 
 [[mods]]
@@ -17,15 +17,15 @@ modURL="https://github.com/cassiancc/Item-Descriptions/wiki"
 
 
 [[dependencies.item_descriptions]]
-modId = "neoforge"
-type = "required"
-versionRange = "[21.0,)"
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.item_descriptions]]
 modId = "minecraft"
-type = "required"
-versionRange = "[1.21,)"
+mandatory = true
+versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "CLIENT"

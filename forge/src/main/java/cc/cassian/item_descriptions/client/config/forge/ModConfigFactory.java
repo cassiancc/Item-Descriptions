@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.client.config.neoforge;
+package cc.cassian.item_descriptions.client.config.forge;
 
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
@@ -7,17 +7,17 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.fml.config.IConfigSpec;
 import org.jetbrains.annotations.NotNull;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-public class ModConfigFactory implements IConfigScreenFactory {
+public class ModConfigFactory{
 
     private static final ModConfig DEFAULT_VALUES = new ModConfig();
 
-    @Override
-    public @NotNull Screen createScreen(@NotNull MinecraftClient arg, @NotNull Screen parent) {
+    public static @NotNull Screen createScreen(@NotNull MinecraftClient arg, @NotNull Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
                 .setTitle(Text.translatable("config.item-descriptions.title"));

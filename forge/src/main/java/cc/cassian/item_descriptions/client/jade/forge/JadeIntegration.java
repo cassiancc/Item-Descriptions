@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.client.jade.neoforge;
+package cc.cassian.item_descriptions.client.jade.forge;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.block.Block;
