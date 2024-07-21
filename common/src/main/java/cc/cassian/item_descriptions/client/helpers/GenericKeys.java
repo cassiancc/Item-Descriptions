@@ -141,7 +141,7 @@ public class GenericKeys {
         else if (checkCommonTag(stack, "chains")) return "lore.minecraft.chain";
         else if (checkCommonTag(stack, "ropes")) return "lore.generic.rope";
         else if (checkCommonTag(stack, "creeper_drop_music_disc")) return "lore.generic.music_disc_creeper";
-        else if (checkCommonTag(stack, "music_disc")) return "lore.generic.music_disc_common";
+        else if (checkCommonTag(stack, "music_discs")) return "lore.generic.music_disc_common";
         else if (checkCommonTag(stack, "villager_job_sites")) return "lore.generic.villager_workstations";
         else if (checkCommonTag(stack, "storage_blocks")) return "lore.generic.storage_blocks";
         else if (checkCommonTag(stack, "raw_materials")) return "lore.generic.raw_materials";
