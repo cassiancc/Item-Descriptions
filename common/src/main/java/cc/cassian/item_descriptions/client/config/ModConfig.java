@@ -31,7 +31,7 @@ public class ModConfig {
     //Block descriptions
     public boolean blockDescriptions = true;
     public boolean displayBlockDescriptionsAlways = false;
-    public boolean entityDescriptions = false;
+    public boolean entityDescriptions = true;
     public boolean displayEntityDescriptionsAlways = false;
     //Developer settings
     public boolean developer_showUntranslated = false;

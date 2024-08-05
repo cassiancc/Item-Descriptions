@@ -27,16 +27,15 @@ public class ModConfigFactory implements ConfigScreenFactory<Screen> {
         final var configInstance = ModConfig.get();
         final var generalCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.title"));
         final var keyBindsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.keybinds_title"));
-        final var blockCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.block_descriptions_title"));
-        final var entityCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.entity_descriptions_title"));
+        final var pluginsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.plugins_title"));
         final var developerCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.developer_options_title"));
 
 
         for (var field : ModConfig.class.getFields()) {
             ConfigCategory category;
             if (field.getName().contains("keybind")) category = keyBindsCategory;
-            else if (field.getName().toLowerCase().contains("block")) category = blockCategory;
-            else if (field.getName().toLowerCase().contains("entity")) category = entityCategory;
+            else if (field.getName().toLowerCase().contains("block")) category = pluginsCategory;
+            else if (field.getName().toLowerCase().contains("entity")) category = pluginsCategory;
             else if (field.getName().toLowerCase().contains("developer")) category = developerCategory;
             else category = generalCategory;
             if (field.getType() == boolean.class) {
