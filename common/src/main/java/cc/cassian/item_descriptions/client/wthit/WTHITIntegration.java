@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.client.wthit.fabric;
+package cc.cassian.item_descriptions.client.wthit;
 
 import mcp.mobius.waila.api.*;
 import net.minecraft.block.Block;
@@ -7,7 +7,8 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 
-import static cc.cassian.item_descriptions.client.ModClient.*;
+import static cc.cassian.item_descriptions.client.ModClient.BLOCK_DESCRIPTIONS;
+import static cc.cassian.item_descriptions.client.ModClient.ENTITY_DESCRIPTIONS;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider {

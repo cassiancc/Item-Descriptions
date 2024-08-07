@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.jade.fabric;
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.jade.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;

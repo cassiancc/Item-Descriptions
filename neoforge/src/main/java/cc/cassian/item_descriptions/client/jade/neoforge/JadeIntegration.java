@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.jade.neoforge;
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.jade.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import snownee.jade.api.IWailaClientRegistration;
