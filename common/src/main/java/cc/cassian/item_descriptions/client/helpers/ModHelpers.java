@@ -62,14 +62,18 @@ public class ModHelpers {
         else {
             String colour = config.style_color.toLowerCase().replace(" ", "_");
             return switch (colour) {
-                case "black", "dark_blue", "dark_green", "dark_aqua", "dark_red", "dark_purple", "gold", "gray",
-                     "dark_gray", "blue", "green", "aqua", "red", "light_purple", "yellow", "white" ->
+                case "black", "dark_blue", "dark_green", "dark_red", "dark_purple",
+                     "blue", "green", "aqua", "red", "yellow", "white" ->
                         TextColor.fromFormatting(Formatting.byName(colour));
-                case "pink" ->
-                        TextColor.fromFormatting(Formatting.byCode('d'));
-                case "orange" ->
-                        TextColor.fromFormatting(Formatting.byCode('6'));
-                default -> TextColor.fromFormatting(Formatting.byCode('7'));
+                case "pink", "light_purple" ->
+                        TextColor.fromFormatting(Formatting.byName("light_purple"));
+                case "dark_gray", "dark_grey" ->
+                        TextColor.fromFormatting(Formatting.byName("dark_gray"));
+                case "cyan", "dark_aqua" ->
+                        TextColor.fromFormatting(Formatting.byName("dark_aqua"));
+                case "orange", "gold", "dark_yellow" ->
+                        TextColor.fromFormatting(Formatting.byName("gold"));
+                default -> TextColor.fromFormatting(Formatting.byName("gray"));
             };
         }
     }
