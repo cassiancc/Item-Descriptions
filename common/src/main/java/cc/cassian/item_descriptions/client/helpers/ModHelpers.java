@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.helpers;
 
+import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.block.Block;
@@ -50,8 +51,9 @@ public class ModHelpers {
 
     //Used in Config to change the tooltip's colour based off a Minecraft Colour Code.
     public static Style getColor() {
-        if (config.tooltipColor.length() == 1) {
-            LOGGER.info("Used tooltip colour" + config.tooltipColor.charAt(0));
+        int length = config.tooltipColor.length();
+        if (length == 1) {
+            LOGGER.info(length);
             return Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.byCode( config.tooltipColor.charAt(0))));
         }
         else {
