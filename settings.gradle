@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'item-descriptions'
+rootProject.name = 'Item Descriptions'
 
 include 'common'
 include 'fabric'

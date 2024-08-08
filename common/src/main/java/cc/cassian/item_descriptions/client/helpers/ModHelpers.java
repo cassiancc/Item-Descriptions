@@ -14,7 +14,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -22,9 +24,11 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.text.Normalizer;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
@@ -45,8 +49,26 @@ public class ModHelpers {
     }
 
     //Used in Config to change the tooltip's colour based off a Minecraft Colour Code.
-    public static Formatting getColor() {
-        return Formatting.byCode(config.tooltipColor.charAt(0));
+    public static Style getColor() {
+        if (config.tooltipColor.length() == 1) {
+            LOGGER.info("Used tooltip colour" + config.tooltipColor.charAt(0));
+            return Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.byCode( config.tooltipColor.charAt(0))));
+        }
+        else {
+            String colour = config.tooltipColor.toLowerCase().replace(" ", "_");
+            return switch (colour) {
+                case "black", "dark_blue", "dark_green", "dark_aqua", "dark_red", "dark_purple", "gold", "gray",
+                     "dark_gray", "blue", "green", "aqua", "red", "light_purple", "yellow", "white" ->
+                    Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.byName(colour)));
+                case "pink" ->
+                    Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.byCode('d')));
+                case "orange" ->
+                    Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.byCode('6')));
+                default -> Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.byCode('7')));
+            };
+        }
+//        else return Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.byCode('7')));
+        //return Formatting.byCode(config.tooltipColor.charAt(0));
     }
 
     //Handles detection of when a line break should be added in a tooltip.
@@ -317,13 +339,13 @@ public class ModHelpers {
                         //Find how much to shorten the tooltip by.
                         int index = getIndex(translatedKey, maxLength);
                         //Add a shortened tooltip.
-                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                        lines.add(Text.literal(translatedKey.substring(0, index)).setStyle(getColor()));
                         //Remove the shortened tooltip substring from the tooltip. Repeat.
                         translatedKey = translatedKey.substring(index);
                     }
                 }
                 //Add the final tooltip.
-                lines.add(Text.literal(translatedKey).formatted(getColor()));
+                lines.add(Text.literal(translatedKey).setStyle(getColor()));
             }
         }
         return lines;
