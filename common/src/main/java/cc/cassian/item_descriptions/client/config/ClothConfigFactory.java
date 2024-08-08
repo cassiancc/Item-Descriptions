@@ -20,9 +20,11 @@ public class ClothConfigFactory {
         final var entryBuilder = builder.entryBuilder();
         final var configInstance = ModConfig.get();
         final var generalCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.title"));
+        final var styleCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.style_title"));
         final var keyBindsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.keybinds_title"));
         final var pluginsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.plugins_title"));
         final var developerCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.developer_options_title"));
+
 
 
         for (var field : ModConfig.class.getFields()) {
@@ -31,6 +33,8 @@ public class ClothConfigFactory {
             else if (field.getName().toLowerCase().contains("block")) category = pluginsCategory;
             else if (field.getName().toLowerCase().contains("entity")) category = pluginsCategory;
             else if (field.getName().toLowerCase().contains("developer")) category = developerCategory;
+            else if (field.getName().toLowerCase().contains("style")) category = styleCategory;
+
             else category = generalCategory;
             if (field.getType() == boolean.class) {
                 category.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))

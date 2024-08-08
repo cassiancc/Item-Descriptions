@@ -21,10 +21,10 @@ public class ModConfig {
     //General settings
     public boolean itemDescriptions = true;
     public boolean displayAlways = false;
-    public String tooltipColor = "7";
-    public boolean italics = false;
-    public boolean bold = false;
-    public int maxTooltipLength = 40;
+    public String style_color = "Gray";
+    public boolean style_italics = false;
+    public boolean style_bold = false;
+    public int style_length = 40;
     //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;

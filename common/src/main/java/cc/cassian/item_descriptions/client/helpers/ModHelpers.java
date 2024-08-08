@@ -49,18 +49,18 @@ public class ModHelpers {
 
     //Used in Config to change the tooltip's formatting.
     public static Style getStyle() {
-        return Style.EMPTY.withColor(getColour()).withItalic(config.italics).withBold(config.bold);
+        return Style.EMPTY.withColor(getColour()).withItalic(config.style_italics).withBold(config.style_bold);
     }
 
     //Used to check what colour a tooltip should be.
     public static TextColor getColour() {
-        int length = config.tooltipColor.length();
+        int length = config.style_color.length();
         if (length == 1) {
             LOGGER.info(length);
-            return TextColor.fromFormatting(Formatting.byCode(config.tooltipColor.charAt(0)));
+            return TextColor.fromFormatting(Formatting.byCode(config.style_color.charAt(0)));
         }
         else {
-            String colour = config.tooltipColor.toLowerCase().replace(" ", "_");
+            String colour = config.style_color.toLowerCase().replace(" ", "_");
             return switch (colour) {
                 case "black", "dark_blue", "dark_green", "dark_aqua", "dark_red", "dark_purple", "gold", "gray",
                      "dark_gray", "blue", "green", "aqua", "red", "light_purple", "yellow", "white" ->
@@ -328,7 +328,7 @@ public class ModHelpers {
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
-        int maxLength = config.maxTooltipLength;
+        int maxLength = config.style_length;
         //Check if the key exists.
         if (!loreKey.isEmpty()) {
             //Translate the lore key.
