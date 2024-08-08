@@ -33,7 +33,7 @@ import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
 public class ModHelpers {
     //Shorthand for config.
-    public static final ModConfig config = ModConfig.get();
+    public static ModConfig config = ModConfig.get();
 
     //Check if Cloth Config is installed and its configuration can be used.
     @ExpectPlatform
@@ -54,14 +54,14 @@ public class ModHelpers {
 
     //Used to check what colour a tooltip should be.
     public static TextColor getColour() {
-        int length = config.style_color.length();
+        String colour = config.style_color;
+        int length = colour.length();
         if (length == 1) {
-            LOGGER.info(length);
-            return TextColor.fromFormatting(Formatting.byCode(config.style_color.charAt(0)));
+            return TextColor.fromFormatting(Formatting.byCode(colour.charAt(0)));
         }
         else {
-            String colour = config.style_color.toLowerCase().replace(" ", "_");
-            return switch (colour) {
+            String replacedColour = colour.toLowerCase().replace(" ", "_");
+            return switch (replacedColour) {
                 case "black", "dark_blue", "dark_green", "dark_red", "dark_purple",
                      "blue", "green", "aqua", "red", "yellow", "white" ->
                         TextColor.fromFormatting(Formatting.byName(colour));
