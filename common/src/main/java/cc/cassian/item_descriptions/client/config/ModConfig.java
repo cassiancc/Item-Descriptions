@@ -21,6 +21,7 @@ public class ModConfig {
     //General settings
     public boolean itemDescriptions = true;
     public boolean displayAlways = false;
+    //Style
     public String style_color = "Gray";
     public boolean style_italics = false;
     public boolean style_bold = false;
@@ -30,7 +31,7 @@ public class ModConfig {
     public boolean keybind_displayWhenShiftIsHeld = false;
     public boolean keybind_displayWhenAltIsHeld = false;
     public boolean keybind_invert = false;
-    //Block descriptions
+    //Block/Entity Descriptions
     public boolean blockDescriptions = true;
     public boolean displayBlockDescriptionsAlways = false;
     public boolean entityDescriptions = true;
