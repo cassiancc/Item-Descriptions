@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.forge;
 
+import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.config.forge.ModConfigFactory;
 import net.minecraft.text.Text;
@@ -24,15 +25,18 @@ public final class ItemDescriptionsForge {
 
     public ItemDescriptionsForge() {
         // Load config.
-        ModConfig.load();
-        LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
+        ModClient.init();
         //Add Tooltips
-        MinecraftForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
+        addTooltips();
         //Register config screen.
         registerModsPage();
 
     }
-    
+
+    public void addTooltips() {
+        NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
+    }
+
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {

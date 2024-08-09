@@ -21,17 +21,20 @@ public class ModConfig {
     //General settings
     public boolean itemDescriptions = true;
     public boolean displayAlways = false;
-    public String tooltipColor = "7";
-    public int maxTooltipLength = 40;
+    //Style
+    public String style_color = "Gray";
+    public boolean style_italics = false;
+    public boolean style_bold = false;
+    public int style_length = 40;
     //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;
     public boolean keybind_displayWhenAltIsHeld = false;
     public boolean keybind_invert = false;
-    //Block descriptions
+    //Block/Entity Descriptions
     public boolean blockDescriptions = true;
     public boolean displayBlockDescriptionsAlways = false;
-    public boolean entityDescriptions = false;
+    public boolean entityDescriptions = true;
     public boolean displayEntityDescriptionsAlways = false;
     //Developer settings
     public boolean developer_showUntranslated = false;

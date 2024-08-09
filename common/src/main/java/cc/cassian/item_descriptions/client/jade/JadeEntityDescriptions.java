@@ -1,9 +1,11 @@
-package cc.cassian.item_descriptions.client.jade.fabric;
+package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import snownee.jade.api.*;
+import snownee.jade.api.EntityAccessor;
+import snownee.jade.api.IEntityComponentProvider;
+import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
 import java.util.List;
@@ -29,4 +31,5 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
     public Identifier getUid() {
         return ModClient.ENTITY_DESCRIPTIONS;
     }
+
 }

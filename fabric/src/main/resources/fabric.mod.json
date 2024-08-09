@@ -3,7 +3,7 @@
   "id": "item-descriptions",
   "version": "${version}",
   "name": "Item Descriptions",
-  "description": "This mod adds unique descriptions to every Minecraft item that can be seen when the Control key is pressed.",
+  "description": "This mod adds unique descriptions for all blocks, items, and mobs - built in a way that makes it easy to add modded content.",
   "authors": [
     "cassiancc"
   ],
@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "icon": "assets/item_descriptions/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "cc.cassian.item_descriptions.client.fabric.ItemDescriptionsFabricClient"

@@ -8,7 +8,7 @@ version = "${version}"
 displayName = "Item Descriptions"
 authors = "cassiancc"
 description = '''
-This mod adds unique descriptions to every Minecraft item that can be seen when the Control key is pressed.
+This mod adds unique descriptions for all blocks, items, and mobs - built in a way that makes it easy to add modded content.
 '''
 logoFile = "assets/item_descriptions/icon.png"
 issueTrackerURL = "https://github.com/cassiancc/Item-Descriptions/issues"

@@ -14,7 +14,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -25,12 +27,13 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
 public class ModHelpers {
     //Shorthand for config.
-    public static final ModConfig config = ModConfig.get();
+    public static ModConfig config = ModConfig.get();
 
     //Check if Cloth Config is installed and its configuration can be used.
     @ExpectPlatform
@@ -44,9 +47,35 @@ public class ModHelpers {
         throw new AssertionError();
     }
 
-    //Used in Config to change the tooltip's colour based off a Minecraft Colour Code.
-    public static Formatting getColor() {
-        return Formatting.byCode(config.tooltipColor.charAt(0));
+    //Used in Config to change the tooltip's formatting.
+    public static Style getStyle() {
+        return Style.EMPTY.withColor(getColour()).withItalic(config.style_italics).withBold(config.style_bold);
+    }
+
+    //Used to check what colour a tooltip should be.
+    public static TextColor getColour() {
+        String colour = config.style_color;
+        int length = colour.length();
+        if (length == 1) {
+            return TextColor.fromFormatting(Formatting.byCode(colour.charAt(0)));
+        }
+        else {
+            String replacedColour = colour.toLowerCase().replace(" ", "_");
+            return switch (replacedColour) {
+                case "black", "dark_blue", "dark_green", "dark_red", "dark_purple",
+                     "blue", "green", "aqua", "red", "yellow", "white" ->
+                        TextColor.fromFormatting(Formatting.byName(colour));
+                case "pink", "light_purple" ->
+                        TextColor.fromFormatting(Formatting.byName("light_purple"));
+                case "dark_gray", "dark_grey" ->
+                        TextColor.fromFormatting(Formatting.byName("dark_gray"));
+                case "cyan", "dark_aqua" ->
+                        TextColor.fromFormatting(Formatting.byName("dark_aqua"));
+                case "orange", "gold", "dark_yellow" ->
+                        TextColor.fromFormatting(Formatting.byName("gold"));
+                default -> TextColor.fromFormatting(Formatting.byName("gray"));
+            };
+        }
     }
 
     //Handles detection of when a line break should be added in a tooltip.
@@ -282,7 +311,7 @@ public class ModHelpers {
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
-        int maxLength = config.maxTooltipLength;
+        int maxLength = config.style_length;
         //Check if the key exists.
         if (!loreKey.isEmpty()) {
             //Translate the lore key.
@@ -296,13 +325,13 @@ public class ModHelpers {
                         //Find how much to shorten the tooltip by.
                         int index = getIndex(translatedKey, maxLength);
                         //Add a shortened tooltip.
-                        lines.add(Text.literal(translatedKey.substring(0, index)).formatted(getColor()));
+                        lines.add(Text.literal(translatedKey.substring(0, index)).setStyle(getStyle()));
                         //Remove the shortened tooltip substring from the tooltip. Repeat.
                         translatedKey = translatedKey.substring(index);
                     }
                 }
                 //Add the final tooltip.
-                lines.add(Text.literal(translatedKey).formatted(getColor()));
+                lines.add(Text.literal(translatedKey).setStyle(getStyle()));
             }
         }
         return lines;

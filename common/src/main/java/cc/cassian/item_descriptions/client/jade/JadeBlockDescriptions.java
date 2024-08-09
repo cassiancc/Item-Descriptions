@@ -1,4 +1,4 @@
-package cc.cassian.item_descriptions.client.jade.forge;
+package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.text.Text;

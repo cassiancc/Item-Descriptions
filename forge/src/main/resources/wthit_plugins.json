@@ -1,6 +1,6 @@
 {
   "item-descriptions:block_descriptions": {
-    "initializer": "cc.cassian.item_descriptions.client.wthit.forge.WTHITIntegration",
+    "initializer": "cc.cassian.item_descriptions.client.wthit.WTHITIntegration",
     "side": "client"
   }
 }
