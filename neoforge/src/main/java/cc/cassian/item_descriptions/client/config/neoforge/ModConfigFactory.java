@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class ModConfigFactory implements IConfigScreenFactory {
 
     @Override
-    public @NotNull Screen createScreen(@NotNull ModContainer modContainer, @NotNull Screen parent) {
+    public @NotNull Screen createScreen(@NotNull MinecraftClient modContainer, @NotNull Screen parent) {
         return ClothConfigFactory.create(parent);
     }
 }

@@ -8,7 +8,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
-import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
 
@@ -149,7 +148,7 @@ public class ModHelpers {
     }
 
     //Check if an Item Stack has a particular component.
-    public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
+    public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
         return stack.getComponents().contains(type);
     }
 
