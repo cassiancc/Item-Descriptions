@@ -34,7 +34,7 @@ public final class ItemDescriptionsForge {
     }
 
     public void addTooltips() {
-        NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
+        MinecraftForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
     }
 
     //Add Item Descriptions to item tooltips.
@@ -48,7 +48,7 @@ public final class ItemDescriptionsForge {
         }
     }
 
-    //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.
+    //Integrate Cloth Config screen (if mod present) with Forge mod menu.
     public static void registerModsPage() {
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(ModConfigFactory::createScreen));
     }

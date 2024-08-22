@@ -4,14 +4,12 @@ package cc.cassian.item_descriptions.client.config.forge;
 import cc.cassian.item_descriptions.client.config.ClothConfigFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.minecraftforge.fml.ModContainer;
 import org.jetbrains.annotations.NotNull;
 
-public class ModConfigFactory implements IConfigScreenFactory {
+public class ModConfigFactory {
 
-    @Override
-    public @NotNull Screen createScreen(@NotNull ModContainer modContainer, @NotNull Screen parent) {
+    public static @NotNull Screen createScreen(@NotNull MinecraftClient arg, @NotNull Screen parent) {
         return ClothConfigFactory.create(parent);
     }
 }
