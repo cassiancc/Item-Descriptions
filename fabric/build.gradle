@@ -22,6 +22,7 @@ configurations {
         canBeResolved = true
         canBeConsumed = false
     }
+
 }
 
 
@@ -34,6 +35,9 @@ repositories {
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
     maven { url 'https://maven.wispforest.io/releases/' }
+    flatDir {
+        dirs 'libs'
+    }
 
 }
 
@@ -59,7 +63,9 @@ dependencies {
     include "io.wispforest:owo-sentinel:${project.owo_version}"
     modCompileOnly "maven.modrinth:limelight:${project.limelight_version}"
     modLocalRuntime "maven.modrinth:limelight:${project.limelight_version}"
+    implementation 'net.objecthunter:exp4j:0.4.8'
 }
+
 
 processResources {
     inputs.property 'version', project.version

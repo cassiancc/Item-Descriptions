@@ -24,7 +24,7 @@ public class Extension implements LimelightExtension {
         if (!ctx.searchText().startsWith("~")) return null;
 
         return (ctx1, entryConsumer) -> {
-            entryConsumer.accept(new ResultEntry());
+            entryConsumer.accept(new ResultEntry(ctx.searchText()));
         };
     }
 }

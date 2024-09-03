@@ -358,6 +358,33 @@ public class ModHelpers {
         return lines;
     }
 
+    public static Text createMultilineTranslation(String loreKey) {
+        //Setup list to store (potentially multi-line) tooltip.
+        StringBuilder lines = new StringBuilder();
+        int maxLength = 15;
+        //Check if the key exists.
+        if (!loreKey.isEmpty()) {
+            //Translate the lore key.
+            String translatedKey = translate(loreKey);
+            //Check if the translated key exists.
+            if (hasTranslation(loreKey)) {
+                //Any tooltip longer than 25 characters should be shortened.
+                while (translatedKey.length() >= maxLength) {
+                    //Find how much to shorten the tooltip by.
+                    int index = getIndex(translatedKey, maxLength);
+                    //Add a shortened tooltip.
+                    lines.append(translatedKey, 0, index);
+                    lines.append("\n");
+                    //Remove the shortened tooltip substring from the tooltip. Repeat.
+                    translatedKey = translatedKey.substring(index);
+                }
+                //Add the final tooltip.
+                lines.append(translatedKey);
+            }
+        }
+        return Text.literal(String.valueOf(lines));
+    }
+
     //Automatically generate translation keys for config options.
     public static Text fieldName(Field field) {
         return Text.translatable("config."+MOD_ID+".config." + field.getName());
