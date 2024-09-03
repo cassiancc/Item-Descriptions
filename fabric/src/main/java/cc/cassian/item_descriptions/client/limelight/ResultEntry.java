@@ -1,17 +1,16 @@
 package cc.cassian.item_descriptions.client.limelight;
 
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
+import io.wispforest.limelight.api.extension.LimelightExtension;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.List;
-
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
-import static cc.cassian.item_descriptions.client.helpers.ModHelpers.tooltipFixInstalled;
 
-public class ResultEntry extends BaseResultProvider implements InvokeResultEntry {
+public class ResultEntry implements InvokeResultEntry {
     Item searchKey;
 
     public ResultEntry(String s) {
@@ -25,21 +24,16 @@ public class ResultEntry extends BaseResultProvider implements InvokeResultEntry
         String item = trimmedS;
         if (trimmedS.contains(":")) {
             String[] splitS = trimmedS.split(":");
-//            return "lore." + splitS[0] + "." + splitS[1];
             namespace = splitS[0];
             item = splitS[1];
         }
-
         return Registries.ITEM.get(Identifier.of(namespace, item));
-
-
-
 
     }
 
     @Override
     public void run() {
-//        MinecraftClient.getInstance().keyboard.setClipboard();
+        MinecraftClient.getInstance().keyboard.setClipboard(findItemLoreKey(searchKey.getDefaultStack()));
     }
 
     @Override
@@ -47,9 +41,16 @@ public class ResultEntry extends BaseResultProvider implements InvokeResultEntry
         return false; //
     }
 
+    public LimelightExtension extension() {
+        return Extension.INSTANCE;
+    }
+
+    public String entryId() {
+        return "item-descriptions:item_descriptions";
+    }
+
     @Override
     public Text text() {
         return createMultilineTranslation(findItemLoreKey(searchKey.getDefaultStack()));
-//        return createMultilineTranslation(searchKey);
     }
 }
