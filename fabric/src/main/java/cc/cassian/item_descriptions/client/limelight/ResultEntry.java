@@ -1,18 +1,25 @@
 package cc.cassian.item_descriptions.client.limelight;
 
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.createMultilineTranslation;
-import static cc.cassian.item_descriptions.client.helpers.ModHelpers.createTooltip;
 
 public class ResultEntry extends BaseResultProvider implements InvokeResultEntry {
-    String searchText;
+    String searchKey;
 
     public ResultEntry(String s) {
         super();
-        searchText = s.substring(1).toLowerCase().replace(" ", "_");
+        searchKey = findTranslationKey(s);
+    }
+
+    private String findTranslationKey(String s) {
+        String trimmedS = s.substring(1).toLowerCase().replace(" ", "_");
+        if (trimmedS.contains(":")) {
+            String[] splitS = trimmedS.split(":");
+            return "lore." + splitS[0] + "." + splitS[1];
+        }
+        return "lore.minecraft."+ trimmedS;
     }
 
     @Override
@@ -23,13 +30,10 @@ public class ResultEntry extends BaseResultProvider implements InvokeResultEntry
     @Override
     public boolean closesScreen() {
         return false; //
-
-
     }
 
     @Override
     public Text text() {
-
-       return createMultilineTranslation("lore.minecraft."+searchText);
+       return createMultilineTranslation(searchKey);
     }
 }
