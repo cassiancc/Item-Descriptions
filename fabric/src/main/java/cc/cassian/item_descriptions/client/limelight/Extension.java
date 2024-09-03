@@ -6,6 +6,7 @@ import io.wispforest.limelight.api.entry.ResultGatherContext;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.util.Identifier;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
@@ -21,10 +22,11 @@ public class Extension implements LimelightExtension {
 
     @Override
     public @Nullable ResultEntryGatherer checkExclusiveGatherer(ResultGatherContext ctx) {
-        if (!ctx.searchText().startsWith("~")) return null;
-
-        return (ctx1, entryConsumer) -> {
-            entryConsumer.accept(new ResultEntry(ctx.searchText()));
-        };
+        if (!ctx.searchText().startsWith("#")) return null;
+        var resultEntry = new ResultEntry((ctx.searchText()));
+        if (!Objects.requireNonNull(resultEntry.text().getLiteralString()).isEmpty()) {
+            return (ctx1, entryConsumer) -> entryConsumer.accept(new ResultEntry(ctx.searchText()));
+        }
+        return null;
     }
 }
