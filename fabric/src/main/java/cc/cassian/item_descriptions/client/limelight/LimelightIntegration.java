@@ -9,6 +9,6 @@ public class LimelightIntegration implements LimelightEntrypoint {
     @Override
     public void registerExtensions(Consumer<LimelightExtension> extensionRegistry) {
         // Register extensions here!
-        extensionRegistry.accept(LimelightItemDescriptions.INSTANCE);
+        extensionRegistry.accept(Extension.INSTANCE);
     }
 }

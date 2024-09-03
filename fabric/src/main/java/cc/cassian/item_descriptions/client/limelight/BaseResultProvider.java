@@ -3,9 +3,9 @@ package cc.cassian.item_descriptions.client.limelight;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.text.Text;
 
-public class ResultProvider {
+public class BaseResultProvider {
         public LimelightExtension extension() {
-            return LimelightItemDescriptions.INSTANCE; //
+            return Extension.INSTANCE; //
         }
 
         public String entryId() {
