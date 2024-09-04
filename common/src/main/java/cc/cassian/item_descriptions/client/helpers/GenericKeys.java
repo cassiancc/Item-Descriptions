@@ -4,6 +4,7 @@ import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
 import org.jetbrains.annotations.NotNull;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -94,6 +95,10 @@ public class GenericKeys {
 
     private static String checkGenericTagList(Object stack) {
         if ((stack instanceof ItemStack item)) {
+            //Temporary - Spawn Eggs do not yet have a tag.
+            if (item.getItem() instanceof SpawnEggItem) {
+                return "tag.c.spawn_egg.description";
+            }
             final String[] returnedKey = new String[1];
             item.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
