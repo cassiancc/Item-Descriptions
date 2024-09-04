@@ -36,6 +36,7 @@ public class ModConfig {
     public boolean displayBlockDescriptionsAlways = false;
     public boolean entityDescriptions = true;
     public boolean displayEntityDescriptionsAlways = false;
+    public int compat_limelightLength = 15;
     //Developer settings
     public boolean developer_showUntranslated = false;
     public boolean developer_dontTranslate = false;

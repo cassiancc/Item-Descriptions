@@ -361,7 +361,7 @@ public class ModHelpers {
     public static Text createMultilineTranslation(String loreKey) {
         //Setup list to store (potentially multi-line) tooltip.
         StringBuilder lines = new StringBuilder();
-        int maxLength = 15;
+        int maxLength = ModConfig.get().compat_limelightLength;
         //Check if the key exists.
         if (!loreKey.isEmpty()) {
             //Translate the lore key.
