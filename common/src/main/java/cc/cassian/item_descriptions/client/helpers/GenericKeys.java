@@ -1,6 +1,9 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -90,65 +93,27 @@ public class GenericKeys {
     }
 
     private static String checkGenericTagList(Object stack) {
-        if (checkVanillaTag(stack, "planks")) return "lore.generic.planks";
-        else if (checkVanillaTag(stack, "wool")) return "lore.generic.wool";
-        else if (checkVanillaTag(stack, "wool_carpets")) return "lore.generic.carpet";
-        else if ((checkVanillaTag(stack, "warped_stems")) || (checkVanillaTag(stack, "crimson_stems")))  return "lore.generic.stem";
-        else if (checkVanillaTag(stack, "logs")) return "lore.generic.log";
-        else if (checkVanillaTag(stack, "hanging_signs")) return "lore.generic.hanging_sign";
-        else if (checkVanillaTag(stack, "signs")) return "lore.generic.sign";
-        else if (checkVanillaTag(stack, "buttons")) return "lore.generic.button";
-        else if (checkVanillaTag(stack, "saplings")) return "lore.generic.sapling";
-        else if (checkVanillaTag(stack, "pressure_plates") || checkVanillaTag(stack, "wooden_pressure_plates")) return "lore.generic.pressure_plate";
-        else if (checkVanillaTag(stack, "stairs")) return "lore.generic.stairs";
-        else if (checkVanillaTag(stack, "walls")) return "lore.generic.wall";
-        else if (checkVanillaTag(stack, "fence_gates")) return "lore.generic.fence_gate";
-        else if (checkVanillaTag(stack, "fences")) return "lore.generic.fence";
-        else if (checkVanillaTag(stack, "slabs")) return "lore.generic.slab";
-        else if (checkVanillaTag(stack, "trapdoors")) return "lore.generic.trapdoor";
-        else if (checkVanillaTag(stack, "doors")) return "lore.generic.door";
-        else if (checkVanillaTag(stack, "leaves")) return "lore.generic.leaves";
-        else if (checkVanillaTag(stack, "skulls")) return "lore.generic.skull";
-        else if (checkVanillaTag(stack, "candles")) return "lore.generic.candle";
-        else if (checkVanillaTag(stack, "banners")) return "lore.generic.banner";
-        else if (checkVanillaTag(stack, "terracotta")) return "lore.generic.terracotta";
-        else if (checkVanillaTag(stack, "beds")) return "lore.generic.bed";
-        else if (checkVanillaTag(stack, "swords")) return "lore.generic.sword";
-        else if (checkVanillaTag(stack, "hoes")) return "lore.generic.hoe";
-        else if (checkVanillaTag(stack, "shovels")) return "lore.generic.shovel";
-        else if (checkVanillaTag(stack, "pickaxes")) return "lore.generic.pickaxe";
-        else if (checkVanillaTag(stack, "axes")) return "lore.generic.axe";
-        else if (checkVanillaTag(stack, "trim_templates")) return "lore.generic.smithing_template";
-        else if (checkVanillaTag(stack, "head_armor")) return "lore.generic.helmet";
-        else if (checkVanillaTag(stack, "chest_armor")) return "lore.generic.chestplate";
-        else if (checkVanillaTag(stack, "leg_armor")) return "lore.generic.leggings";
-        else if (checkVanillaTag(stack, "foot_armor")) return "lore.generic.boots";
-        else if (checkVanillaTag(stack, "decorated_pot_sherds")) return "lore.generic.sherd";
-        else if (checkVanillaTag(stack, "chest_boats")) return "lore.generic.chest_boat";
-        else if (checkVanillaTag(stack, "boats")) return "lore.generic.boat";
-        else if (checkCommonTag(stack, "shulker_boxes")) return "lore.generic.shulker_box";
-        else if (checkCommonTag(stack, "dyes")) return "lore.generic.dye";
-        else if (checkCommonTag(stack, "concrete")) return "lore.generic.concrete";
-        else if (checkCommonTag(stack, "concrete_powder")) return "lore.generic.concrete_powder";
-        else if (checkCommonTag(stack, "glazed_terracotta")) return "lore.generic.glazed_terracotta";
-        else if (checkCommonTag(stack, "glass_blocks")) return "lore.generic.glass";
-        else if (checkCommonTag(stack, "glass_panes")) return "lore.minecraft.glass_pane";
-        else if (checkCommonTag(stack, "cobblestones")) return "lore.minecraft.cobblestone";
-        else if (checkCommonTag(stack, "bookshelves")) return "lore.minecraft.bookshelf";
-        else if (checkCommonTag(stack, "player_workstations/crafting_tables")) return "lore.generic.crafting_table";
-        else if (checkCommonTag(stack, "chests")) return "lore.minecraft.chest";
-        else if (checkCommonTag(stack, "barrels")) return "lore.minecraft.barrel";
-        else if (checkCommonTag(stack, "chains")) return "lore.minecraft.chain";
-        else if (checkCommonTag(stack, "ropes")) return "lore.generic.rope";
-        else if (checkCommonTag(stack, "creeper_drop_music_disc")) return "lore.generic.music_disc_creeper";
-        else if (checkCommonTag(stack, "music_disc")) return "lore.generic.music_disc_common";
-        else if (checkCommonTag(stack, "villager_job_sites")) return "lore.generic.villager_workstations";
-        else if (checkCommonTag(stack, "storage_blocks")) return "lore.generic.storage_blocks";
-        else if (checkCommonTag(stack, "raw_materials")) return "lore.generic.raw_materials";
-        else if (checkCommonTag(stack, "ores")) return "lore.generic.ores";
-        else if (checkCommonTag(stack, "potions")) return "lore.minecraft.potion";
-
-            //If no tag key matches, return empty so a string match can be found.
+        if ((stack instanceof ItemStack item)) {
+            final String[] returnedKey = new String[1];
+            item.streamTags().forEach(itemTagKey -> {
+                String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                if (I18n.hasTranslation(loreKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            return returnedKey[0];
+        }
+        else if ((stack instanceof BlockState item)) {
+            final String[] returnedKey = new String[1];
+            item.streamTags().forEach(itemTagKey -> {
+                String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                if (I18n.hasTranslation(loreKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            return returnedKey[0];
+        }
+        //If no tag key matches, return empty so a string match can be found.
         else return "";
     }
 
@@ -157,12 +122,12 @@ public class GenericKeys {
         if (!ModConfig.get().developer_disableGenericTagDescriptions) {
             //Iterate through the provided generic tag list.
             String generic = checkGenericTagList(object);
-            if (generic.isEmpty()) {
-                return getGenericLoreKey(loreKey);
+            if (generic != null) {
+                if (generic.isEmpty())
+                    return getGenericLoreKey(loreKey);
+                else return generic;
             }
-            else {
-                return generic;
-            }
+            else return getGenericLoreKey(loreKey);
         }
         else return getGenericLoreKey(loreKey);
     }
