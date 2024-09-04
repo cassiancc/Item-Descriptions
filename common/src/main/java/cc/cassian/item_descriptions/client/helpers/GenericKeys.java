@@ -101,15 +101,7 @@ public class GenericKeys {
                 return "tag.c.spawn_egg.description";
             }
             else if (item.getItem() instanceof BlockItem blockItem) {
-                if (blockItem.getBlock() instanceof CoralBlock)
-                    return "tag.c.coral.description";
-                else if (blockItem.getBlock() instanceof CoralBlock)
-                    return "tag.c.coral.description";
-                else if (blockItem.getBlock() instanceof CoralBlockBlock)
-                    return "tag.c.coral_block.description";
-                else if ((blockItem.getBlock() instanceof DeadCoralBlock) || (blockItem.getBlock() instanceof DeadCoralFanBlock))
-                    return "tag.c.dead_coral.description";
-                else if (blockItem.getBlock() instanceof InfestedBlock)
+                if (blockItem.getBlock() instanceof InfestedBlock)
                     return "tag.c.infested.description";
             }
             final String[] returnedKey = new String[1];
@@ -122,15 +114,7 @@ public class GenericKeys {
             return returnedKey[0];
         }
         else if ((stack instanceof BlockState item)) {
-            if (item.getBlock() instanceof CoralBlock)
-                return "tag.c.coral.description";
-            else if (item.getBlock() instanceof CoralBlock)
-                return "tag.c.coral.description";
-            else if (item.getBlock() instanceof CoralBlockBlock)
-                return "tag.c.coral_block.description";
-            else if ((item.getBlock() instanceof DeadCoralBlock) || (item.getBlock() instanceof DeadCoralFanBlock))
-                return "tag.c.dead_coral.description";
-            else if (item.getBlock() instanceof InfestedBlock)
+            if (item.getBlock() instanceof InfestedBlock)
                 return "tag.c.infested.description";
 
             final String[] returnedKey = new String[1];
