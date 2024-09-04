@@ -1,8 +1,9 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
-import net.minecraft.block.BlockState;
+import net.minecraft.block.*;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import org.jetbrains.annotations.NotNull;
@@ -99,6 +100,18 @@ public class GenericKeys {
             if (item.getItem() instanceof SpawnEggItem) {
                 return "tag.c.spawn_egg.description";
             }
+            else if (item.getItem() instanceof BlockItem blockItem) {
+                if (blockItem.getBlock() instanceof CoralBlock)
+                    return "tag.c.coral.description";
+                else if (blockItem.getBlock() instanceof CoralBlock)
+                    return "tag.c.coral.description";
+                else if (blockItem.getBlock() instanceof CoralBlockBlock)
+                    return "tag.c.coral_block.description";
+                else if ((blockItem.getBlock() instanceof DeadCoralBlock) || (blockItem.getBlock() instanceof DeadCoralFanBlock))
+                    return "tag.c.dead_coral.description";
+                else if (blockItem.getBlock() instanceof InfestedBlock)
+                    return "tag.c.infested.description";
+            }
             final String[] returnedKey = new String[1];
             item.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
@@ -109,6 +122,17 @@ public class GenericKeys {
             return returnedKey[0];
         }
         else if ((stack instanceof BlockState item)) {
+            if (item.getBlock() instanceof CoralBlock)
+                return "tag.c.coral.description";
+            else if (item.getBlock() instanceof CoralBlock)
+                return "tag.c.coral.description";
+            else if (item.getBlock() instanceof CoralBlockBlock)
+                return "tag.c.coral_block.description";
+            else if ((item.getBlock() instanceof DeadCoralBlock) || (item.getBlock() instanceof DeadCoralFanBlock))
+                return "tag.c.dead_coral.description";
+            else if (item.getBlock() instanceof InfestedBlock)
+                return "tag.c.infested.description";
+
             final String[] returnedKey = new String[1];
             item.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
