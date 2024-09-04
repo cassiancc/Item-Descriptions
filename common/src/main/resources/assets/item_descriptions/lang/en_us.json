@@ -1,4 +1,6 @@
 {
+  "limelightExtension.item-descriptions.item_descriptions": "Item Descriptions",
+  "limelightExtension.item-descriptions.item_descriptions.desc": "Shows descriptions from Item Descriptions.  ",
   "config.item-descriptions.block_descriptions_title": "Block Descriptions",
   "config.item-descriptions.entity_descriptions_title": "Entity Descriptions",
   "config.item-descriptions.plugins_title": "Plugins",
