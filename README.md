@@ -36,6 +36,8 @@ When [HWYLA](https://modrinth.com/mod/hwyla) is installed, HWYLA will show block
 
 When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrapping is used instead of the built in wrapper.
 
+When [Limelight](https://modrinth.com/mod/limelight) is installed, Limelight will show block, item, and entity descriptions in its informational command palette when the search starts with `#`.
+
 </details>
 
 
