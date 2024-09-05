@@ -100,10 +100,6 @@ public class GenericKeys {
             if (item.getItem() instanceof SpawnEggItem) {
                 return "tag.c.spawn_egg.description";
             }
-            else if (item.getItem() instanceof BlockItem blockItem) {
-                if (blockItem.getBlock() instanceof InfestedBlock)
-                    return "tag.c.infested.description";
-            }
             final String[] returnedKey = new String[1];
             item.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
@@ -114,9 +110,6 @@ public class GenericKeys {
             return returnedKey[0];
         }
         else if ((stack instanceof BlockState item)) {
-            if (item.getBlock() instanceof InfestedBlock)
-                return "tag.c.infested.description";
-
             final String[] returnedKey = new String[1];
             item.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
