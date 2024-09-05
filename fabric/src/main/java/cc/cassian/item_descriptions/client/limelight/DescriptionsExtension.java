@@ -23,13 +23,6 @@ public class DescriptionsExtension implements LimelightExtension, BangsProvider 
         return ID;
     }
 
-//    public void gatherEntries(ResultGatherContext ctx, Consumer<io.wispforest.limelight.api.entry.ResultEntry> entryConsumer) {
-//        var resultEntry = new ResultEntry((ctx.searchText()));
-//        if (!Objects.requireNonNull(resultEntry.text().getLiteralString()).isEmpty()) {
-//            entryConsumer.accept(new ResultEntry(ctx.searchText()));
-//        }
-//    }
-
     @Override
     public List<BangDefinition> bangs() {
         return List.of(new BangDefinition(
