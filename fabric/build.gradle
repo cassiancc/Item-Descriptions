@@ -61,7 +61,6 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
     // Limelight
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
-    include "io.wispforest:owo-sentinel:${project.owo_version}"
     modCompileOnly "io.wispforest:limelight:${project.limelight_version}"
     modLocalRuntime "io.wispforest:limelight:${project.limelight_version}"
 }
