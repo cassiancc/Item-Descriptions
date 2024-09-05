@@ -2,7 +2,11 @@ package cc.cassian.item_descriptions.client.limelight;
 
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
+import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.item.Item;
+import net.minecraft.registry.DefaultedRegistry;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -20,8 +24,9 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
     }
 
     private Text findTranslationKey(String s) {
+        String lowerS = s.toLowerCase();
         // Take in user input, remove the #, and remove any spaces.
-        String trimmedS = s.toLowerCase().replace(" ", "_");
+        String trimmedS = lowerS.replace(" ", "_");
         // Set up a default namespace and item, in case namespace isn't specified, e.g. minecraft:user_input
         String namespace = "minecraft";
         String item = trimmedS;
@@ -42,10 +47,36 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         }
         else
             return createMultilineTranslation(convertToLoreKey(mobRegistry));
+        // If a namespace match is not found, iterate through block and item registries for a name match.
+        Text itemRegistry = iterateRegistry(Registries.ITEM, lowerS);
+        if (itemRegistry != null)
+            return itemRegistry;
+        Text blockRegistry = iterateRegistry(Registries.BLOCK, lowerS);
+        if (blockRegistry != null)
+            return blockRegistry;
         //If no match is found, return an empty string.
         return Text.literal("");
 
 
+    }
+
+    public Text iterateRegistry(DefaultedRegistry<?> registries, String lowerS) {
+        final Text[] returnedKey = new Text[1];
+        registries.stream().forEach(registryEntry -> {
+            String registryKey;
+            if (registryEntry instanceof Block block) {
+                registryKey = block.getTranslationKey();
+            }
+            else if (registryEntry instanceof Item item) {
+                registryKey = item.getTranslationKey();
+            }
+            else return;
+            if (lowerS.equals(I18n.translate(registryKey).toLowerCase())) {
+                returnedKey[0] = createMultilineTranslation(convertToLoreKey(registryKey));
+                return;
+            };
+        });
+        return returnedKey[0];
     }
 
     @Override
