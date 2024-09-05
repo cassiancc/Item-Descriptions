@@ -78,6 +78,7 @@
   "tag.c.cut.description": "This Cut block can be used as a building block.",
   "tag.c.dead_coral.description": "This coral block is dried out and dead.",
   "tag.minecraft.wooden_doors.description": "Doors like these can either be opened by hand or with Redstone Power.",
+  "tag.minecraft.doors.description": "Doors like these can either be opened by hand or with Redstone Power.",
   "tag.c.dyes.description": "A colourful pigment that can be applied to many blocks to give them a new look.",
   "tag.c.exposed.description": "A variant of Copper that has been left alone until it has become Exposed.",
   "tag.minecraft.fences.description": "This fence cannot be jumped over and can be used to keep out mobs.",
