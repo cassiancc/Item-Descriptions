@@ -24,7 +24,7 @@ public class ResultEntry implements InvokeResultEntry {
 
     private Text findTranslationKey(String s) {
         // Take in user input, remove the #, and remove any spaces.
-        String trimmedS = s.substring(1).toLowerCase().replace(" ", "_");
+        String trimmedS = s.toLowerCase().replace(" ", "_");
         // Set up a default namespace and item, in case namespace isn't specified, e.g. minecraft:user_input
         String namespace = "minecraft";
         String item = trimmedS;
