@@ -32,6 +32,7 @@ public class ClothConfigFactory {
             if (field.getName().contains("keybind")) category = keyBindsCategory;
             else if (field.getName().toLowerCase().contains("block")) category = pluginsCategory;
             else if (field.getName().toLowerCase().contains("entity")) category = pluginsCategory;
+            else if (field.getName().toLowerCase().contains("compat_")) category = pluginsCategory;
             else if (field.getName().toLowerCase().contains("developer")) category = developerCategory;
             else if (field.getName().toLowerCase().contains("style")) category = styleCategory;
 

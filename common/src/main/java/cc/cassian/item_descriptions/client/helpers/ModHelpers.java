@@ -289,7 +289,7 @@ public class ModHelpers {
         return loreKey;
     }
 
-    //Convert block/item/entity translation keys to lore translation keys.
+    // Convert block/item/entity translation keys to lore translation keys.
     public static @NotNull String getLoreTranslationKey(Object object) {
         return switch (object) {
             case ItemStack stack -> convertToLoreKey(stack.getTranslationKey());
@@ -299,7 +299,7 @@ public class ModHelpers {
         };
     }
 
-    //Find an entity's translation key
+    // Find an entity's translation key
     public static String getEntityTranslationKey(Entity entity) {
         //Allow for custom player descriptions
         if (entity.isPlayer()) {
@@ -315,19 +315,19 @@ public class ModHelpers {
 
     }
 
-    //Translate key with I18n. Can be disabled with developer options.
+    // Translate key with I18n. Can be disabled with developer options.
     public static String translate(String key) {
         if (!config.developer_dontTranslate) return I18n.translate(key);
         else return key;
     }
 
-    //Check for translation with I18n. Can be disabled with developer options.
+    // Check for translation with I18n. Can be disabled with developer options.
     public static boolean hasTranslation(String key) {
         if (!config.developer_showUntranslated) return I18n.hasTranslation(key);
         else return true;
     }
 
-    //Create a custom, potentially multi-line tooltip.
+    // Create a custom, potentially multi-line tooltip.
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
@@ -339,8 +339,8 @@ public class ModHelpers {
             //Check if the translated key exists.
             if (hasTranslation(loreKey)) {
                 //Check if custom wrapping should be used.
-                if (wrap) {
-                    //Any tooltip longer than 25 characters should be shortened.
+                if (wrap && (maxLength != 0)) {
+                    //Any tooltip longer than XX characters should be shortened.
                     while (translatedKey.length() >= maxLength) {
                         //Find how much to shorten the tooltip by.
                         int index = getIndex(translatedKey, maxLength);
@@ -357,18 +357,34 @@ public class ModHelpers {
         return lines;
     }
 
-    //Automatically generate translation keys for config options.
+    public static Text createMultilineTranslation(String loreKey) {
+        // Setup list to store (potentially multi-line) tooltip.
+        StringBuilder lines = new StringBuilder();
+        //Check if the key exists.
+        if (!loreKey.isEmpty()) {
+            // Translate the lore key.
+            String translatedKey = translate(loreKey);
+            // Check if the translated key exists.
+            if (hasTranslation(loreKey)) {
+                // Add the final tooltip.
+                lines.append(translatedKey);
+            }
+        }
+        return Text.literal(String.valueOf(lines));
+    }
+
+    // Automatically generate translation keys for config options.
     public static Text fieldName(Field field) {
         return Text.translatable("config."+MOD_ID+".config." + field.getName());
     }
     
-    //Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
+    // Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
     public static Text[] fieldTooltip(Field field) {
         String tooltipKey = "config."+MOD_ID+".config." + field.getName() + ".tooltip";
         return createTooltip(tooltipKey, true).toArray(new Text[0]);
     }
 
-    //Get the current value of a config field.
+    // Get the current value of a config field.
     @SuppressWarnings("unchecked")
     public static <T> T fieldGet(Object instance, Field field) {
         try {
@@ -378,7 +394,7 @@ public class ModHelpers {
         }
     }
 
-    //Set a config field.
+    // Set a config field.
     public static <T> Consumer<T> fieldSetter(Object instance, Field field) {
         return t -> {
             try {
