@@ -1,23 +1,20 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-import cc.cassian.item_descriptions.client.ModClient;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-public class ResultEntry implements InvokeResultEntry {
+public class DescriptionsResultEntry implements InvokeResultEntry {
     Text searchKey;
 
-    public ResultEntry(String s) {
+    public DescriptionsResultEntry(String s) {
         super();
         searchKey = findTranslationKey(s);
     }
@@ -62,7 +59,7 @@ public class ResultEntry implements InvokeResultEntry {
     }
 
     public LimelightExtension extension() {
-        return Extension.INSTANCE;
+        return DescriptionsExtension.INSTANCE;
     }
 
     public String entryId() {

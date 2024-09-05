@@ -1,9 +1,8 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-import blue.endless.jankson.annotation.Nullable;
 import io.wispforest.limelight.api.builtin.bangs.BangDefinition;
 import io.wispforest.limelight.api.builtin.bangs.BangsProvider;
-import io.wispforest.limelight.api.entry.ResultEntryGatherer;
+import io.wispforest.limelight.api.entry.ResultEntry;
 import io.wispforest.limelight.api.entry.ResultGatherContext;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.text.Text;
@@ -15,9 +14,9 @@ import java.util.function.Consumer;
 
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 
-public class Extension implements LimelightExtension, BangsProvider {
+public class DescriptionsExtension implements LimelightExtension, BangsProvider {
     public static final Identifier ID = Identifier.of(MOD_ID, "item_descriptions");
-    public static final Extension INSTANCE = new Extension();
+    public static final DescriptionsExtension INSTANCE = new DescriptionsExtension();
 
     @Override
     public Identifier id() {
@@ -37,18 +36,16 @@ public class Extension implements LimelightExtension, BangsProvider {
                 "descriptions",
                 Text.translatable("limelightExtension.item-descriptions.item_descriptions"),
                 (ctx, entryConsumer) -> {
-                    entryConsumer.accept(new ResultEntry(ctx.searchText()));
+                    entryConsumer.accept(new DescriptionsResultEntry(ctx.searchText()));
                 }
         ));
     }
 
     @Override
-    public @Nullable ResultEntryGatherer checkExclusiveGatherer(ResultGatherContext ctx) {
-//        if (!ctx.searchText().startsWith("#")) return null;
-        var resultEntry = new ResultEntry((ctx.searchText()));
+    public void gatherEntries(ResultGatherContext ctx, Consumer<ResultEntry> entryConsumer) {
+        var resultEntry = new DescriptionsResultEntry((ctx.searchText()));
         if (!Objects.requireNonNull(resultEntry.text().getLiteralString()).isEmpty()) {
-            return (ctx1, entryConsumer) -> entryConsumer.accept(new ResultEntry(ctx.searchText()));
+            entryConsumer.accept(new DescriptionsResultEntry(ctx.searchText()));
         }
-        return null;
     }
 }
