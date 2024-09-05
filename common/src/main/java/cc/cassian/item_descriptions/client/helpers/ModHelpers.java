@@ -340,8 +340,8 @@ public class ModHelpers {
             //Check if the translated key exists.
             if (hasTranslation(loreKey)) {
                 //Check if custom wrapping should be used.
-                if (wrap) {
-                    //Any tooltip longer than 25 characters should be shortened.
+                if (wrap && (maxLength != 0)) {
+                    //Any tooltip longer than XX characters should be shortened.
                     while (translatedKey.length() >= maxLength) {
                         //Find how much to shorten the tooltip by.
                         int index = getIndex(translatedKey, maxLength);
