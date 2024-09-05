@@ -31,8 +31,6 @@
   "config.item-descriptions.config.keybind_invert.tooltip": "By default, tooltips are shown when a keybind is pressed. This setting inverts that so tooltips are hidden when keybinds are pressed.",
   "config.item-descriptions.config.style_length": "Maximum length of tooltips",
   "config.item-descriptions.config.style_length.tooltip": "This setting changes the maximum length of tooltips. This is only enforced when ToolTipFix is not present.",
-  "config.item-descriptions.config.compat_limelightLength": "Maximum length of Limelight results",
-  "config.item-descriptions.config.compat_limelightLength.tooltip": "When Limelight is installed, this setting changes the maximum length of its results.",
   "config.item-descriptions.config.style_color": "Tooltip Color",
   "config.item-descriptions.config.style_color.tooltip": "This setting changes what Minecraft colour is used for block and item tooltips, either by colour code or name",
   "config.item-descriptions.config.style_italics": "Enable Italicized Tooltips",
