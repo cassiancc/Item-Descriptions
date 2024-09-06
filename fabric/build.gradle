@@ -59,10 +59,6 @@ dependencies {
     // Architectury Loom
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
-    // Limelight
-    modImplementation "io.wispforest:owo-lib:${project.owo_version}"
-    modCompileOnly "io.wispforest:limelight:${project.limelight_version}"
-    modLocalRuntime "io.wispforest:limelight:${project.limelight_version}"
 }
 
 
