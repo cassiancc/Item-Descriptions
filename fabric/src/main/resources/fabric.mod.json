@@ -24,9 +24,6 @@
     ],
     "jade": [
       "cc.cassian.item_descriptions.client.jade.fabric.JadeIntegration"
-    ],
-    "limelight": [
-      "cc.cassian.item_descriptions.client.limelight.LimelightIntegration"
     ]
   },
   "depends": {
@@ -41,6 +38,5 @@
   "suggests": {
     "tooltipfix": "*",
     "jade": "*",
-    "limelight": "*"
   }
 }
