@@ -293,7 +293,7 @@ public class ModHelpers {
     // Convert block/item/entity translation keys to lore translation keys.
     public static @NotNull String getLoreTranslationKey(Object object) {
         return switch (object) {
-            case ItemStack stack -> convertToLoreKey(stack.getTranslationKey());
+            case ItemStack stack -> convertToLoreKey(stack.getItem().getTranslationKey());
             case Block block -> convertToLoreKey(block.getTranslationKey());
             case Entity entity -> convertToLoreKey(getEntityTranslationKey(entity));
             case null, default -> "";
