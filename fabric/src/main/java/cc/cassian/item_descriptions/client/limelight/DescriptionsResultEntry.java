@@ -37,23 +37,32 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             item = splitS[1];
         }
         //Check to see if that namespaced identifier matches an item. If so, return that item's lore key.
-        var itemStack = createMultilineTranslation(findItemLoreKey(Registries.ITEM.get(Identifier.of(namespace, item)).getDefaultStack()));
-        if (!Objects.requireNonNull(itemStack.getLiteralString()).isEmpty()) return itemStack;
+        if (config.itemDescriptions) {
+            var itemStack = createMultilineTranslation(findItemLoreKey(Registries.ITEM.get(Identifier.of(namespace, item)).getDefaultStack()));
+            if (!Objects.requireNonNull(itemStack.getLiteralString()).isEmpty()) return itemStack;
+        }
         //Check to see if that namespaced identifier matches a mob. If so, return that item's lore key.
         //This seems to return a Pig if it isn't matched correctly, so that is ignored if "pig" isn't actually typed in.
-        var mobRegistry = Registries.ENTITY_TYPE.get(Identifier.of(namespace, item)).getTranslationKey();
-        if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
-            if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry));
+        if (config.entityDescriptions) {
+            var mobRegistry = Registries.ENTITY_TYPE.get(Identifier.of(namespace, item)).getTranslationKey();
+            if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
+                if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry));
+            }
+            else
+                return createMultilineTranslation(convertToLoreKey(mobRegistry));
         }
-        else
-            return createMultilineTranslation(convertToLoreKey(mobRegistry));
         // If a namespace match is not found, iterate through block and item registries for a name match.
-        Text itemRegistry = iterateRegistry(Registries.ITEM, lowerS);
-        if (itemRegistry != null)
-            return itemRegistry;
-        Text blockRegistry = iterateRegistry(Registries.BLOCK, lowerS);
-        if (blockRegistry != null)
-            return blockRegistry;
+        if (config.itemDescriptions) {
+            Text itemRegistry = iterateRegistry(Registries.ITEM, lowerS);
+            if (itemRegistry != null)
+                return itemRegistry;
+
+        }
+        if (config.blockDescriptions) {
+            Text blockRegistry = iterateRegistry(Registries.BLOCK, lowerS);
+            if (blockRegistry != null)
+                return blockRegistry;
+        }
         //If no match is found, return an empty string.
         return Text.literal("");
 
