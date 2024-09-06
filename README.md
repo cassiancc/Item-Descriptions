@@ -41,7 +41,7 @@ When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrappin
 </details>
 
 
-## Adding New Desccriptions
+## Adding New Descriptions
 
 By default, the mod provides descriptions for all blocks, items, and entities - including supported April Fools versions, but it has been designed in a way that makes it extensible for use in modpacks or when using other custom content. To add a tooltip to a block or item, just add the following entry to your mod or resource pack's language file.
 
