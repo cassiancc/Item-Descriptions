@@ -4,6 +4,7 @@ import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.block.*;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import org.jetbrains.annotations.NotNull;
@@ -94,24 +95,38 @@ public class GenericKeys {
 
     }
 
-    private static String checkGenericTagList(Object stack) {
-        if ((stack instanceof ItemStack item)) {
+    private static String checkGenericTagList(Object object) {
+        // If object is an item, check for Item Tags
+        if ((object instanceof ItemStack itemStack)) {
+            final Item item = itemStack.getItem();
             //Temporary - Spawn Eggs do not yet have a tag.
-            if (item.getItem() instanceof SpawnEggItem) {
+            if (item instanceof SpawnEggItem) {
                 return "tag.c.spawn_egg.description";
             }
             final String[] returnedKey = new String[1];
-            item.streamTags().forEach(itemTagKey -> {
+            itemStack.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
                 if (I18n.hasTranslation(loreKey)) {
                     returnedKey[0] = loreKey;
                 }
             });
+            // If untagged, check if it is a Block Item and if a Block Tag matches.
+            if (returnedKey[0] == null) {
+                if ((item instanceof BlockItem blockItem)) {
+                    blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
+                        String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                        if (I18n.hasTranslation(loreKey)) {
+                            returnedKey[0] = loreKey;
+                        }
+                    });
+                }
+            }
             return returnedKey[0];
         }
-        else if ((stack instanceof BlockState item)) {
+        //If object is a blockstate, check it for Block tags
+        else if ((object instanceof BlockState state)) {
             final String[] returnedKey = new String[1];
-            item.streamTags().forEach(itemTagKey -> {
+            state.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
                 if (I18n.hasTranslation(loreKey)) {
                     returnedKey[0] = loreKey;
