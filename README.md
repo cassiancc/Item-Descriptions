@@ -34,14 +34,14 @@ When [WTHIT](https://modrinth.com/mod/wthit) is installed, WTHIT will show block
 
 When [HWYLA](https://modrinth.com/mod/hwyla) is installed, HWYLA will show block and entity descriptions in its informational HUD.
 
-When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrapping is used instead of the built in wrapper.
+When [Limelight](https://modrinth.com/mod/limelight) is installed, Limelight will show a description in its informational command palette when a block, item, or entity matches your search.
 
-When [Limelight](https://modrinth.com/mod/limelight) is installed, Limelight will show block, item, and entity descriptions in its informational command palette when a namespaced item is searched.
+When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrapping is used instead of the built in wrapper.
 
 </details>
 
 
-## Adding New Desccriptions
+## Adding New Descriptions
 
 By default, the mod provides descriptions for all blocks, items, and entities - including supported April Fools versions, but it has been designed in a way that makes it extensible for use in modpacks or when using other custom content. To add a tooltip to a block or item, just add the following entry to your mod or resource pack's language file.
 
