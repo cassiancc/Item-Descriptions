@@ -101,6 +101,7 @@
   "tag.c.music_discs.description": "This uncommon item can be played in a Jukebox.",
   "tag.minecraft.music_discs.description": "This uncommon item can be played in a Jukebox.",
   "tag.c.creeper_drop_music_discs.description": "This uncommon item can be collected by getting a Skeleton to kill a Creeper, and can be played in a Jukebox.",
+  "tag.minecraft.creeper_drop_music_discs.description": "This uncommon item can be collected by getting a Skeleton to kill a Creeper, and can be played in a Jukebox.",
   "tag.c.ores.description": "An ore block that can be smelted into a useful resource.",
   "tag.c.oxidized.description": "A variant of Copper that has been left alone until it has become Oxidized.",
   "tag.minecraft.pickaxes.description": "This tool can be used to mine the solid stone beneath the surface.",
