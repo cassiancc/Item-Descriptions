@@ -8,6 +8,6 @@ public class ModHelpersImpl {
         return ModList.get().isLoaded("cloth_config");
     }
     public static boolean tooltipFixInstalled() {
-        return false;
+        return true;
     }
 }
