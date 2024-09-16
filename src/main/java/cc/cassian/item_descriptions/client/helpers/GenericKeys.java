@@ -1,95 +1,21 @@
-package cc.cassian.item_descriptions;
+package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.block.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.item.SpawnEggItem;
+import net.minecraft.tag.BlockTags;
+import net.minecraft.tag.ItemTags;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-@Environment(EnvType.CLIENT)
-public class ModHelpers {
-    public static boolean clothConfigInstalled() {
-        return FabricLoader.getInstance().isModLoaded("cloth");
-    }
-    public static boolean tooltipFixInstalled() {
-        return FabricLoader.getInstance().isModLoaded("tooltipfix");
-    }
-
-    public static Formatting getColor() {
-        return Formatting.byCode(ModConfig.get().tooltipColor.charAt(0));
-    }
-
-    public static int getIndex(String translatedKey, int maxLength) {
-        String subKey = translatedKey.substring(0, maxLength);
-        int index;
-        //Find the last space character in the substring, if not, default to the length of the substring.
-        if (subKey.contains(" ")) {
-            index = subKey.lastIndexOf(" ")+1;
-        }
-        else index = maxLength;
-        return index;
-    }
-
-    public static boolean tooltipKeyPressed() {
-        ModConfig config = ModConfig.get();
-        if (config.keybind_displayWhenControlIsHeld) return checkKey(Screen.hasControlDown());
-        if (config.keybind_displayWhenShiftIsHeld) return checkKey(Screen.hasShiftDown());
-        if (config.keybind_displayWhenAltIsHeld) return checkKey(Screen.hasAltDown());
-        return false;
-    }
-
-    @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
-    public static boolean checkKey(boolean key) {
-        boolean invert = ModConfig.get().keybind_invert;
-        //If key is pressed, display the tooltip unless inverted.
-        if (key) return !invert;
-        //If key is not pressed, don't display the tooltip unless inverted.
-        else if (!key) return invert;
-        else return false;
-    }
-
-    public static String findItemLoreKey(ItemStack stack) {
-        CompoundTag s = stack.getOrCreateTag();
-        if (s != null) {
-            if (s.contains("CUSTOM_MODEL_DATA")) {
-                return getLoreKey(stack) + ".custommodeldata." + s.getInt("CUSTOM_MODEL_DATA");
-            }
-        }
-        //Find the tooltip translation key for the provided item stack.
-        return checkLoreKey(getLoreKey(stack));
-    }
-
-    public static String findBlockLoreKey(Block block) {
-        //Find the tooltip translation key for the provided block.
-        return checkLoreKey(getLoreKey(block));
-    }
-
-    public static String checkLoreKey(String loreKey) {
-        //This function handles whether a generic tooltip should be used, or if a tooltip exists.
-        if (!ModConfig.get().developer_dontTranslate) {
-            //Check if the tooltip translation key exists. If so, use the provided tooltip.
-            if (hasTranslation(loreKey)) return loreKey;
-            //If the tooltip translation key does not exist, use one of the provided generic tooltips.
-            else return getGenericKey(loreKey);
-        }
-        else return loreKey;
-
-    }
-
-    private static @NotNull String getGenericKey(String loreKey) {
-        if (!ModConfig.get().developer_disableGenericKeys) {
+public class GenericKeys {
+    public static @NotNull String getGenericLoreKey(String loreKey) {
+        if (!ModConfig.get().developer_disableGenericStringDescriptions) {
             //Iterate through the provided generic keys.
             if (loreKey.contains("planks")) return "lore.generic.planks";
             else if (loreKey.contains("_sword")) return "lore.generic.sword";
@@ -141,12 +67,12 @@ public class ModHelpers {
             else if (loreKey.contains("sherd")) return "lore.generic.sherd";
             else if (loreKey.contains("leaves")) return "lore.generic.leaves";
             else if (loreKey.contains("infested")) return "lore.generic.infested";
+            else if (loreKey.contains("banner_pattern")) return "lore.generic.banner_pattern";
             else if (loreKey.contains("head") || (loreKey.contains("skull"))) return "lore.generic.skull";
             else if (loreKey.contains("cake")) return "lore.generic.cake";
             else if (loreKey.contains("candle")) return "lore.generic.candle";
             else if (loreKey.contains("dye")) return "lore.generic.dye";
             else if (loreKey.contains("music_disc")) return "lore.generic.music_disc";
-            else if (loreKey.contains("banner_pattern")) return "lore.generic.banner_pattern";
             else if (loreKey.contains("banner")) return "lore.generic.banner";
             else if (loreKey.contains("concrete_powder")) return "lore.generic.concrete_powder";
             else if (loreKey.contains("concrete")) return "lore.generic.concrete";
@@ -171,67 +97,76 @@ public class ModHelpers {
 
     }
 
-    private static @NotNull String getLoreKey(ItemStack stack) {
-        return getLoreTranslationKey(stack.getTranslationKey());
+    private static String convertIdentifierToDescriptionKey(Identifier itemTagKey) {
+        String convertedKey = itemTagKey.toString().replace(":", ".").replace("/", ".");
+        return "tag."+convertedKey+".description";
     }
 
-    private static @NotNull String getLoreKey(Block stack) {
-        return getLoreTranslationKey(stack.getTranslationKey());
-    }
-
-    private static @NotNull String getLoreTranslationKey(String translationKey) {
-        String loreKey;
-        //Find the translation key for blocks.
-        if (translationKey.contains("block.")) loreKey = translationKey.replaceFirst("block", "lore");
-        //Find the translation key for items.
-        else if ((translationKey.contains("item."))) loreKey = translationKey.replaceFirst("item", "lore");
-        //In case the translation key somehow does not contain a block/item.
-        else loreKey = translationKey;
-        return loreKey;
-    }
-
-    public static String translate(String key) {
-        if (!ModConfig.get().developer_dontTranslate) return I18n.translate(key);
-        else return key;
-    }
-
-    public static boolean hasTranslation(String key) {
-        if (!ModConfig.get().developer_showUntranslated) return I18n.hasTranslation(key);
-        else return true;
-    }
-
-    public static List<?> createTooltip(String loreKey, boolean wrap, String format) {
-        //Setup list to store (potentially multi-line) tooltip.
-        ArrayList<String> linesString = new ArrayList<>();
-        ArrayList<Text> lines = new ArrayList<>();
-        int maxLength = 25;
-        //Check if the key exists.
-        if (!loreKey.isEmpty()) {
-            //Translate the lore key.
-            String translatedKey = translate(loreKey);
-            //Check if the translated key exists.
-            if (hasTranslation(loreKey)) {
-                //Check if custom wrapping should be used.
-                if (wrap) {
-                    //Any tooltip longer than 25 characters should be shortened.
-                    while (translatedKey.length() >= maxLength) {
-                        //Find how much to shorten the tooltip by.
-                        int index = getIndex(translatedKey, maxLength);
-                        //Add a shortened tooltip.
-                        lines.add(new LiteralText(translatedKey.substring(0, index)).formatted(getColor()));
-                        linesString.add(translatedKey.substring(0, index));
-                        //Remove the shortened tooltip substring from the tooltip. Repeat.
-                        translatedKey = translatedKey.substring(index);
-                    }
-                }
-                //Add the final tooltip.
-                lines.add(new LiteralText(translatedKey).formatted(getColor()));
-                linesString.add(translatedKey);
+    private static String checkGenericTagList(Object object) {
+        // If object is an item, check for Item Tags
+        if ((object instanceof ItemStack)) {
+            final ItemStack itemStack = (ItemStack) object;
+            final Item item = itemStack.getItem();
+//            //Temporary - Spawn Eggs do not yet have a tag.
+            if (item instanceof SpawnEggItem) {
+                return "tag.c.spawn_egg.description";
             }
+            final String[] returnedKey = new String[1];
+            ItemTags.getContainer().getTagsFor(item).stream().forEach(itemTagKey -> {
+                String loreKey = convertIdentifierToDescriptionKey(itemTagKey);
+                System.out.println(loreKey);
+                if (hasTranslation(loreKey)) {
+                returnedKey[0] = loreKey;
+                }
+            });
+            ItemTags.getContainer().getTagsFor(item).stream().forEach(itemTagKey -> {
+                String loreKey = convertIdentifierToDescriptionKey(itemTagKey);
+                if (hasTranslation(loreKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            // If untagged, check if it is a Block Item and if a Block Tag matches.
+            if (returnedKey[0] == null) {
+                if ((item instanceof BlockItem)) {
+                    BlockItem blockItem = (BlockItem) item;
+                    BlockTags.getContainer().getTagsFor(blockItem.getBlock()).stream().forEach(itemTagKey -> {
+                        String loreKey = convertIdentifierToDescriptionKey(itemTagKey);
+                        if (hasTranslation(loreKey)) {
+                            returnedKey[0] = loreKey;
+                        }
+                    });
+                }
+            }
+            return returnedKey[0];
         }
-        if (Objects.equals(format, "string")) {
-            return linesString;
+//        If object is a blockstate, check it for Block tags
+        else if ((object instanceof BlockState)) {
+            final BlockState state = (BlockState) object;
+            final String[] returnedKey = new String[1];
+            BlockTags.getContainer().getTagsFor(state.getBlock()).stream().forEach(itemTagKey -> {
+                String loreKey = "tag."+itemTagKey.toString()+".description";
+//                if (I18n.hasTranslation(loreKey)) {
+                    returnedKey[0] = loreKey;
+//                }
+            });
+            return returnedKey[0];
         }
-        else return lines;
+        //If no tag key matches, return empty so a string match can be found.
+        return "";
+    }
+
+    public static String getGenericKey(Object object) {
+        String loreKey = getLoreTranslationKey(object);
+        if (!ModConfig.get().developer_disableGenericTagDescriptions) {
+            //Iterate through the provided generic tag list.
+            String generic = checkGenericTagList(object);
+            if (generic != null) {
+                if (generic.isEmpty())
+                    return getGenericLoreKey(loreKey);
+                else return generic;
+            }
+            else return getGenericLoreKey(loreKey);
+        }
+        else return getGenericLoreKey(loreKey);
     }
 }

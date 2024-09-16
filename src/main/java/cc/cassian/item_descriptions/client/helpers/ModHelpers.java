@@ -1,0 +1,389 @@
+package cc.cassian.item_descriptions.client.helpers;
+
+import cc.cassian.item_descriptions.client.config.ModConfig;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.SkullBlockEntity;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.function.Consumer;
+
+import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
+import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
+import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
+
+public class ModHelpers {
+    //Shorthand for config.
+    public static ModConfig config = ModConfig.get();
+
+    //Check if Cloth Config is installed and its configuration can be used.
+    public static boolean clothConfigInstalled() {
+        return FabricLoader.getInstance().isModLoaded("cloth-config2");
+    }
+    public static boolean tooltipFixInstalled() {
+        return FabricLoader.getInstance().isModLoaded("tooltipfix");
+    }
+
+    //Used in Config to change the tooltip's formatting.
+    public static Formatting getStyle() {
+        return getColour();
+    }
+
+    //Used to check what colour a tooltip should be.
+    public static Formatting getColour() {
+        String colour = config.style_color;
+        int length = colour.length();
+        if (length == 1) {
+            return Formatting.byCode(colour.charAt(0));
+        }
+        else {
+            String replacedColour = colour.toLowerCase().replace(" ", "_");
+            switch (replacedColour) {
+                case "dark_blue":
+                    return Formatting.byName(colour);
+                case "dark_green":
+                    return Formatting.byName(colour);
+                case "dark_red":
+                    return Formatting.byName(colour);
+                case "dark_purple":
+                    return Formatting.byName(colour);
+                case "blue":
+                    return Formatting.byName(colour);
+                case "green":
+                    return Formatting.byName(colour);
+                case "aqua":
+                    return Formatting.byName(colour);
+                case "red":
+                    return Formatting.byName(colour);
+                case "yellow":
+                    return Formatting.byName(colour);
+                case "white":
+                    return Formatting.byName(colour);
+                case "black":
+                    return Formatting.byName(colour);
+                case "pink": return Formatting.byName("light_purple");
+                case "light_purple":
+                    return Formatting.byName("light_purple");
+                case "dark_grey": return Formatting.byName("dark_gray");
+                case "dark_gray":
+                    return Formatting.byName("dark_gray");
+                case "cyan": return Formatting.byName("dark_aqua");
+                case "dark_aqua":
+                    return Formatting.byName("dark_aqua");
+                case "orange": return Formatting.byName("gold");
+                case "gold":
+                    return Formatting.byName("gold");
+                case "dark_yellow":
+                    return Formatting.byName("gold");
+                default: return Formatting.byName("gray");
+            }
+        }
+    }
+
+    //Handles detection of when a line break should be added in a tooltip.
+    public static int getIndex(String translatedKey, int maxLength) {
+        String subKey = translatedKey.substring(0, maxLength);
+        int index;
+        //Find the last space character in the substring, if not, default to the length of the substring.
+        if (subKey.contains(" ")) {
+            index = subKey.lastIndexOf(" ")+1;
+        }
+        else index = maxLength;
+        return index;
+    }
+
+    //Check if a keybind is pressed and a tooltip should be displayed.
+    public static boolean tooltipKeyPressed() {
+        if (config.keybind_displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
+        else if (config.keybind_displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
+        else if (config.keybind_displayWhenAltIsHeld && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
+        else return false;
+    }
+
+    //Check if a keybind is pressed. Contains the handling for if the key is inverted.
+    @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
+    public static boolean checkKey(boolean key) {
+        boolean invert = config.keybind_invert;
+        //If key is pressed, display the tooltip unless inverted.
+        if (key) return !invert;
+        //If key is not pressed, don't display the tooltip unless inverted.
+        else if (!key) return invert;
+        else return false;
+    }
+
+    //Create an item's lore key based off data from its Item Stack.
+    public static String findItemLoreKey(ItemStack stack) {
+        CompoundTag s = stack.getTag();
+        //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
+        if (s != null) {
+
+            if (s.getInt("CUSTOM_MODEL_DATA") != 0) {
+                return getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA"));
+            }
+            else if (s.get("SkullOwner") != null) {
+                String profileKey = getProfile(stack);
+                if (hasTranslation(profileKey)) {
+                    return profileKey;
+                }
+            }
+        }
+        //Find the tooltip translation key for the provided item stack.
+        return checkLoreKey(getLoreKey(stack));
+    }
+
+    //Create a block's lore key based off data from WAILA-based Block Accessors like Jade/WTHIT/HYWLA.
+    public static String getBlockAccessorLoreKey(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+        //Convert block translation key to lore translation key.
+        String loreKey = findBlockLoreKey(block);
+        //Custom handling of Player Heads so custom profiles give custom descriptions.
+        if (blockEntity instanceof SkullBlockEntity) {
+            String profileKey = getProfile(blockEntity, loreKey);
+            //Only show custom descriptions if a translation is present.
+            if (hasTranslation(profileKey)) {
+                return profileKey;
+            }
+        }
+        //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
+        if (!hasTranslation(loreKey)) {
+            return findItemLoreKey(block.getPickStack(world, pos, state));
+        }
+        return loreKey;
+    }
+
+    //Find a profile name in a Player Head Item Stack.
+    public static String getProfile(ItemStack stack) {
+        assert stack.getTag() != null;
+        String optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getTag().getCompound("SkullOwner").get("Name")).toString());
+        optionalProfileName = optionalProfileName.substring(1, optionalProfileName.length()-1);
+        if (!optionalProfileName.isEmpty()) {
+            String profileKey = getLoreKey(stack) + ".profile." + optionalProfileName;
+            if (hasTranslation(profileKey)) {
+                return profileKey;
+            }
+        }
+        return "";
+    }
+
+    //Find a profile name in a Player Head block.
+    public static String getProfile(BlockEntity blockEntity, String loreKey) {
+        String optionalProfileName;
+        try {
+             optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName();
+        }
+        catch (NullPointerException nullPointerException) {
+            return loreKey;
+        }
+        String profileKey = loreKey + ".profile." + optionalProfileName;
+        if (hasTranslation(profileKey)) {
+            return profileKey;
+        }
+        else return loreKey;
+    }
+
+    //Check if block descriptions should be shown based off configuration.
+    public static boolean showBlockDescriptions() {
+        return config.blockDescriptions && (tooltipKeyPressed() || config.displayBlockDescriptionsAlways);
+    }
+
+    //Check if item descriptions should be shown based off configuration.
+    public static boolean showItemDescriptions() {
+        return config.itemDescriptions && (tooltipKeyPressed() || config.displayAlways);
+    }
+    //Check if entity descriptions should be shown based off configuration.
+    public static boolean showEntityDescriptions() {
+        return config.entityDescriptions && (tooltipKeyPressed() || config.displayEntityDescriptionsAlways);
+    }
+
+    //Shorthand to check a block's lore key.
+    public static String findBlockLoreKey(Block block) {
+        return checkLoreKey(getLoreKey(block));
+    }
+
+    //Shorthand to check an entity's lore key.
+    public static String findEntityLoreKey(Entity entity) {
+        return checkLoreKey(getLoreKey(entity));
+    }
+
+    //Check if a lore key exists or if a generic tooltip should be used.
+    public static String checkLoreKey(String loreKey) {
+        //This function handles whether a generic tooltip should be used, or if a tooltip exists.
+        if (!config.developer_dontTranslate) {
+            //Check if the tooltip translation key exists. If so, use the provided tooltip.
+            if (hasTranslation(loreKey)) return loreKey;
+            //If the tooltip translation key does not exist, use one of the provided generic tooltips.
+            else return getGenericLoreKey(loreKey);
+        }
+        else return loreKey;
+    }
+
+    //Check if a tag exists, or if a generic one should be used.
+    public static @NotNull String getLoreKey(Object object) {
+        @NotNull String key = getLoreTranslationKey(object);
+        if (hasTranslation(key)) {
+            return key;
+        }
+        else {
+            return getGenericKey(object);
+        }
+    }
+
+    //Convert block/item/entity translation keys to lore translation keys.
+    public static @NotNull String convertToLoreKey(String translationKey) {
+        String loreKey;
+        //Find the translation key for blocks.
+        if (translationKey.contains("block.")) loreKey = translationKey.replaceFirst("block", "lore");
+        //Find the translation key for items.
+        else if ((translationKey.contains("item."))) loreKey = translationKey.replaceFirst("item", "lore");
+        //Find the translation key for entities.
+        else if ((translationKey.contains("entity."))) {
+            //Entity descriptions use a different format as to avoiding colliding with items of the same name.
+            String oldKey = translationKey.replaceFirst("entity", "lore");
+            String newKey = translationKey + ".description";
+            //Tropical fish have 20 different variants and their description should be the same.
+            if (newKey.contains("tropical_fish")) {
+                newKey = "entity.minecraft.tropical_fish";
+            }
+            //In case an entity tooltip is misconfigured, try checking for an "old style" key.
+            if (hasTranslation(newKey)) return newKey;
+            else if (hasTranslation(oldKey)) return oldKey;
+            else return newKey;
+        }
+        //In case the translation key somehow does not contain a block/item/entity.
+        else loreKey = translationKey;
+        return loreKey;
+    }
+
+    // Convert block/item/entity translation keys to lore translation keys.
+    public static @NotNull String getLoreTranslationKey(Object object) {
+        if (object instanceof ItemStack)
+        {
+            ItemStack stack = (ItemStack) object;
+            return convertToLoreKey(stack.getTranslationKey());
+        }
+        else if (object instanceof Block) {
+            Block block = (Block) object;
+            return convertToLoreKey(block.getTranslationKey());
+        }
+        else if (object instanceof Entity) {
+            Entity entity = (Entity) object;
+            return convertToLoreKey(getEntityTranslationKey(entity));
+        }
+        return "";
+    }
+
+    // Find an entity's translation key
+    public static String getEntityTranslationKey(Entity entity) {
+        //Allow for custom player descriptions
+        if (entity instanceof PlayerEntity) {
+            String playerKey = "entity.minecraft.player." + entity.getName().getString();
+            //Check if a custom player description exists.
+            if (hasTranslation(playerKey)) return playerKey;
+            //If not, use the default one.
+            else return "entity.minecraft.player";
+        }
+        else {
+            return entity.getType().getTranslationKey();
+        }
+    }
+
+    // Translate key with I18n. Can be disabled with developer options.
+    public static String translate(String key) {
+        if (!config.developer_dontTranslate) return I18n.translate(key);
+        else return key;
+    }
+
+    // Check for translation with I18n. Can be disabled with developer options.
+    public static boolean hasTranslation(String key) {
+        if (!config.developer_showUntranslated) return I18n.hasTranslation(key);
+        else return true;
+    }
+
+    // Create a custom, potentially multi-line tooltip.
+    public static List<?> createTooltip(String loreKey, boolean wrap, String format) {
+        //Setup list to store (potentially multi-line) tooltip.
+        ArrayList<String> linesString = new ArrayList<>();
+        ArrayList<Text> lines = new ArrayList<>();
+        int maxLength = 25;
+        //Check if the key exists.
+        if (!loreKey.isEmpty()) {
+            //Translate the lore key.
+            String translatedKey = translate(loreKey);
+            //Check if the translated key exists.
+            if (hasTranslation(loreKey)) {
+                //Check if custom wrapping should be used.
+                if (wrap) {
+                    //Any tooltip longer than 25 characters should be shortened.
+                    while (translatedKey.length() >= maxLength) {
+                        //Find how much to shorten the tooltip by.
+                        int index = getIndex(translatedKey, maxLength);
+                        //Add a shortened tooltip.
+                        lines.add(new LiteralText(translatedKey.substring(0, index)).formatted(getColour()));
+                        linesString.add(translatedKey.substring(0, index));
+                        //Remove the shortened tooltip substring from the tooltip. Repeat.
+                        translatedKey = translatedKey.substring(index);
+                    }
+                }
+                //Add the final tooltip.
+                lines.add(new LiteralText(translatedKey).formatted(getColour()));
+                linesString.add(translatedKey);
+            }
+        }
+        if (Objects.equals(format, "string")) {
+            return linesString;
+        }
+        else return lines;
+    }
+
+    // Automatically generate translation keys for config options.
+    public static String fieldName(Field field) {
+        return I18n.translate("config."+MOD_ID+".config." + field.getName());
+    }
+    
+    // Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
+//    public static String[] fieldTooltip(Field field) {
+//        String tooltipKey = "config."+MOD_ID+".config." + field.getName() + ".tooltip";
+//        createTooltip(tooltipKey, true).toArray(new Text[0]);
+//
+//    }
+
+    // Get the current value of a config field.
+    @SuppressWarnings("unchecked")
+    public static <T> T fieldGet(Object instance, Field field) {
+        try {
+            return (T) field.get(instance);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Set a config field.
+    public static <T> Consumer<T> fieldSetter(Object instance, Field field) {
+        return t -> {
+            try {
+                field.set(instance, t);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+}
