@@ -961,6 +961,7 @@
   "entity.minecraft.chicken.description": "This passive animal spawns quite commonly. It can be bred with Seeds, farmed for its Eggs, or killed for its meat and feathers.",
   "entity.minecraft.cod.description": "This passive animal spawns quite commonly in Rivers and Oceans. It can be killed for its meat, or picked up in a Bucket.",
   "entity.minecraft.cow.description": "This passive animal spawns quite commonly. It can be bred with Wheat, milked, or killed for its Beef and Leather.",
+  "entity.minecraft.creaking.description": "This noctural monster acts as a puppet of a nearby Creaking Heart. Keep a close eye on it!",
   "entity.minecraft.creeper.description": "This hostile creature spawns at night, ready to sneak up behind you and explode.",
   "entity.minecraft.dolphin.description": "These friendly creatures can be found swimming around the Ocean, playing with dropped Items and granting swimmers Dolphin's Grace.",
   "entity.minecraft.donkey.description": "This mob can be saddled and equipped with a chest to move items on the go.",
