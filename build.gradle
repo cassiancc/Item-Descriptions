@@ -48,7 +48,7 @@ dependencies {
     modApi("me.shedaniel.cloth:events") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modImplementation "net.fabricmc:fabric-item-api:20w14infinite"
+    include(modImplementation("net.fabricmc:fabric-item-api:20w14infinite"))
     modApi "com.terraformersmc:modmenu:${project.modmenu_version}"
     modImplementation "maven.modrinth:hwyla:${project.hwyla_version}-fabric"
 
