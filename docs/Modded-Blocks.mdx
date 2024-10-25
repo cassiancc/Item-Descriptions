@@ -1,0 +1,21 @@
+---
+title: Adding Block Descriptions
+icon: minecraft:grass_block
+---
+
+
+By default, the mod provides descriptions for all Vanilla Minecraft items - including supported April Fools versions, but it has been designed in a way that makes it extensible for use in modpacks. To add a tooltip to a block, just add the following entry to your mod or resource pack's language file (`en_us.json` for English U.S.).
+
+```json
+"lore.<namespace>.<your_item_here>": "A mysterious modded block."
+```
+
+For example, if I wanted to add a description to Cobblestone Bricks from [Pyrite](https://modrinth.com/mod/pyrite), I would add the following entry to [Pyrite's language file](https://github.com/cassiancc/Pyrite/blob/1.20.1/common/src/main/resources/assets/pyrite/lang/en_us.json).
+
+```json
+"lore.pyrite.cobblestone_bricks": "A variant of Cobblestone that has been carved into Bricks. Useful for early game builds!"
+```
+
+When adding new tooltips, its recommended to keep them two sentences or less to match the ones present in the original mod.
+
+Some blocks and items have default translations (planks, slabs, stairs, etc.) to prevent you from having to create a basic description for every wood type in your mod. This translation is used when no tooltip is registered for the block, and can be overridden by having a more specific tooltip registered.

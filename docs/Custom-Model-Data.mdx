@@ -1,0 +1,19 @@
+---
+title: Adding Custom Model Data
+icon: minecraft:carved_pumpkin
+---
+
+
+Minecraft supports adding [Custom Model Data](https://www.planetminecraft.com/forums/communities/texturing/new-1-14-custom-item-models-tuto-578834/) to various blocks and items. It would look strange if these custom blocks had the same descriptions as normal blocks, so Item Descriptions supports custom descriptions for these items.
+
+Assuming you've set the value of a Carved Pumpkin's Custom Model Data to 1, you would add the following entry to your resource pack's language file (`en_us.json` for English U.S.).
+
+```json
+"lore.minecraft.carved_pumpkin.custommodeldata.1": "Hello!",
+```
+
+For other items, you would use a similar description.
+
+```json
+"lore.<item_namespace>.<item_id>.custommodeldata.<value_of_custom_model_data>": "<Description here!>",
+```

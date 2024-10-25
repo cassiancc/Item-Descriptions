@@ -1,0 +1,18 @@
+---
+title: Adding Generic Descriptions for Tags
+icon: minecraft:name_tag
+---
+
+By default, the mod provides descriptions for all Vanilla Minecraft tags as well as many Common tags. These descriptions are used when an exact match is not found (e.g. Oak Logs do not have a tooltip, so the Logs tag is used), and use a similar format to entities. To add a tooltip to a tag, just add the following entry to your mod or resource pack's language file (`en_us.json` for English U.S.).
+
+```json
+"tag.<namespace>.<your_tag_here>.description": "A mysterious modded tag."
+```
+
+For example, if I wanted to add a description to Torch Levers from [Pyrite](https://modrinth.com/mod/pyrite), I would add the following entry to [Infinite Dimensions's language file](https://github.com/cassiancc/Pyrite/blob/1.20.1/common/src/main/resources/assets/pyrite/lang/en_us.json).
+
+```json
+"tag.pyrite.torch_levers.description": "This block can be used to hide Redstone Circuits in plain sight.",
+```
+
+When adding new tooltips, its recommended to keep them two sentences or less to match the ones present in the original mod.

@@ -1,0 +1,18 @@
+---
+title: Adding Entity Descriptions
+icon: minecraft:creeper_head
+---
+
+By default, the mod provides descriptions for all Vanilla Minecraft entities as well, and uses a similar format to blocks. To add a tooltip to an entity, just add the following entry to your mod or resource pack's language file (`en_us.json` for English U.S.).
+
+```json
+"entity.<namespace>.<your_entity_here>.description": "A mysterious modded entity."
+```
+
+For example, if I wanted to add a description to Chaos Pawns from [Infinite Dimensions](https://modrinth.com/mod/infinite-dimensions), I would add the following entry to [Infinite Dimensions's language file](https://github.com/cassiancc/ProjectInfinity/blob/master/src/main/resources/assets/infinity/lang/en_us.json).
+
+```json
+"entity.infinity.chaos_pawn.description": "This neutral mob spawns in Infinity Portals. It will randomly drop any item when killed."
+```
+
+When adding new tooltips, its recommended to keep them two sentences or less to match the ones present in the original mod.
