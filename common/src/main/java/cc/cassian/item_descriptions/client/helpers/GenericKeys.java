@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client.helpers;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.block.*;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -134,6 +135,17 @@ public class GenericKeys {
             });
             return returnedKey[0];
         }
+        else if ((object instanceof Entity entity)) {
+            final String[] returnedKey = new String[1];
+            entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
+                String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                if (I18n.hasTranslation(loreKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            return returnedKey[0];
+        }
+
         //If no tag key matches, return empty so a string match can be found.
         else return "";
     }
