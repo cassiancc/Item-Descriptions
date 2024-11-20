@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryKeys;
@@ -113,7 +114,8 @@ public class ModHelpers {
     public static String findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            String modelKey = getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
+            CustomModelDataComponent customModelDataComponent = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA));
+            String modelKey = getLoreKey(stack) + ".custommodeldata." + customModelDataComponent.getString(0);
             if (hasTranslation(modelKey)) {
                 return modelKey;
             }
@@ -143,7 +145,7 @@ public class ModHelpers {
         }
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!hasTranslation(loreKey)) {
-            return findItemLoreKey(block.getPickStack(world, pos, state));
+            return findItemLoreKey(block.getDefaultState().getPickStack(world, pos, false));
         }
         return loreKey;
     }
