@@ -15,6 +15,7 @@
   "license": "MIT",
   "icon": "assets/item_descriptions/icon.png",
   "environment": "client",
+  "mixins": ["item-descriptions.mixins.json"],
   "entrypoints": {
     "client": [
       "cc.cassian.item_descriptions.client.fabric.ItemDescriptionsFabricClient"
@@ -39,7 +40,6 @@
     "modmenu": "*"
   },
   "suggests": {
-    "tooltipfix": "*",
     "jade": "*",
     "limelight": "*"
   }

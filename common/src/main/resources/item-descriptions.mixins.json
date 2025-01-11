@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "cc.cassian.item_descriptions.client.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "InfoOverlayMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

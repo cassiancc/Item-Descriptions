@@ -30,11 +30,14 @@ When [Mod Menu](https://modrinth.com/mod/mod-menu) (only required on Fabric) and
 
 When [Jade](https://modrinth.com/mod/jade) is installed, Jade will show block and entity descriptions in its informational HUD.
 
+When [Useful Spyglass](https://www.curseforge.com/minecraft/mc-mods/useful-spyglass) is installed, Useful Spyglass will show block and entity descriptions in its informational HUD.
+
 When [WTHIT](https://modrinth.com/mod/wthit) is installed, WTHIT will show block and entity descriptions in its informational HUD.
 
 When [HWYLA](https://modrinth.com/mod/hwyla) is installed, HWYLA will show block and entity descriptions in its informational HUD.
 
 When [Limelight](https://modrinth.com/mod/limelight) is installed, Limelight will show a description in its informational command palette when a block, item, or entity matches your search.
+
 
 When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrapping is used instead of the built in wrapper.
 

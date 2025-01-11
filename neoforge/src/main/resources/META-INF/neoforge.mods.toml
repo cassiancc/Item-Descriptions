@@ -29,3 +29,6 @@ type = "required"
 versionRange = "[1.21,)"
 ordering = "NONE"
 side = "CLIENT"
+
+[[mixins]]
+config = "item-descriptions.mixins.json"

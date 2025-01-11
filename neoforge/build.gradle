@@ -36,6 +36,16 @@ repositories {
     // for more information about repositories.
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
 
 }
 
@@ -49,7 +59,9 @@ dependencies {
     modCompileOnly "mcp.mobius.waila:wthit-api:neo-${project.wthit_version}"
     // run against the full jar
     modRuntimeOnly "mcp.mobius.waila:wthit:neo-${project.wthit_version}"
-    modRuntimeOnly "lol.bai:badpackets:neo-${project.badpackets_version}"}
+    modRuntimeOnly "lol.bai:badpackets:neo-${project.badpackets_version}"
+    modImplementation "curse.maven:useful-spyglass-840027:5934235"
+}
 
 processResources {
     inputs.property 'version', project.version
