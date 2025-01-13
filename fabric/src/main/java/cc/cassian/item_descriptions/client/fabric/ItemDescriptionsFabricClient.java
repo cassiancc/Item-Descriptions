@@ -19,9 +19,9 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
 
     public void addTooltips() {
         //? if >1.20.5 {
-            /*ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
-         *///?} else
-            ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
+            ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
+         //?} else
+            /*ItemTooltipCallback.EVENT.register((stack, context, lines) -> {*/
                 //Only show tooltip if key is pressed or "always on" is enabled.
                 if (showItemDescriptions()) {
                     //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.

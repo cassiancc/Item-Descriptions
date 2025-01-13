@@ -81,7 +81,7 @@ dependencies {
     }
 
     // Useful Spyglass
-    if (stonecutter.eval(mcVersion, ">1.19.2")) {
+    if ((stonecutter.eval(mcVersion, ">1.19.2")) && (stonecutter.eval(mcVersion, "<1.21.4"))) {
         modImplementation("curse.maven:useful-spyglass-840027:${common.mod.dep("useful_spyglass_fabric_version")}")
     }
     if (stonecutter.eval(mcVersion, "=1.19.2")) {

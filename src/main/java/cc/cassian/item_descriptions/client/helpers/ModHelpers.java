@@ -9,12 +9,12 @@ import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 //? if >1.20.5 {
-/*import net.minecraft.component.ComponentType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
-*///?} else {
-import net.minecraft.nbt.NbtCompound;
+//?} else {
+/*import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-//?}
+*///?}
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Style;
@@ -117,9 +117,14 @@ public class ModHelpers {
     public static String findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         //? if >1.20.5 {
-            /*if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
-
-            String modelKey = getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA)).value();
+            if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
+                var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA));
+                //? if <1.21.4 {
+                 /*var dataValue = data.value();
+                *///?} else {
+                var dataValue = data.getString(0);
+                //?}
+                String modelKey = getLoreKey(stack) + ".custommodeldata." + dataValue;
                 if (hasTranslation(modelKey)) {
                     return modelKey;
                 }
@@ -131,8 +136,8 @@ public class ModHelpers {
                     return profileKey;
                 }
             }
-        *///?} else {
-        NbtCompound s = stack.getNbt();
+        //?} else {
+        /*NbtCompound s = stack.getNbt();
             if (s != null) {
                 if (s.contains("CUSTOM_MODEL_DATA", NbtElement.NUMBER_TYPE)) {
                     return getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA"));
@@ -144,7 +149,7 @@ public class ModHelpers {
                     }
                 }
             }
-        //?}
+        *///?}
         //Find the tooltip translation key for the provided item stack.
         return checkLoreKey(getLoreKey(stack));
     }
@@ -165,39 +170,43 @@ public class ModHelpers {
         }
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!hasTranslation(loreKey)) {
-            return findItemLoreKey(block.getPickStack(world, pos, state));
+            //? if <1.21.4 {
+            /*return findItemLoreKey(block.getPickStack(world, pos, state));
+            *///?} else {
+            return findItemLoreKey(block.getDefaultState().getPickStack(world, pos, true));
+            //?}
         }
         return loreKey;
     }
 
     // Check if an Item Stack has a particular component.
     //? if >1.20.5 {
-    /*public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
+    public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
         return stack.getComponents().contains(type);
     }
-    *///?}
+    //?}
 
     /**
      * Find a profile name in a Player Head Item Stack.
      */
     public static String getProfile(ItemStack stack) {
         //? if >1.20.5 {
-        /*Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
+        Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
         if (optionalProfileName.isPresent()) {
             String profileKey = getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
             if (hasTranslation(profileKey)) {
                 return profileKey;
             }
         }
-        *///?} else {
-        String optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
+        //?} else {
+        /*String optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
         if (!optionalProfileName.isEmpty()) {
             String profileKey = getLoreKey(stack) + ".profile." + optionalProfileName;
             if (hasTranslation(profileKey)) {
                 return profileKey;
             }
         }
-        //?}
+        *///?}
         return "";
     }
 
@@ -208,9 +217,9 @@ public class ModHelpers {
         Optional<String> optionalProfileName;
         try {
             //? if >1.20.5 {
-                /*optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
-            *///?} else
-                optionalProfileName = Optional.of(Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName());
+                optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
+            //?} else
+                /*optionalProfileName = Optional.of(Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName());*/
         }
         catch (NullPointerException nullPointerException) {
             return loreKey;
@@ -342,9 +351,9 @@ public class ModHelpers {
         //Allow for custom player descriptions
         if (entity.isPlayer()) {
             //? if >1.21 {
-            /*String playerKey = "entity.minecraft.player." + entity.getName().getLiteralString();;
-            *///?} else
-            String playerKey = "entity.minecraft.player." + entity.getName().getString();;
+            String playerKey = "entity.minecraft.player." + entity.getName().getLiteralString();;
+            //?} else
+            /*String playerKey = "entity.minecraft.player." + entity.getName().getString();;*/
             //Check if a custom player description exists.
             if (hasTranslation(playerKey)) return playerKey;
             //If not, use the default one.
