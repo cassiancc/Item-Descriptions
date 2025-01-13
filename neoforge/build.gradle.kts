@@ -1,0 +1,138 @@
+@file:Suppress("UnstableApiUsage")
+
+plugins {
+    id("dev.architectury.loom")
+    id("architectury-plugin")
+    id("com.github.johnrengelman.shadow")
+}
+
+val loader = prop("loom.platform")!!
+val minecraft: String = stonecutter.current.version
+val common: Project = requireNotNull(stonecutter.node.sibling("")) {
+    "No common project for $project"
+}
+
+version = "${mod.version}+$minecraft"
+base {
+    archivesName.set("${mod.id}-$loader")
+}
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+val commonBundle: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
+val shadowBundle: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
+configurations {
+    compileClasspath.get().extendsFrom(commonBundle)
+    runtimeClasspath.get().extendsFrom(commonBundle)
+    get("developmentNeoForge").extendsFrom(commonBundle)
+}
+
+repositories {
+    maven("https://maven.neoforged.net/releases/")
+    maven ( "https://maven.shedaniel.me/" )
+    maven ( "https://maven.terraformersmc.com/releases/" )
+    maven ( "https://maven.wispforest.io/releases/" )
+    maven ( "https://cursemaven.com" )
+    maven ( "https://api.modrinth.com/maven")
+    maven ( "https://maven2.bai.lol" )
+}
+
+dependencies {
+    minecraft("com.mojang:minecraft:$minecraft")
+    mappings(loom.layered {
+        mappings("net.fabricmc:yarn:$minecraft+build.${common.mod.dep("yarn_build")}:v2")
+        common.mod.dep("neoforge_patch").takeUnless { it.startsWith('[') }?.let {
+            mappings("dev.architectury:yarn-mappings-patch-neoforge:$it")
+        }
+    })
+    "neoForge"("net.neoforged:neoforge:${common.mod.dep("neoforge_loader")}")
+    "io.github.llamalad7:mixinextras-neoforge:${mod.dep("mixin_extras")}".let {
+        implementation(it)
+        include(it)
+    }
+
+    // Cloth Config
+    modApi("me.shedaniel.cloth:cloth-config-neoforge:${common.mod.dep("cloth_version")}")
+    // Jade
+    modImplementation("maven.modrinth:jade:${common.mod.dep("jade_version")+"+neoforge"}")
+    //WTHIT
+    modCompileOnly("mcp.mobius.waila:wthit-api:neo-${common.mod.dep("wthit_version")}")
+    modRuntimeOnly("mcp.mobius.waila:wthit:neo-${common.mod.dep("wthit_version")}")
+    modRuntimeOnly("lol.bai:badpackets:neo-${common.mod.dep("badpackets_version")}")
+    // Useful Spyglass
+    modImplementation("curse.maven:useful-spyglass-840027:${common.mod.dep("useful_spyglass_forge_version")}")
+
+    commonBundle(project(common.path, "namedElements")) { isTransitive = false }
+    shadowBundle(project(common.path, "transformProductionNeoForge")) { isTransitive = false }
+}
+
+loom {
+    decompilers {
+        get("vineflower").apply { // Adds names to lambdas - useful for mixins
+            options.put("mark-corresponding-synthetics", "1")
+        }
+    }
+
+    runConfigs.all {
+        isIdeConfigGenerated = true
+        runDir = "../../../run"
+        vmArgs("-Dmixin.debug.export=true")
+    }
+}
+
+java {
+    withSourcesJar()
+    val java = if (stonecutter.eval(minecraft, ">=1.20.5"))
+        JavaVersion.VERSION_21 else JavaVersion.VERSION_17
+    targetCompatibility = java
+    sourceCompatibility = java
+}
+
+tasks.jar {
+    archiveClassifier = "dev"
+}
+
+tasks.remapJar {
+    injectAccessWidener = true
+    input = tasks.shadowJar.get().archiveFile
+    archiveClassifier = null
+    dependsOn(tasks.shadowJar)
+}
+
+tasks.shadowJar {
+    configurations = listOf(shadowBundle)
+    archiveClassifier = "dev-shadow"
+    exclude("fabric.mod.json", "architectury.common.json")
+}
+
+tasks.processResources {
+    properties(listOf("META-INF/neoforge.mods.toml", "pack.mcmeta"),
+        "id" to mod.id,
+        "name" to mod.name,
+        "version" to mod.version,
+        "minecraft" to common.mod.prop("mc_dep_forgelike")
+    )
+}
+
+tasks.build {
+    group = "versioned"
+    description = "Must run through 'chiseledBuild'"
+}
+
+tasks.register<Copy>("buildAndCollect") {
+    group = "versioned"
+    description = "Must run through 'chiseledBuild'"
+    from(tasks.remapJar.get().archiveFile, tasks.remapSourcesJar.get().archiveFile)
+    into(rootProject.layout.buildDirectory.file("libs/${mod.version}/$loader"))
+    dependsOn("build")
+}

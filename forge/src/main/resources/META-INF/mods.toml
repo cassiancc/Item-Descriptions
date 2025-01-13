@@ -1,0 +1,31 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "item_descriptions"
+version = "${version}"
+displayName = "Item Descriptions"
+authors = "cassiancc"
+description = '''
+This mod adds unique descriptions for all blocks, items, and mobs - built in a way that makes it easy to add modded content.
+'''
+logoFile = "assets/item_descriptions/icon.png"
+issueTrackerURL = "https://github.com/cassiancc/Item-Descriptions/issues"
+displayURL="https://github.com/cassiancc/Item-Descriptions/wiki"
+modURL="https://github.com/cassiancc/Item-Descriptions/wiki"
+
+
+[[dependencies.item_descriptions]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.item_descriptions]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "CLIENT"
