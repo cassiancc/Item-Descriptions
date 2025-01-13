@@ -39,7 +39,15 @@ configurations {
 
 repositories {
     maven("https://maven.minecraftforge.net")
+    maven ( "https://maven.shedaniel.me/" )
+    maven ( "https://maven.terraformersmc.com/releases/" )
+    maven ( "https://maven.wispforest.io/releases/" )
+    maven ( "https://cursemaven.com" )
+    maven ( "https://api.modrinth.com/maven")
+    maven ( "https://maven2.bai.lol" )
 }
+
+val mcVersion = stonecutter.current.project.substringBeforeLast('-')
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
@@ -48,6 +56,24 @@ dependencies {
     "io.github.llamalad7:mixinextras-forge:${mod.dep("mixin_extras")}".let {
         implementation(it)
         include(it)
+    }
+
+
+
+    // Cloth Config
+    modApi("me.shedaniel.cloth:cloth-config-forge:${common.mod.dep("cloth_version")}")
+
+    // Jade
+    modImplementation("maven.modrinth:jade:${common.mod.dep("jade_version")}")
+
+    //WTHIT
+    modCompileOnly("mcp.mobius.waila:wthit-api:forge-${common.mod.dep("wthit_version")}")
+    modRuntimeOnly("mcp.mobius.waila:wthit:forge-${common.mod.dep("wthit_version")}")
+    modRuntimeOnly("lol.bai:badpackets:forge-${common.mod.dep("badpackets_version")}")
+
+    // Useful Spyglass
+    if (stonecutter.eval(mcVersion, "<1.21.3")) {
+        modImplementation("curse.maven:useful-spyglass-840027:${common.mod.dep("useful_spyglass_forge_version")}")
     }
 
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }
@@ -62,10 +88,6 @@ loom {
     }
 
     forge.convertAccessWideners = true
-    forge.mixinConfigs(
-        "template-common.mixins.json",
-        "template-forge.mixins.json",
-    )
 
     runConfigs.all {
         isIdeConfigGenerated = true

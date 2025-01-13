@@ -38,8 +38,8 @@ public final class ItemDescriptionsNeoForge {
     public void onItemTooltipEvent(ItemTooltipEvent event) {
         //Only show tooltip if key is pressed or "always on" is enabled.
         if (showItemDescriptions()) {
-            //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
-            List<Text> tooltip = createTooltip(findItemLoreKey(event.getItemStack()), !tooltipFixInstalled());
+            //Create and add tooltip. Tooltip will be wrapped.
+            List<Text> tooltip = createTooltip(findItemLoreKey(event.getItemStack()), true);
             event.getToolTip().addAll(tooltip);
         }
     }
