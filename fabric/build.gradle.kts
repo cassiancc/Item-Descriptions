@@ -81,7 +81,9 @@ dependencies {
     }
 
     // Useful Spyglass
-    modImplementation("curse.maven:useful-spyglass-840027:${common.mod.dep("useful_spyglass_fabric_version")}")
+    if (stonecutter.eval(mcVersion, ">1.19.2")) {
+        modImplementation("curse.maven:useful-spyglass-840027:${common.mod.dep("useful_spyglass_fabric_version")}")
+    }
     if (stonecutter.eval(mcVersion, "=1.19.2")) {
         modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
     }
@@ -94,6 +96,12 @@ dependencies {
     // Stonecutter/Arch
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }
     shadowBundle(project(common.path, "transformProductionFabric")) { isTransitive = false }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
+    }
 }
 
 loom {
