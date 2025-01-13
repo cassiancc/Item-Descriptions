@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-import io.wispforest.limelight.api.entry.InvokeResultEntry;
+//? if 1.21.1 {
+/*import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
@@ -111,3 +112,4 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         return searchKey;
     }
 }
+*///?}

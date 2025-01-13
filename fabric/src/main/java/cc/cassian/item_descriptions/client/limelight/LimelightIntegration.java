@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-import io.wispforest.limelight.api.LimelightEntrypoint;
+//? if 1.21.1 {
+/*import io.wispforest.limelight.api.LimelightEntrypoint;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 
 import java.util.function.Consumer;
@@ -12,3 +13,4 @@ public class LimelightIntegration implements LimelightEntrypoint {
         extensionRegistry.accept(DescriptionsExtension.INSTANCE);
     }
 }
+*///?}
