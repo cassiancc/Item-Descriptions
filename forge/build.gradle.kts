@@ -42,9 +42,11 @@ repositories {
     maven ( "https://maven.shedaniel.me/" )
     maven ( "https://maven.terraformersmc.com/releases/" )
     maven ( "https://maven.wispforest.io/releases/" )
-    maven ( "https://cursemaven.com" )
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
+    flatDir {
+        dirs("libs")
+    }
 }
 
 val mcVersion = stonecutter.current.project.substringBeforeLast('-')
@@ -73,7 +75,7 @@ dependencies {
 
     // Useful Spyglass
     if (stonecutter.eval(mcVersion, "<1.21.3")) {
-        modImplementation("curse.maven:useful-spyglass-840027:${common.mod.dep("useful_spyglass_forge_version")}")
+        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}")
     }
 
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }

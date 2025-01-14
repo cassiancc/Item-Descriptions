@@ -170,7 +170,11 @@ public class ModHelpers {
         }
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!hasTranslation(loreKey)) {
-            return findItemLoreKey(block.getPickStack(world, pos, state));
+            //? if <1.21.2 {
+            /*return findItemLoreKey(block.getPickStack(world, pos, state));
+            *///?} else
+            return findItemLoreKey(block.getDefaultState().getPickStack(world, pos, true));
+
         }
         return loreKey;
     }

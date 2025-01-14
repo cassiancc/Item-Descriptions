@@ -44,10 +44,12 @@ repositories {
     maven ( "https://maven.shedaniel.me/" )
     maven ( "https://maven.terraformersmc.com/releases/" )
     maven ( "https://maven.wispforest.io/releases/" )
-    maven ( "https://cursemaven.com" )
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
     maven ("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+    flatDir {
+        dirs("libs")
+    }
 }
 
 dependencies {
@@ -81,8 +83,8 @@ dependencies {
     }
 
     // Useful Spyglass
-    if ((stonecutter.eval(mcVersion, ">1.19.2")) && (stonecutter.eval(mcVersion, "<1.21.4"))) {
-        modImplementation("curse.maven:useful-spyglass-840027:${common.mod.dep("useful_spyglass_fabric_version")}")
+    if (stonecutter.eval(mcVersion, "<1.21.4")) {
+        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}")
     }
     if (stonecutter.eval(mcVersion, "=1.19.2")) {
         modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
