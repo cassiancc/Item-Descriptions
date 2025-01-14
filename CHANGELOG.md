@@ -1,0 +1,59 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## Added
+
+- Added descriptions for Eyeblossoms, Resin blocks, Oak Leaves, and individual heads.
+- Added descriptions for 1.21.5 content, including Leaf Litter and Wildflowers.
+- The wiki now includes suggestions on how to structure a description. (@cassiancc, @sisby-folk)
+- [Useful Spyglass](https://modrinth.com/mod/useful-spyglass) now shows block and item descriptions.
+
+## Changed
+
+- A majority of tags have been rewritten based off of the suggestions of @sisby-folk.
+- Ported to Stonecutter.
+
+## Fixed
+
+- Fixed a bug where the config can fail to apply.
+- For items with multiple tags, the longest tag is now chosen instead of a random one. (@sisby-folk)
+
+## [1.11] - 2024-10-08
+
+## Added
+- Block Items can now show descriptions for their block tags, not just their item tags.
+- Descriptions for 1.21.4 Pale Garden content.
+
+## Fixes
+- Fixes for legacy tags.
+
+## [1.10] - 2024-09-06
+
+## Added
+- Generic Translations from Item and Block Tags have been refactored, allowing descriptions from tags to be added from resource packs. The new format is documented on the Wiki.
+- Added compatibility with [Limelight](https://modrinth.com/mod/limelight). Item Descriptions results will now show when an item, block, or entity is searched.
+- Spawn Eggs, Infested Blocks, Horse Armour, Coral, Netherite Upgrades, and Banner Patterns now have proper descriptions.
+
+## Changed
+- Descriptions for rare items now consistently mention their rarity, based off upcoming 1.21.2 rarity values.
+
+## [1.9] - 2024-09-06
+
+## Added
+- Additional entity descriptions
+
+## Changed
+- Updated mod descriptions
+
+## [1.8] - 2024-08-08
+
+## Added
+- Additional entity descriptions
+- Support for custom tooltip colours by name
+- Support for bold and italic tooltips.
