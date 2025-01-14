@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added descriptions for Eyeblossoms, Resin blocks, Oak Leaves, and individual heads.
 - Added descriptions for 1.21.5 content, including Leaf Litter and Wildflowers.
+- Added additional descriptions for common tags.
 - The wiki now includes suggestions on how to structure a description. (@cassiancc, @sisby-folk)
 - [Useful Spyglass](https://modrinth.com/mod/useful-spyglass) now shows block and item descriptions.
 

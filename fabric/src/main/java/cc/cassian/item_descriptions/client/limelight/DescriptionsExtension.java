@@ -29,9 +29,7 @@ public class DescriptionsExtension implements LimelightExtension, BangsProvider 
         return List.of(new BangDefinition(
                 "descriptions",
                 Text.translatable("limelightExtension.item-descriptions.item_descriptions"),
-                (ctx, entryConsumer) -> {
-                    entryConsumer.accept(new DescriptionsResultEntry(ctx.searchText()));
-                }
+                (ctx, entryConsumer) -> entryConsumer.accept(new DescriptionsResultEntry(ctx.searchText()))
         ));
     }
 
