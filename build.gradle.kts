@@ -18,9 +18,6 @@ architectury.common(stonecutter.tree.branches.mapNotNull {
 repositories {
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
-    flatDir {
-        dirs("libs")
-    }
 }
 
 dependencies {
@@ -34,7 +31,7 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:${mod.dep("cloth_version")}")
     modCompileOnly("maven.modrinth:jade:${mod.dep("jade_fabric_version")}")
     modCompileOnly("mcp.mobius.waila:wthit-api:fabric-${mod.dep("wthit_version")}")
-    modCompileOnly("maven.modrinth:useful-spyglass:${mod.dep("useful_spyglass")}")
+    modCompileOnly("maven.modrinth:useful-spyglass:${mod.dep("useful_spyglass")}-fabric")
 
 }
 

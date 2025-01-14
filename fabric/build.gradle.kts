@@ -47,9 +47,6 @@ repositories {
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
     maven ("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
-    flatDir {
-        dirs("libs")
-    }
 }
 
 dependencies {
@@ -84,7 +81,7 @@ dependencies {
 
     // Useful Spyglass
     if (stonecutter.eval(mcVersion, "<1.21.4")) {
-        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}")
+        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric")
     }
     if (stonecutter.eval(mcVersion, "=1.19.2")) {
         modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")

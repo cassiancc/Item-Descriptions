@@ -44,9 +44,6 @@ repositories {
     maven ( "https://maven.wispforest.io/releases/" )
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
-    flatDir {
-        dirs("libs")
-    }
 }
 
 val mcVersion = stonecutter.current.project.substringBeforeLast('-')

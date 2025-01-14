@@ -191,22 +191,16 @@ public class ModHelpers {
      */
     public static String getProfile(ItemStack stack) {
         //? if >1.20.5 {
-        Optional<String> optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
-        if (optionalProfileName.isPresent()) {
+        var optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
+        //?} else {
+        /*var optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
+         *///?}
+        if (!optionalProfileName.isEmpty()) {
             String profileKey = getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
             if (hasTranslation(profileKey)) {
                 return profileKey;
             }
         }
-        //?} else {
-        /*String optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
-        if (!optionalProfileName.isEmpty()) {
-            String profileKey = getLoreKey(stack) + ".profile." + optionalProfileName;
-            if (hasTranslation(profileKey)) {
-                return profileKey;
-            }
-        }
-        *///?}
         return "";
     }
 
@@ -217,9 +211,9 @@ public class ModHelpers {
         Optional<String> optionalProfileName;
         try {
             //? if >1.20.5 {
-                optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
+            optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
             //?} else
-                /*optionalProfileName = Optional.of(Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName());*/
+            /*optionalProfileName = Optional.of(Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName());*/
         }
         catch (NullPointerException nullPointerException) {
             return loreKey;
@@ -263,6 +257,13 @@ public class ModHelpers {
         else {
             return "";
         }
+    }
+
+    /**
+     * Consistency feature for 1.20.
+     */
+    public static String getProfileName(String optionalProfileName) {
+        return optionalProfileName;
     }
 
     /**
