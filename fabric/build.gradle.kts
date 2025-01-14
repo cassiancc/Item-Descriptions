@@ -145,7 +145,7 @@ tasks.processResources {
     properties(listOf("fabric.mod.json"),
         "id" to mod.id,
         "name" to mod.name,
-        "version" to mod.version,
+        "version" to mod.version + "+" + minecraft,
         "minecraft" to common.mod.prop("mc_dep_fabric")
     )
 }

@@ -125,7 +125,7 @@ tasks.processResources {
     properties(listOf("META-INF/neoforge.mods.toml", "pack.mcmeta"),
         "id" to mod.id,
         "name" to mod.name,
-        "version" to mod.version,
+        "version" to mod.version + "+" + minecraft,
         "minecraft" to common.mod.prop("mc_dep_forgelike")
     )
 }
