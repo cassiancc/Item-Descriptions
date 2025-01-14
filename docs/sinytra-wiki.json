@@ -1,5 +1,7 @@
 {
     "id": "item-descriptions",
-    "platform": "modrinth",
-    "slug": "item-descriptions"
+     "platforms": {
+        "modrinth": "item-descriptions",
+        "curseforge": "item-descriptions" 
+     }
 }
