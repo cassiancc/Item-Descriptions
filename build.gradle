@@ -11,10 +11,7 @@ architectury {
     minecraft = project.minecraft_version
 }
 
-forgix {
-    group = "cc.cassian.item_descriptions"
-    mergedJarName = "item-descriptions-${project.mod_version}.jar"
-}
+
 
 wiki {
     docs {
@@ -27,8 +24,13 @@ wiki {
 }
 
 allprojects {
-    group = rootProject.maven_group
-    version = rootProject.mod_version
+    group = project.maven_group
+    version = project.mod_version + "+" + project.minecraft_version
+}
+
+forgix {
+    group = "cc.cassian.item_descriptions"
+    mergedJarName = "item-descriptions-${project.version}.jar"
 }
 
 subprojects {
@@ -70,7 +72,7 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.layered {
-            it.mappings("net.fabricmc:yarn:$rootProject.yarn_mappings:v2")
+            it.mappings("net.fabricmc:yarn:$project.minecraft_version+build.$project.yarn_mappings:v2")
             it.mappings("dev.architectury:yarn-mappings-patch-neoforge:$rootProject.yarn_mappings_patch_neoforge_version")
         }
     }

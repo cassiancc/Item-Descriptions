@@ -107,7 +107,7 @@ public class GenericKeys {
             final String[] returnedKey = new String[1];
             itemStack.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
-                if (I18n.hasTranslation(loreKey)) {
+                if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                     returnedKey[0] = loreKey;
                 }
             });
@@ -116,7 +116,7 @@ public class GenericKeys {
                 if ((item instanceof BlockItem blockItem)) {
                     blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
                         String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
-                        if (I18n.hasTranslation(loreKey)) {
+                        if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                             returnedKey[0] = loreKey;
                         }
                     });
@@ -129,7 +129,7 @@ public class GenericKeys {
             final String[] returnedKey = new String[1];
             state.streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
-                if (I18n.hasTranslation(loreKey)) {
+                if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                     returnedKey[0] = loreKey;
                 }
             });
@@ -139,7 +139,7 @@ public class GenericKeys {
             final String[] returnedKey = new String[1];
             entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
                 String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
-                if (I18n.hasTranslation(loreKey)) {
+                if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                     returnedKey[0] = loreKey;
                 }
             });
