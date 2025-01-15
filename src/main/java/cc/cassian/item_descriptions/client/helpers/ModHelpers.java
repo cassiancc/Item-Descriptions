@@ -380,7 +380,7 @@ public class ModHelpers {
         ArrayList<Text> lines = new ArrayList<>();
         int maxLength = ModConfig.get().style_length;
         //Check if the key exists.
-        if (!loreKey.isEmpty()) {
+        if (!loreKey.isBlank()) {
             //Translate the lore key.
             String translatedKey = translate(loreKey);
             //Check if the translated key exists.
@@ -398,7 +398,8 @@ public class ModHelpers {
                     }
                 }
                 //Add the final tooltip.
-                lines.add(Text.literal(translatedKey).setStyle(getStyle()));
+                if (!translatedKey.isBlank())
+                    lines.add(Text.literal(translatedKey).setStyle(getStyle()));
             }
         }
         return lines;
