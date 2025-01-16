@@ -27,6 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed a bug where the config can fail to apply.
 - For items with multiple tags, the longest tag is now chosen instead of a random one. (@sisby-folk)
 
+## [1.12] - 2024-11-20
+
+## Changed
+- Ported to 1.21.4, added support for new Custom Model Data format.
+
 ## [1.11] - 2024-10-08
 
 ## Added
