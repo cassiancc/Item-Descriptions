@@ -87,6 +87,10 @@ loom {
     }
 
     forge.convertAccessWideners = true
+    forge.mixinConfigs(
+        "item-descriptions.mixins.json"
+    )
+
 
     runConfigs.all {
         isIdeConfigGenerated = true
