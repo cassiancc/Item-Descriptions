@@ -22,7 +22,7 @@ import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 @Pseudo
 @Mixin(InfoOverlay.class)
 public class InfoOverlayMixin {
-    @Inject(method = "setHitResult", at = @At(value = "INVOKE", target = "Lcom/brokenkeyboard/usefulspyglass/InfoOverlay;setComponent(Ljava/util/List;)V", ordinal = 0), remap = false)
+    @Inject(method = "setHitResult", at = @At(value = "INVOKE", target = "Lcom/brokenkeyboard/usefulspyglass/InfoOverlay;setComponent(Ljava/util/List;)V", ordinal = 0), remap = false, require = 0)
     private static void spyglassEntityDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local LivingEntity entity) {
         if (showEntityDescriptions()) {
             //Create and add tooltip.
@@ -33,7 +33,7 @@ public class InfoOverlayMixin {
         }
     }
 
-    @Inject(method = "setHitResult", at = @At(value = "INVOKE", target = "Lcom/brokenkeyboard/usefulspyglass/InfoOverlay;setComponent(Ljava/util/List;)V", ordinal = 1), remap = false)
+    @Inject(method = "setHitResult", at = @At(value = "INVOKE", target = "Lcom/brokenkeyboard/usefulspyglass/InfoOverlay;setComponent(Ljava/util/List;)V", ordinal = 1), remap = false, require = 0)
     private static void spyglassBlockDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local BlockState state) {
         if (showBlockDescriptions()) {
             //Create and add tooltip.

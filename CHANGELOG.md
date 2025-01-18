@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Added
+- Added descriptions for Polished Andesite.
+- Added additional descriptions for legacy Forge common tags.
+
+## Fixed
+- Fixed tooltip wrapping on Forge/NeoForge
+
 ## [1.13] - 2025-01-15
 
 ## Added

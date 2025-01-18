@@ -39,6 +39,12 @@
   "tag.forge.armors.chestplates.description": "This item can be equipped to protect you from damage.",
   "tag.forge.armors.leggings.description": "This item can be equipped to protect you from damage.",
   "tag.forge.armors.boots.description": "This item can be equipped to protect you from damage.",
-  "tag.forge.armors.helmets.description": "This item can be equipped to protect you from damage."
-
+  "tag.forge.armors.helmets.description": "This item can be equipped to protect you from damage.",
+  "tag.forge.chests.description": "A block that can store blocks and items inside. Place two side by side to create a larger chest with double the capacity.",
+  "tag.forge.chests.trapped": "A storage block that provides Redstone Power whenever it is opened.",
+  "tag.forge.tools.pickaxes.description": "A tool that can be used to mine solid blocks like stone.",
+  "tag.forge.tools.axes.description": "A slow, shield-breaking weapon that effectively mines wooden blocks.",
+  "tag.forge.tools.shovels.description": "A tool that can used to mine earthy matter like Dirt or Sand.",
+  "tag.forge.tools.hoes.description": "A tool that can be used to till soil and plant crops. It is also more effective at mining some natural blocks.",
+  "tag.forge.tools.swords.description": "A balanced weapon that can hit multiple enemies at once."
 }

@@ -43,7 +43,7 @@ public final class ItemDescriptionsForge {
         //Only show tooltip if key is pressed or "always on" is enabled.
         if (showItemDescriptions()) {
             //Create and add tooltip. Tooltip will be wrapped.
-            List<Text> tooltip = createTooltip(findItemLoreKey(event.getItemStack()), true);
+            List<Text> tooltip = createTooltip(findItemLoreKey(event.getItemStack()), false);
             event.getToolTip().addAll(tooltip);
         }
     }
