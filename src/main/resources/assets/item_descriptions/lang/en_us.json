@@ -34,7 +34,7 @@
   "config.item-descriptions.config.style_color.tooltip": "This setting changes what Minecraft colour is used for block and item tooltips, either by colour code or name",
   "config.item-descriptions.config.style_italics": "Enable Italicized Tooltips",
   "config.item-descriptions.config.style_length": "Maximum length of tooltips",
-  "config.item-descriptions.config.style_length.tooltip": "This setting changes the maximum length of tooltips. This is only enforced when ToolTipFix is not present.",
+  "config.item-descriptions.config.style_length.tooltip": "This setting changes the maximum length of tooltips (in gui pixels). This is only enforced when ToolTipFix is not present.",
   "config.item-descriptions.developer_options_title": "Developer Options",
   "config.item-descriptions.entity_descriptions_title": "Entity Descriptions",
   "config.item-descriptions.keybinds_title": "Keybinds",

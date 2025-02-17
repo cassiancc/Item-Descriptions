@@ -387,19 +387,21 @@ public class ModHelpers {
             if (hasTranslation(loreKey)) {
                 //Check if custom wrapping should be used.
                 if (wrap && (maxLength != 0)) {
-                    //Any tooltip longer than XX characters should be shortened.
-                    while (translatedKey.length() >= maxLength) {
-                        //Find how much to shorten the tooltip by.
-                        int index = getIndex(translatedKey, maxLength);
-                        //Add a shortened tooltip.
-                        lines.add(Text.literal(translatedKey.substring(0, index)).setStyle(getStyle()));
-                        //Remove the shortened tooltip substring from the tooltip. Repeat.
-                        translatedKey = translatedKey.substring(index);
+                    //Any tooltip longer than XX pixels should be shortened.
+                    while (MinecraftClient.getInstance().textRenderer.getWidth(Text.of(translatedKey)) >= maxLength) {
+                        int lineLength = translatedKey.length();
+                        // Find where to end this line, starting from the remaining string.
+                        while (translatedKey.substring(0, lineLength).contains(" ")
+                                && MinecraftClient.getInstance().textRenderer.getWidth(Text.of(translatedKey.substring(0, lineLength))) >= maxLength) {
+                            lineLength = translatedKey.substring(0, lineLength).lastIndexOf(' ');
+                        }
+                        // Add the line.
+                        lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(getStyle()));
+                        // Remove the line substring from the start of the remaining string. Repeat.
+                        translatedKey = translatedKey.substring(lineLength + 1);
                     }
                 }
-                //Add the final tooltip.
-                if (!translatedKey.isBlank())
-                    lines.add(Text.literal(translatedKey).setStyle(getStyle()));
+                if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(getStyle()));
             }
         }
         return lines;
