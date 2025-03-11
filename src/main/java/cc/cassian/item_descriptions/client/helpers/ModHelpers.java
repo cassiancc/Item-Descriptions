@@ -384,7 +384,11 @@ public class ModHelpers {
                         // Add the line.
                         lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(getStyle()));
                         // Remove the line substring from the start of the remaining string. Repeat.
-                        translatedKey = translatedKey.substring(lineLength + 1);
+                        try {
+                            translatedKey = translatedKey.substring(lineLength + 1);
+                        } catch (StringIndexOutOfBoundsException e) {
+                            translatedKey = translatedKey.substring(lineLength);
+                        }
                     }
                 }
                 if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(getStyle()));
