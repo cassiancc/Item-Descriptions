@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## Added
-- Added descriptions for Polished Andesite.
-- Added additional descriptions for legacy Forge common tags.
+- Descriptions for Polished Andesite.
+- Additional descriptions for legacy Forge common tags.
+- Length-based wrapping for tooltips, instead of character-baed (@sisby-folk)
+- New developer option to show all translation keys available for an item.
 
 ## Fixed
 - Fixed tooltip wrapping on Forge/NeoForge

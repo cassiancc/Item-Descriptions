@@ -3,6 +3,8 @@ package cc.cassian.item_descriptions.client.neoforge;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
+import cc.cassian.item_descriptions.client.helpers.GenericKeys;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
@@ -39,7 +41,14 @@ public final class ItemDescriptionsNeoForge {
         //Only show tooltip if key is pressed or "always on" is enabled.
         if (showItemDescriptions()) {
             //Create and add tooltip. Tooltip will be wrapped.
-            List<Text> tooltip = createTooltip(findItemLoreKey(event.getItemStack()), false);
+            ItemStack stack = event.getItemStack();
+            List<Text> tooltip;
+            if (ModConfig.get().developer_showAllPotentialKeys) {
+                tooltip = GenericKeys.findAllPotentialKeys(stack);
+            }
+            else {
+                tooltip = createTooltip(findItemLoreKey(stack), false);
+            }
             event.getToolTip().addAll(tooltip);
         }
     }

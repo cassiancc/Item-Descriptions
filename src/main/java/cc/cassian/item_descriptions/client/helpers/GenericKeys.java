@@ -8,7 +8,12 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -106,7 +111,7 @@ public class GenericKeys {
             }
             final String[] returnedKey = new String[1];
             itemStack.streamTags().forEach(itemTagKey -> {
-                String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                String loreKey = tagKeyToGenericKey(itemTagKey);
                 if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                     returnedKey[0] = loreKey;
                 }
@@ -115,7 +120,7 @@ public class GenericKeys {
             if (returnedKey[0] == null) {
                 if ((item instanceof BlockItem blockItem)) {
                     blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
-                        String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                        String loreKey = tagKeyToGenericKey(itemTagKey);
                         if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                             returnedKey[0] = loreKey;
                         }
@@ -128,7 +133,7 @@ public class GenericKeys {
         else if ((object instanceof BlockState state)) {
             final String[] returnedKey = new String[1];
             state.streamTags().forEach(itemTagKey -> {
-                String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                String loreKey = tagKeyToGenericKey(itemTagKey);
                 if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                     returnedKey[0] = loreKey;
                 }
@@ -138,7 +143,7 @@ public class GenericKeys {
         else if ((object instanceof Entity entity)) {
             final String[] returnedKey = new String[1];
             entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
-                String loreKey = "tag."+itemTagKey.id().toTranslationKey()+".description";
+                String loreKey = tagKeyToGenericKey(itemTagKey);
                 if (I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length())) {
                     returnedKey[0] = loreKey;
                 }
@@ -148,6 +153,55 @@ public class GenericKeys {
 
         //If no tag key matches, return empty so a string match can be found.
         else return "";
+    }
+
+    private static void addSafe(ArrayList<Text> tags, String newAdd) {
+        Text newText = Text.literal(newAdd);
+        if (!tags.contains(newText)) {
+            tags.add(newText);
+        }
+    }
+
+    public static List<Text> findAllPotentialKeys(Object object) {
+        ArrayList<Text> tags = new ArrayList<>(); // Create an ArrayList object
+        // If object is an item, check for Item Tags
+        switch (object) {
+            case ItemStack itemStack -> {
+                addSafe(tags, findItemLoreKey(itemStack));
+                addSafe(tags, getLoreTranslationKey(itemStack));
+                final Item item = itemStack.getItem();
+                //Temporary - Spawn Eggs do not yet have a tag.
+                if (item instanceof SpawnEggItem) {
+                    addSafe(tags, "tag.c.spawn_egg.description");
+                }
+                itemStack.streamTags().forEach(itemTagKey -> {
+                    String loreKey = tagKeyToGenericKey(itemTagKey);
+                    addSafe(tags, loreKey);
+                });
+                // If untagged, check if it is a Block Item and if a Block Tag matches.
+                if ((item instanceof BlockItem blockItem)) {
+                    blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
+                        String loreKey = tagKeyToGenericKey(itemTagKey);
+                        addSafe(tags, loreKey);
+                    });
+                }
+            }
+            //If object is a blockstate, check it for Block tags
+            case BlockState state -> state.streamTags().forEach(itemTagKey -> {
+                String loreKey = tagKeyToGenericKey(itemTagKey);
+                addSafe(tags, loreKey);
+            });
+            case Entity entity -> entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
+                String loreKey = tagKeyToGenericKey(itemTagKey);
+                addSafe(tags, loreKey);
+            });
+            default -> tags.add(Text.empty());
+        }
+        return tags;
+    }
+
+    private static String tagKeyToGenericKey(TagKey<?> key) {
+        return "tag." + key.id().toTranslationKey().replace("/", ".") + ".description";
     }
 
     public static String getGenericKey(Object object) {
