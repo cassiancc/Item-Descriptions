@@ -37,9 +37,7 @@ public class ModConfig {
     public boolean entityDescriptions = true;
     public boolean displayEntityDescriptionsAlways = false;
     //Developer settings
-    public boolean developer_showUntranslated = false;
     public boolean developer_showAllPotentialKeys = false;
-    public boolean developer_dontTranslate = false;
     public boolean developer_disableGenericStringDescriptions = true;
     public boolean developer_disableGenericTagDescriptions = false;
 

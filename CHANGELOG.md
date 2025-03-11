@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Length-based wrapping for tooltips, instead of character-baed (@sisby-folk)
 - New developer option to show all translation keys available for an item.
 
+## Changed
+- Remove options to disable key translation in favour of consolidated "show potential keys" option.
+- Deprecated legacy string match code, likely to be removed in the future.
+
 ## Fixed
 - Fixed tooltip wrapping on Forge/NeoForge
 

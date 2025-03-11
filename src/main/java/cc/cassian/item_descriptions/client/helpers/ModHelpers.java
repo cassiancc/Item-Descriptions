@@ -8,7 +8,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resource.language.I18n;
 //? if >1.20.5 {
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
@@ -32,6 +31,8 @@ import java.util.function.Consumer;
 
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
+import static net.minecraft.client.resource.language.I18n.hasTranslation;
+import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
     //Check if Cloth Config is installed and its configuration can be used.
@@ -281,14 +282,10 @@ public class ModHelpers {
      * Check if a lore key exists or if a generic tooltip should be used.
      */
     public static String checkLoreKey(String loreKey) {
-        //This function handles whether a generic tooltip should be used, or if a tooltip exists.
-        if (!ModConfig.get().developer_dontTranslate) {
-            //Check if the tooltip translation key exists. If so, use the provided tooltip.
-            if (hasTranslation(loreKey)) return loreKey;
-            //If the tooltip translation key does not exist, use one of the provided generic tooltips.
-            else return getGenericLoreKey(loreKey);
-        }
-        else return loreKey;
+        //Check if the tooltip translation key exists. If so, use the provided tooltip.
+        if (hasTranslation(loreKey)) return loreKey;
+        //If the tooltip translation key does not exist, use one of the provided generic tooltips.
+        else return getDeprecatedStringMatch(loreKey);
     }
 
     /**
@@ -361,18 +358,6 @@ public class ModHelpers {
             return entity.getType().getTranslationKey();
         }
 
-    }
-
-    // Translate key with I18n. Can be disabled with developer options.
-    public static String translate(String key) {
-        if (!ModConfig.get().developer_dontTranslate) return I18n.translate(key);
-        else return key;
-    }
-
-    // Check for translation with I18n. Can be disabled with developer options.
-    public static boolean hasTranslation(String key) {
-        if (!ModConfig.get().developer_showUntranslated) return I18n.hasTranslation(key);
-        else return true;
     }
 
     // Create a custom, potentially multi-line tooltip.
