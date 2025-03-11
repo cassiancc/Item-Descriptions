@@ -8,17 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## Added
-- Descriptions for Polished Andesite.
+- Description for Polished Andesite.
+- Descriptions for 1.21.5 blocks, including Bushes, Firefly Bushes, Short Dry Grass, Tall Dry Grass, Test Block, Test Instance Block, Blue Egg, Brown Egg,  and Cactus Flowers.
 - Additional descriptions for legacy Forge common tags.
 - Length-based wrapping for tooltips, instead of character-baed (@sisby-folk)
 - New developer option to show all translation keys available for an item.
 
 ## Changed
-- Remove options to disable key translation in favour of consolidated "show potential keys" option.
+- Removed options to disable key translation in favour of consolidated "show potential keys" option.
 - Deprecated legacy string match code, likely to be removed in the future.
 
 ## Fixed
-- Fixed tooltip wrapping on Forge/NeoForge
+- Tooltip wrapping on Forge/NeoForge
+- Issues with nested tags not being parsed correctly.
 
 ## [1.13] - 2025-01-15
 
