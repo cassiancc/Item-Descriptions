@@ -217,7 +217,7 @@ public class GenericKeys {
      * Convert a TagKey into a translation key.
      */
     private static String tagKeyToGenericKey(TagKey<?> key) {
-        return "tag." + key.id().toTranslationKey().replace("/", ".") + ".description";
+        return key.id().toTranslationKey("tag", "description").replaceAll("/", ".");
     }
 
     public static String getGenericKey(Object object) {
