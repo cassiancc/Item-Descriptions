@@ -6,16 +6,12 @@ import cc.cassian.item_descriptions.client.config.forge.ModConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.GenericKeys;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.List;
 
@@ -47,8 +43,8 @@ public final class ItemDescriptionsForge {
             //Create and add tooltip. Tooltip will be wrapped.
             ItemStack stack = event.getItemStack();
             List<Text> tooltip;
-            if (ModConfig.get().developer_showAllTags) {
-                tooltip = GenericKeys.findAllGenericTags(stack);
+            if (ModConfig.get().developer_showAllPotentialKeys) {
+                tooltip = GenericKeys.findAllPotentialKeys(stack);
             }
             else {
                 tooltip = createTooltip(findItemLoreKey(stack), false);

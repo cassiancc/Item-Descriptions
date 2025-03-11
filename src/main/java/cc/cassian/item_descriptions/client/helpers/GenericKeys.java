@@ -8,12 +8,17 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+//? if >1.20 {
 import net.minecraft.registry.tag.TagKey;
+//?} else {
+/*import net.minecraft.tag.TagKey;
+ *///?}
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -108,60 +113,54 @@ public class GenericKeys {
 
     private static String checkGenericTagList(Object object) {
         // If object is an item, check for Item Tags
-        switch (object) {
-            case ItemStack itemStack -> {
-                final Item item = itemStack.getItem();
-                //Temporary - Spawn Eggs do not yet have a tag.
-                if (item instanceof SpawnEggItem) {
-                    return "tag.c.spawn_egg.description";
-                }
-                final String[] returnedKey = new String[1];
-                itemStack.streamTags().forEach(itemTagKey -> {
-                    String loreKey = tagKeyToGenericKey(itemTagKey);
-                    if (checkMatch(loreKey, returnedKey)) {
-                        returnedKey[0] = loreKey;
-                    }
-                });
-                // If untagged, check if it is a Block Item and if a Block Tag matches.
-                if (returnedKey[0] == null) {
-                    if ((item instanceof BlockItem blockItem)) {
-                        blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
-                            String loreKey = tagKeyToGenericKey(itemTagKey);
-                            if (checkMatch(loreKey, returnedKey)) {
-                                returnedKey[0] = loreKey;
-                            }
-                        });
-                    }
-                }
-                return returnedKey[0];
+        if (object instanceof ItemStack itemStack) {
+            final Item item = itemStack.getItem();
+            //Temporary - Spawn Eggs do not yet have a tag.
+            if (item instanceof SpawnEggItem) {
+                return "tag.c.spawn_egg.description";
             }
+            final String[] returnedKey = new String[1];
+            itemStack.streamTags().forEach(itemTagKey -> {
+                String loreKey = tagKeyToGenericKey(itemTagKey);
+                if (checkMatch(loreKey, returnedKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            // If untagged, check if it is a Block Item and if a Block Tag matches.
+            if (returnedKey[0] == null) {
+                if ((item instanceof BlockItem blockItem)) {
+                    blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
+                        String loreKey = tagKeyToGenericKey(itemTagKey);
+                        if (checkMatch(loreKey, returnedKey)) {
+                            returnedKey[0] = loreKey;
+                        }
+                    });
+                }
+            }
+            return returnedKey[0];
 
             //If object is a blockstate, check it for Block tags
-            case BlockState state -> {
-                final String[] returnedKey = new String[1];
-                state.streamTags().forEach(itemTagKey -> {
-                    String loreKey = tagKeyToGenericKey(itemTagKey);
-                    if (checkMatch(loreKey, returnedKey)) {
-                        returnedKey[0] = loreKey;
-                    }
-                });
-                return returnedKey[0];
-            }
-            case Entity entity -> {
-                final String[] returnedKey = new String[1];
-                entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
-                    String loreKey = tagKeyToGenericKey(itemTagKey);
-                    if (checkMatch(loreKey, returnedKey)) {
-                        returnedKey[0] = loreKey;
-                    }
-                });
-                return returnedKey[0];
-            }
+        } else if (object instanceof BlockState state) {
+            final String[] returnedKey = new String[1];
+            state.streamTags().forEach(itemTagKey -> {
+                String loreKey = tagKeyToGenericKey(itemTagKey);
+                if (checkMatch(loreKey, returnedKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            return returnedKey[0];
+        } else if (object instanceof Entity entity) {
+            final String[] returnedKey = new String[1];
+            entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
+                String loreKey = tagKeyToGenericKey(itemTagKey);
+                if (checkMatch(loreKey, returnedKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            return returnedKey[0];
             //If no tag key matches, return empty so a string match can be found.
-            case null, default -> {
-                return "";
-            }
         }
+        return "";
     }
 
     private static void addSafe(ArrayList<Text> tags, String newAdd) {
@@ -178,37 +177,38 @@ public class GenericKeys {
     public static List<Text> findAllPotentialKeys(Object object) {
         ArrayList<Text> tags = new ArrayList<>(); // Create an ArrayList object
         // If object is an item, check for Item Tags
-        switch (object) {
-            case ItemStack itemStack -> {
-                addSafe(tags, findItemLoreKey(itemStack));
-                addSafe(tags, getLoreTranslationKey(itemStack));
-                final Item item = itemStack.getItem();
-                //Temporary - Spawn Eggs do not yet have a tag.
-                if (item instanceof SpawnEggItem) {
-                    addSafe(tags, "tag.c.spawn_egg.description");
-                }
-                itemStack.streamTags().forEach(itemTagKey -> {
+        if (Objects.requireNonNull(object) instanceof ItemStack itemStack) {
+            addSafe(tags, findItemLoreKey(itemStack));
+            addSafe(tags, getLoreTranslationKey(itemStack));
+            final Item item = itemStack.getItem();
+            //Temporary - Spawn Eggs do not yet have a tag.
+            if (item instanceof SpawnEggItem) {
+                addSafe(tags, "tag.c.spawn_egg.description");
+            }
+            itemStack.streamTags().forEach(itemTagKey -> {
+                String loreKey = tagKeyToGenericKey(itemTagKey);
+                addSafe(tags, loreKey);
+            });
+            // If untagged, check if it is a Block Item and if a Block Tag matches.
+            if ((item instanceof BlockItem blockItem)) {
+                blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
                     String loreKey = tagKeyToGenericKey(itemTagKey);
                     addSafe(tags, loreKey);
                 });
-                // If untagged, check if it is a Block Item and if a Block Tag matches.
-                if ((item instanceof BlockItem blockItem)) {
-                    blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
-                        String loreKey = tagKeyToGenericKey(itemTagKey);
-                        addSafe(tags, loreKey);
-                    });
-                }
             }
             //If object is a blockstate, check it for Block tags
-            case BlockState state -> state.streamTags().forEach(itemTagKey -> {
+        } else if (object instanceof BlockState state) {
+            state.streamTags().forEach(itemTagKey -> {
                 String loreKey = tagKeyToGenericKey(itemTagKey);
                 addSafe(tags, loreKey);
             });
-            case Entity entity -> entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
+        } else if (object instanceof Entity entity) {
+            entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
                 String loreKey = tagKeyToGenericKey(itemTagKey);
                 addSafe(tags, loreKey);
             });
-            default -> tags.add(Text.empty());
+        } else {
+            tags.add(Text.empty());
         }
         return tags;
     }
@@ -217,7 +217,7 @@ public class GenericKeys {
      * Convert a TagKey into a translation key.
      */
     private static String tagKeyToGenericKey(TagKey<?> key) {
-        return key.id().toTranslationKey("tag", "description").replaceAll("/", ".");
+        return "tag." + key.id().toTranslationKey().replaceAll("/", ".") + ".description";
     }
 
     public static String getGenericKey(Object object) {
