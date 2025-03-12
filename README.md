@@ -8,6 +8,8 @@
 
 This mod adds a unique description to all blocks, items, and entities that is displayed when pressing the Ctrl key. These descriptions sum up what it can be used for, its source, and/or any other useful info. It strikes a compromise between not knowing anything about an item and constantly checking the Minecraft Wiki for detailed in-depth descriptions.
 
+Item Descriptions includes all vanilla blocks and items. For mod support, also add [Mod Descriptions](https://modrinth.com/resourcepack/mod-descriptions)!
+
 ## Item Descriptions
 
 By default, holding down Ctrl when hovering over an item will show a short description of what it can do. Unique descriptions have been written for every item, and generic descriptions are also supported for various tags so many modded blocks come with built-in descriptions.
@@ -28,18 +30,17 @@ Item Descriptions is a completely clientside mod for Fabric and NeoForge.
 
 When [Mod Menu](https://modrinth.com/mod/mod-menu) (only required on Fabric) and [Cloth Config](https://modrinth.com/mod/cloth-config) are installed, you can configure mod settings ingame, including the tooltip key, tooltkip colour, "always on" mode, block/entity descriptions, and more.
 
-When [Jade](https://modrinth.com/mod/jade) is installed, Jade will show block and entity descriptions in its informational HUD.
+When [Jade](https://modrinth.com/mod/jade)/[WTHIT](https://modrinth.com/mod/wthit)/[HWYLA](https://modrinth.com/mod/hwyla) is installed, it will show block and entity descriptions in its informational HUD.
 
 When [Useful Spyglass](https://www.curseforge.com/minecraft/mc-mods/useful-spyglass) is installed, Useful Spyglass will show block and entity descriptions in its informational HUD.
 
-When [WTHIT](https://modrinth.com/mod/wthit) is installed, WTHIT will show block and entity descriptions in its informational HUD.
-
-When [HWYLA](https://modrinth.com/mod/hwyla) is installed, HWYLA will show block and entity descriptions in its informational HUD.
-
 When [Limelight](https://modrinth.com/mod/limelight) is installed, Limelight will show a description in its informational command palette when a block, item, or entity matches your search.
 
+When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrapping is used instead of the built-in wrapper.
 
-When [ToolTipFix](https://modrinth.com/mod/tooltipfix) is installed, its wrapping is used instead of the built in wrapper.
+When [Polymer](https://modrinth.com/mod/tooltipfix) is installed on the server, mods with custom serverside content can have their own custom descriptions.
+
+For support for other mods, try [Mod Descriptions](https://modrinth.com/resourcepack/mod-descriptions)!
 
 </details>
 
