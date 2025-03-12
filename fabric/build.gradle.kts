@@ -88,9 +88,10 @@ dependencies {
     }
     else {
         modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
+        modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
+        modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
+
     }
-
-
 
     // Stonecutter/Arch
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }

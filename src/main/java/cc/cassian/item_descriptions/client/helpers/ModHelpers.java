@@ -191,6 +191,13 @@ public class ModHelpers {
                 return profileKey;
             }
         }
+        else if (isLoaded("fastitemframes")) {
+            if (FastItemFramesHelpers.isFastItemFrame(blockEntity)) {
+                var contents = FastItemFramesHelpers.getFastItemFrameContents(blockEntity);
+                if (contents != null)
+                    return findItemLoreKey(contents);
+            }
+        }
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!hasTranslation(loreKey)) {
             //? if <1.21.2 {
