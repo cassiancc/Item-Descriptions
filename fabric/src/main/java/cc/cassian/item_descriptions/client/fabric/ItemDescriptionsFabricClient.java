@@ -2,7 +2,7 @@ package cc.cassian.item_descriptions.client.fabric;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
-import cc.cassian.item_descriptions.client.helpers.GenericKeys;
+import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.text.Text;
@@ -29,7 +29,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
                     //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
                     List<Text> tooltip;
                     if (ModConfig.get().developer_showAllPotentialKeys) {
-                        tooltip = GenericKeys.findAllPotentialKeys(stack);
+                        tooltip = TagHelpers.findAllPotentialKeys(stack);
                     }
                     else {
                         tooltip = createTooltip(findItemLoreKey(stack), !tooltipFixInstalled());

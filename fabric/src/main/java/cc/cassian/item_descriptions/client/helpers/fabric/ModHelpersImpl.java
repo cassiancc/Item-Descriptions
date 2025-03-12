@@ -6,7 +6,8 @@ public class ModHelpersImpl {
     public static boolean clothConfigInstalled() {
         return FabricLoader.getInstance().isModLoaded("cloth-config");
     }
-    public static boolean tooltipFixInstalled() {
-        return FabricLoader.getInstance().isModLoaded("tooltipfix");
+
+    public static boolean isLoaded(String mod) {
+        return FabricLoader.getInstance().isModLoaded(mod);
     }
 }

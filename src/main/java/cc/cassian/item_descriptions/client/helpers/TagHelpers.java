@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 //? if >1.20 {
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 //?} else {
 /*import net.minecraft.tag.TagKey;
@@ -24,7 +23,7 @@ import java.util.Objects;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-public class GenericKeys {
+public class TagHelpers {
     @Deprecated
     public static @NotNull String getDeprecatedStringMatch(String loreKey) {
         if (!ModConfig.get().developer_disableGenericStringDescriptions) {

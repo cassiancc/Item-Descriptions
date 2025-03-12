@@ -3,7 +3,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
-import cc.cassian.item_descriptions.client.helpers.GenericKeys;
+import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -44,7 +44,7 @@ public final class ItemDescriptionsNeoForge {
             ItemStack stack = event.getItemStack();
             List<Text> tooltip;
             if (ModConfig.get().developer_showAllPotentialKeys) {
-                tooltip = GenericKeys.findAllPotentialKeys(stack);
+                tooltip = TagHelpers.findAllPotentialKeys(stack);
             }
             else {
                 tooltip = createTooltip(findItemLoreKey(stack), false);

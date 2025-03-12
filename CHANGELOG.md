@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 - Show translation keys debug tool will now translate keys when Alt is held.
+- On 1.21 and above, support for Polymer's custom items.
 
 ## [1.14] - 2025-03-11
 

@@ -6,7 +6,6 @@ import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.registry.DefaultedRegistry;
 import net.minecraft.registry.Registries;
@@ -16,6 +15,8 @@ import net.minecraft.util.Identifier;
 import java.util.Objects;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
+import static net.minecraft.client.resource.language.I18n.hasTranslation;
+import static net.minecraft.client.resource.language.I18n.translate;
 
 public class DescriptionsResultEntry implements InvokeResultEntry {
     Text searchKey;
@@ -23,6 +24,22 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
     public DescriptionsResultEntry(String s) {
         super();
         searchKey = findTranslationKey(s);
+    }
+
+    public static Text createMultilineTranslation(String loreKey) {
+        // Setup list to store (potentially multi-line) tooltip.
+        StringBuilder lines = new StringBuilder();
+        //Check if the key exists.
+        if (!loreKey.isEmpty()) {
+            // Translate the lore key.
+            String translatedKey = translate(loreKey);
+            // Check if the translated key exists.
+            if (hasTranslation(loreKey)) {
+                // Add the final tooltip.
+                lines.append(translatedKey);
+            }
+        }
+        return Text.literal(String.valueOf(lines));
     }
 
     private Text findTranslationKey(String s) {
@@ -82,10 +99,9 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                 registryKey = item.getTranslationKey();
             }
             else return;
-            if (lowerS.equals(I18n.translate(registryKey).toLowerCase())) {
+            if (lowerS.equals(translate(registryKey).toLowerCase())) {
                 returnedKey[0] = createMultilineTranslation(convertToLoreKey(registryKey));
-                return;
-            };
+            }
         });
         return returnedKey[0];
     }

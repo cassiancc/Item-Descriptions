@@ -29,29 +29,45 @@ import java.util.*;
 import java.util.function.Consumer;
 
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
-import static cc.cassian.item_descriptions.client.helpers.GenericKeys.*;
+import static cc.cassian.item_descriptions.client.helpers.TagHelpers.*;
 import static net.minecraft.client.resource.language.I18n.hasTranslation;
 import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
-    //Check if Cloth Config is installed and its configuration can be used.
+
+    /**
+     * Check if Cloth Config is installed and its configuration can be used.
+     */
     @ExpectPlatform
     public static boolean clothConfigInstalled() {
         throw new AssertionError();
     }
 
-    //Check if ToolTipFix is installed and its wrapper should be used.
-    @ExpectPlatform
+    /**
+     * Check if ToolTipFix is installed and its wrapper should be used.
+     */
     public static boolean tooltipFixInstalled() {
+        return isLoaded("tooltipfix");
+    }
+
+    /**
+     * Check if a mod is loaded
+     */
+    @ExpectPlatform
+    public static boolean isLoaded(String mod) {
         throw new AssertionError();
     }
 
-    //Used in Config to change the tooltip's formatting.
+    /**
+     * Used in Config to change the tooltip's formatting.
+     */
     public static Style getStyle() {
         return Style.EMPTY.withColor(getColour()).withItalic(ModConfig.get().style_italics).withBold(ModConfig.get().style_bold);
     }
 
-    //Used to check what colour a tooltip should be.
+    /**
+     * Used to check what colour a tooltip should be.
+     */
     public static TextColor getColour() {
         String colour = ModConfig.get().style_color;
         int length = colour.length();
@@ -77,7 +93,9 @@ public class ModHelpers {
         }
     }
 
-    //Handles detection of when a line break should be added in a tooltip.
+    /**
+     * Handles detection of when a line break should be added in a tooltip.
+     */
     public static int getIndex(String translatedKey, int maxLength) {
         String subKey = translatedKey.substring(0, maxLength);
         int index;
@@ -89,7 +107,9 @@ public class ModHelpers {
         return index;
     }
 
-    //Check if a keybind is pressed and a tooltip should be displayed.
+    /**
+     * Check if a keybind is pressed and a tooltip should be displayed.
+     */
     public static boolean tooltipKeyPressed() {
         if (ModConfig.get().keybind_displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
         else if (ModConfig.get().keybind_displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
@@ -97,7 +117,9 @@ public class ModHelpers {
         else return false;
     }
 
-    //Check if a keybind is pressed. Contains the handling for if the key is inverted.
+    /**
+     * Check if a keybind is pressed. Contains the handling for if the key is inverted.
+     */
     @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
     public static boolean checkKey(boolean key) {
         boolean invert = ModConfig.get().keybind_invert;
@@ -114,7 +136,10 @@ public class ModHelpers {
     public static String findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         //? if >1.20.5 {
-            if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            if (PolymerHelpers.getServerIdentifier(stack) != null) {
+                return "lore."+convertToLoreKey(PolymerHelpers.getServerIdentifier(stack).toTranslationKey());
+            }
+            else if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA));
                 //? if <1.21.4 {
                  /*var dataValue = data.value();
@@ -176,7 +201,9 @@ public class ModHelpers {
         return loreKey;
     }
 
-    // Check if an Item Stack has a particular component.
+    /**
+     * Check if an Item Stack has a particular component.
+     */
     //? if >1.20.5 {
     public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
         return stack.getComponents().contains(type);
