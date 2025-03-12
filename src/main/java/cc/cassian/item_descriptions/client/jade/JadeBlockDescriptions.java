@@ -20,7 +20,7 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
         //Check if block descriptions are enabled in mod config.
         if (showBlockDescriptions()) {
             //Create and add tooltip.
-            List<Text> tooltip = createTooltip(getBlockAccessorLoreKey(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()), true);
+            List<Text> tooltip = createTooltip(createBlockDescription(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()), true);
             for (Text text : tooltip) {
                 lines.add(text);
             }

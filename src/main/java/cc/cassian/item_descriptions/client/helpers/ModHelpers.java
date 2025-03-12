@@ -15,6 +15,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.nbt.NbtElement;
 *///?}
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -179,7 +180,7 @@ public class ModHelpers {
     /**
      * Create a block's lore key based off data from WAILA-based Block Accessors like Jade/WTHIT/HYWLA.
      */
-    public static String getBlockAccessorLoreKey(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+    public static String createBlockDescription(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         String loreKey = findBlockLoreKey(block);
         //Custom handling of Player Heads so custom profiles give custom descriptions.
@@ -199,6 +200,18 @@ public class ModHelpers {
 
         }
         return loreKey;
+    }
+
+    /**
+     * Create an entity's lore key based off its entity data.
+     */
+    public static List<Text> createEntityDescription(Entity entity) {
+        //Create and add tooltip.
+        if (entity instanceof ItemFrameEntity itemFrameEntity && !itemFrameEntity.getHeldItemStack().isEmpty()) {
+            return createTooltip(findItemLoreKey(itemFrameEntity.getHeldItemStack()), !tooltipFixInstalled());
+        } else {
+            return createTooltip(findEntityLoreKey(entity), true);
+        }
     }
 
     /**
