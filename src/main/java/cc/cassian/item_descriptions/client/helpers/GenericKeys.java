@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.block.*;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.BlockItem;
@@ -9,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 //? if >1.20 {
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 //?} else {
 /*import net.minecraft.tag.TagKey;
@@ -164,10 +166,21 @@ public class GenericKeys {
     }
 
     private static void addSafe(ArrayList<Text> tags, String newAdd) {
-        Text newText = Text.literal(newAdd);
-        if (!tags.contains(newText)) {
-            tags.add(newText);
+        Text newText;
+        if (Screen.hasAltDown())
+            //? if >1.20 {
+            newText = Text.translatableWithFallback(newAdd, newAdd);
+            //?} else {
+            /*if (I18n.hasTranslation(newAdd)) {
+                newText = Text.translatable(newAdd);
+            }
+            else newText = Text.literal(newAdd);
+            *///?}
+        else {
+            newText = Text.literal(newAdd);
         }
+        if (!tags.contains(newText))
+            tags.add(newText);
     }
 
     /**

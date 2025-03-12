@@ -395,22 +395,6 @@ public class ModHelpers {
         return lines;
     }
 
-    public static Text createMultilineTranslation(String loreKey) {
-        // Setup list to store (potentially multi-line) tooltip.
-        StringBuilder lines = new StringBuilder();
-        //Check if the key exists.
-        if (!loreKey.isEmpty()) {
-            // Translate the lore key.
-            String translatedKey = translate(loreKey);
-            // Check if the translated key exists.
-            if (hasTranslation(loreKey)) {
-                // Add the final tooltip.
-                lines.append(translatedKey);
-            }
-        }
-        return Text.literal(String.valueOf(lines));
-    }
-
     /**
      * Automatically generate translation keys for config options.
      */

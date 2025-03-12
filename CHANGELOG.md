@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## Added
+- Show translation keys debug tool will now translate keys when Alt is held.
+
+## [1.14] - 2025-03-11
+
+## Added
 - Description for Polished Andesite.
 - Descriptions for 1.21.5 blocks, including Bushes, Firefly Bushes, Short Dry Grass, Tall Dry Grass, Test Block, Test Instance Block, Blue Egg, Brown Egg,  and Cactus Flowers.
 - Additional descriptions for legacy Forge common tags.
