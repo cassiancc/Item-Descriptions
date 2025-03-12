@@ -25,7 +25,7 @@ public class ModConfig {
     public String style_color = "Gray";
     public boolean style_italics = false;
     public boolean style_bold = false;
-    public int style_length = 200;
+    public int style_length = 40;
     //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;
@@ -50,9 +50,6 @@ public class ModConfig {
 
         try (var input = Files.newInputStream(configPath())) {
             INSTANCE = GSON.fromJson(new InputStreamReader(input, StandardCharsets.UTF_8), ModConfig.class);
-            //temporary fix for updating old configs, 40 looks terrible with the new wrapper
-            if (INSTANCE.style_length == 40)
-                INSTANCE.style_length = 200;
         } catch (IOException e) {
             ModClient.LOGGER.warn("Unable to load config file!");
         }

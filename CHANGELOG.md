@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Description for Polished Andesite.
 - Descriptions for 1.21.5 blocks, including Bushes, Firefly Bushes, Short Dry Grass, Tall Dry Grass, Test Block, Test Instance Block, Blue Egg, Brown Egg,  and Cactus Flowers.
 - Additional descriptions for legacy Forge common tags.
-- Length-based wrapping for tooltips, instead of character-baed (@sisby-folk)
 - New developer option to show all translation keys available for an item.
 
 ## Changed

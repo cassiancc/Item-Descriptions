@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SkullBlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 //? if >1.20.5 {
 import net.minecraft.component.ComponentType;
@@ -329,7 +328,9 @@ public class ModHelpers {
         return loreKey;
     }
 
-    // Convert block/item/entity translation keys to lore translation keys.
+    /**
+     * Convert block/item/entity translation keys to lore translation keys.
+     */
     public static @NotNull String getLoreTranslationKey(Object object) {
         if (object instanceof ItemStack stack) {
             return convertToLoreKey(stack.getItem().getTranslationKey());
@@ -341,7 +342,9 @@ public class ModHelpers {
         return "";
     }
 
-    // Find an entity's translation key
+    /**
+     * Find an entity's translation key
+     */
     public static String getEntityTranslationKey(Entity entity) {
         //Allow for custom player descriptions
         if (entity.isPlayer()) {
@@ -360,7 +363,9 @@ public class ModHelpers {
 
     }
 
-    // Create a custom, potentially multi-line tooltip.
+    /**
+     * Create a custom, potentially multi-line tooltip.
+     */
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
@@ -373,24 +378,17 @@ public class ModHelpers {
             if (hasTranslation(loreKey)) {
                 //Check if custom wrapping should be used.
                 if (wrap && (maxLength != 0)) {
-                    //Any tooltip longer than XX pixels should be shortened.
-                    while (MinecraftClient.getInstance().textRenderer.getWidth(Text.of(translatedKey)) >= maxLength) {
-                        int lineLength = translatedKey.length();
-                        // Find where to end this line, starting from the remaining string.
-                        while (translatedKey.substring(0, lineLength).contains(" ")
-                                && MinecraftClient.getInstance().textRenderer.getWidth(Text.of(translatedKey.substring(0, lineLength))) >= maxLength) {
-                            lineLength = translatedKey.substring(0, lineLength).lastIndexOf(' ');
-                        }
-                        // Add the line.
-                        lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(getStyle()));
-                        // Remove the line substring from the start of the remaining string. Repeat.
-                        try {
-                            translatedKey = translatedKey.substring(lineLength + 1);
-                        } catch (StringIndexOutOfBoundsException e) {
-                            translatedKey = translatedKey.substring(lineLength);
-                        }
+                    //Any tooltip longer than XX characters should be shortened.
+                    while (translatedKey.length() >= maxLength) {
+                        //Find how much to shorten the tooltip by.
+                        int index = getIndex(translatedKey, maxLength);
+                        //Add a shortened tooltip.
+                        lines.add(Text.literal(translatedKey.substring(0, index)).setStyle(getStyle()));
+                        //Remove the shortened tooltip substring from the tooltip. Repeat.
+                        translatedKey = translatedKey.substring(index);
                     }
                 }
+                //Add the final tooltip.
                 if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(getStyle()));
             }
         }
@@ -413,18 +411,24 @@ public class ModHelpers {
         return Text.literal(String.valueOf(lines));
     }
 
-    // Automatically generate translation keys for config options.
+    /**
+     * Automatically generate translation keys for config options.
+     */
     public static Text fieldName(Field field) {
         return Text.translatable("config."+MOD_ID+".config." + field.getName());
     }
     
-    // Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
+    /**
+     * Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
+     */
     public static Text[] fieldTooltip(Field field) {
         String tooltipKey = "config."+MOD_ID+".config." + field.getName() + ".tooltip";
         return createTooltip(tooltipKey, true).toArray(new Text[0]);
     }
 
-    // Get the current value of a config field.
+    /**
+     * Get the current value of a config field.
+     */
     @SuppressWarnings("unchecked")
     public static <T> T fieldGet(Object instance, Field field) {
         try {
@@ -434,7 +438,9 @@ public class ModHelpers {
         }
     }
 
-    // Set a config field.
+    /**
+     * Set a config field.
+     */
     public static <T> Consumer<T> fieldSetter(Object instance, Field field) {
         return t -> {
             try {
