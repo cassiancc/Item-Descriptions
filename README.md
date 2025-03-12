@@ -53,7 +53,9 @@ By default, the mod provides descriptions for all blocks, items, and entities - 
 "lore.<namespace>.<your_item_here>": "A mysterious modded block."
 ```
 
-For more information, including details on support for Custom Model Data, see the information on the [Item Descriptions Wiki](https://github.com/cassiancc/Item-Descriptions/wiki).
+For more information, including details on support for Custom Model Data, see the information on the [Item Descriptions Wiki](https://moddedmc.wiki/en/project/item-descriptions/docs).
 
 ## Credits
 The descriptions present in the mod are inspired by the Minecraft Legacy Console Editions. The interface used was inspired by the one present in the Better Than Adventure mod for Minecraft b1.7.3. Mod Menu/Cloth Config integration is based on the integration present in [idwtialsimmoedm](https://modrinth.com/mod/idwtialsimmoedm) under its [MIT License](https://github.com/gliscowo/idwtialsimmoedm/blob/1.21/LICENSE).
+
+For Polymer support, some code was copied from Polymer under its [LGPL License](https://github.com/Patbox/polymer/blob/dev/1.21.4/LICENSE).
