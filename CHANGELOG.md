@@ -10,7 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - Show translation keys debug tool will now translate keys when Alt is held.
 - On 1.21 and above, support for Polymer's custom items.
-- Item Frames now show the description of the item inside, not their own descriptions. This also applies to Fast Item Frames.
+- Where possible, blocks with visible contents now show the description of the item inside, not their own descriptions.
+  - This includes Item Frames. 
+  - This includes Fast Item Frames.
+  - This includes Glowcase Item Display Entities.
 
 ## Fixed
 - Incorrect descriptions on some leaf blocks.

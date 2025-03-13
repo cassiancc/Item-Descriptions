@@ -167,7 +167,7 @@ Library.
  */
 
 //? if >1.20.5 {
-package cc.cassian.item_descriptions.client.helpers;
+package cc.cassian.item_descriptions.client.helpers.compat;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.component.DataComponentTypes;

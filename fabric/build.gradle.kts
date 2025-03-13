@@ -47,6 +47,7 @@ repositories {
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
     maven ("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+    maven ("https://repo.sleeping.town/" )
 }
 
 dependencies {
@@ -72,16 +73,19 @@ dependencies {
     modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${common.mod.dep("wthit_version")}")
     modRuntimeOnly("lol.bai:badpackets:fabric-${common.mod.dep("badpackets_version")}")
 
-    // Limelight
+
     if (stonecutter.eval(mcVersion, "=1.21.1")) {
-        modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}")
-        modCompileOnly("io.wispforest:limelight:${common.mod.dep("limelight_version")}")
-        modLocalRuntime("io.wispforest:limelight:${common.mod.dep("limelight_version")}")
+        modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}") // Limelight dependency
+        modCompileOnly("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight "API"
+        modLocalRuntime("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight
+        modLocalRuntime("folk.sisby:kaleido-config:0.3.1+1.3.1") // Glowcase dependency
     }
 
-    // Useful Spyglass
+    // Useful Spyglass and Glowcase
     if (stonecutter.eval(mcVersion, "<1.21.4")) {
-        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric")
+        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric") // Useful Spyglass - optional compat
+        modLocalRuntime("maven.modrinth:glowcase:${common.mod.dep("glowcase")}") // Glowcase - optional compat
+        modLocalRuntime("maven.modrinth:placeholder-api:${common.mod.dep("placeholder_api")}") // Glowcase dependency
     }
     if (stonecutter.eval(mcVersion, "=1.19.2")) {
         modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
@@ -90,7 +94,6 @@ dependencies {
         modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
         modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
         modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
-
     }
 
     // Stonecutter/Arch

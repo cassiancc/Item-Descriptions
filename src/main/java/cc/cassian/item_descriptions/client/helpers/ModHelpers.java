@@ -1,6 +1,9 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
+import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
+import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
+import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -191,9 +194,16 @@ public class ModHelpers {
                 return profileKey;
             }
         }
-        else if (isLoaded("fastitemframes")) {
+        if (isLoaded("fastitemframes")) {
             if (FastItemFramesHelpers.isFastItemFrame(blockEntity)) {
                 var contents = FastItemFramesHelpers.getFastItemFrameContents(blockEntity);
+                if (contents != null)
+                    return findItemLoreKey(contents);
+            }
+        }
+        if (isLoaded("glowcase")) {
+            if (GlowcaseHelpers.isItemDisplay(blockEntity)) {
+                var contents = GlowcaseHelpers.getItemDisplayContents(blockEntity);
                 if (contents != null)
                     return findItemLoreKey(contents);
             }
