@@ -170,10 +170,15 @@ Library.
 package cc.cassian.item_descriptions.client.helpers.compat;
 
 import com.mojang.serialization.MapCodec;
+import eu.pb4.polymer.core.api.client.ClientPolymerBlock;
+import eu.pb4.polymer.core.impl.client.InternalClientRegistry;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+
+import static cc.cassian.item_descriptions.client.helpers.ModHelpers.getLoreTranslationKey;
 
 /**
  * Contains helper methods from Polymer, licensed under the above LGPL license.
@@ -224,5 +229,16 @@ public class PolymerHelpers {
 
         return null;
     }
+
+    public static String findPolymerBlockIdentifier(BlockPos pos) {
+        var block = InternalClientRegistry.getBlockAt(pos);
+        return getLoreTranslationKey(block.block().identifier());
+    }
+
+    public static boolean isPolymerBlock(BlockPos pos) {
+        var block = InternalClientRegistry.getBlockAt(pos);
+        return block != ClientPolymerBlock.NONE_STATE;
+    }
+
 }
 //?}

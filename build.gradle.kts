@@ -4,6 +4,7 @@ plugins {
 }
 
 val minecraft = stonecutter.current.version
+val mcVersion = stonecutter.current.project.substringBeforeLast('-')
 
 version = "${mod.version}+$minecraft"
 base {
@@ -16,8 +17,9 @@ architectury.common(stonecutter.tree.branches.mapNotNull {
 })
 
 repositories {
-    maven ( "https://api.modrinth.com/maven")
-    maven ( "https://maven2.bai.lol" )
+    maven ( "https://api.modrinth.com/maven") // Jade/Useful Spyglass
+    maven ( "https://maven2.bai.lol" ) // WTHIT
+    maven ( "https://maven.nucleoid.xyz") // Polymer
 }
 
 dependencies {
@@ -35,6 +37,9 @@ dependencies {
     modCompileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
     modCompileOnly("maven.modrinth:glowcase:${mod.dep("glowcase")}")
 
+    if (stonecutter.eval(mcVersion, ">1.21")) {
+        modCompileOnly("eu.pb4:polymer-core:${mod.dep("polymer")}")
+    }
 
 }
 

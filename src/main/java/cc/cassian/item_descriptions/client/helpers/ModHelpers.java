@@ -142,8 +142,8 @@ public class ModHelpers {
         //? if >1.20.5 {
             if (PolymerHelpers.getServerIdentifier(stack) != null) {
                 return "lore."+convertToLoreKey(PolymerHelpers.getServerIdentifier(stack).toTranslationKey());
-            }
-            else if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            } else 
+            if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA));
                 //? if <1.21.4 {
                  /*var dataValue = data.value();
@@ -186,6 +186,11 @@ public class ModHelpers {
     public static String createBlockDescription(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         String loreKey = findBlockLoreKey(block);
+        //? if >1.20.5 {
+        if (isLoaded("polymer"))
+            if (PolymerHelpers.isPolymerBlock(pos))
+                loreKey = PolymerHelpers.findPolymerBlockIdentifier(pos);
+        //?}
         //Custom handling of Player Heads so custom profiles give custom descriptions.
         if (blockEntity instanceof SkullBlockEntity) {
             String profileKey = getProfile(blockEntity, loreKey);

@@ -48,6 +48,7 @@ repositories {
     maven ( "https://maven2.bai.lol" )
     maven ("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
     maven ("https://repo.sleeping.town/" )
+    maven ( "https://maven.nucleoid.xyz" ) // Polymer
 }
 
 dependencies {
@@ -95,6 +96,13 @@ dependencies {
         modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
         modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
     }
+
+    //Polymer
+    if (stonecutter.eval(mcVersion, ">1.21")) {
+        modImplementation("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
+    }
+
+
 
     // Stonecutter/Arch
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }
