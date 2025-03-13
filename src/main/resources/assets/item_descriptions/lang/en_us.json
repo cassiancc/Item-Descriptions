@@ -1225,8 +1225,6 @@
   "tag.c.tools.fishing_rod.description": "A tool that can be used to pull mobs towards the player, or for fishing in large bodies of water.",
   "tag.c.tools.igniter.description": "A tool that can be used to set fires.",
   "tag.c.tools.mace.description": "A heavy weapon that does more damage the further you fall.",
-  "tag.c.tools.melee_weapon.description": "A weapon that can be used in close combat..",
-  "tag.c.tools.melee_weapons.description": "A weapon that can be used in close combat.",
   "tag.c.tools.ranged_weapon.description": "A ranged weapon that can be used to shoot far off targets.",
   "tag.c.tools.ranged_weapons.description": "A ranged weapon that can be used to shoot far off targets.",
   "tag.c.tools.shear.description": "A tool that can be used to obtain delicate natural blocks, or on Sheep to peacefully harvest their wool.",
