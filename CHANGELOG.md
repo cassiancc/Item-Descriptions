@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - This includes Glowcase Item Display Entities.
 
 ## Fixed
-- Incorrect descriptions on some leaf blocks.
+- Incorrect descriptions on leaves, swords, and axes.
 
 ## [1.14] - 2025-03-11
 
