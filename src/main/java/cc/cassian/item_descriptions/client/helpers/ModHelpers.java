@@ -3,7 +3,6 @@ package cc.cassian.item_descriptions.client.helpers;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
-import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,6 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 //? if >1.20.5 {
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
+import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
 //?} else {
 /*import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -187,9 +187,11 @@ public class ModHelpers {
         //Convert block translation key to lore translation key.
         String loreKey = findBlockLoreKey(block);
         //? if >1.20.5 {
-        if (isLoaded("polymer"))
-            if (PolymerHelpers.isPolymerBlock(pos))
+        if (isLoaded("polymer-bundled"))
+            if (PolymerHelpers.isPolymerBlock(pos)) {
+                System.out.println(PolymerHelpers.findPolymerBlockIdentifier(pos));
                 loreKey = PolymerHelpers.findPolymerBlockIdentifier(pos);
+            }
         //?}
         //Custom handling of Player Heads so custom profiles give custom descriptions.
         if (blockEntity instanceof SkullBlockEntity) {
