@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - Show translation keys debug tool will now translate keys when Alt is held.
 - Additional convention tags for some modded blocks and items.
-- Ability to use custom painting variant descriptions.
+- On 1.21 and above, ability to use custom painting variant descriptions.
 - On 1.21 and above, support for Polymer's custom items and blocks.
 - Where possible, blocks with visible contents now show the description of the item inside, not their own descriptions.
   - This includes Item Frames. 
