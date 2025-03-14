@@ -241,9 +241,13 @@ public class ModHelpers {
         //Create and add tooltip.
         if (entity instanceof ItemFrameEntity itemFrameEntity && !itemFrameEntity.getHeldItemStack().isEmpty()) {
             return createTooltip(findItemLoreKey(itemFrameEntity.getHeldItemStack()), !tooltipFixInstalled());
-        } else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
+        }
+        //? if >1.21 {
+        else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
             return createTooltip("lore.minecraft.painting."+painting.getVariant().getIdAsString().replace(":", "."), !tooltipFixInstalled());
-        } else {
+        }
+        //?}
+        else {
             return createTooltip(findEntityLoreKey(entity), !tooltipFixInstalled());
         }
     }
