@@ -19,7 +19,9 @@ import net.minecraft.nbt.NbtElement;
 *///?}
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
+import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -155,6 +157,12 @@ public class ModHelpers {
                     return modelKey;
                 }
             }
+            else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
+                var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
+                var variant = data.copyNbt().getString("variant").replaceAll("\"", "").replace(":", ".");
+                var paintingKey = "lore.minecraft.painting."+variant;
+                if (hasTranslation(paintingKey) || ModConfig.get().developer_showAllPotentialKeys) return paintingKey;
+            }
             //Ensure player heads with Profile components get a custom key instead of a vanilla one.
             else if (hasComponent(stack, DataComponentTypes.PROFILE)) {
                 String profileKey = getProfile(stack);
@@ -233,8 +241,10 @@ public class ModHelpers {
         //Create and add tooltip.
         if (entity instanceof ItemFrameEntity itemFrameEntity && !itemFrameEntity.getHeldItemStack().isEmpty()) {
             return createTooltip(findItemLoreKey(itemFrameEntity.getHeldItemStack()), !tooltipFixInstalled());
+        } else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
+            return createTooltip("lore.minecraft.painting."+painting.getVariant().getIdAsString().replace(":", "."), !tooltipFixInstalled());
         } else {
-            return createTooltip(findEntityLoreKey(entity), true);
+            return createTooltip(findEntityLoreKey(entity), !tooltipFixInstalled());
         }
     }
 
