@@ -197,7 +197,6 @@ public class ModHelpers {
         //? if >1.20.5 {
         if (isLoaded("polymer-bundled"))
             if (PolymerHelpers.isPolymerBlock(pos)) {
-                System.out.println(PolymerHelpers.findPolymerBlockIdentifier(pos));
                 loreKey = PolymerHelpers.findPolymerBlockIdentifier(pos);
             }
         //?}

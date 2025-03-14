@@ -93,13 +93,13 @@ dependencies {
     }
     else {
         modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
-        modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
-        modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
     }
 
     //Polymer
     if (stonecutter.eval(mcVersion, ">1.21")) {
-        modImplementation("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
+        modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
+        modLocalRuntime("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
+        modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
     }
 
 
