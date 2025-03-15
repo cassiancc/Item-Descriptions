@@ -338,7 +338,7 @@
   "lore.minecraft.cracked_deepslate_tiles": "A block of Deepslate Tiles created in a furnace.",
   "lore.minecraft.cracked_nether_bricks": "A block of Nether Bricks created in a furnace.",
   "lore.minecraft.cracked_polished_blackstone_bricks": "A block of Blackstone Bricks created in a furnace.",
-  "lore.minecraft.cracked_stone_bricks": "A block of Stone Bricks created in a furnace.",
+  "lore.minecraft.cracked_stone_bricks": "A block of Stone Bricks cracked in a furnace.",
   "lore.minecraft.crafter": "A block that will craft a recipe based on its inventory when powered.",
   "lore.minecraft.crafting_table": "A block that allows you to craft recipes requiring a 3x3 grid.",
   "lore.minecraft.creaking_heart": "A living block that anchors a Creaking to the world. Breaking it will destroy its Creaking, and placing it between Pale Oak blocks will summon a new one.",
