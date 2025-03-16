@@ -52,8 +52,8 @@ public class ModHelpers {
     /**
      * Check if ToolTipFix is installed and its wrapper should be used.
      */
-    public static boolean tooltipFixInstalled() {
-        return isLoaded("tooltipfix");
+    public static boolean useInternalWrapper() {
+        return !isLoaded("tooltipfix");
     }
 
     /**
@@ -239,15 +239,15 @@ public class ModHelpers {
     public static List<Text> createEntityDescription(Entity entity) {
         //Create and add tooltip.
         if (entity instanceof ItemFrameEntity itemFrameEntity && !itemFrameEntity.getHeldItemStack().isEmpty()) {
-            return createTooltip(findItemLoreKey(itemFrameEntity.getHeldItemStack()), !tooltipFixInstalled());
+            return createTooltip(findItemLoreKey(itemFrameEntity.getHeldItemStack()), useInternalWrapper());
         }
         //? if >1.21 {
         else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
-            return createTooltip("lore.minecraft.painting."+painting.getVariant().getIdAsString().replace(":", "."), !tooltipFixInstalled());
+            return createTooltip("lore.minecraft.painting."+painting.getVariant().getIdAsString().replace(":", "."), useInternalWrapper());
         }
         //?}
         else {
-            return createTooltip(findEntityLoreKey(entity), !tooltipFixInstalled());
+            return createTooltip(findEntityLoreKey(entity), useInternalWrapper());
         }
     }
 
@@ -426,7 +426,7 @@ public class ModHelpers {
         //Allow for custom player descriptions
         if (entity.isPlayer()) {
             //? if >1.21 {
-            String playerKey = "entity.minecraft.player." + entity.getName().getLiteralString();;
+            String playerKey = "entity.minecraft.player.%s".formatted(entity.getName().getLiteralString());;
             //?} else
             /*String playerKey = "entity.minecraft.player." + entity.getName().getString();;*/
             //Check if a custom player description exists.
@@ -437,7 +437,6 @@ public class ModHelpers {
         else {
             return entity.getType().getTranslationKey();
         }
-
     }
 
     /**
@@ -476,14 +475,14 @@ public class ModHelpers {
      * Automatically generate translation keys for config options.
      */
     public static Text fieldName(Field field) {
-        return Text.translatable("config."+MOD_ID+".config." + field.getName());
+        return Text.translatable("config.%s.config.%s".formatted(MOD_ID, field.getName()));
     }
     
     /**
      * Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
      */
     public static Text[] fieldTooltip(Field field) {
-        String tooltipKey = "config."+MOD_ID+".config." + field.getName() + ".tooltip";
+        String tooltipKey = "config.%s.config.%s.tooltip".formatted(MOD_ID, field.getName());
         return createTooltip(tooltipKey, true).toArray(new Text[0]);
     }
 
