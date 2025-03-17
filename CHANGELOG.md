@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## Added
+- Re-added show untranslated keys debug option.
+- Fix various typos.
+- A new fallback option to match against an item's name - useful for modded items where the ID won't necessarily match its name.
+
+## [1.15] - 2025-03-11
+
+## Added
 - Show translation keys debug tool will now translate keys when Alt is held.
 - Additional convention tags for some modded blocks and items.
 - On 1.21 and above, ability to use custom painting variant descriptions.

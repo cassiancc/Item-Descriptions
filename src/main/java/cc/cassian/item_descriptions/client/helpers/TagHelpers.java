@@ -3,7 +3,6 @@ package cc.cassian.item_descriptions.client.helpers;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.block.*;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -109,7 +108,7 @@ public class TagHelpers {
     }
 
     private static boolean checkMatch(String loreKey, String[] returnedKey) {
-        return I18n.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length());
+        return ModHelpers.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length());
     }
 
     private static String checkGenericTagList(Object object) {
@@ -170,7 +169,7 @@ public class TagHelpers {
             //? if >1.20 {
             newText = Text.translatableWithFallback(newAdd, newAdd);
             //?} else {
-            /*if (I18n.hasTranslation(newAdd)) {
+            /*if (ModHelpers.hasTranslation(newAdd)) {
                 newText = Text.translatable(newAdd);
             }
             else newText = Text.literal(newAdd);
@@ -192,6 +191,7 @@ public class TagHelpers {
         if (Objects.requireNonNull(object) instanceof ItemStack itemStack) {
             addSafe(tags, findItemLoreKey(itemStack));
             addSafe(tags, getLoreTranslationKey(itemStack));
+            addSafe(tags, getModdedNameMatch(itemStack));
             final Item item = itemStack.getItem();
             //Temporary - Spawn Eggs do not yet have a tag.
             if (item instanceof SpawnEggItem) {
@@ -229,7 +229,7 @@ public class TagHelpers {
      * Convert a TagKey into a translation key.
      */
     private static String tagKeyToGenericKey(TagKey<?> key) {
-        return "tag." + key.id().toTranslationKey().replaceAll("/", ".") + ".description";
+        return "tag." + toTranslationKey(key.id().toTranslationKey()) + ".description";
     }
 
     public static String getGenericKey(Object object) {

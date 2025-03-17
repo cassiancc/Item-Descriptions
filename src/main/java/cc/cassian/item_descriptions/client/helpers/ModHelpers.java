@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SkullBlockEntity;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resource.language.I18n;
 //? if >1.20.5 {
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
@@ -36,7 +37,6 @@ import java.util.function.Consumer;
 
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.TagHelpers.*;
-import static net.minecraft.client.resource.language.I18n.hasTranslation;
 import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
@@ -159,7 +159,7 @@ public class ModHelpers {
             }
             else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
-                var variant = data.copyNbt().getString("variant").replaceAll("\"", "").replace(":", ".");
+                var variant = toTranslationKey(data.copyNbt().getString("variant"));
                 var paintingKey = "lore.minecraft.painting."+variant;
                 if (hasTranslation(paintingKey) || ModConfig.get().developer_showAllPotentialKeys) return paintingKey;
             }
@@ -184,8 +184,25 @@ public class ModHelpers {
                 }
             }
         *///?}
+        var name = getModdedNameMatch(stack);
+        if (hasTranslation(name)) {
+            return name;
+        }
         //Find the tooltip translation key for the provided item stack.
         return checkLoreKey(getLoreKey(stack));
+    }
+
+    public static String getModdedNameMatch(ItemStack stack) {
+        return getLoreTranslationKey(stack)+"."+toTranslationKey(stack.getItem().getName(stack).getString());
+    }
+
+    public static String toTranslationKey(String string) {
+        return string.toLowerCase().replaceAll("\"", "").replaceAll(" ", "_").replaceAll("[/:]", ".");
+    }
+
+    public static boolean hasTranslation(String key) {
+        if (ModConfig.get().developer_showUntranslated) return true;
+        return I18n.hasTranslation(key);
     }
 
     /**

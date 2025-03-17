@@ -32,7 +32,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
                         tooltip = TagHelpers.findAllPotentialKeys(stack);
                     }
                     else {
-                        tooltip = createTooltip(findItemLoreKey(stack), !tooltipFixInstalled());
+                        tooltip = createTooltip(findItemLoreKey(stack), useInternalWrapper());
                     }
                     lines.addAll(tooltip);
                 }

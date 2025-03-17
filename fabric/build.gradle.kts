@@ -84,7 +84,7 @@ dependencies {
 
     // Useful Spyglass and Glowcase
     if (stonecutter.eval(mcVersion, "<1.21.4")) {
-        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric") // Useful Spyglass - optional compat
+//        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric") // Useful Spyglass - optional compat
         modLocalRuntime("maven.modrinth:glowcase:${common.mod.dep("glowcase")}") // Glowcase - optional compat
         modLocalRuntime("maven.modrinth:placeholder-api:${common.mod.dep("placeholder_api")}") // Glowcase dependency
     }
