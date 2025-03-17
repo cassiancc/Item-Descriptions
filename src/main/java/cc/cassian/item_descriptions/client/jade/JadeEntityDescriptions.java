@@ -1,7 +1,8 @@
 package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import net.minecraft.entity.decoration.ItemFrameEntity;
+import cc.cassian.item_descriptions.client.config.ModConfig;
+import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import snownee.jade.api.EntityAccessor;
@@ -18,9 +19,15 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip lines, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
-        //Check if block descriptions are enabled in mod config.
+        //Check if entity descriptions are enabled in mod config.
         if (showEntityDescriptions()) {
-            var tooltip = createEntityDescription(entityAccessor.getEntity());
+            List<Text> tooltip;
+            if (ModConfig.get().developer_showAllPotentialKeys) {
+                tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());
+            }
+            else {
+                tooltip = createEntityDescription(entityAccessor.getEntity());
+            }
             for (Text text : tooltip) {
                 lines.add(text);
             }

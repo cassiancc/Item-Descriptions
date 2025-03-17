@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## Added
+- Show translation keys debug tool now supports Jade and WTHIT.
+- Documented the new Alt behaviour for show translation key debug tool.
+- Fix more typos.
+
+## [1.15.1] - 2025-03-17
+
+## Added
 - Re-added show untranslated keys debug option.
 - Fix various typos.
 - A new fallback option to match against an item's name - useful for modded items where the ID won't necessarily match its name.

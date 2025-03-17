@@ -260,7 +260,7 @@ public class ModHelpers {
         }
         //? if >1.21 {
         else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
-            return createTooltip("lore.minecraft.painting."+painting.getVariant().getIdAsString().replace(":", "."), useInternalWrapper());
+            return createTooltip("lore.minecraft.painting."+toTranslationKey(painting.getVariant().getIdAsString()), useInternalWrapper());
         }
         //?}
         else {
