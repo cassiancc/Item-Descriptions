@@ -26,7 +26,7 @@ public class InfoOverlayMixin {
     private static void spyglassEntityDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local LivingEntity entity) {
         if (showEntityDescriptions()) {
             //Create and add tooltip.
-            List<Text> tooltip = createTooltip(findEntityLoreKey(entity), true);
+            List<Text> tooltip = createTooltip(findEntityLoreKey(entity));
             for (Text text : tooltip) {
                 tooltipList.add(new TooltipInfo.TextTooltip(TooltipComponent.of(text.asOrderedText())));
             }
@@ -37,7 +37,7 @@ public class InfoOverlayMixin {
     private static void spyglassBlockDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local BlockState state) {
         if (showBlockDescriptions()) {
             //Create and add tooltip.
-            List<Text> tooltip = createTooltip(findBlockLoreKey(state.getBlock()), true);
+            List<Text> tooltip = createTooltip(findBlockLoreKey(state.getBlock()));
             for (Text text : tooltip) {
                 tooltipList.add(new TooltipInfo.BlockInfo(TooltipComponent.of(text.asOrderedText())));
             }

@@ -458,6 +458,17 @@ public class ModHelpers {
 
     /**
      * Create a custom, potentially multi-line tooltip.
+     *
+     * @param loreKey The translation key that will be translated and wrapped.
+     */
+    public static List<Text> createTooltip(String loreKey) {
+        return createTooltip(loreKey, true);
+    }
+
+    /**
+     * Create a custom, potentially multi-line tooltip.
+     * @param loreKey The translation key that will be translated.
+     * @param wrap Whether to use the built-in wrapper.
      */
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
         //Setup list to store (potentially multi-line) tooltip.
@@ -500,7 +511,7 @@ public class ModHelpers {
      */
     public static Text[] fieldTooltip(Field field) {
         String tooltipKey = "config.%s.config.%s.tooltip".formatted(MOD_ID, field.getName());
-        return createTooltip(tooltipKey, true).toArray(new Text[0]);
+        return createTooltip(tooltipKey).toArray(new Text[0]);
     }
 
     /**

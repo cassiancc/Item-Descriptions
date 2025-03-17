@@ -27,7 +27,7 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
-                tooltip = createTooltip(createBlockDescription(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()), true);
+                tooltip = createTooltip(createBlockDescription(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
             }
             for (Text text : tooltip) {
                 lines.add(text);
