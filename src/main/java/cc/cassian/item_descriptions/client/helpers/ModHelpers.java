@@ -256,16 +256,16 @@ public class ModHelpers {
     public static List<Text> createEntityDescription(Entity entity) {
         //Create and add tooltip.
         if (entity instanceof ItemFrameEntity itemFrameEntity && !itemFrameEntity.getHeldItemStack().isEmpty()) {
-            return createTooltip(findItemLoreKey(itemFrameEntity.getHeldItemStack()), useInternalWrapper());
+            return createTooltip(findItemLoreKey(itemFrameEntity.getHeldItemStack()));
         }
         //? if >1.21 {
         else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
             var loreKey = "lore.minecraft.painting."+toTranslationKey(painting.getVariant().getIdAsString());
             if (hasTranslation(loreKey))
-                return createTooltip(loreKey, useInternalWrapper());
+                return createTooltip(loreKey);
         }
         //?}
-        return createTooltip(findEntityLoreKey(entity), useInternalWrapper());
+        return createTooltip(findEntityLoreKey(entity));
     }
 
     /**
@@ -457,7 +457,7 @@ public class ModHelpers {
     }
 
     /**
-     * Create a custom, potentially multi-line tooltip.
+     * Create a custom multi-line tooltip.
      *
      * @param loreKey The translation key that will be translated and wrapped.
      */
