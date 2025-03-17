@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documented the new Alt behaviour for show translation key debug tool.
 - Fix more typos.
 
+## Fixed
+- Untranslated paintings now fall back correctly.
+
 ## [1.15.1] - 2025-03-17
 
 ## Added
