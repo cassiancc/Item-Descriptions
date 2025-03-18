@@ -68,14 +68,50 @@ public class ModHelpers {
      * Used in Config to change the tooltip's formatting.
      */
     public static Style getStyle() {
-        return Style.EMPTY.withColor(getColour()).withItalic(ModConfig.get().style_italics).withBold(ModConfig.get().style_bold);
+        return getStyle(ModConfig.get().style_color);
+    }
+
+    /**
+     * Used in Config to change the tooltip's formatting.
+     */
+    public static Style getStyle(String colour) {
+        return Style.EMPTY.withColor(getColour(colour)).withItalic(ModConfig.get().style_italics).withBold(ModConfig.get().style_bold);
+    }
+
+    /**
+     * Used in Config to change the tooltip's formatting.
+     */
+    public static Text getHintText() {
+        var sb = new StringBuilder();
+        var config = ModConfig.get();
+        var shift = config.keybind_displayWhenShiftIsHeld;
+        var ctrl = config.keybind_displayWhenControlIsHeld;
+        var alt = config.keybind_displayWhenAltIsHeld;
+        if (config.hint_showKeybind) {
+            if (ctrl) {
+                sb.append(I18n.translate("hint.item-descriptions.ctrl"));
+                if (shift || alt) sb.append("/");
+            }
+            if (alt) {
+                sb.append(I18n.translate("hint.item-descriptions.alt"));
+                if (shift) sb.append("/");
+            }
+            if (shift) {
+                sb.append(I18n.translate("hint.item-descriptions.shift"));
+            }
+            sb.append(": ");
+        }
+        if (config.keybind_invert)
+            sb.append(I18n.translate("hint.item-descriptions.hint_inverted"));
+        else
+            sb.append(I18n.translate("hint.item-descriptions.hint"));
+        return Text.of(sb.toString());
     }
 
     /**
      * Used to check what colour a tooltip should be.
      */
-    public static TextColor getColour() {
-        String colour = ModConfig.get().style_color;
+    public static TextColor getColour(String colour) {
         int length = colour.length();
         if (length == 1) {
             return TextColor.fromFormatting(Formatting.byCode(colour.charAt(0)));

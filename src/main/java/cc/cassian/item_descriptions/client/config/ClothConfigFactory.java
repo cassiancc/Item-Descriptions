@@ -21,6 +21,7 @@ public class ClothConfigFactory {
         final var configInstance = ModConfig.get();
         final var generalCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.title"));
         final var styleCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.style_title"));
+        final var hintCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.hint_title"));
         final var keyBindsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.keybinds_title"));
         final var pluginsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.plugins_title"));
         final var developerCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.developer_options_title"));
@@ -35,6 +36,7 @@ public class ClothConfigFactory {
             else if (field.getName().toLowerCase().contains("compat_")) category = pluginsCategory;
             else if (field.getName().toLowerCase().contains("developer")) category = developerCategory;
             else if (field.getName().toLowerCase().contains("style")) category = styleCategory;
+            else if (field.getName().toLowerCase().contains("hint")) category = hintCategory;
 
             else category = generalCategory;
             if (field.getType() == boolean.class) {
