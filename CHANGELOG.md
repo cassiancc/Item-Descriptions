@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## Added
+- A new config option to hint at how to use the mod, showing a configurable tooltip that there's more information about the item that can be learned by holding down a key.
+  - This is fully configurable, disabled by default, and the text is resource pack driven.
 - Show translation keys debug tool now supports Jade and WTHIT.
 - Documented the new Alt behaviour for show translation key debug tool.
 - Fix more typos.
