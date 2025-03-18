@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.helpers;
 
+import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
@@ -139,11 +140,11 @@ public class ModHelpers {
     /**
      * Create an item's lore key based off data from its Item Stack.
      */
-    public static String findItemLoreKey(ItemStack stack) {
+    public static DescriptionKey findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         //? if >1.20.5 {
             if (PolymerHelpers.getServerIdentifier(stack) != null) {
-                return "lore."+convertToLoreKey(PolymerHelpers.getServerIdentifier(stack).toTranslationKey());
+                return new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
             } else 
             if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA));
@@ -152,21 +153,22 @@ public class ModHelpers {
                 *///?} else {
                 var dataValue = data.getString(0);
                 //?}
-                String modelKey = getLoreKey(stack) + ".custommodeldata." + dataValue;
-                if (hasTranslation(modelKey)) {
+                DescriptionKey modelKey = getLoreKey(stack);
+                modelKey.setSuffix(".custommodeldata." + dataValue);
+                if (modelKey.hasTranslation()) {
                     return modelKey;
                 }
             }
             else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
                 var variant = toTranslationKey(data.copyNbt().getString("variant"));
-                var paintingKey = "lore.minecraft.painting."+variant;
-                if (hasTranslation(paintingKey) || ModConfig.get().developer_showAllPotentialKeys) return paintingKey;
+                var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
+                if (paintingKey.hasTranslation() || ModConfig.get().developer_showAllPotentialKeys) return paintingKey;
             }
             //Ensure player heads with Profile components get a custom key instead of a vanilla one.
             else if (hasComponent(stack, DataComponentTypes.PROFILE)) {
-                String profileKey = getProfile(stack);
-                if (hasTranslation(profileKey)) {
+                DescriptionKey profileKey = getProfile(stack);
+                if (profileKey.hasTranslation()) {
                     return profileKey;
                 }
             }
@@ -184,16 +186,18 @@ public class ModHelpers {
                 }
             }
         *///?}
-        var name = getModdedNameMatch(stack);
-        if (hasTranslation(name)) {
+        DescriptionKey name = getModdedNameMatch(stack);
+        if (name.hasTranslation()) {
             return name;
         }
         //Find the tooltip translation key for the provided item stack.
         return checkLoreKey(getLoreKey(stack));
     }
 
-    public static String getModdedNameMatch(ItemStack stack) {
-        return getLoreTranslationKey(stack)+"."+toTranslationKey(stack.getItem().getName(stack).getString());
+    public static DescriptionKey getModdedNameMatch(ItemStack stack) {
+        var key = getLoreTranslationKey(stack);
+        key.setSuffix(toTranslationKey(stack.getItem().getName(stack).getString()));
+        return key;
     }
 
     public static String toTranslationKey(String string) {
@@ -208,20 +212,20 @@ public class ModHelpers {
     /**
      * Create a block's lore key based off data from WAILA-based Block Accessors like Jade/WTHIT/HYWLA.
      */
-    public static String createBlockDescription(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+    public static DescriptionKey createBlockDescription(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
-        String loreKey = findBlockLoreKey(block);
+        DescriptionKey loreKey = findBlockLoreKey(block);
         //? if >1.20.5 {
         if (isLoaded("polymer-bundled"))
             if (PolymerHelpers.isPolymerBlock(pos)) {
-                loreKey = PolymerHelpers.findPolymerBlockIdentifier(pos);
+                loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockIdentifier(pos));
             }
         //?}
         //Custom handling of Player Heads so custom profiles give custom descriptions.
         if (blockEntity instanceof SkullBlockEntity) {
-            String profileKey = getProfile(blockEntity, loreKey);
+            DescriptionKey profileKey = getProfile(blockEntity, loreKey);
             //Only show custom descriptions if a translation is present.
-            if (hasTranslation(profileKey)) {
+            if (profileKey.hasTranslation()) {
                 return profileKey;
             }
         }
@@ -240,7 +244,7 @@ public class ModHelpers {
             }
         }
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
-        if (!hasTranslation(loreKey)) {
+        if (!loreKey.hasTranslation()) {
             //? if <1.21.2 {
             /*return findItemLoreKey(block.getPickStack(world, pos, state));
             *///?} else
@@ -260,8 +264,8 @@ public class ModHelpers {
         }
         //? if >1.21 {
         else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
-            var loreKey = "lore.minecraft.painting."+toTranslationKey(painting.getVariant().getIdAsString());
-            if (hasTranslation(loreKey))
+            var loreKey = new DescriptionKey("lore", "minecraft", "painting", toTranslationKey(painting.getVariant().getIdAsString()));
+            if (loreKey.hasTranslation())
                 return createTooltip(loreKey);
         }
         //?}
@@ -280,25 +284,26 @@ public class ModHelpers {
     /**
      * Find a profile name in a Player Head Item Stack.
      */
-    public static String getProfile(ItemStack stack) {
+    public static DescriptionKey getProfile(ItemStack stack) {
         //? if >1.20.5 {
         var optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
         //?} else {
         /*var optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
          *///?}
         if (!optionalProfileName.isEmpty()) {
-            String profileKey = getLoreKey(stack) + ".profile." + getProfileName(optionalProfileName);
-            if (hasTranslation(profileKey)) {
+            DescriptionKey profileKey = getLoreKey(stack);
+            profileKey.setSuffix(".profile." + getProfileName(optionalProfileName));
+            if (profileKey.hasTranslation()) {
                 return profileKey;
             }
         }
-        return "";
+        return DescriptionKey.empty();
     }
 
     /**
      * Find a profile name in a Player Head block.
      */
-    public static String getProfile(BlockEntity blockEntity, String loreKey) {
+    public static DescriptionKey getProfile(BlockEntity blockEntity, DescriptionKey loreKey) {
         Optional<String> optionalProfileName;
         try {
             //? if >1.20.5 {
@@ -309,11 +314,8 @@ public class ModHelpers {
         catch (NullPointerException nullPointerException) {
             return loreKey;
         }
-        String profileKey = loreKey + ".profile." + getProfileName(optionalProfileName);
-        if (hasTranslation(profileKey)) {
-            return profileKey;
-        }
-        else return loreKey;
+        loreKey.setSafeSuffix(".profile." + getProfileName(optionalProfileName));
+        return loreKey;
     }
 
     /**
@@ -360,33 +362,32 @@ public class ModHelpers {
     /**
      * Shorthand to check a block's lore key.
      */
-    public static String findBlockLoreKey(Block block) {
+    public static DescriptionKey findBlockLoreKey(Block block) {
         return checkLoreKey(getLoreKey(block));
     }
 
     /**
      * Shorthand to check an entity's lore key.
      */
-    public static String findEntityLoreKey(Entity entity) {
+    public static DescriptionKey findEntityLoreKey(Entity entity) {
         return checkLoreKey(getLoreKey(entity));
     }
 
     /**
      * Check if a lore key exists or if a generic tooltip should be used.
      */
-    public static String checkLoreKey(String loreKey) {
+    public static DescriptionKey checkLoreKey(DescriptionKey loreKey) {
         //Check if the tooltip translation key exists. If so, use the provided tooltip.
-        if (hasTranslation(loreKey)) return loreKey;
-        //If the tooltip translation key does not exist, use one of the provided generic tooltips.
-        else return getDeprecatedStringMatch(loreKey);
+        if (loreKey.hasTranslation()) return loreKey;
+        else return DescriptionKey.empty();
     }
 
     /**
      * Check if a tag exists, or if a generic one should be used.
      */
-    private static @NotNull String getLoreKey(Object object) {
-        @NotNull String key = getLoreTranslationKey(object);
-        if (hasTranslation(key)) {
+    private static @NotNull DescriptionKey getLoreKey(Object object) {
+        @NotNull DescriptionKey key = getLoreTranslationKey(object);
+        if (key.hasTranslation()) {
             return key;
         }
         else {
@@ -397,8 +398,8 @@ public class ModHelpers {
     /**
      * Convert block/item/entity translation keys to lore translation keys.
      */
-    public static @NotNull String convertToLoreKey(String translationKey) {
-        String loreKey;
+    public static @NotNull DescriptionKey convertToLoreKey(String translationKey) {
+        DescriptionKey loreKey;
         //Find the translation key for blocks.
         if (translationKey.contains("block.")) loreKey = translationKey.replaceFirst("block", "lore");
         //Find the translation key for items.
@@ -406,26 +407,25 @@ public class ModHelpers {
         //Find the translation key for entities.
         else if ((translationKey.contains("entity."))) {
             //Entity descriptions use a different format as to avoiding colliding with items of the same name.
-            String oldKey = translationKey.replaceFirst("entity", "lore");
-            String newKey = translationKey + ".description";
+            DescriptionKey oldKey = translationKey.replaceFirst("entity", "lore");
+            DescriptionKey newKey = translationKey + ".description";
             //Tropical fish have 20 different variants and their description should be the same.
-            if (newKey.contains("tropical_fish")) {
-                newKey = "entity.minecraft.tropical_fish";
+            if (translationKey.contains("tropical_fish")) {
+                newKey = new DescriptionKey("entity", "minecraft", "tropical_fish");
             }
             //In case an entity tooltip is misconfigured, try checking for an "old style" key.
-            if (hasTranslation(newKey)) return newKey;
-            else if (hasTranslation(oldKey)) return oldKey;
+            if (newKey.hasTranslation()) return newKey;
+            else if (oldKey.hasTranslation()) return oldKey;
             else return newKey;
         }
-        //In case the translation key somehow does not contain a block/item/entity.
-        else loreKey = translationKey;
+        else return DescriptionKey.empty();
         return loreKey;
     }
 
     /**
      * Convert block/item/entity translation keys to lore translation keys.
      */
-    public static @NotNull String getLoreTranslationKey(Object object) {
+    public static @NotNull DescriptionKey getLoreTranslationKey(Object object) {
         if (object instanceof ItemStack stack) {
             return convertToLoreKey(stack.getItem().getTranslationKey());
         } else if (object instanceof Block block) {
@@ -433,7 +433,7 @@ public class ModHelpers {
         } else if (object instanceof Entity entity) {
             return convertToLoreKey(getEntityTranslationKey(entity));
         }
-        return "";
+        return DescriptionKey.empty();
     }
 
     /**
@@ -454,6 +454,24 @@ public class ModHelpers {
         else {
             return entity.getType().getTranslationKey();
         }
+    }
+
+    /**
+     * Create a custom multi-line tooltip.
+     *
+     * @param loreKey The translation key that will be translated and wrapped.
+     */
+    public static List<Text> createTooltip(DescriptionKey loreKey) {
+        return createTooltip(loreKey.toString(), true);
+    }
+
+    /**
+     * Create a custom multi-line tooltip.
+     *
+     * @param loreKey The translation key that will be translated and wrapped.
+     */
+    public static List<Text> createTooltip(DescriptionKey loreKey, boolean useInternalWrapper) {
+        return createTooltip(loreKey.toString(), useInternalWrapper);
     }
 
     /**

@@ -230,9 +230,9 @@ public class PolymerHelpers {
         return null;
     }
 
-    public static String findPolymerBlockIdentifier(BlockPos pos) {
+    public static Identifier findPolymerBlockIdentifier(BlockPos pos) {
         var block = InternalClientRegistry.getBlockAt(pos);
-        return "lore." + block.block().identifier().toTranslationKey();
+        return block.block().identifier();
     }
 
     public static boolean isPolymerBlock(BlockPos pos) {
