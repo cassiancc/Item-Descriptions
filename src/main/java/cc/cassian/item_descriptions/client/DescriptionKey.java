@@ -124,11 +124,8 @@ public class DescriptionKey {
 
     @Override
     public String toString() {
-        if (Objects.equals(type, "tag")) {
-            return asDescriptionTranslation("tag");
-        }
-        else if (Objects.equals(type, "entity") && ModHelpers.hasTranslation(asDescriptionTranslation("entity"))) {
-            return asDescriptionTranslation("entity");
+        if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation(type))) {
+            return asDescriptionTranslation(type);
         }
         else return asLoreTranslation();
     }
