@@ -2,10 +2,13 @@ package cc.cassian.item_descriptions.client.fabric;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
+import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.List;
 
@@ -35,6 +38,9 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
                         tooltip = createTooltip(findItemLoreKey(stack), useInternalWrapper());
                     }
                     lines.addAll(tooltip);
+                }
+                else if (ModConfig.get().hint_enabled) {
+                    lines.addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color)));
                 }
             });
     }

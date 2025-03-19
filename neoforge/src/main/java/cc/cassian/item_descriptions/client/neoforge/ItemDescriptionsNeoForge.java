@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
+import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -50,6 +51,9 @@ public final class ItemDescriptionsNeoForge {
                 tooltip = createTooltip(findItemLoreKey(stack), false);
             }
             event.getToolTip().addAll(tooltip);
+        }
+        else if (ModConfig.get().hint_enabled) {
+            event.getToolTip().addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color)));
         }
     }
 

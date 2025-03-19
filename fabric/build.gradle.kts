@@ -70,7 +70,6 @@ dependencies {
     modImplementation("maven.modrinth:jade:${common.mod.dep("jade_fabric_version")}")
 
     // WTHIT
-    modCompileOnly("mcp.mobius.waila:wthit-api:fabric-${common.mod.dep("wthit_version")}")
     modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${common.mod.dep("wthit_version")}")
     modRuntimeOnly("lol.bai:badpackets:fabric-${common.mod.dep("badpackets_version")}")
 

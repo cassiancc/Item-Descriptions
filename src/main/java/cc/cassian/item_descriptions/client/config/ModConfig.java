@@ -21,6 +21,10 @@ public class ModConfig {
     //General settings
     public boolean itemDescriptions = true;
     public boolean displayAlways = false;
+    // Hint
+    public boolean hint_enabled = false;
+    public boolean hint_showKeybind = true;
+    public String hint_color = "Gray";
     //Style
     public String style_color = "Gray";
     public boolean style_italics = false;
