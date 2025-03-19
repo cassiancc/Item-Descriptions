@@ -23,11 +23,6 @@ import java.util.Objects;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class TagHelpers {
-    @Deprecated
-    public static DescriptionKey getDeprecatedStringMatch(String loreKey) {
-        return null;
-
-    }
 
     private static boolean checkMatch(DescriptionKey[] currentKey, DescriptionKey newKey) {
         return newKey.hasTranslation() && (currentKey[0] == null || DescriptionKey.isMorePrecise(currentKey[0], newKey));
@@ -148,7 +143,7 @@ public class TagHelpers {
     }
 
     public static DescriptionKey getGenericKey(Object object) {
-        if (!ModConfig.get().developer_disableGenericTagDescriptions) {
+        if (!ModConfig.get().developer_disableTagDescriptions) {
             //Iterate through the provided generic tag list.
             DescriptionKey generic = checkGenericTagList(object);
             if (generic != null) {
