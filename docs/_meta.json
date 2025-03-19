@@ -1,16 +1,8 @@
 {
-  "Home.mdx": "Introduction to Item Descriptions",
-  "Contributing-to-Item-Descriptions.mdx": "Contributing to Item Descriptions",
-  "Writing-Descriptions.mdx": "Writing Descriptions",
-  "Modded-Blocks.mdx": "Adding Block Descriptions",
-  "Modded-Entities.mdx": "Adding Entity Descriptions",
-  "Modded-Tags.mdx": "Adding Generic Descriptions",
-  "Custom-Model-Data.mdx": "Custom Model Data",
-  "Player-Descriptions.mdx": "Adding Player Descriptions",
-  "Player-Heads.mdx": "Adding Player Head Descriptions",
-  "Painting-Heads.mdx": "Adding Painting Descriptions"
-
-
-
-
+  "Writing-Descriptions.mdx": {
+    "icon": "Notebook",
+    "name": "Writing Descriptions"
+  },
+  "mods": "For Modders/Modpacks",
+  "data": "For Datapacks"
 }

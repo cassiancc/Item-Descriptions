@@ -3,6 +3,7 @@ plugins {
     id("dev.architectury.loom") version "1.7-SNAPSHOT" apply false
     id("architectury-plugin") version "3.4-SNAPSHOT" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
+    id("org.moddedmc.wiki.toolkit") version "0.2.7"
 }
 stonecutter active "1.21.4" /* [SC] DO NOT EDIT */
 stonecutter.automaticPlatformConstants = true
@@ -11,6 +12,14 @@ stonecutter.automaticPlatformConstants = true
 stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
     group = "project"
     ofTask("buildAndCollect")
+}
+
+wiki {
+    // The name of the object (examplemod) should match the registered wiki project ID (if it exists).
+    docs.create("item-descriptions") {
+        // The path to the folder containing the documentation metadata file (sinytra-wiki.json)
+        root = file("docs/")
+    }
 }
 
 // Builds loader-specific versions into `build/libs/{mod.version}/{loader}`
