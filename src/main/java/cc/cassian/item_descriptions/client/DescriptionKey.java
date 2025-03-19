@@ -98,7 +98,7 @@ public class DescriptionKey {
     }
 
     public String asTagTranslation() {
-        return combineDotSeperated(List.of("tag", namespace, path, suffix));
+        return combineDotSeperated(List.of("tag", namespace, path, "description", suffix));
     }
 
     public String asLoreTranslation() {
