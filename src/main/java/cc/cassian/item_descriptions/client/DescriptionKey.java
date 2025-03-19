@@ -6,7 +6,6 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,6 +55,16 @@ public class DescriptionKey {
         return namespace;
     }
 
+    public int getNamespacePrecision() {
+        return switch (namespace) {
+            case "c", "forge" -> 0;
+            case "minecraft" -> 1;
+            case "item-descriptions" -> 3;
+            default -> 2;
+        };
+    }
+
+
     public String getType() {
         return type;
     }
@@ -82,6 +91,14 @@ public class DescriptionKey {
     public static DescriptionKey empty() {
         return new DescriptionKey("", "", "");
     }
+
+    public static boolean isMorePrecise(DescriptionKey currentKey, DescriptionKey newKey) {
+        if (currentKey.getNamespace().equals(newKey.getNamespace()))
+            return currentKey.toString().length() < newKey.toString().length();
+        else
+            return currentKey.getNamespacePrecision() < newKey.getNamespacePrecision();
+    }
+
 
     public boolean isEmpty() {
         return type.isEmpty() && namespace.isEmpty() && path.isEmpty() && suffix.isEmpty();

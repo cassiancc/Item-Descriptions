@@ -15,7 +15,6 @@ import net.minecraft.registry.tag.TagKey;
 /*import net.minecraft.tag.TagKey;
  *///?}
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +29,8 @@ public class TagHelpers {
 
     }
 
-    private static boolean checkMatch(DescriptionKey loreKey, DescriptionKey[] returnedKey) {
-        return loreKey.hasTranslation() && (returnedKey[0] == null || returnedKey[0].toString().length() < loreKey.toString().length());
+    private static boolean checkMatch(DescriptionKey[] currentKey, DescriptionKey newKey) {
+        return newKey.hasTranslation() && (currentKey[0] == null || DescriptionKey.isMorePrecise(currentKey[0], newKey));
     }
 
     private static DescriptionKey checkGenericTagList(Object object) {
@@ -45,7 +44,7 @@ public class TagHelpers {
             final DescriptionKey[] returnedKey = new DescriptionKey[1];
             itemStack.streamTags().forEach(itemTagKey -> {
                 DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                if (checkMatch(loreKey, returnedKey)) {
+                if (checkMatch(returnedKey, loreKey)) {
                     returnedKey[0] = loreKey;
                 }
             });
@@ -54,7 +53,7 @@ public class TagHelpers {
                 if ((item instanceof BlockItem blockItem)) {
                     blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
                         DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                        if (checkMatch(loreKey, returnedKey)) {
+                        if (checkMatch(returnedKey, loreKey)) {
                             returnedKey[0] = loreKey;
                         }
                     });
@@ -67,7 +66,7 @@ public class TagHelpers {
             final DescriptionKey[] returnedKey = new DescriptionKey[1];
             state.streamTags().forEach(itemTagKey -> {
                 DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                if (checkMatch(loreKey, returnedKey)) {
+                if (checkMatch(returnedKey, loreKey)) {
                     returnedKey[0] = loreKey;
                 }
             });
@@ -76,7 +75,7 @@ public class TagHelpers {
             final DescriptionKey[] returnedKey = new DescriptionKey[1];
             entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
                 DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                if (checkMatch(loreKey, returnedKey)) {
+                if (checkMatch(returnedKey, loreKey)) {
                     returnedKey[0] = loreKey;
                 }
             });
