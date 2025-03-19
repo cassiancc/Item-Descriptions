@@ -443,17 +443,13 @@ public class ModHelpers {
         //Find the translation key for entities.
         else if ((translationKey.contains("entity."))) {
             //Entity descriptions use a different format as to avoiding colliding with items of the same name.
-            DescriptionKey oldKey = new DescriptionKey(translationKey);
-            DescriptionKey newKey = new DescriptionKey(translationKey);
-            newKey.setSuffix("description");
+            loreKey = new DescriptionKey(translationKey);
             //Tropical fish have 20 different variants and their description should be the same.
             if (translationKey.contains("tropical_fish")) {
-                newKey = new DescriptionKey("entity", "minecraft", "tropical_fish");
+                loreKey = new DescriptionKey("entity", "minecraft", "tropical_fish");
             }
             //In case an entity tooltip is misconfigured, try checking for an "old style" key.
-            if (newKey.hasTranslation()) return newKey;
-            else if (oldKey.hasTranslation()) return oldKey;
-            else return newKey;
+            else if (loreKey.hasTranslation()) return loreKey;
         }
         else return DescriptionKey.empty();
         return loreKey;

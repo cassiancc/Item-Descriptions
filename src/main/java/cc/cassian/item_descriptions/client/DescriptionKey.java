@@ -38,7 +38,7 @@ public class DescriptionKey {
 
     public DescriptionKey(String identifier) {
         var id = identifier.split("\\.");
-        this.type = "lore";
+        this.type = id[0];
         this.namespace = id[1];
         this.path = id[2];
         this.suffix = "";
@@ -114,8 +114,8 @@ public class DescriptionKey {
         return sb.toString().replaceFirst(".", "");
     }
 
-    public String asTagTranslation() {
-        return combineDotSeperated(List.of("tag", namespace, path, "description", suffix));
+    public String asDescriptionTranslation(String prefix) {
+        return combineDotSeperated(List.of(prefix, namespace, path, "description", suffix));
     }
 
     public String asLoreTranslation() {
@@ -125,7 +125,10 @@ public class DescriptionKey {
     @Override
     public String toString() {
         if (Objects.equals(type, "tag")) {
-            return asTagTranslation();
+            return asDescriptionTranslation("tag");
+        }
+        else if (Objects.equals(type, "entity") && ModHelpers.hasTranslation(asDescriptionTranslation("entity"))) {
+            return asDescriptionTranslation("entity");
         }
         else return asLoreTranslation();
     }
