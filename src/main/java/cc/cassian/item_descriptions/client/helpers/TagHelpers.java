@@ -149,12 +149,12 @@ public class TagHelpers {
     }
 
     public static DescriptionKey getGenericKey(Object object) {
-        DescriptionKey loreKey = getLoreTranslationKey(object);
         if (!ModConfig.get().developer_disableGenericTagDescriptions) {
             //Iterate through the provided generic tag list.
             DescriptionKey generic = checkGenericTagList(object);
             if (generic != null) {
                 if (generic.isEmpty()) return DescriptionKey.empty();
+                else return generic;
             }
         }
         return DescriptionKey.empty();
