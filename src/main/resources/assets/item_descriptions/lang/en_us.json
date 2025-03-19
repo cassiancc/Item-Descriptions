@@ -1304,6 +1304,6 @@
   "tag.minecraft.wooden_doors.description": "A door can be opened and closed, by hand or with Redstone Power.",
   "tag.minecraft.wooden_pressure_plates.description": "A pressure sensitive plate that activates when a mob, player, or dropped item is on it.",
   "tag.minecraft.wooden_trapdoors.description": "Trapdoors like these can either be opened by hand or with Redstone Power.",
-  "tag.minecraft.wool.description": "A block that can be made into Beds, or placed to quiet your footsteps. Collected by shearing or killing Sheep, ",
+  "tag.minecraft.wool.description": "A block that can be made into Beds, or placed to quiet your footsteps. Collected by shearing or killing Sheep.",
   "tag.minecraft.wool_carpets.description": "A decorative block that can be placed to quiet your footsteps."
 }
