@@ -6,6 +6,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +34,14 @@ public class DescriptionKey {
         this.type = "lore";
         this.namespace = identifier.getNamespace();
         this.path = identifier.getPath();
+        this.suffix = "";
+    }
+
+    public DescriptionKey(String identifier) {
+        var id = identifier.split("\\.");
+        this.type = "lore";
+        this.namespace = id[1];
+        this.path = id[2];
         this.suffix = "";
     }
 
@@ -81,18 +90,19 @@ public class DescriptionKey {
     public String combineDotSeperated(List<String> args) {
         StringBuilder sb = new StringBuilder();
         for (String arg : args) {
+            arg = ModHelpers.toTranslationKey(arg);
             if (!arg.isEmpty())
                 sb.append(".").append(arg);
         }
-        return sb.toString();
+        return sb.toString().replaceFirst(".", "");
     }
 
     public String asTagTranslation() {
-        return combineDotSeperated(List.of("tag", namespace, path, "description"));
+        return combineDotSeperated(List.of("tag", namespace, path, suffix));
     }
 
     public String asLoreTranslation() {
-        return combineDotSeperated(List.of("tag", namespace, path, "description"));
+        return combineDotSeperated(List.of("lore", namespace, path, suffix));
     }
 
     @Override
@@ -118,9 +128,5 @@ public class DescriptionKey {
     public boolean hasTranslation() {
         if (ModConfig.get().developer_showUntranslated) return true;
         return I18n.hasTranslation(toString());
-    }
-
-    public DescriptionKey ofItem(String translationKey) {
-
     }
 }

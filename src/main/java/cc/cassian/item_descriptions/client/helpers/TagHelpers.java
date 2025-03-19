@@ -30,8 +30,8 @@ public class TagHelpers {
 
     }
 
-    private static boolean checkMatch(String loreKey, String[] returnedKey) {
-        return ModHelpers.hasTranslation(loreKey) && (returnedKey[0] == null || returnedKey[0].length() < loreKey.length());
+    private static boolean checkMatch(DescriptionKey loreKey, DescriptionKey[] returnedKey) {
+        return loreKey.hasTranslation() && (returnedKey[0] == null || returnedKey[0].toString().length() < loreKey.toString().length());
     }
 
     private static DescriptionKey checkGenericTagList(Object object) {
@@ -42,9 +42,9 @@ public class TagHelpers {
             if (item instanceof SpawnEggItem) {
                 return new DescriptionKey("tag", "c", "spawn_egg");
             }
-            final String[] returnedKey = new String[1];
+            final DescriptionKey[] returnedKey = new DescriptionKey[1];
             itemStack.streamTags().forEach(itemTagKey -> {
-                String loreKey = tagKeyToGenericKey(itemTagKey);
+                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                 if (checkMatch(loreKey, returnedKey)) {
                     returnedKey[0] = loreKey;
                 }
@@ -53,7 +53,7 @@ public class TagHelpers {
             if (returnedKey[0] == null) {
                 if ((item instanceof BlockItem blockItem)) {
                     blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
-                        String loreKey = tagKeyToGenericKey(itemTagKey);
+                        DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                         if (checkMatch(loreKey, returnedKey)) {
                             returnedKey[0] = loreKey;
                         }
@@ -64,18 +64,18 @@ public class TagHelpers {
 
             //If object is a blockstate, check it for Block tags
         } else if (object instanceof BlockState state) {
-            final String[] returnedKey = new String[1];
+            final DescriptionKey[] returnedKey = new DescriptionKey[1];
             state.streamTags().forEach(itemTagKey -> {
-                String loreKey = tagKeyToGenericKey(itemTagKey);
+                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                 if (checkMatch(loreKey, returnedKey)) {
                     returnedKey[0] = loreKey;
                 }
             });
             return returnedKey[0];
         } else if (object instanceof Entity entity) {
-            final String[] returnedKey = new String[1];
+            final DescriptionKey[] returnedKey = new DescriptionKey[1];
             entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
-                String loreKey = tagKeyToGenericKey(itemTagKey);
+                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                 if (checkMatch(loreKey, returnedKey)) {
                     returnedKey[0] = loreKey;
                 }
@@ -83,7 +83,7 @@ public class TagHelpers {
             return returnedKey[0];
             //If no tag key matches, return empty so a string match can be found.
         }
-        return "";
+        return DescriptionKey.empty();
     }
 
     private static void addSafe(ArrayList<Text> tags, DescriptionKey newAdd) {
@@ -153,9 +153,10 @@ public class TagHelpers {
         if (!ModConfig.get().developer_disableGenericTagDescriptions) {
             //Iterate through the provided generic tag list.
             DescriptionKey generic = checkGenericTagList(object);
-            if (generic.isEmpty()) return DescriptionKey.empty();
-            else return generic;
+            if (generic != null) {
+                if (generic.isEmpty()) return DescriptionKey.empty();
+            }
         }
-        else return DescriptionKey.empty();
+        return DescriptionKey.empty();
     }
 }

@@ -401,14 +401,15 @@ public class ModHelpers {
     public static @NotNull DescriptionKey convertToLoreKey(String translationKey) {
         DescriptionKey loreKey;
         //Find the translation key for blocks.
-        if (translationKey.contains("block.")) loreKey = translationKey.replaceFirst("block", "lore");
+        if (translationKey.contains("block.")) loreKey = new DescriptionKey(translationKey);
         //Find the translation key for items.
-        else if ((translationKey.contains("item."))) loreKey = translationKey.replaceFirst("item", "lore");
+        else if ((translationKey.contains("item."))) loreKey = new DescriptionKey(translationKey);
         //Find the translation key for entities.
         else if ((translationKey.contains("entity."))) {
             //Entity descriptions use a different format as to avoiding colliding with items of the same name.
-            DescriptionKey oldKey = translationKey.replaceFirst("entity", "lore");
-            DescriptionKey newKey = translationKey + ".description";
+            DescriptionKey oldKey = new DescriptionKey(translationKey);
+            DescriptionKey newKey = new DescriptionKey(translationKey);
+            newKey.setSuffix("description");
             //Tropical fish have 20 different variants and their description should be the same.
             if (translationKey.contains("tropical_fish")) {
                 newKey = new DescriptionKey("entity", "minecraft", "tropical_fish");
