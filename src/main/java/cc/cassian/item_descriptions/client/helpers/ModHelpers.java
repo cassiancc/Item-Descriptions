@@ -522,7 +522,7 @@ public class ModHelpers {
                 //Check if custom wrapping should be used.
                 if (textRenderer != null && wrap && (maxLength != 0)) {
                     //Any tooltip longer than XX pixels should be shortened.
-                    while (textRenderer.getWidth(Text.of(translatedKey)) >= maxLength) {
+                    while (textRenderer.getWidth(Text.of(translatedKey)) >= maxLength && translatedKey.contains(" ")) {
                         int lineLength = translatedKey.length();
                         // Find where to end this line, starting from the remaining string.
                         while (translatedKey.substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(translatedKey.substring(0, lineLength))) >= maxLength) {
