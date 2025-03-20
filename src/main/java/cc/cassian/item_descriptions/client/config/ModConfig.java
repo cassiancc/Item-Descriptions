@@ -29,7 +29,7 @@ public class ModConfig {
     public String style_color = "Gray";
     public boolean style_italics = false;
     public boolean style_bold = false;
-    public int style_length = 40;
+    public int style_length = 200;
     //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;
