@@ -1245,6 +1245,8 @@
   "tag.c.tools.ranged_weapons.description": "A ranged weapon that can be used to shoot far off targets.",
   "tag.c.tools.shear.description": "A tool that can be used to obtain delicate natural blocks, or on Sheep to peacefully harvest their wool.",
   "tag.c.tools.shears.description": "A tool that can be used to obtain delicate natural blocks, or on Sheep to peacefully harvest their wool.",
+  "tag.c.tools.melee_weapon.description": "A weapon that can be used in close combat.",
+  "tag.c.tools.melee_weapons.description": "A weapon that can be used in close combat.",
   "tag.c.tools.shield.description": "A tool that blocks attacks when used in the off-hand.",
   "tag.c.tools.shields.description": "A tool that blocks attacks when used in the off-hand.",
   "tag.c.tools.spear.description": "A weapon that can hit enemies further away.",
