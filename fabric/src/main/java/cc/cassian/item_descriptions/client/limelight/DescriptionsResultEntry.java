@@ -57,7 +57,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         }
         //Check to see if that namespaced identifier matches an item. If so, return that item's lore key.
         if (ModConfig.get().itemDescriptions) {
-            var itemStack = createMultilineTranslation(findItemLoreKey(Registries.ITEM.get(Identifier.of(namespace, item)).getDefaultStack()));
+            var itemStack = createMultilineTranslation(findItemLoreKey(Registries.ITEM.get(Identifier.of(namespace, item)).getDefaultStack()).toString());
             if (!Objects.requireNonNull(itemStack.getLiteralString()).isEmpty()) return itemStack;
         }
         //Check to see if that namespaced identifier matches a mob. If so, return that item's lore key.
@@ -65,17 +65,16 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         if (ModConfig.get().entityDescriptions) {
             var mobRegistry = Registries.ENTITY_TYPE.get(Identifier.of(namespace, item)).getTranslationKey();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
-                if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry));
+                if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
             }
             else
-                return createMultilineTranslation(convertToLoreKey(mobRegistry));
+                return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
         }
         // If a namespace match is not found, iterate through block and item registries for a name match.
         if (ModConfig.get().itemDescriptions) {
             Text itemRegistry = iterateRegistry(Registries.ITEM, lowerS);
             if (itemRegistry != null)
                 return itemRegistry;
-
         }
         if (ModConfig.get().blockDescriptions) {
             Text blockRegistry = iterateRegistry(Registries.BLOCK, lowerS);
@@ -100,7 +99,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             }
             else return;
             if (lowerS.equals(translate(registryKey).toLowerCase())) {
-                returnedKey[0] = createMultilineTranslation(convertToLoreKey(registryKey));
+                returnedKey[0] = createMultilineTranslation(convertToLoreKey(registryKey).toString());
             }
         });
         return returnedKey[0];
