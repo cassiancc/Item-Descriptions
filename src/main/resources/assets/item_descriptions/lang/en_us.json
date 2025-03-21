@@ -1179,6 +1179,7 @@
   "tag.c.ores.quartz.description": "An ore that can be mined to collect Quartz.",
   "tag.c.ores.redstone.description": "An ore that can be mined with an Iron Pickaxe or better to collect Redstone Dust.",
   "tag.c.oxidized.description": "A block of copper that has been left until it has become Oxidized.",
+  "tag.c.paths.description": "A block that can be used to outline paths in your world.",
   "tag.c.player_workstations.crafting_tables.description": "A block that allows you to craft recipes requiring a 3x3 grid.",
   "tag.c.player_workstations.furnaces.description": "A workstation that allows you to smelt ore, create charcoal, and cook food.",
   "tag.c.potions.bottle.description": "An item that gives the user a potion effect when ingested.",
