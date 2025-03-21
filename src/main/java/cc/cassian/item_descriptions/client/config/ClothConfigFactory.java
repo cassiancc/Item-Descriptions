@@ -6,11 +6,27 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
+import java.lang.reflect.Field;
+import java.util.Locale;
+
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class ClothConfigFactory {
 
     private static final ModConfig DEFAULT_VALUES = new ModConfig();
+
+    private static ConfigCategory createCategory(String section, ConfigBuilder builder) {
+        if (section == null) {
+            section = "";
+        } else {
+            section += "_";
+        }
+        return builder.getOrCreateCategory(Text.translatable("config.item-descriptions.%stitle".formatted(section)));
+    }
+
+    private static boolean is(Field field, String name) {
+        return field.getName().toLowerCase(Locale.ROOT).contains(name);
+    }
 
     public static Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
@@ -19,26 +35,25 @@ public class ClothConfigFactory {
 
         final var entryBuilder = builder.entryBuilder();
         final var configInstance = ModConfig.get();
-        final var generalCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.title"));
-        final var styleCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.style_title"));
-        final var hintCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.hint_title"));
-        final var keyBindsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.keybinds_title"));
-        final var pluginsCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.plugins_title"));
-        final var developerCategory = builder.getOrCreateCategory(Text.translatable("config.item-descriptions.developer_options_title"));
+        final var generalCategory = createCategory(null, builder);
+        final var styleCategory = createCategory("style", builder);
+        final var hintCategory = createCategory("hint", builder);
+        final var keyBindsCategory = createCategory("keybinds", builder);
+        final var pluginsCategory = createCategory("plugins", builder);
+        final var developerCategory = createCategory("developer_options", builder);
 
 
 
         for (var field : ModConfig.class.getFields()) {
             ConfigCategory category;
-            if (field.getName().contains("keybind")) category = keyBindsCategory;
-            else if (field.getName().toLowerCase().contains("block")) category = pluginsCategory;
-            else if (field.getName().toLowerCase().contains("entity")) category = pluginsCategory;
-            else if (field.getName().toLowerCase().contains("compat_")) category = pluginsCategory;
-            else if (field.getName().toLowerCase().contains("developer")) category = developerCategory;
-            else if (field.getName().toLowerCase().contains("style")) category = styleCategory;
-            else if (field.getName().toLowerCase().contains("hint")) category = hintCategory;
-
+            if (is(field, "keybind")) category = keyBindsCategory;
+            else if (is(field,"block")) category = pluginsCategory;
+            else if (is(field,"entity")) category = pluginsCategory;
+            else if (is(field,"developer")) category = developerCategory;
+            else if (is(field,"style")) category = styleCategory;
+            else if (is(field,"hint")) category = hintCategory;
             else category = generalCategory;
+            
             if (field.getType() == boolean.class) {
                 category.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
                         .setSaveConsumer(fieldSetter(configInstance, field))
