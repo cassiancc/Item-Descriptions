@@ -12,13 +12,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tags are now sorted based off mod namespaces, not just length. Modded tags are assumed to be the most specific, followed by vanilla tags, followed by common tags. This should fix some odd tagging behaviour with blocks like wool and items like swords and axes.
 - Entity style translation keys now work for blocks and items as well, allowing for more specific key matching. This is primarily useful for matching against blocks with different block items. (`block.minecraft.stone.description` instead of `lore.minecraft.stone`)
 
-## Changed
+### Changed
 - Hinting is no longer shown when an item has no available key.
+- Cleaned up large parts of internal logic
 
-## Fixed
+### Fixed
 - New wrapping logic should prevent double wrapping in EMI.
 
+### Removed
+- Legacy string matching code.
+
 ## [1.15.2] - 2025-03-19
+
+### Added
 
 - A new config option to hint at how to use the mod, showing a configurable tooltip that there's more information about the item that can be learned by holding down a key.
   - This is fully configurable, disabled by default, and the text is resource pack driven.
@@ -26,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documented the new Alt behaviour for show translation key debug tool.
 - Fix more typos.
 
-## Fixed
+### Fixed
 - Untranslated paintings now fall back correctly.
 
 ## [1.15.1] - 2025-03-17
