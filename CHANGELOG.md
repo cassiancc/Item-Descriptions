@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 - Tooltips are now wrapped based off of pixel width, instead of number of characters. This should make their length more consistent. (@sisby-folk)
+- Tags are now sorted based off mod namespaces, not just length. Modded tags are assumed to be the most specific, followed by vanilla tags, followed by common tags. This should fix some odd tagging behaviour with blocks like wool and items like swords and axes.
+- Entity style translation keys now work for blocks and items as well, allowing for more specific key matching. This is primarily useful for matching against blocks with different block items. (`block.minecraft.stone.description` instead of `lore.minecraft.stone`)
+
+## Changed
+- Hinting is no longer shown when an item has no available key.
+
+## Fixed
+- New wrapping logic should prevent double wrapping in EMI.
 
 ## [1.15.2] - 2025-03-19
 
