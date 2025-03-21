@@ -308,6 +308,24 @@ public class ModHelpers {
         return createTooltip(findEntityLoreKey(entity));
     }
 
+    public static void createItemDescription(ItemStack stack, List<Text> lines) {
+        if (ModConfig.get().itemDescriptions) {
+            //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
+            List<Text> tooltip;
+            DescriptionKey descriptionKey = findItemLoreKey(stack);
+            if (ModConfig.get().developer_showAllPotentialKeys) {
+                tooltip = TagHelpers.findAllPotentialKeys(stack);
+            } else {
+                tooltip = createTooltip(descriptionKey, useInternalWrapper());
+            }
+            if (showItemDescriptions()) {
+                lines.addAll(tooltip);
+            } else if (ModConfig.get().hint_enabled && descriptionKey.hasTranslation()) {
+                lines.addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color)));
+            }
+        }
+    }
+
     /**
      * Check if an Item Stack has a particular component.
      */

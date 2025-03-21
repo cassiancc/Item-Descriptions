@@ -1,19 +1,13 @@
 package cc.cassian.item_descriptions.client.forge;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.config.forge.ModConfigFactory;
-import cc.cassian.item_descriptions.client.helpers.TagHelpers;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.List;
 
 import static cc.cassian.item_descriptions.client.ModClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -38,19 +32,7 @@ public final class ItemDescriptionsForge {
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
-        //Only show tooltip if key is pressed or "always on" is enabled.
-        if (showItemDescriptions()) {
-            //Create and add tooltip. Tooltip will be wrapped.
-            ItemStack stack = event.getItemStack();
-            List<Text> tooltip;
-            if (ModConfig.get().developer_showAllPotentialKeys) {
-                tooltip = TagHelpers.findAllPotentialKeys(stack);
-            }
-            else {
-                tooltip = createTooltip(findItemLoreKey(stack), false);
-            }
-            event.getToolTip().addAll(tooltip);
-        }
+        createItemDescription(event.getItemStack(), event.getToolTip());
     }
 
     //Integrate Cloth Config screen (if mod present) with Forge mod menu.
