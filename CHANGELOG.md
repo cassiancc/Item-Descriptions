@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ## Added
+- Tooltips are now wrapped based off of pixel width, instead of number of characters. This should make their length more consistent. (@sisby-folk)
+
+## [1.15.2] - 2025-03-19
+
 - A new config option to hint at how to use the mod, showing a configurable tooltip that there's more information about the item that can be learned by holding down a key.
   - This is fully configurable, disabled by default, and the text is resource pack driven.
 - Show translation keys debug tool now supports Jade and WTHIT.
