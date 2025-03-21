@@ -323,7 +323,7 @@ public class ModHelpers {
             if (showItemDescriptions()) {
                 lines.addAll(tooltip);
             } else if (ModConfig.get().hint_enabled && descriptionKey.hasTranslation()) {
-                lines.addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color)));
+                lines.addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)));
             }
         }
     }

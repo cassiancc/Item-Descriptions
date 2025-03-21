@@ -46,12 +46,12 @@ public class ClothConfigFactory {
 
         for (var field : ModConfig.class.getFields()) {
             ConfigCategory category;
-            if (is(field, "keybind")) category = keyBindsCategory;
+            if (is(field, "keybind_")) category = keyBindsCategory;
             else if (is(field,"block")) category = pluginsCategory;
             else if (is(field,"entity")) category = pluginsCategory;
             else if (is(field,"developer")) category = developerCategory;
             else if (is(field,"style")) category = styleCategory;
-            else if (is(field,"hint")) category = hintCategory;
+            else if (is(field,"hint_")) category = hintCategory;
             else category = generalCategory;
             
             if (field.getType() == boolean.class) {

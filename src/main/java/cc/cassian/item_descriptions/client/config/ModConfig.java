@@ -25,6 +25,7 @@ public class ModConfig {
     public boolean hint_enabled = false;
     public boolean hint_showKeybind = true;
     public String hint_color = "Gray";
+    public boolean hint_italics = false;
     //Style
     public String style_color = "Gray";
     public boolean style_italics = false;
