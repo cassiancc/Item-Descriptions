@@ -100,7 +100,7 @@ public class TagHelpers {
         // If object is an item, check for Item Tags
         if (Objects.requireNonNull(object) instanceof ItemStack itemStack) {
             addSafe(tags, findItemLoreKey(itemStack));
-            addSafe(tags, getLoreTranslationKey(itemStack));
+            addSafe(tags, getDescriptionKey(itemStack));
             addSafe(tags, getModdedNameMatch(itemStack));
             final Item item = itemStack.getItem();
             //Temporary - Spawn Eggs do not yet have a tag.

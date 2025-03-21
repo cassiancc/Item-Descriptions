@@ -178,8 +178,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-import static cc.cassian.item_descriptions.client.helpers.ModHelpers.getLoreTranslationKey;
-
 /**
  * Contains helper methods from Polymer, licensed under the above LGPL license.
  * This is an abridged version used only to support Polymer's custom serverside items

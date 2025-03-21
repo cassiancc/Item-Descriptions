@@ -7,7 +7,7 @@ public class ModHelpersImpl {
     public static boolean clothConfigInstalled() {
         return ModList.get().isLoaded("cloth_config");
     }
-    public static boolean tooltipFixInstalled() {
-        return true;
+    public static boolean isLoaded(String mod) {
+        return ModList.get().isLoaded(mod);
     }
 }

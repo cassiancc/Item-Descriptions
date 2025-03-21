@@ -214,11 +214,12 @@ public class ModHelpers {
         /*NbtCompound s = stack.getNbt();
             if (s != null) {
                 if (s.contains("CUSTOM_MODEL_DATA", NbtElement.NUMBER_TYPE)) {
-                    return getLoreKey(stack) + ".custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA"));
+                    var key = getLoreKey(stack);
+                    key.setSuffix("custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA")));
                 }
                 else if (s.contains("SkullOwner", NbtElement.STRING_TYPE)) {
-                    String profileKey = getProfile(stack);
-                    if (hasTranslation(profileKey)) {
+                    DescriptionKey profileKey = getProfile(stack);
+                    if (profileKey.hasTranslation()) {
                         return profileKey;
                     }
                 }
@@ -233,7 +234,7 @@ public class ModHelpers {
     }
 
     public static DescriptionKey getModdedNameMatch(ItemStack stack) {
-        var key = getLoreTranslationKey(stack);
+        var key = getDescriptionKey(stack);
         key.setSuffix(toTranslationKey(stack.getItem().getName(stack).getString()));
         return key;
     }
@@ -342,13 +343,13 @@ public class ModHelpers {
      */
     public static DescriptionKey getProfile(ItemStack stack) {
         //? if >1.20.5 {
-        var optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name());
+        var optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name()).orElse("");
         //?} else {
         /*var optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
          *///?}
         if (!optionalProfileName.isEmpty()) {
             DescriptionKey profileKey = getLoreKey(stack);
-            profileKey.setSuffix(".profile." + getProfileName(optionalProfileName));
+            profileKey.setSuffix("profile." + optionalProfileName);
             if (profileKey.hasTranslation()) {
                 return profileKey;
             }
@@ -360,17 +361,17 @@ public class ModHelpers {
      * Find a profile name in a Player Head block.
      */
     public static DescriptionKey getProfile(BlockEntity blockEntity, DescriptionKey loreKey) {
-        Optional<String> optionalProfileName;
+        String optionalProfileName;
         try {
             //? if >1.20.5 {
-            optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name();
+            optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name().orElse("");
             //?} else
-            /*optionalProfileName = Optional.of(Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName());*/
+            /*optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName();*/
         }
         catch (NullPointerException nullPointerException) {
             return loreKey;
         }
-        loreKey.setSafeSuffix(".profile." + getProfileName(optionalProfileName));
+        loreKey.setSuffix("profile." + optionalProfileName);
         return loreKey;
     }
 
@@ -402,8 +403,7 @@ public class ModHelpers {
         if (optionalProfileName.isPresent()) {
             profileName = optionalProfileName.get();
             return profileName;
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -442,11 +442,10 @@ public class ModHelpers {
      * Check if a tag exists, or if a generic one should be used.
      */
     private static @NotNull DescriptionKey getLoreKey(Object object) {
-        @NotNull DescriptionKey key = getLoreTranslationKey(object);
+        @NotNull DescriptionKey key = getDescriptionKey(object);
         if (key.hasTranslation()) {
             return key;
-        }
-        else {
+        } else {
             return getGenericKey(object);
         }
     }
@@ -476,9 +475,9 @@ public class ModHelpers {
     }
 
     /**
-     * Convert block/item/entity translation keys to lore translation keys.
+     * Convert block/item/entity translation keys to description keys.
      */
-    public static @NotNull DescriptionKey getLoreTranslationKey(Object object) {
+    public static @NotNull DescriptionKey getDescriptionKey(Object object) {
         if (object instanceof ItemStack stack) {
             return convertToLoreKey(stack.getItem().getTranslationKey());
         } else if (object instanceof Block block) {
@@ -503,8 +502,7 @@ public class ModHelpers {
             if (hasTranslation(playerKey)) return playerKey;
             //If not, use the default one.
             else return "entity.minecraft.player";
-        }
-        else {
+        } else {
             return entity.getType().getTranslationKey();
         }
     }
