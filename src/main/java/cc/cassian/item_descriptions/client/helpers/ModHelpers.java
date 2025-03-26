@@ -595,7 +595,7 @@ public class ModHelpers {
      *
      * @param loreKey The translation key that will be translated.
      * @param wrap    Whether to use the built-in wrapper.
-     * @param style
+     * @param style   How to style the text content
      */
     public static List<Text> createTooltip(String loreKey, boolean wrap, Style style) {
         //Setup list to store (potentially multi-line) tooltip.
