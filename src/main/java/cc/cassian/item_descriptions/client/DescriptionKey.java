@@ -114,10 +114,27 @@ public class DescriptionKey {
         return sb.toString().replaceFirst(".", "");
     }
 
+    /**
+     * Convert to a translation key string suffixed with .description,
+     * the primary and most specific description Item Descriptions uses.
+     */
     public String asDescriptionTranslation(String prefix) {
         return combineDotSeperated(List.of(prefix, namespace, path, "description", suffix));
     }
 
+    /**
+     * Convert to a translation key string suffixed with .desc,
+     * similar to mods like Enchantment Descriptions and Better Than Adventure.
+     */
+    public String asDescTranslation() {
+        return combineDotSeperated(List.of(type, namespace, path, "desc", suffix));
+    }
+
+    /**
+     * Convert to a translation key string prefixed with "lore."
+     * a secondary, less specific description Item Descriptions uses for blocks, items,
+     * and entities that share descriptions.
+     */
     public String asLoreTranslation() {
         return combineDotSeperated(List.of("lore", namespace, path, suffix));
     }
@@ -126,6 +143,9 @@ public class DescriptionKey {
     public String toString() {
         if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation(type))) {
             return asDescriptionTranslation(type);
+        }
+        else if (ModHelpers.hasTranslation(asDescTranslation())) {
+            return asDescTranslation();
         }
         else return asLoreTranslation();
     }

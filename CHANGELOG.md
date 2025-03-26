@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 - Enchantment Descriptions have been added, allowing for enchantments to be described in a consistent style. This is automatically disabled when other mods with the same feature are present.
+  - Item Descriptions primarily uses its own keys, but will fall back to ones from Enchantment Descriptions if not present.
 - Tooltips are now wrapped based off of pixel width, instead of number of characters. This should make their length more consistent. (@sisby-folk)
 - Tags are now sorted based off mod namespaces, not just length. Modded tags are assumed to be the most specific, followed by vanilla tags, followed by common tags. This should fix some odd tagging behaviour with blocks like wool and items like swords and axes.
 - Entity style translation keys now work for blocks and items as well, allowing for more specific key matching. This is primarily useful for matching against blocks with different block items. (`block.minecraft.stone.description` instead of `lore.minecraft.stone`)
