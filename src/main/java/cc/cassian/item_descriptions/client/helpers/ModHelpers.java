@@ -21,14 +21,13 @@ import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
 /*import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 *///?}
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
+import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -57,6 +56,13 @@ public class ModHelpers {
      */
     public static boolean useInternalWrapper() {
         return !isLoaded("tooltipfix");
+    }
+
+    /**
+     * Check if ToolTipFix is installed and its wrapper should be used.
+     */
+    public static boolean useInternalEnchantmentDescriptions() {
+        return !(isLoaded("idwtialsimmoedm") && isLoaded("enchdesc"));
     }
 
     /**
@@ -311,7 +317,34 @@ public class ModHelpers {
         return createTooltip(findEntityLoreKey(entity));
     }
 
-    public static void createItemDescription(ItemStack stack, List<Text> lines) {
+    public static boolean createEnchantmentDescription(ItemStack stack, List<Text> lines) {
+        boolean descriptionFound = false;
+        if (ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions()) {
+            if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && stack.getItem().equals(Items.ENCHANTED_BOOK))
+                return false;
+            final var enchantments = new HashSet<>(stack.getEnchantments().getEnchantments());
+            enchantments.addAll(stack.getOrDefault(DataComponentTypes.STORED_ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT).getEnchantments());
+            if (enchantments.isEmpty()) return false;
+            for (var enchantmentEntry : enchantments) {
+                var enchantment = enchantmentEntry.value();
+                for (int i = 0; i < lines.size(); i++) {
+                    if (!lines.get(i).getContent().equals(enchantment.description().getContent())) continue;
+                    TextContent description = lines.get(i).getContent();
+                    if (description instanceof TranslatableTextContent translatableTextContent) {
+                        var descriptionKey = new DescriptionKey(translatableTextContent.getKey());
+                        var tooltip = createTooltip(descriptionKey.toString(), useInternalWrapper(), getStyle(ModConfig.get().enchantmentDescriptions_color).withItalic(ModConfig.get().enchantmentDescriptions_italics));
+                        if (showEnchantmentDescriptions())
+                            lines.addAll(i+1, tooltip);
+                        else if (descriptionKey.hasTranslation())
+                            descriptionFound = true;
+                    }
+                }
+            }
+        }
+        return descriptionFound;
+    }
+
+    public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
         if (ModConfig.get().itemDescriptions) {
             //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
             List<Text> tooltip;
@@ -321,12 +354,12 @@ public class ModHelpers {
             } else {
                 tooltip = createTooltip(descriptionKey, useInternalWrapper());
             }
-            if (showItemDescriptions()) {
+            if (showItemDescriptions())
                 lines.addAll(tooltip);
-            } else if (ModConfig.get().hint_enabled && descriptionKey.hasTranslation()) {
-                lines.addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)));
-            }
+            else return descriptionKey.hasTranslation();
+
         }
+        return false;
     }
 
     /**
@@ -389,10 +422,24 @@ public class ModHelpers {
         return ModConfig.get().itemDescriptions && (tooltipKeyPressed() || ModConfig.get().displayAlways);
     }
     /**
+     * Check if enchantment descriptions should be shown based off configuration.
+     */
+    public static boolean showEnchantmentDescriptions() {
+        return ModConfig.get().enchantmentDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEnchantmentDescriptionsAlways);
+    }
+    /**
      * Check if entity descriptions should be shown based off configuration.
      */
     public static boolean showEntityDescriptions() {
         return ModConfig.get().entityDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEntityDescriptionsAlways);
+    }
+
+    public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
+        var enchant = createEnchantmentDescription(stack, lines);
+        var item = createItemDescription(stack, lines);
+        if (ModConfig.get().hint_enabled && (item || enchant)) {
+            lines.addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)));
+        }
     }
 
     /**
@@ -540,6 +587,17 @@ public class ModHelpers {
      * @param wrap Whether to use the built-in wrapper.
      */
     public static List<Text> createTooltip(String loreKey, boolean wrap) {
+        return createTooltip(loreKey, wrap, ModHelpers.getStyle());
+    }
+
+    /**
+     * Create a custom, potentially multi-line tooltip.
+     *
+     * @param loreKey The translation key that will be translated.
+     * @param wrap    Whether to use the built-in wrapper.
+     * @param style
+     */
+    public static List<Text> createTooltip(String loreKey, boolean wrap, Style style) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
         int maxLength = ModConfig.get().style_length;
@@ -560,13 +618,13 @@ public class ModHelpers {
                             lineLength = translatedKey.substring(0, lineLength).lastIndexOf(' ');
                         }
                         // Add the line.
-                        lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(getStyle()));
+                        lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(style));
                         // Remove the line substring from the start of the remaining string. Repeat.
                         translatedKey = translatedKey.substring(lineLength + 1);
                     }
                 }
                 //Add the final tooltip.
-                if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(getStyle()));
+                if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(style));
             }
         }
         return lines;

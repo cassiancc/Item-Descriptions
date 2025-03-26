@@ -32,7 +32,7 @@ public final class ItemDescriptionsForge {
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
-        createItemDescription(event.getItemStack(), event.getToolTip());
+        createDescriptionsFromItemStack(event.getItemStack(), event.getToolTip());
     }
 
     //Integrate Cloth Config screen (if mod present) with Forge mod menu.

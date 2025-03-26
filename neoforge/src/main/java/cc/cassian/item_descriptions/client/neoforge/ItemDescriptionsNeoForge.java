@@ -32,7 +32,7 @@ public final class ItemDescriptionsNeoForge {
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
-        createItemDescription(event.getItemStack(), event.getToolTip());
+        createDescriptionsFromItemStack(event.getItemStack(), event.getToolTip());
     }
 
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.

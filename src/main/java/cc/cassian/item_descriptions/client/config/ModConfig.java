@@ -41,6 +41,12 @@ public class ModConfig {
     public boolean displayBlockDescriptionsAlways = false;
     public boolean entityDescriptions = true;
     public boolean displayEntityDescriptionsAlways = false;
+    //Enchantment Descriptions
+    public boolean enchantmentDescriptions = true;
+    public boolean displayEnchantmentDescriptionsAlways = false;
+    public boolean displayEnchantmentDescriptionsOnlyOnBooks = false;
+    public String enchantmentDescriptions_color = "Dark Gray";
+    public boolean enchantmentDescriptions_italics = false;
     //Developer settings
     public boolean developer_showAllPotentialKeys = false;
     public boolean developer_showUntranslated = false;

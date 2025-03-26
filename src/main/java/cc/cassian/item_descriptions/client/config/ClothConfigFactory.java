@@ -37,11 +37,11 @@ public class ClothConfigFactory {
         final var configInstance = ModConfig.get();
         final var generalCategory = createCategory(null, builder);
         final var styleCategory = createCategory("style", builder);
+        final var enchantmentCategory = createCategory("enchantment_descriptions", builder);
+        final var pluginsCategory = createCategory("plugins", builder);
         final var hintCategory = createCategory("hint", builder);
         final var keyBindsCategory = createCategory("keybinds", builder);
-        final var pluginsCategory = createCategory("plugins", builder);
         final var developerCategory = createCategory("developer_options", builder);
-
 
 
         for (var field : ModConfig.class.getFields()) {
@@ -52,6 +52,7 @@ public class ClothConfigFactory {
             else if (is(field,"developer")) category = developerCategory;
             else if (is(field,"style")) category = styleCategory;
             else if (is(field,"hint_")) category = hintCategory;
+            else if (is(field,"enchantment")) category = enchantmentCategory;
             else category = generalCategory;
             
             if (field.getType() == boolean.class) {
