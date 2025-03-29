@@ -70,9 +70,10 @@ dependencies {
     modImplementation("maven.modrinth:jade:${common.mod.dep("jade_fabric_version")}")
 
     // WTHIT
-    modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${common.mod.dep("wthit_version")}")
-    modRuntimeOnly("lol.bai:badpackets:fabric-${common.mod.dep("badpackets_version")}")
-
+    if (stonecutter.eval(mcVersion, "<1.21.5")) {
+        modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${common.mod.dep("wthit_version")}")
+        modRuntimeOnly("lol.bai:badpackets:fabric-${common.mod.dep("badpackets_version")}")
+    }
 
     if (stonecutter.eval(mcVersion, "=1.21.1")) {
         modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}") // Limelight dependency
@@ -96,9 +97,11 @@ dependencies {
 
     //Polymer
     if (stonecutter.eval(mcVersion, ">1.21")) {
-        modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
         modLocalRuntime("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
-        modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
+        if (stonecutter.eval(mcVersion, "<1.21.5")) {
+            modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
+            modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
+        }
     }
 
 

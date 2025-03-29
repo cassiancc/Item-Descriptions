@@ -206,7 +206,11 @@ public class ModHelpers {
             }
             else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
-                var variant = toTranslationKey(data.copyNbt().getString("variant"));
+                //? if =1.21.5 {
+                var variant = toTranslationKey(data.copyNbt().getString("variant").orElse(""));
+                 //?} else {
+                /*var variant = toTranslationKey(data.copyNbt().getString("variant"));
+                *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
                 if (paintingKey.hasTranslation() || ModConfig.get().developer_showAllPotentialKeys) return paintingKey;
             }
@@ -452,7 +456,7 @@ public class ModHelpers {
         var enchant = createEnchantmentDescription(stack, lines);
         var item = createItemDescription(stack, lines);
         if (ModConfig.get().hint_enabled && (item || enchant)) {
-            lines.addAll(getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)));
+            lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).getFirst());
         }
     }
 
