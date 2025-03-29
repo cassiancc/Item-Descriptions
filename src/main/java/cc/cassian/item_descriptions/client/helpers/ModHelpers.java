@@ -17,11 +17,12 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 //?} else {
-/*import net.minecraft.nbt.NbtCompound;
+/*import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 *///?}
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
@@ -320,15 +321,28 @@ public class ModHelpers {
     public static boolean createEnchantmentDescription(ItemStack stack, List<Text> lines) {
         boolean descriptionFound = false;
         if (ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions()) {
-            if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && stack.getItem().equals(Items.ENCHANTED_BOOK))
+            if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
+            //? if >1.21 {
             final var enchantments = new HashSet<>(stack.getEnchantments().getEnchantments());
             enchantments.addAll(stack.getOrDefault(DataComponentTypes.STORED_ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT).getEnchantments());
+            //?} else {
+            /*final var enchantments = EnchantmentHelper.get(stack).keySet();
+            *///?}
             if (enchantments.isEmpty()) return false;
             for (var enchantmentEntry : enchantments) {
-                var enchantment = enchantmentEntry.value();
+                //? if >1.21 {
+                 var enchantment = enchantmentEntry.value();
+                //?} else {
+                /*var enchantment = enchantmentEntry;
+                *///?}
                 for (int i = 0; i < lines.size(); i++) {
+                    //? if >1.21 {
                     if (!lines.get(i).getContent().equals(enchantment.description().getContent())) continue;
+                    //?} else {
+                    /*if (!(lines.get(i).getContent() instanceof TranslatableTextContent text)) continue;
+                    if (!text.getKey().equals(enchantment.getTranslationKey())) continue;
+                    *///?}
                     TextContent description = lines.get(i).getContent();
                     if (description instanceof TranslatableTextContent translatableTextContent) {
                         var descriptionKey = new DescriptionKey(translatableTextContent.getKey());

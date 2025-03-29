@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - New wrapping logic should prevent double wrapping in EMI.
+- Missing tool tag descriptions on Fabric 1.19 and 1.20.
 
 ### Removed
 - Legacy string matching code.
