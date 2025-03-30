@@ -1,0 +1,26 @@
+---
+title: Adding Enchantment Descriptions
+icon: minecraft:enchanting_table
+---
+
+By default, the mod provides descriptions for all Vanilla Minecraft enchantments as well, and uses a similar format to entities. To add a tooltip to an enchantment, just add the following entry to your mod or resource pack's language file (`en_us.json` for English U.S.).
+
+```json
+"enchantment.<namespace>.<your_enchantment_here>.description": "An enchanment that cause strange, modded things to happen."
+```
+
+For example, if I wanted to add a description to agile from [Enchiridon](https://modrinth.com/mod/enchiridon), I would add the following entry to [Enchiridon's language file](https://github.com/GreenhouseModding/enchiridion/blob/1.21/common/src/main/resources/assets/enchiridion/lang/en_us.json).
+
+```json
+"enchantment.enchiridion.agile.description": "An enchantment that allows the user to sprint at a reduced speed whilst using items.",
+```
+
+When adding new tooltips, its recommended to keep them two sentences or less to match the ones present in the original mod.
+
+## Fallback Behaviour
+
+For compatibility purpose, Item Descriptions will fall back to descriptions designed for the standalone Enhancement Descriptions mod, if a more accurate description is not present. For example, the following description would be shown through Item Descriptions if Enchantment Descriptions is not present.
+
+```json
+"enchantment.enchiridion.agile.desc": "Allows the user to sprint at a reduced speed whilst using items.",
+```

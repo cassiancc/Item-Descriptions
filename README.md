@@ -18,6 +18,10 @@ By default, holding down Ctrl when hovering over an item will show a short descr
 
 If you have [Jade](https://modrinth.com/mod/jade) or [WTHIT](https://modrinth.com/mod/wthit) installed, blocks and entities will also show descriptions when Ctrl is held.
 
+## Enchantment Descriptions
+
+Item Descriptions supports descriptions for enchantments as well, with descriptions for every vanilla enchantments included. Item Descriptions prefers its own descriptions, but will support mods that support [Enchantment Descriptions](https://modrinth.com/mod/enchantment-descriptions) out of the box.
+
 ## Installation
 
 Item Descriptions is a completely clientside mod for Fabric and NeoForge. 
