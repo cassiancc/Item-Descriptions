@@ -345,13 +345,13 @@ public class ModHelpers {
             *///?}
             if (enchantments.isEmpty()) return false;
             for (var enchantmentEntry : enchantments) {
-                //?if >1.21 {
+                //? if >1.21 {
                  var enchantment = enchantmentEntry.value();
                 //?} else {
                 /*var enchantment = enchantmentEntry;
                 *///?}
                 for (int i = 0; i < lines.size(); i++) {
-                    //?if >1.21 {
+                    //? if >1.21 {
                     if (!lines.get(i).getContent().equals(enchantment.description().getContent())) continue;
                     //?} else {
                     /*if (!(lines.get(i).getContent() instanceof TranslatableTextContent text)) continue;
@@ -427,7 +427,7 @@ public class ModHelpers {
             // Check whether the translation exists, and if the key is either an enchantment.*.*.description/desc or lore.*.* key.
             if (hasTranslation(content.getKey()) && (split.length == 4 && split[0].equals("enchantment") && (split[3].equals("description") || split[3].equals("desc")) || split.length == 3 && split[0].equals("lore"))) {
                 // Whether the namespace and path maps to an enchantment on this item. If so, return true.
-                //?if >1.21 {
+                //? if >1.21 {
                 return enchantments.stream().anyMatch(entry -> ((RegistryEntry<Enchantment>)(Object)entry).matchesId(Identifier.of(namespace, path)));
                 //?} else if >1.20 {
                 /*return enchantments.stream().anyMatch(entry -> Registries.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(new Identifier(namespace, path)));
@@ -446,13 +446,14 @@ public class ModHelpers {
             DescriptionKey descriptionKey = findItemLoreKey(stack);
             if (ModConfig.get().developer_showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
-            } else {
+            } else if (descriptionKey.hasTranslation()) {
                 tooltip = List.of(descriptionKey.toText());
             }
+            else return false;
             tooltip = tooltip.stream().map(text -> (Text)text.copy().setStyle(getStyle())).toList();
             if (showItemDescriptions())
                 lines.addAll(tooltip);
-            return descriptionKey.hasTranslation();
+            else return descriptionKey.hasTranslation();
         }
         return false;
     }
