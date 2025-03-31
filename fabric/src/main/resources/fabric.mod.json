@@ -3,7 +3,7 @@
   "id": "item-descriptions",
   "version": "${version}",
   "name": "Item Descriptions",
-  "description": "This mod adds unique descriptions for all blocks, items, and mobs - built in a way that makes it easy to add modded content.",
+  "description": "This mod adds unique descriptions for all blocks, items, enchantments, and mobs - built in a way that makes it easy to add modded content.",
   "authors": [
     "cassiancc"
   ],

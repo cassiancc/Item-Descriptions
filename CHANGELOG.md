@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Keybind translation keys.
-- Changed auto-wrapper to be more compatible with mods reading Item Descriptions.
+- Changed auto-wrapper to be more compatible with mods reading Item Descriptions. (@MerchantCalico, @cassiancc)
+
+### Fixed
+- Typos and wording in Thorns description.
 
 ## [2.0.0] - 2025-03-19
 

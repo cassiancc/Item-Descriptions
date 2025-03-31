@@ -482,8 +482,6 @@ public class ModHelpers {
                     }
                 }
             }
-            if (showItemDescriptions()) lines.addAll(tooltip);
-            else return descriptionKey.hasTranslation();
 
         }
     }
