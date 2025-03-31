@@ -374,7 +374,7 @@ public class ModHelpers {
             }
             if (showItemDescriptions())
                 lines.addAll(tooltip);
-            else return descriptionKey.hasTranslation();
+            return descriptionKey.hasTranslation();
 
         }
         return false;
@@ -625,24 +625,29 @@ public class ModHelpers {
             String translatedKey = translate(loreKey);
             //Check if the translated key exists.
             if (hasTranslation(loreKey)) {
-                TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-                //Check if custom wrapping should be used.
-                if (textRenderer != null && wrap && (maxLength != 0)) {
-                    //Any tooltip longer than XX pixels should be shortened.
-                    while (textRenderer.getWidth(Text.of(translatedKey)) >= maxLength && translatedKey.contains(" ")) {
-                        int lineLength = translatedKey.length();
-                        // Find where to end this line, starting from the remaining string.
-                        while (translatedKey.substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(translatedKey.substring(0, lineLength))) >= maxLength) {
-                            lineLength = translatedKey.substring(0, lineLength).lastIndexOf(' ');
-                        }
-                        // Add the line.
-                        lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(style));
-                        // Remove the line substring from the start of the remaining string. Repeat.
-                        translatedKey = translatedKey.substring(lineLength + 1);
-                    }
+                if (!wrap) {
+                    if (!translatedKey.isBlank()) lines.add(Text.translatable(loreKey).setStyle(style));
                 }
-                //Add the final tooltip.
-                if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(style));
+                else {
+                    TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+                    //Check if custom wrapping should be used.
+                    if (textRenderer != null && (maxLength != 0)) {
+                        //Any tooltip longer than XX pixels should be shortened.
+                        while (textRenderer.getWidth(Text.of(translatedKey)) >= maxLength && translatedKey.contains(" ")) {
+                            int lineLength = translatedKey.length();
+                            // Find where to end this line, starting from the remaining string.
+                            while (translatedKey.substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(translatedKey.substring(0, lineLength))) >= maxLength) {
+                                lineLength = translatedKey.substring(0, lineLength).lastIndexOf(' ');
+                            }
+                            // Add the line.
+                            lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(style));
+                            // Remove the line substring from the start of the remaining string. Repeat.
+                            translatedKey = translatedKey.substring(lineLength + 1);
+                        }
+                    }
+                    //Add the final tooltip.
+                    if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(style));
+                }
             }
         }
         return lines;

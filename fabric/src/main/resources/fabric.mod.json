@@ -37,7 +37,8 @@
   },
   "recommends": {
     "cloth-config": "*",
-    "modmenu": "*"
+    "modmenu": "*",
+    "tooltipfix": "*"
   },
   "suggests": {
     "jade": "*",
