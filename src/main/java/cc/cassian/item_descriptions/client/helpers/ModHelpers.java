@@ -17,19 +17,28 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 //?} else {
 /*import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 *///?}
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+//? if >1.21 {
+import net.minecraft.registry.entry.RegistryEntry;
+//?} else if >1.20 {
+/*import net.minecraft.registry.Registries;
+*///?} else {
+/*import net.minecraft.util.registry.Registry;
+*///?}
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -37,12 +46,14 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.TagHelpers.*;
 import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
+    public static final Identifier FABRIC_EVENT_PHASE = Identifier.of(MOD_ID, "description_tooltip");
 
     /**
      * Check if Cloth Config is installed and its configuration can be used.
@@ -153,7 +164,7 @@ public class ModHelpers {
         int index;
         //Find the last space character in the substring, if not, default to the length of the substring.
         if (subKey.contains(" ")) {
-            index = subKey.lastIndexOf(" ")+1;
+            index = subKey.lastIndexOf(" ");
         }
         else index = maxLength;
         return index;
@@ -324,12 +335,11 @@ public class ModHelpers {
 
     public static boolean createEnchantmentDescription(ItemStack stack, List<Text> lines) {
         boolean descriptionFound = false;
-        if (ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions()) {
+        if (ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions() && showEnchantmentDescriptions()) {
             if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
             //? if >1.21 {
-            final var enchantments = new HashSet<>(stack.getEnchantments().getEnchantments());
-            enchantments.addAll(stack.getOrDefault(DataComponentTypes.STORED_ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT).getEnchantments());
+            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
             //?} else {
             /*final var enchantments = EnchantmentHelper.get(stack).keySet();
             *///?}
@@ -350,11 +360,7 @@ public class ModHelpers {
                     TextContent description = lines.get(i).getContent();
                     if (description instanceof TranslatableTextContent translatableTextContent) {
                         var descriptionKey = new DescriptionKey(translatableTextContent.getKey());
-                        var tooltip = createTooltip(descriptionKey.toString(), useInternalWrapper(), getStyle(ModConfig.get().enchantmentDescriptions_color).withItalic(ModConfig.get().enchantmentDescriptions_italics));
-                        if (showEnchantmentDescriptions())
-                            lines.addAll(i+1, tooltip);
-                        else if (descriptionKey.hasTranslation())
-                            descriptionFound = true;
+                        lines.add(i+1, descriptionKey.toText().setStyle(getStyle(ModConfig.get().enchantmentDescriptions_color).withItalic(ModConfig.get().enchantmentDescriptions_italics)));
                     }
                 }
             }
@@ -362,22 +368,120 @@ public class ModHelpers {
         return descriptionFound;
     }
 
+    private static boolean checkTranslatableText(Text text, Predicate<TranslatableTextContent> predicate) {
+        TextContent contents = null;
+        if (text instanceof MutableText mutable) {
+            if (mutable.getSiblings().stream().anyMatch(c -> checkTranslatableText(c, predicate))) {
+                return true;
+            }
+            contents = mutable.getContent();
+        }
+        if (contents == null)
+            return false;
+        return contents instanceof TranslatableTextContent translatable && predicate.test(translatable);
+    }
+
+    public static void fixEnchantmentDescription(ItemStack stack, List<Text> lines) {
+        if (ModConfig.get().enchantmentDescriptions && showEnchantmentDescriptions() && useInternalEnchantmentDescriptions()) {
+            if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
+                return;
+
+            //? if >1.21 {
+            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
+            //?} else {
+            /*final var enchantments = EnchantmentHelper.get(stack).keySet();
+             *///?}
+
+            if (enchantments.isEmpty())
+                return;
+
+            for (int i = 0; i < lines.size(); ++i) {
+                if (isEnchantmentDescription(lines.get(i), (Set)enchantments)) {
+                    // Create the tooltip.
+                    var newLines = createTooltip(lines.get(i), useInternalWrapper());
+                    if (newLines.isEmpty())
+                        continue;
+                    // To avoid warnings, we don't remove from lines and instead modify the initial line to the first line.
+                    lines.set(i, newLines.get(0));
+                    // Add the remaining lines.
+                    if (newLines.size() > 1) {
+                        lines.addAll(i+1, newLines.subList(1, newLines.size()));
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean isEnchantmentDescription(Text text, Set<Object> enchantments) {
+        // If the Minecraft world is null, we cannot check if this is an enchantment key.
+        if (MinecraftClient.getInstance().world == null)
+            return false;
+        return checkTranslatableText(text, content -> {
+            // Split the lang key of this translatable content.
+            String[] split = content.getKey().split("\\.");
+            // The split key array should always be at least 3 in length, so return false if that's not the case.
+            if (split.length < 3)
+                return false;
+            String namespace = split[1];
+            String path = split[2];
+            // Check whether the translation exists, and if the key is either an enchantment.*.*.description/desc or lore.*.* key.
+            if (hasTranslation(content.getKey()) && (split.length == 4 && split[0].equals("enchantment") && (split[3].equals("description") || split[3].equals("desc")) || split.length == 3 && split[0].equals("lore"))) {
+                // Whether the namespace and path maps to an enchantment on this item. If so, return true.
+                //? if >1.21 {
+                return enchantments.stream().anyMatch(entry -> ((RegistryEntry<Enchantment>)(Object)entry).matchesId(Identifier.of(namespace, path)));
+                //?} else if >1.20 {
+                /*return enchantments.stream().anyMatch(entry -> Registries.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(new Identifier(namespace, path)));
+                 *///?} else {
+                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(new Identifier(namespace, path)));
+                 *///?}
+            }
+            return false;
+        });
+    }
+
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
         if (ModConfig.get().itemDescriptions) {
-            //Create and add tooltip. Tooltip will be wrapped, either by ToolTipFix if installed, or by custom wrapper if not.
+            //Create and add tooltip.
+            List<Text> tooltip;
+            DescriptionKey descriptionKey = findItemLoreKey(stack);
+            if (ModConfig.get().developer_showAllPotentialKeys) {
+                tooltip = TagHelpers.findAllPotentialKeys(stack);
+            } else if (descriptionKey.hasTranslation()) {
+                tooltip = List.of(descriptionKey.toText());
+            }
+            else return false;
+            tooltip = tooltip.stream().map(text -> (Text)text.copy().setStyle(getStyle())).toList();
+            if (showItemDescriptions())
+                lines.addAll(tooltip);
+            else return descriptionKey.hasTranslation();
+        }
+        return false;
+    }
+
+    public static void fixItemDescription(ItemStack stack, List<Text> lines) {
+        if (ModConfig.get().itemDescriptions && showItemDescriptions()) {
+            //Find and wrap tooltip. Will be disabled if TooltipFix is installed.
             List<Text> tooltip;
             DescriptionKey descriptionKey = findItemLoreKey(stack);
             if (ModConfig.get().developer_showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
             } else {
-                tooltip = createTooltip(descriptionKey, useInternalWrapper());
+                tooltip = List.of(descriptionKey.toText());
             }
-            if (showItemDescriptions())
-                lines.addAll(tooltip);
-            return descriptionKey.hasTranslation();
+            for (int i = 0; i < lines.size(); ++i) {
+                // Required for lambda comparison.
+                int finalI = i;
+                // Check if any of the tooltips' content matches the current line's content.
+                if (tooltip.stream().anyMatch(text -> text.getContent().equals(lines.get(finalI).getContent()))) {
+                    var newLines = createTooltip(lines.get(i), useInternalWrapper());
+                    lines.set(i, newLines.get(0));
+                    if (newLines.size() > 1) {
+                        lines.addAll(i+1, newLines.subList(1, newLines.size()));
+                    }
+                }
+            }
 
         }
-        return false;
     }
 
     /**
@@ -456,8 +560,15 @@ public class ModHelpers {
         var enchant = createEnchantmentDescription(stack, lines);
         var item = createItemDescription(stack, lines);
         if (ModConfig.get().hint_enabled && (item || enchant)) {
-            lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).getFirst());
+            lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
         }
+    }
+
+    public static void fixItemStackDescriptionTooltip(ItemStack stack, List<Text> lines) {
+        if (!useInternalWrapper())
+            return;
+        fixEnchantmentDescription(stack, lines);
+        fixItemDescription(stack, lines);
     }
 
     /**
@@ -608,6 +719,18 @@ public class ModHelpers {
         return createTooltip(loreKey, wrap, ModHelpers.getStyle());
     }
 
+
+    public static List<Text> createTooltip(Text text, boolean wrap) {
+        if (!wrap || text.getString().isEmpty())
+            return List.of(text);
+        //Setup list to store (potentially multi-line) tooltip.
+        ArrayList<Text> lines = new ArrayList<>();
+        //Check if the key exists.
+        wrapTooltip(lines, List.of(text));
+        resetWrapValues();
+        return lines;
+    }
+
     /**
      * Create a custom, potentially multi-line tooltip.
      *
@@ -618,7 +741,6 @@ public class ModHelpers {
     public static List<Text> createTooltip(String loreKey, boolean wrap, Style style) {
         //Setup list to store (potentially multi-line) tooltip.
         ArrayList<Text> lines = new ArrayList<>();
-        int maxLength = ModConfig.get().style_length;
         //Check if the key exists.
         if (!loreKey.isBlank()) {
             //Translate the lore key.
@@ -629,28 +751,129 @@ public class ModHelpers {
                     if (!translatedKey.isBlank()) lines.add(Text.translatable(loreKey).setStyle(style));
                 }
                 else {
-                    TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-                    //Check if custom wrapping should be used.
-                    if (textRenderer != null && (maxLength != 0)) {
-                        //Any tooltip longer than XX pixels should be shortened.
-                        while (textRenderer.getWidth(Text.of(translatedKey)) >= maxLength && translatedKey.contains(" ")) {
-                            int lineLength = translatedKey.length();
-                            // Find where to end this line, starting from the remaining string.
-                            while (translatedKey.substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(translatedKey.substring(0, lineLength))) >= maxLength) {
-                                lineLength = translatedKey.substring(0, lineLength).lastIndexOf(' ');
-                            }
-                            // Add the line.
-                            lines.add(Text.literal(translatedKey.substring(0, lineLength)).setStyle(style));
-                            // Remove the line substring from the start of the remaining string. Repeat.
-                            translatedKey = translatedKey.substring(lineLength + 1);
-                        }
-                    }
-                    //Add the final tooltip.
-                    if (!translatedKey.isBlank()) lines.add(Text.literal(translatedKey).setStyle(style));
+                    wrapTooltip(lines, List.of(Text.literal(translatedKey).setStyle(style)));
+                    resetWrapValues();
                 }
             }
         }
         return lines;
+    }
+
+    // Store this outside of the method to make sure that it can be carried over to other calls of wrapTooltip.
+    private static int lineTextWidth = 0;
+    // This is a hook for any mod that wishes to indent the description text while it is translatable.
+    private static boolean shouldIndent = false;
+    private static Text indentationText = null;
+
+    private static void resetWrapValues() {
+        lineTextWidth = 0;
+        shouldIndent = true;
+        indentationText = null;
+    }
+
+    /**
+     * An internal method for wrapping this tooltip.
+     * @param lines The lines for the final tooltip.
+     * @param keys Any contents that make up this text object. Obtained through {@link Text#getSiblings()}.
+     */
+    private static void wrapTooltip(List<Text> lines, List<Text> keys) {
+        int maxLength = ModConfig.get().style_length;
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+        if (textRenderer != null && maxLength != 0) {
+            for (Text originalText : keys) {
+                // Get the text without siblings, as they're individually handled after the initial content.
+                Text translated = originalText.copyContentOnly().setStyle(originalText.getStyle());
+                if (translated.getContent() instanceof TranslatableTextContent translatable)
+                    translated = Text.literal(translate(translatable.getKey())).setStyle(translated.getStyle());
+
+                if (shouldIndent && translated.getString().isBlank() && !translated.getString().isEmpty()) {
+                    indentationText = originalText.copy();
+                    continue;
+                }
+                shouldIndent = false;
+                //Any tooltip longer than XX pixels should be shortened.
+                while (lineTextWidth + textRenderer.getWidth(translated) >= maxLength && translated.getString().contains(" ")) {
+                    // Reset the line width.
+                    lineTextWidth = 0;
+                    // Remove the line substring from the start of the remaining string. Repeat.
+                    translated = createNewLine(lines, translated, textRenderer, maxLength);
+                }
+                //Add the remainder of this tooltip text.
+                if (!translated.getString().isEmpty()) {
+                    //Any additional tooltip less than XX pixels should be merged and shortened.
+                    if (!lines.isEmpty() && textRenderer.getWidth(lines.get(lines.size() - 1)) + textRenderer.getWidth(translated) < maxLength && translated.getString().contains(" ")) {
+                        // Remove the previous text...
+                        Text oldText = lines.remove(lines.size() - 1);
+                        // And merge it into the new one.
+                        Text newText = oldText.copy().append(translated);
+                        // Create a new line with the merged text object.
+                        createNewLine(lines, newText, textRenderer, maxLength);
+                        // Set the text line width
+                        lineTextWidth = 0;
+                    } else {
+                        // Set the text line width
+                        lineTextWidth = textRenderer.getWidth(translated);
+                        lines.add(translated);
+                    }
+                }
+
+                // Before moving onto the next bit of text, handle any siblings of the original text.
+                wrapTooltip(lines, originalText.getSiblings());
+            }
+        }
+    }
+
+    private static Text createNewLine(List<Text> lines, Text text, TextRenderer textRenderer, int maxLength) {
+        if (indentationText != null) {
+            text = indentationText.copy().append(text);
+        }
+        int lineLength = text.getString().length();
+        // Find where to end this line, starting from the remaining string.
+        while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(text.getString().substring(0, lineLength))) >= maxLength) {
+            lineLength = getIndex(text.getString(), lineLength);
+        }
+        Text newLine = subText(text, 0, lineLength);
+        // Add the line.
+        lines.add(newLine);
+        // Return a new literal that removes the operated characters.
+        return subText(text, lineLength + 1);
+    }
+
+    private static Text subText(Text text, int beginIndex) {
+        return subText(text, beginIndex, text.getString().length());
+    }
+
+    private static Text subText(Text text, int beginIndex, int endIndex) {
+        return subText(text, beginIndex, endIndex, 0);
+    }
+
+    private static Text subText(Text text, int beginIndex, int endIndex, int currentIndex) {
+        MutableText mutable = text.copyContentOnly();
+
+        if (beginIndex > mutable.getString().length()) {
+            beginIndex -= mutable.getString().length();
+            currentIndex += mutable.getString().length();
+        } else {
+            // Substring the beginning index.
+            String string = mutable.getString();
+            string = string.substring(beginIndex, Math.min(endIndex - currentIndex, string.length()));
+            mutable = Text.literal(string).setStyle(text.getStyle());
+            currentIndex += string.length();
+        }
+
+        if (currentIndex >= endIndex)
+            return mutable;
+
+        for (Text sibling : text.getSiblings()) {
+            if (currentIndex >= endIndex)
+                break;
+            Text subTextSibling = subText(sibling, beginIndex, endIndex, currentIndex);
+            currentIndex += subTextSibling.getString().length();
+            mutable.append(subTextSibling);
+        }
+
+        return mutable;
+
     }
 
     /**

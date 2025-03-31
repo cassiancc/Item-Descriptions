@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -33,6 +34,12 @@ public final class ItemDescriptionsNeoForge {
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
         createDescriptionsFromItemStack(event.getItemStack(), event.getToolTip());
+    }
+
+    // Fix item descriptions
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onItemTooltipEventLowestPriority(ItemTooltipEvent event) {
+        fixItemStackDescriptionTooltip(event.getItemStack(), event.getToolTip());
     }
 
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.

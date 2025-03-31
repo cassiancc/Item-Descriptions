@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -150,7 +151,7 @@ public class DescriptionKey {
         else return asLoreTranslation();
     }
 
-    public Text toText() {
+    public MutableText toText() {
         var newAdd = toString();
         //? if >1.20 {
         return Text.translatableWithFallback(newAdd, newAdd);
