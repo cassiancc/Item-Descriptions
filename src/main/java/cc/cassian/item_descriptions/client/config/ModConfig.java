@@ -36,21 +36,64 @@ public class ModConfig {
     public boolean keybind_displayWhenShiftIsHeld = false;
     public boolean keybind_displayWhenAltIsHeld = false;
     public boolean keybind_invert = false;
-    //Block/Entity Descriptions
+    // Block/Entity Descriptions
+    /**
+     * This will show Block Descriptions in compatible mods. This can also be disabled in Jade/WTHIT's settings.
+     */
     public boolean blockDescriptions = true;
+    /**
+     * Always show Block Descriptions, not just when a key is held.
+     */
     public boolean displayBlockDescriptionsAlways = false;
+    /**
+     * This will show Entity Descriptions in compatible mods. This can also be disabled in Jade/WTHIT's settings.
+     */
     public boolean entityDescriptions = true;
+    /**
+     * Always show Entity Descriptions, not just when a key is held.
+     */
     public boolean displayEntityDescriptionsAlways = false;
     //Enchantment Descriptions
     public boolean enchantmentDescriptions = true;
+    /**
+     * Always show Enchantment Descriptions, not just when a key is held.
+     */
     public boolean displayEnchantmentDescriptionsAlways = false;
+    /**
+     * By default, descriptions are shown on all enchanted items. Disable if this should only apply to books.
+     */
     public boolean displayEnchantmentDescriptionsOnlyOnBooks = false;
+    /**
+     * Hides Item Descriptions when Enchantment Descriptions are visible.
+     */
+//    public boolean hideItemDescriptionIfEnchantmentDescriptionPresent = false;
+    /**
+     * This setting changes what Minecraft colour is used for enchantment tooltips, either by colour code or name.
+     */
     public String enchantmentDescriptions_color = "Dark Gray";
+    /**
+     * Italicize Enchantment Descriptions
+     */
     public boolean enchantmentDescriptions_italics = false;
     //Developer settings
+    /**
+     * Replaces the description with a list of translation keys that can be used to match that item. Hold Alt to view their translations.
+     */
     public boolean developer_showAllPotentialKeys = false;
+    /**
+     * Show lore tags on untranslated items. This includes items meant to have generic descriptions! Disable after testing.
+     */
     public boolean developer_showUntranslated = false;
+    /**
+     * This will disable descriptions for items based off the
+     * block or item tags when a more specific description is not present
+     * (e.g. planks, slabs, stairs, tools, etc.).
+     */
     public boolean developer_disableTagDescriptions = false;
+    /**
+     * Forces Enchantment Descriptions to be enabled, even while similar mods are installed.
+     */
+    public boolean developer_forceEnableEnchantmentDescriptions = false;
 
     public static void load() {
         if (!Files.exists(configPath())) {

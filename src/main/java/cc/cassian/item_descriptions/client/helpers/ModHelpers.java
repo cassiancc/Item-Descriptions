@@ -74,7 +74,9 @@ public class ModHelpers {
      * Check if ToolTipFix is installed and its wrapper should be used.
      */
     public static boolean useInternalEnchantmentDescriptions() {
-        return !(isLoaded("idwtialsimmoedm") && isLoaded("enchdesc"));
+        if (ModConfig.get().developer_forceEnableEnchantmentDescriptions)
+            return true;
+        else return !(isLoaded("idwtialsimmoedm") || isLoaded("enchdesc"));
     }
 
     /**
@@ -110,15 +112,15 @@ public class ModHelpers {
         var alt = config.keybind_displayWhenAltIsHeld;
         if (config.hint_showKeybind) {
             if (ctrl) {
-                sb.append(I18n.translate("hint.item-descriptions.ctrl"));
+                sb.append(I18n.translate("key.keyboard.ctrl"));
                 if (shift || alt) sb.append("/");
             }
             if (alt) {
-                sb.append(I18n.translate("hint.item-descriptions.alt"));
+                sb.append(I18n.translate("key.keyboard.alt"));
                 if (shift) sb.append("/");
             }
             if (shift) {
-                sb.append(I18n.translate("hint.item-descriptions.shift"));
+                sb.append(I18n.translate("key.keyboard.shift"));
             }
             sb.append(": ");
         }
@@ -480,6 +482,8 @@ public class ModHelpers {
                     }
                 }
             }
+            if (showItemDescriptions()) lines.addAll(tooltip);
+            else return descriptionKey.hasTranslation();
 
         }
     }
@@ -558,7 +562,7 @@ public class ModHelpers {
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
         var enchant = createEnchantmentDescription(stack, lines);
-        var item = createItemDescription(stack, lines);
+        boolean item = createItemDescription(stack, lines);
         if (ModConfig.get().hint_enabled && (item || enchant)) {
             lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
         }
