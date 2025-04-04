@@ -1370,5 +1370,12 @@
   "tag.minecraft.wooden_pressure_plates.description": "A pressure sensitive plate that activates when a mob, player, or dropped item is on it.",
   "tag.minecraft.wooden_trapdoors.description": "Trapdoors like these can either be opened by hand or with Redstone Power.",
   "tag.minecraft.wool.description": "A block that can be made into Beds, or placed to quiet your footsteps. Collected by shearing or killing Sheep.",
-  "tag.minecraft.wool_carpets.description": "A decorative block that can be placed to quiet your footsteps."
+  "tag.minecraft.wool_carpets.description": "A decorative block that can be placed to quiet your footsteps.",
+  "lore.minecraft.dimension_control": "A developer tool that can be used to change the texture of a Sky Block.",
+  "lore.minecraft.mine_crafter": "An unbreakable workstation that can be used to craft a Mine. Placing Mine Ingredients inside will affect the generated Mine.",
+  "lore.minecraft.mine_travelling_block": "An unbreakable block that can be found above a Mine Crafter as it prepares to send a player into a Mine.",
+  "lore.minecraft.mine_revisitor": "An unbreakable block that can be used to re-enter a previously explored Mine as a visitor.",
+  "lore.minecraft.sky": "An unbreakable block that resembles a skybox."
+
+
 }
