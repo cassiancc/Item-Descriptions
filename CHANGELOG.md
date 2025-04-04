@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Descriptions for 25w14craftmine.
+
+## [2.0.1] - 2025-03-31
+
 ### Changed
 - Keybind translation keys.
 - Changed auto-wrapper to be more compatible with mods reading Item Descriptions. (@MerchantCalico, @cassiancc)
