@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+- Effect Descriptions have been added, allowing for effects to be described in a consistent style. This is automatically disabled when other mods with the same feature are present.
+  - Item Descriptions primarily uses its own keys, but will fall back to ones designed for Effect Descriptions if not present.
+
+## [2.0.2]
+
+### Added
 - Descriptions for 25w14craftmine.
 
 ## [2.0.1] - 2025-03-31

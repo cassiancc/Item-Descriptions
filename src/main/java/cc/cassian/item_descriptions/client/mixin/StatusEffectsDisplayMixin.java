@@ -28,15 +28,7 @@ import java.util.Optional;
 public class StatusEffectsDisplayMixin {
     @Redirect(method = "drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTooltip(Lnet/minecraft/client/font/TextRenderer;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(DrawContext context, TextRenderer textRenderer, List<Text> text, Optional<TooltipData> data, int mouseX, int mouseY) {
-        ArrayList<Text> objects = new ArrayList<>(text);
-        for (Text text1 : text) {
-            if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
-                if (!translatableTextContent.getKey().startsWith("effect.duration")) {
-                    List<Text> tooltip = ModHelpers.createTooltip(new DescriptionKey(translatableTextContent.getKey()).toString(), true, ModHelpers.getStyle(ModConfig.get().enchantmentDescriptions_color));
-                    objects.addAll(tooltip);
-                }
-            }
-        }
-        context.drawTooltip(textRenderer, objects, Optional.empty(), mouseX, mouseY);
+        List<Text> tooltipText = ModHelpers.createEffectDescription(text);
+        context.drawTooltip(textRenderer, tooltipText, Optional.empty(), mouseX, mouseY);
     }
 }

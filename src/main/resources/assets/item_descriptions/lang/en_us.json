@@ -1400,5 +1400,14 @@
   "tag.minecraft.wooden_pressure_plates.description": "A pressure sensitive plate that activates when a mob, player, or dropped item is on it.",
   "tag.minecraft.wooden_trapdoors.description": "Trapdoors like these can either be opened by hand or with Redstone Power.",
   "tag.minecraft.wool.description": "A block that can be made into Beds, or placed to quiet your footsteps. Collected by shearing or killing Sheep.",
-  "tag.minecraft.wool_carpets.description": "A decorative block that can be placed to quiet your footsteps."
+  "tag.minecraft.wool_carpets.description": "A decorative block that can be placed to quiet your footsteps.",
+  "effect.minecraft.absorption.description": "An effect that does things.",
+  "config.item-descriptions.effect_descriptions_title": "Effects",
+  "config.item-descriptions.config.effectDescriptions": "Enable Effect Descriptions",
+  "config.item-descriptions.config.effectDescriptions.tooltip": "This will show Effect Descriptions. This is also disabled when other mods that add this feature are present.",
+  "config.item-descriptions.config.effectDescriptions_color": "Effect Descriptions Color",
+  "config.item-descriptions.config.effectDescriptions_color.tooltip": "This setting changes what Minecraft colour is used for effect tooltips, either by colour code or name.",
+  "config.item-descriptions.config.effectDescriptions_italics": "Italicize Effect Descriptions",
+  "config.item-descriptions.config.displayEffectDescriptionsAlways": "Always show Effect Descriptions",
+  "config.item-descriptions.config.displayEffectDescriptionsAlways.tooltip": "By default, descriptions are only shown when a keybind is pressed. This is intended, but can be changed so that they are always visible."
 }

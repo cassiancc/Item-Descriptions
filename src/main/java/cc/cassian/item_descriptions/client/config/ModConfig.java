@@ -95,6 +95,17 @@ public class ModConfig {
      */
     public boolean developer_forceEnableEnchantmentDescriptions = false;
 
+    // Effect Descriptions
+    /**
+     * Enable descriptions for Status Effects.
+     */
+    public boolean effectDescriptions = true;
+    /**
+     * Always show Effect Descriptions, not just when a key is held.
+     */
+    public boolean displayEffectDescriptionsAlways = false;
+    public String effectDescriptions_color = "Dark Gray";
+
     public static void load() {
         if (!Files.exists(configPath())) {
             save();

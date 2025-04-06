@@ -441,6 +441,31 @@ public class ModHelpers {
         });
     }
 
+    public static List<Text> createEffectDescription(List<Text> text) {
+        ArrayList<Text> lines = new ArrayList<>(text);
+        if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
+            for (Text text1 : text) {
+                if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
+                    if (!translatableTextContent.getKey().startsWith("effect.duration")) {
+                        var key = new DescriptionKey(translatableTextContent.getKey());
+                        List<Text> tooltip = ModHelpers.createTooltip(key.toString(), true, ModHelpers.getStyle(ModConfig.get().enchantmentDescriptions_color));
+                        if (showEffectDescriptions()) {
+                            lines.addAll(tooltip);
+                        }
+                        else if (ModConfig.get().hint_enabled && (key.hasTranslation())) {
+                            addHint(lines);
+                        }
+                    }
+                }
+            }
+        }
+        return lines;
+    }
+
+    public static void addHint(List<Text> lines) {
+        lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
+    }
+
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
         if (ModConfig.get().itemDescriptions) {
             //Create and add tooltip.
@@ -557,12 +582,18 @@ public class ModHelpers {
     public static boolean showEntityDescriptions() {
         return ModConfig.get().entityDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEntityDescriptionsAlways);
     }
+    /**
+     * Check if effect descriptions should be shown based off configuration.
+     */
+    public static boolean showEffectDescriptions() {
+        return ModConfig.get().effectDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEffectDescriptionsAlways);
+    }
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
         var enchant = createEnchantmentDescription(stack, lines);
         boolean item = createItemDescription(stack, lines);
         if (ModConfig.get().hint_enabled && (item || enchant)) {
-            lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
+            addHint(lines);
         }
     }
 
@@ -692,15 +723,6 @@ public class ModHelpers {
      */
     public static List<Text> createTooltip(DescriptionKey loreKey) {
         return createTooltip(loreKey.toString(), true);
-    }
-
-    /**
-     * Create a custom multi-line tooltip.
-     *
-     * @param loreKey The translation key that will be translated and wrapped.
-     */
-    public static List<Text> createTooltip(DescriptionKey loreKey, boolean useInternalWrapper) {
-        return createTooltip(loreKey.toString(), useInternalWrapper);
     }
 
     /**
