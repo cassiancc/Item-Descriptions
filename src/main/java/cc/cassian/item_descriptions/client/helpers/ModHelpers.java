@@ -74,7 +74,9 @@ public class ModHelpers {
      * Check if ToolTipFix is installed and its wrapper should be used.
      */
     public static boolean useInternalEnchantmentDescriptions() {
-        return !(isLoaded("idwtialsimmoedm") && isLoaded("enchdesc"));
+        if (ModConfig.get().developer_forceEnableEnchantmentDescriptions)
+            return true;
+        else return !(isLoaded("idwtialsimmoedm") || isLoaded("enchdesc"));
     }
 
     /**
@@ -110,15 +112,15 @@ public class ModHelpers {
         var alt = config.keybind_displayWhenAltIsHeld;
         if (config.hint_showKeybind) {
             if (ctrl) {
-                sb.append(I18n.translate("hint.item-descriptions.ctrl"));
+                sb.append(I18n.translate("key.keyboard.ctrl"));
                 if (shift || alt) sb.append("/");
             }
             if (alt) {
-                sb.append(I18n.translate("hint.item-descriptions.alt"));
+                sb.append(I18n.translate("key.keyboard.alt"));
                 if (shift) sb.append("/");
             }
             if (shift) {
-                sb.append(I18n.translate("hint.item-descriptions.shift"));
+                sb.append(I18n.translate("key.keyboard.shift"));
             }
             sb.append(": ");
         }
@@ -345,13 +347,13 @@ public class ModHelpers {
             *///?}
             if (enchantments.isEmpty()) return false;
             for (var enchantmentEntry : enchantments) {
-                //?if >1.21 {
+                //? if >1.21 {
                  var enchantment = enchantmentEntry.value();
                 //?} else {
                 /*var enchantment = enchantmentEntry;
                 *///?}
                 for (int i = 0; i < lines.size(); i++) {
-                    //?if >1.21 {
+                    //? if >1.21 {
                     if (!lines.get(i).getContent().equals(enchantment.description().getContent())) continue;
                     //?} else {
                     /*if (!(lines.get(i).getContent() instanceof TranslatableTextContent text)) continue;
@@ -427,7 +429,7 @@ public class ModHelpers {
             // Check whether the translation exists, and if the key is either an enchantment.*.*.description/desc or lore.*.* key.
             if (hasTranslation(content.getKey()) && (split.length == 4 && split[0].equals("enchantment") && (split[3].equals("description") || split[3].equals("desc")) || split.length == 3 && split[0].equals("lore"))) {
                 // Whether the namespace and path maps to an enchantment on this item. If so, return true.
-                //?if >1.21 {
+                //? if >1.21 {
                 return enchantments.stream().anyMatch(entry -> ((RegistryEntry<Enchantment>)(Object)entry).matchesId(Identifier.of(namespace, path)));
                 //?} else if >1.20 {
                 /*return enchantments.stream().anyMatch(entry -> Registries.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(new Identifier(namespace, path)));
@@ -439,6 +441,31 @@ public class ModHelpers {
         });
     }
 
+    public static List<Text> createEffectDescription(List<Text> text) {
+        ArrayList<Text> lines = new ArrayList<>(text);
+        if (ModConfig.get().effectDescriptions) {
+            for (Text text1 : text) {
+                if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
+                    if (!translatableTextContent.getKey().startsWith("effect.duration")) {
+                        var key = new DescriptionKey(translatableTextContent.getKey());
+                        List<Text> tooltip = ModHelpers.createTooltip(key.toString(), true, ModHelpers.getStyle(ModConfig.get().enchantmentDescriptions_color));
+                        if (showEffectDescriptions()) {
+                            lines.addAll(tooltip);
+                        }
+                        else if (ModConfig.get().hint_enabled && (key.hasTranslation())) {
+                            addHint(lines);
+                        }
+                    }
+                }
+            }
+        }
+        return lines;
+    }
+
+    public static void addHint(List<Text> lines) {
+        lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
+    }
+
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
         if (ModConfig.get().itemDescriptions) {
             //Create and add tooltip.
@@ -446,13 +473,14 @@ public class ModHelpers {
             DescriptionKey descriptionKey = findItemLoreKey(stack);
             if (ModConfig.get().developer_showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
-            } else {
+            } else if (descriptionKey.hasTranslation()) {
                 tooltip = List.of(descriptionKey.toText());
             }
+            else return false;
             tooltip = tooltip.stream().map(text -> (Text)text.copy().setStyle(getStyle())).toList();
             if (showItemDescriptions())
                 lines.addAll(tooltip);
-            return descriptionKey.hasTranslation();
+            else return descriptionKey.hasTranslation();
         }
         return false;
     }
@@ -554,12 +582,18 @@ public class ModHelpers {
     public static boolean showEntityDescriptions() {
         return ModConfig.get().entityDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEntityDescriptionsAlways);
     }
+    /**
+     * Check if effect descriptions should be shown based off configuration.
+     */
+    public static boolean showEffectDescriptions() {
+        return ModConfig.get().effectDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEffectDescriptionsAlways);
+    }
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
         var enchant = createEnchantmentDescription(stack, lines);
-        var item = createItemDescription(stack, lines);
+        boolean item = createItemDescription(stack, lines);
         if (ModConfig.get().hint_enabled && (item || enchant)) {
-            lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
+            addHint(lines);
         }
     }
 
@@ -689,15 +723,6 @@ public class ModHelpers {
      */
     public static List<Text> createTooltip(DescriptionKey loreKey) {
         return createTooltip(loreKey.toString(), true);
-    }
-
-    /**
-     * Create a custom multi-line tooltip.
-     *
-     * @param loreKey The translation key that will be translated and wrapped.
-     */
-    public static List<Text> createTooltip(DescriptionKey loreKey, boolean useInternalWrapper) {
-        return createTooltip(loreKey.toString(), useInternalWrapper);
     }
 
     /**
@@ -916,5 +941,14 @@ public class ModHelpers {
                 throw new RuntimeException(e);
             }
         };
+    }
+
+    /**
+     * Checks if a mod is loaded while the mod is loading.
+     * Required on Forge.
+     */
+    @ExpectPlatform
+    public static boolean isLoadingLoaded(String mod) {
+        throw new AssertionError();
     }
 }

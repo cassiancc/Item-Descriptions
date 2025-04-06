@@ -23,7 +23,7 @@ import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 @Mixin(InfoOverlay.class)
 public class InfoOverlayMixin {
     //? if >1.19.3 {
-    /*
+    
     @Inject(method = "setHitResult", at = @At(value = "INVOKE", target = "Lcom/brokenkeyboard/usefulspyglass/InfoOverlay;setComponent(Ljava/util/List;)V", ordinal = 0), remap = false, require = 0)
     private static void spyglassEntityDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local LivingEntity entity) {
         if (showEntityDescriptions()) {
@@ -44,5 +44,5 @@ public class InfoOverlayMixin {
                 tooltipList.add(new TooltipInfo.BlockInfo(TooltipComponent.of(text.asOrderedText())));
             }
         }
-    }*///?}
+    }//?}
 }

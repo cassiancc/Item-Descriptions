@@ -38,6 +38,7 @@ public class ClothConfigFactory {
         final var generalCategory = createCategory(null, builder);
         final var styleCategory = createCategory("style", builder);
         final var enchantmentCategory = createCategory("enchantment_descriptions", builder);
+        final var effectCategory = createCategory("effect_descriptions", builder);
         final var pluginsCategory = createCategory("plugins", builder);
         final var hintCategory = createCategory("hint", builder);
         final var keyBindsCategory = createCategory("keybinds", builder);
@@ -53,6 +54,7 @@ public class ClothConfigFactory {
             else if (is(field,"style")) category = styleCategory;
             else if (is(field,"hint_")) category = hintCategory;
             else if (is(field,"enchantment")) category = enchantmentCategory;
+            else if (is(field,"effect")) category = effectCategory;
             else category = generalCategory;
             
             if (field.getType() == boolean.class) {

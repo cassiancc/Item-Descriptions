@@ -10,4 +10,9 @@ public class ModHelpersImpl {
     public static boolean isLoaded(String mod) {
         return FabricLoader.getInstance().isModLoaded(mod);
     }
+
+    public static boolean isLoadingLoaded(String mod) {
+        return isLoaded(mod);
+    }
+
 }

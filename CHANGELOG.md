@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- Effect Descriptions have been added, allowing for effects to be described in a consistent style. This is automatically disabled when other mods with the same feature are present.
+  - Item Descriptions primarily uses its own keys, but will fall back to ones designed for Effect Descriptions if not present.
+
+## [2.0.2] - 2025-04-04
+
+### Added
+- Descriptions for 25w14craftmine.
+
+## [2.0.1] - 2025-03-31
+
+### Changed
+- Keybind translation keys.
+- Changed auto-wrapper to be more compatible with mods reading Item Descriptions. (@MerchantCalico, @cassiancc)
+
+### Fixed
+- Typos and wording in Thorns description.
+
+## [2.0.0] - 2025-03-19
+
 ## Added
 - Enchantment Descriptions have been added, allowing for enchantments to be described in a consistent style. This is automatically disabled when other mods with the same feature are present.
   - Item Descriptions primarily uses its own keys, but will fall back to ones designed for Enchantment Descriptions if not present.
