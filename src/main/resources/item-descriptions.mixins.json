@@ -4,9 +4,10 @@
   "package": "cc.cassian.item_descriptions.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "InfoOverlayMixin"
+	"InfoOverlayMixin",
+	"StatusEffectsDisplayMixin"
   ],
   "injectors": {
-    "defaultRequire": 1
+	"defaultRequire": 1
   }
 }
