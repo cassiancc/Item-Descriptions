@@ -811,7 +811,10 @@ public class ModHelpers {
                     translated = Text.literal(translate(translatable.getKey())).setStyle(translated.getStyle());
 
                 if (shouldIndent && translated.getString().isBlank() && !translated.getString().isEmpty()) {
-                    indentationText = originalText.copy();
+                    indentationText = originalText.copyContentOnly();
+                    // Before moving onto the next bit of text, handle any siblings of the original text.
+                    wrapTooltip(lines, originalText.getSiblings());
+                    shouldIndent = false;
                     continue;
                 }
                 shouldIndent = false;
@@ -825,7 +828,7 @@ public class ModHelpers {
                 //Add the remainder of this tooltip text.
                 if (!translated.getString().isEmpty()) {
                     //Any additional tooltip less than XX pixels should be merged and shortened.
-                    if (!lines.isEmpty() && textRenderer.getWidth(lines.get(lines.size() - 1)) + textRenderer.getWidth(translated) < maxLength && translated.getString().contains(" ")) {
+                    if (!lines.isEmpty() && lines.size() > 1 && textRenderer.getWidth(lines.get(lines.size() - 1)) + textRenderer.getWidth(translated) < maxLength && translated.getString().contains(" ")) {
                         // Remove the previous text...
                         Text oldText = lines.remove(lines.size() - 1);
                         // And merge it into the new one.
@@ -837,7 +840,7 @@ public class ModHelpers {
                     } else {
                         // Set the text line width
                         lineTextWidth = textRenderer.getWidth(translated);
-                        lines.add(translated);
+                        createNewLine(lines, translated, textRenderer, maxLength);
                     }
                 }
 
@@ -848,15 +851,15 @@ public class ModHelpers {
     }
 
     private static Text createNewLine(List<Text> lines, Text text, TextRenderer textRenderer, int maxLength) {
-        if (indentationText != null) {
-            text = indentationText.copy().append(text);
-        }
         int lineLength = text.getString().length();
         // Find where to end this line, starting from the remaining string.
         while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(text.getString().substring(0, lineLength))) >= maxLength) {
             lineLength = getIndex(text.getString(), lineLength);
         }
         Text newLine = subText(text, 0, lineLength);
+        if (indentationText != null) {
+            newLine = indentationText.copy().append(newLine);
+        }
         // Add the line.
         lines.add(newLine);
         // Return a new literal that removes the operated characters.
