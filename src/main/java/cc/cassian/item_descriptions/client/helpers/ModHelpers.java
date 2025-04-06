@@ -939,4 +939,13 @@ public class ModHelpers {
             }
         };
     }
+
+    /**
+     * Checks if a mod is loaded while the mod is loading.
+     * Required on Forge.
+     */
+    @ExpectPlatform
+    public static boolean isLoadingLoaded(String mod) {
+        throw new AssertionError();
+    }
 }
