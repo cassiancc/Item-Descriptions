@@ -787,6 +787,8 @@ public class ModHelpers {
 
                 if (shouldIndent && translated.getString().isBlank() && !translated.getString().isEmpty()) {
                     indentationText = originalText.copy();
+                    // Before moving onto the next bit of text, handle any siblings of the original text.
+                    wrapTooltip(lines, originalText.getSiblings());
                     continue;
                 }
                 shouldIndent = false;
