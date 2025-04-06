@@ -443,7 +443,7 @@ public class ModHelpers {
 
     public static List<Text> createEffectDescription(List<Text> text) {
         ArrayList<Text> lines = new ArrayList<>(text);
-        if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
+        if (ModConfig.get().effectDescriptions) {
             for (Text text1 : text) {
                 if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
                     if (!translatableTextContent.getKey().startsWith("effect.duration")) {

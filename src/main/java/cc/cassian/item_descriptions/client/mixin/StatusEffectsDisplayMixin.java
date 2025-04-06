@@ -1,25 +1,16 @@
 package cc.cassian.item_descriptions.client.mixin;
 
-import cc.cassian.item_descriptions.client.DescriptionKey;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.StatusEffectsDisplay;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.tooltip.TooltipData;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
