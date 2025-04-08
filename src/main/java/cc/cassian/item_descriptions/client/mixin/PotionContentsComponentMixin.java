@@ -3,7 +3,6 @@ package cc.cassian.item_descriptions.client.mixin;
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.component.ComponentsAccess;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
@@ -18,7 +17,14 @@ import java.util.function.Consumer;
 
 @Mixin(PotionContentsComponent.class)
 public class PotionContentsComponentMixin {
+
+    //? if =1.21.5 {
     @Inject(method = "buildTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))
+    private static void mixin(Iterable<StatusEffectInstance> effects, Consumer<Text> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local StatusEffectInstance statusEffectInstance) {
+        ModHelpers.createEffectDescription(textConsumer, statusEffectInstance);
+    }
+    //?} else
+    /*@Inject(method = "buildTooltip(Ljava/lang/Iterable;Ljava/util/function/Consumer;FF)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))*/
     private static void mixin(Iterable<StatusEffectInstance> effects, Consumer<Text> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local StatusEffectInstance statusEffectInstance) {
         ModHelpers.createEffectDescription(textConsumer, statusEffectInstance);
     }
