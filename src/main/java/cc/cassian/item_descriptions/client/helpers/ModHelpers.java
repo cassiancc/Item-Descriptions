@@ -475,6 +475,16 @@ public class ModHelpers {
         }
     }
 
+    public static void createEffectDescription(List<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
+        if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
+            var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
+            List<Text> tooltip = ModHelpers.createTooltip(key.toString(), true, ModHelpers.getStyle(ModConfig.get().effect_descriptions_color));
+            if (showEffectDescriptions()) {
+                textConsumer.addAll(tooltip);
+            }
+        }
+    }
+
     public static void addHint(List<Text> lines) {
         lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
     }
@@ -613,6 +623,7 @@ public class ModHelpers {
     }
 
     private static boolean checkForEffectDescription(ItemStack stack) {
+        //? if >1.20.5 {
         if (stack.getComponents().contains(DataComponentTypes.POTION_CONTENTS)) {
             var contents = stack.getComponents().get(DataComponentTypes.POTION_CONTENTS);
             if (contents == null) return false;
@@ -623,6 +634,13 @@ public class ModHelpers {
                 }
             }
         }
+        //?} else {
+        /*if (stack.hasNbt()) {
+            assert stack.getNbt() != null;
+            String potion = stack.getNbt().getString("Potion");
+            return new DescriptionKey("effect", new Identifier(potion)).hasTranslation();
+        }
+        *///?}
         return false;
     }
 
