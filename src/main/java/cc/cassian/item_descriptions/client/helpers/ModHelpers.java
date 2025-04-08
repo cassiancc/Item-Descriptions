@@ -27,6 +27,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 //? if >1.21 {
@@ -448,7 +449,7 @@ public class ModHelpers {
                 if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
                     if (!translatableTextContent.getKey().startsWith("effect.duration")) {
                         var key = new DescriptionKey(translatableTextContent.getKey());
-                        List<Text> tooltip = ModHelpers.createTooltip(key.toString(), true, ModHelpers.getStyle(ModConfig.get().enchantmentDescriptions_color));
+                        List<Text> tooltip = ModHelpers.createTooltip(key.toString(), true, ModHelpers.getStyle(ModConfig.get().effect_descriptions_color));
                         if (showEffectDescriptions()) {
                             lines.addAll(tooltip);
                         }
@@ -460,6 +461,18 @@ public class ModHelpers {
             }
         }
         return lines;
+    }
+
+    public static void createEffectDescription(Consumer<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
+        if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
+            var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
+            List<Text> tooltip = ModHelpers.createTooltip(key.toString(), true, ModHelpers.getStyle(ModConfig.get().effect_descriptions_color));
+            if (showEffectDescriptions()) {
+                for (Text line : tooltip) {
+                 textConsumer.accept(line);
+                }
+            }
+        }
     }
 
     public static void addHint(List<Text> lines) {
@@ -586,15 +599,31 @@ public class ModHelpers {
      * Check if effect descriptions should be shown based off configuration.
      */
     public static boolean showEffectDescriptions() {
-        return ModConfig.get().effectDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEffectDescriptionsAlways);
+        return ModConfig.get().effectDescriptions && (tooltipKeyPressed() || ModConfig.get().display_effect_descriptions_always);
     }
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
-        var enchant = createEnchantmentDescription(stack, lines);
+        boolean enchant = createEnchantmentDescription(stack, lines);
+        boolean effect = checkForEffectDescription(stack);
+        if (ModConfig.get().display_effect_descriptions_only && effect) return;
         boolean item = createItemDescription(stack, lines);
         if (ModConfig.get().hint_enabled && (item || enchant)) {
             addHint(lines);
         }
+    }
+
+    private static boolean checkForEffectDescription(ItemStack stack) {
+        if (stack.getComponents().contains(DataComponentTypes.POTION_CONTENTS)) {
+            var contents = stack.getComponents().get(DataComponentTypes.POTION_CONTENTS);
+            if (contents == null) return false;
+            for (StatusEffectInstance effect : contents.getEffects()) {
+                var key = new DescriptionKey(effect.getTranslationKey());
+                if (key.hasTranslation()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static void fixItemStackDescriptionTooltip(ItemStack stack, List<Text> lines) {

@@ -103,8 +103,12 @@ public class ModConfig {
     /**
      * Always show Effect Descriptions, not just when a key is held.
      */
-    public boolean displayEffectDescriptionsAlways = false;
-    public String effectDescriptions_color = "Dark Gray";
+    public boolean display_effect_descriptions_always = false;
+    public String effect_descriptions_color = "Dark Gray";
+    /**
+     * Replace Item Descriptions with Effect Descriptions when present.
+     */
+    public boolean display_effect_descriptions_only = false;
 
     public static void load() {
         if (!Files.exists(configPath())) {
