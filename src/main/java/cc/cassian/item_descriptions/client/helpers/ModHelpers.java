@@ -72,12 +72,21 @@ public class ModHelpers {
     }
 
     /**
-     * Check if ToolTipFix is installed and its wrapper should be used.
+     * Check if another Enchantment Descriptions is installed and our descriptions should be disabled.
      */
     public static boolean useInternalEnchantmentDescriptions() {
         if (ModConfig.get().developer_forceEnableEnchantmentDescriptions)
             return true;
         else return !(isLoaded("idwtialsimmoedm") || isLoaded("enchdesc"));
+    }
+
+    /**
+     * Check if another Enchantment Descriptions is installed and our descriptions should be disabled.
+     */
+    public static boolean useInternalEffectDescriptions() {
+        if (ModConfig.get().developer_forceEnableEffectDescriptions)
+            return true;
+        else return !(isLoaded("potiondescriptions") || isLoaded("effectdescriptions"));
     }
 
     /**
@@ -338,7 +347,7 @@ public class ModHelpers {
 
     public static boolean createEnchantmentDescription(ItemStack stack, List<Text> lines) {
         boolean descriptionFound = false;
-        if (ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions() && showEnchantmentDescriptions()) {
+        if (ModConfig.get().enchantmentDescriptions && showEnchantmentDescriptions()) {
             if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
             //? if >1.21 {
@@ -385,7 +394,7 @@ public class ModHelpers {
     }
 
     public static void fixEnchantmentDescription(ItemStack stack, List<Text> lines) {
-        if (ModConfig.get().enchantmentDescriptions && showEnchantmentDescriptions() && useInternalEnchantmentDescriptions()) {
+        if (ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions()) {
             if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return;
 
@@ -597,7 +606,7 @@ public class ModHelpers {
      * Check if enchantment descriptions should be shown based off configuration.
      */
     public static boolean showEnchantmentDescriptions() {
-        return ModConfig.get().enchantmentDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEnchantmentDescriptionsAlways);
+        return ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions() && (tooltipKeyPressed() || ModConfig.get().displayEnchantmentDescriptionsAlways);
     }
     /**
      * Check if entity descriptions should be shown based off configuration.
@@ -609,7 +618,7 @@ public class ModHelpers {
      * Check if effect descriptions should be shown based off configuration.
      */
     public static boolean showEffectDescriptions() {
-        return ModConfig.get().effectDescriptions && (tooltipKeyPressed() || ModConfig.get().display_effect_descriptions_always);
+        return ModConfig.get().effectDescriptions && useInternalEffectDescriptions() && (tooltipKeyPressed() || ModConfig.get().display_effect_descriptions_always);
     }
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {

@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Effect Descriptions have been added, allowing for effects to be described in a consistent style. This is automatically disabled when other mods with the same feature are present.
   - Item Descriptions primarily uses its own keys, but will fall back to ones designed for Effect Descriptions if not present.
+- Descriptions for the Spring Drop.
+
+### Fixed
+- Tooltips not wrapping on indented text (MerchantCalico)
+- Crash with Useful Spyglass on Forge 1.19.2.
 
 ## [2.0.2] - 2025-04-04
 

@@ -109,6 +109,10 @@ public class ModConfig {
      * Replace Item Descriptions with Effect Descriptions when present.
      */
     public boolean display_effect_descriptions_only = false;
+    /**
+     * Force enable Effect Descriptions, even when other mods are installed.
+     */
+    public boolean developer_forceEnableEffectDescriptions = false;
 
     public static void load() {
         if (!Files.exists(configPath())) {
