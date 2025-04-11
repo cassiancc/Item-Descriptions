@@ -34,22 +34,22 @@ public class PotionContentsComponentMixin {
     //? if =1.21.5 {
     @Inject(method = "buildTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))
     private static void mixin(Iterable<StatusEffectInstance> effects, Consumer<Text> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local StatusEffectInstance statusEffectInstance) {
-        ModHelpers.createEffectDescription(textConsumer, statusEffectInstance);
+        ModHelpers.createEffectDescription(Text.translatable(statusEffectInstance.getTranslationKey()), textConsumer, statusEffectInstance);
     }
     //?} else if >1.20.5 {
     /*@Inject(method = "buildTooltip(Ljava/lang/Iterable;Ljava/util/function/Consumer;FF)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))
     private static void mixin(Iterable<StatusEffectInstance> effects, Consumer<Text> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local StatusEffectInstance statusEffectInstance) {
-        ModHelpers.createEffectDescription(textConsumer, statusEffectInstance);
+        ModHelpers.createEffectDescription(Text.translatable(statusEffectInstance.getTranslationKey()), textConsumer, statusEffectInstance);
     }
     *///?} else if >1.20 {
     /*@Inject(method = "buildTooltip(Ljava/util/List;Ljava/util/List;F)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))
     private static void mixin(List<StatusEffectInstance> statusEffects, List<Text> list, float durationMultiplier, CallbackInfo ci, @Local StatusEffectInstance statusEffectInstance) {
-        ModHelpers.createEffectDescription(list, statusEffectInstance);
+        ModHelpers.createEffectDescription(Text.translatable(statusEffectInstance.getTranslationKey()), list, statusEffectInstance);
     }
     *///?} else {
     /*@Inject(method = "buildTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))
     private static void mixin(ItemStack stack, List<Text> list, float durationMultiplier, CallbackInfo ci, @Local StatusEffectInstance statusEffectInstance) {
-        ModHelpers.createEffectDescription(list, statusEffectInstance);
+        ModHelpers.createEffectDescription(Text.translatable(statusEffectInstance.getTranslationKey()), list, statusEffectInstance);
     }
     *///?}
 }
