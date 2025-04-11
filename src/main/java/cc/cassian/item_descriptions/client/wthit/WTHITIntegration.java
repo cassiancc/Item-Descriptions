@@ -35,7 +35,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
-                tooltip = createTooltip(createBlockDescription(blockAccessor.getBlock(), blockAccessor.getWorld(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
+                tooltip = createTooltip(blockAccessor.getBlock().getName(), createBlockDescription(blockAccessor.getBlock(), blockAccessor.getWorld(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
             }
             for (Text text : tooltip) {
                 lines.addLine(text);
