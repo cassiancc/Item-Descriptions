@@ -31,7 +31,7 @@ public class ClothConfigFactory {
     public static Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.translatable("config.item-descriptions.title"));
+                .setTitle(Text.translatable("modmenu.nameTranslation.item-descriptions"));
 
         final var entryBuilder = builder.entryBuilder();
         final var configInstance = ModConfig.get();

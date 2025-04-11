@@ -3,14 +3,15 @@
   "id": "item-descriptions",
   "version": "${version}",
   "name": "Item Descriptions",
-  "description": "This mod adds unique descriptions for all blocks, items, enchantments, and mobs - built in a way that makes it easy to add modded content.",
+  "description": "This mod adds unique descriptions for all blocks, items, enchantments, effects, and mobs - built in a way that makes it easy to add modded content.",
   "authors": [
     "cassiancc"
   ],
   "contact": {
     "repo": "https://github.com/cassiancc/Item-Descriptions",
     "issues": "https://github.com/cassiancc/Item-Descriptions/issues",
-    "homepage": "https://github.com/cassiancc/Item-Descriptions"
+    "homepage": "https://moddedmc.wiki/en/project/item-descriptions/",
+    "sources": "https://github.com/cassiancc/Item-Descriptions"
   },
   "license": "MIT",
   "icon": "assets/item_descriptions/icon.png",

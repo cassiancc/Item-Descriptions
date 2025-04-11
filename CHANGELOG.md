@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+- Text wrapping now works based on both a configurable minimum width and the length of the block/item/mob/enchantment/effect. This should lead to less dramatic wrapping at low values.
+
+### Changed
+- Minor cleanup of config translations
+- Added effect descriptions to mod info.
+- Fixed wiki links in mod info.
+- Updated Heavy and Light Weighted Pressure Plate descriptions.
+
+## [2.1.0] - 2025-04-08
+
+### Added
 - Effect Descriptions have been added, allowing for effects to be described in a consistent style. This is automatically disabled when other mods with the same feature are present.
   - Item Descriptions primarily uses its own keys, but will fall back to ones designed for Effect Descriptions if not present.
 - Descriptions for the Spring Drop.
