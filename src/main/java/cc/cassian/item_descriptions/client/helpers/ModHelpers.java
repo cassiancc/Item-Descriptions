@@ -1,9 +1,12 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
+import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,6 +16,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.entity.effect.StatusEffect;
 //? if >1.20.5 {
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
@@ -25,17 +29,24 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 //? if >1.21 {
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 //?} else if >1.20 {
-/*import net.minecraft.registry.Registries;
+/*import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.Registries;
 *///?} else {
-/*import net.minecraft.util.registry.Registry;
+/*import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.util.registry.Registry;
 *///?}
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
@@ -44,13 +55,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
-import static cc.cassian.item_descriptions.client.helpers.TagHelpers.*;
 import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
@@ -209,6 +225,7 @@ public class ModHelpers {
      * Create an item's lore key based off data from its Item Stack.
      */
     public static DescriptionKey findItemLoreKey(ItemStack stack) {
+        DescriptionKey key = getDescriptionKey(stack).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(stack) : DescriptionKey.empty());
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         //? if >1.20.5 {
             if (PolymerHelpers.getServerIdentifier(stack) != null) {
@@ -221,11 +238,9 @@ public class ModHelpers {
                 *///?} else {
                 var dataValue = data.getString(0);
                 //?}
-                DescriptionKey modelKey = getLoreKey(stack);
-                modelKey.setSuffix(".custommodeldata." + dataValue);
-                if (modelKey.hasTranslation()) {
-                    return modelKey;
-                }
+
+                key.setSafeSuffix(".custommodeldata." + dataValue);
+                return key;
             }
             else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
@@ -248,8 +263,7 @@ public class ModHelpers {
         /*NbtCompound s = stack.getNbt();
             if (s != null) {
                 if (s.contains("CUSTOM_MODEL_DATA", NbtElement.NUMBER_TYPE)) {
-                    var key = getLoreKey(stack);
-                    key.setSuffix("custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA")));
+                    key.setSafeSuffix("custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA")));
                 }
                 else if (s.contains("SkullOwner", NbtElement.STRING_TYPE)) {
                     DescriptionKey profileKey = getProfile(stack);
@@ -264,7 +278,7 @@ public class ModHelpers {
             return name;
         }
         //Find the tooltip translation key for the provided item stack.
-        return checkLoreKey(getLoreKey(stack));
+        return key;
     }
 
     public static DescriptionKey getModdedNameMatch(ItemStack stack) {
@@ -563,7 +577,7 @@ public class ModHelpers {
         /*var optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
          *///?}
         if (!optionalProfileName.isEmpty()) {
-            DescriptionKey profileKey = getLoreKey(stack);
+            DescriptionKey profileKey = findItemLoreKey(stack);
             profileKey.setSuffix("profile." + optionalProfileName);
             if (profileKey.hasTranslation()) {
                 return profileKey;
@@ -685,14 +699,21 @@ public class ModHelpers {
      * Shorthand to check a block's lore key.
      */
     public static DescriptionKey findBlockLoreKey(Block block) {
-        return checkLoreKey(getLoreKey(block));
+        return checkLoreKey(getDescriptionKey(block).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(block.getDefaultState()) : DescriptionKey.empty()));
     }
 
     /**
      * Shorthand to check an entity's lore key.
      */
     public static DescriptionKey findEntityLoreKey(Entity entity) {
-        return checkLoreKey(getLoreKey(entity));
+        return checkLoreKey(getDescriptionKey(entity).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(entity.getType()) : DescriptionKey.empty()));
+    }
+
+    /**
+     * Shorthand to check an entity's lore key.
+     */
+    public static DescriptionKey findEntityTypeLoreKey(EntityType<?> entityType) {
+        return checkLoreKey(getDescriptionKey(entityType).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(entityType) : DescriptionKey.empty()));
     }
 
     /**
@@ -702,18 +723,6 @@ public class ModHelpers {
         //Check if the tooltip translation key exists. If so, use the provided tooltip.
         if (loreKey.hasTranslation()) return loreKey;
         else return DescriptionKey.empty();
-    }
-
-    /**
-     * Check if a tag exists, or if a generic one should be used.
-     */
-    private static @NotNull DescriptionKey getLoreKey(Object object) {
-        @NotNull DescriptionKey key = getDescriptionKey(object);
-        if (key.hasTranslation()) {
-            return key;
-        } else {
-            return getGenericKey(object);
-        }
     }
 
     /**
@@ -746,12 +755,27 @@ public class ModHelpers {
     public static @NotNull DescriptionKey getDescriptionKey(Object object) {
         if (object instanceof ItemStack stack) {
             return convertToLoreKey(stack.getItem().getTranslationKey());
+        } else if (object instanceof BlockState blockState) {
+            return convertToLoreKey(blockState.getBlock().getTranslationKey());
         } else if (object instanceof Block block) {
             return convertToLoreKey(block.getTranslationKey());
+        } else if (object instanceof EntityType<?> entityType) {
+            return convertToLoreKey(entityType.getTranslationKey());
         } else if (object instanceof Entity entity) {
             return convertToLoreKey(getEntityTranslationKey(entity));
+        } else if (object instanceof StatusEffect effect) {
+            return new DescriptionKey(effect.getTranslationKey());
+        } else if (object instanceof Enchantment enchantment) {
+            return getEnchantmentDescriptionKey(enchantment);
         }
         return DescriptionKey.empty();
+    }
+
+    public static DescriptionKey getEnchantmentDescriptionKey(Enchantment enchantment) {
+        //? if >1.21 {
+        return enchantment.description().getContent() instanceof TranslatableTextContent translatable ? new DescriptionKey(translatable.getKey()) : DescriptionKey.empty();
+         //?} else
+        /*return new DescriptionKey(enchantment.getTranslationKey());*/
     }
 
     /**
@@ -1007,5 +1031,53 @@ public class ModHelpers {
     @ExpectPlatform
     public static boolean isLoadingLoaded(String mod) {
         throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static File getMissingTranslationsPath() {
+        throw new AssertionError();
+    }
+
+    private static <T> void addMissingTranslations(Registry<T> registry, Map<String, Map<String, String>> namespaces, Function<T, ?> valueTransform) {
+        for (RegistryKey<T> key : registry.getKeys()) {
+            Object value = valueTransform.apply(registry.get(key));
+            DescriptionKey description = getDescriptionKey(value);
+            List<String> keys = new ArrayList<>(TagHelpers.findAllPotentialKeys(value).stream().map(Text::getString).toList());
+            if (description.isEmpty()) {
+              LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getKey().getValue(), key.getValue());
+            } else if (keys.stream().noneMatch(I18n::hasTranslation)) {
+                keys.remove(description.asLoreTranslation());
+                if (value instanceof ItemStack stack) keys.remove(getModdedNameMatch(stack).asLoreTranslation()); // Ugly
+                namespaces.computeIfAbsent(key.getValue().getNamespace(), k -> new TreeMap<>()).put(description.asDescriptionTranslation(), " ??? %s".formatted(String.join(", ", keys)));
+            }
+        }
+    }
+    
+    public interface RegistryGetter {
+        <E> Optional<? extends Registry<E>> get(RegistryKey<? extends Registry<? extends E>> key);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void generateMissingTranslations(RegistryGetter registryGetter) {
+        ModClient.LOGGER.info("[Item Descriptions] Creating missing translations files");
+        File folder = getMissingTranslationsPath();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Map<String, Map<String, String>> namespaces = new HashMap<>();
+        addMissingTranslations((Registry<EntityType<?>>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "entity_type"))).orElse(null), namespaces, Function.identity());
+        addMissingTranslations((Registry<Item>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "item"))).orElse(null), namespaces, Item::getDefaultStack);
+        addMissingTranslations((Registry<Enchantment>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "enchantment"))).orElse(null), namespaces, Function.identity());
+        addMissingTranslations((Registry<Block>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "block"))).orElse(null), namespaces, Block::getDefaultState); // Blocks will overwrite items
+        addMissingTranslations((Registry<StatusEffect>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "mob_effect"))).orElse(null), namespaces, Function.identity());
+        for (Map.Entry<String, Map<String, String>> entry : namespaces.entrySet()) {
+            String namespace = entry.getKey();
+            Map<String, String> map = entry.getValue();
+            Path namespacePath = folder.toPath().resolve("assets").resolve(namespace).resolve("lang");
+            namespacePath.toFile().mkdirs();
+            try (FileWriter writer = new FileWriter(namespacePath.resolve("en_us.json").toFile())) {
+                gson.toJson(map, writer);
+            } catch (IOException e) {
+                ModClient.LOGGER.error("[Item Descriptions] Failed to write missing descriptions file", e);
+            }
+        }
     }
 }

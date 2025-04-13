@@ -8,7 +8,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
-import java.util.Objects;
 
 public class DescriptionKey {
     private final String namespace;
@@ -93,6 +92,10 @@ public class DescriptionKey {
         return new DescriptionKey("", "", "");
     }
 
+    public DescriptionKey orElse(DescriptionKey other) {
+        return this.isEmpty() ? other : this;
+    }
+
     public static boolean isMorePrecise(DescriptionKey currentKey, DescriptionKey newKey) {
         if (currentKey.getNamespace().equals(newKey.getNamespace()))
             return currentKey.toString().length() < newKey.toString().length();
@@ -119,8 +122,8 @@ public class DescriptionKey {
      * Convert to a translation key string suffixed with .description,
      * the primary and most specific description Item Descriptions uses.
      */
-    public String asDescriptionTranslation(String prefix) {
-        return combineDotSeperated(List.of(prefix, namespace, path, "description", suffix));
+    public String asDescriptionTranslation() {
+        return combineDotSeperated(List.of(type, namespace, path, "description", suffix));
     }
 
     /**
@@ -142,8 +145,8 @@ public class DescriptionKey {
 
     @Override
     public String toString() {
-        if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation(type))) {
-            return asDescriptionTranslation(type);
+        if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation())) {
+            return asDescriptionTranslation();
         }
         else if (ModHelpers.hasTranslation(asDescTranslation())) {
             return asDescTranslation();

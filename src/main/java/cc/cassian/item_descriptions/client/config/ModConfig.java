@@ -94,6 +94,10 @@ public class ModConfig {
      * Forces Enchantment Descriptions to be enabled, even while similar mods are installed.
      */
     public boolean developer_forceEnableEnchantmentDescriptions = false;
+    /**
+     * Creates placeholder en_us language files per-namespace in the minecraft/data/missing folder.
+     */
+    public boolean developer_generateMissing = false;
 
     // Effect Descriptions
     /**

@@ -1,6 +1,10 @@
 package cc.cassian.item_descriptions.client.helpers.fabric;
 
+import cc.cassian.item_descriptions.client.ModClient;
 import net.fabricmc.loader.api.FabricLoader;
+
+import java.io.File;
+import java.nio.file.Path;
 
 public class ModHelpersImpl {
     public static boolean clothConfigInstalled() {
@@ -15,4 +19,8 @@ public class ModHelpersImpl {
         return isLoaded(mod);
     }
 
+    public static File getMissingTranslationsPath() {
+        Path savePath = FabricLoader.getInstance().getGameDir().resolve("data").resolve(ModClient.MOD_ID).resolve("missing");
+        return savePath.toFile();
+    }
 }

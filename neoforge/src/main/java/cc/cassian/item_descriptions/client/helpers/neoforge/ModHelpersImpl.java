@@ -1,7 +1,12 @@
 package cc.cassian.item_descriptions.client.helpers.neoforge;
 
+import cc.cassian.item_descriptions.client.ModClient;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.fml.loading.LoadingModList;
+
+import java.io.File;
+import java.nio.file.Path;
 
 public class ModHelpersImpl {
     public static boolean clothConfigInstalled() {
@@ -13,5 +18,8 @@ public class ModHelpersImpl {
     public static boolean isLoadingLoaded(String mod) {
         return LoadingModList.get().getModFileById(mod) != null;
     }
-
+    public static File getMissingTranslationsPath() {
+        Path savePath = FMLPaths.getOrCreateGameRelativePath(Path.of("data").resolve(ModClient.MOD_ID).resolve("missing"));
+        return savePath.toFile();
+    }
 }

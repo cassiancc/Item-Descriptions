@@ -16,6 +16,8 @@
   "config.item-descriptions.config.developer_showAllPotentialKeys.tooltip": "Replaces the description with a list of translation keys that can be used to match that item. Hold Alt to view their translations.",
   "config.item-descriptions.config.developer_showUntranslated": "Show lore tags on untranslated items",
   "config.item-descriptions.config.developer_showUntranslated.tooltip": "This includes items meant to have generic descriptions! Disable after testing.",
+  "config.item-descriptions.config.developer_generateMissing": "Generate missing description datapack",
+  "config.item-descriptions.config.developer_generateMissing.tooltip": "Creates placeholder en_us language files per-namespace in the minecraft/data/item-descriptions/missing folder.",
   "config.item-descriptions.config.displayAlways": "Always show Item Descriptions",
   "config.item-descriptions.config.displayAlways.tooltip": "By default, descriptions are only shown when a keybind is pressed. This is intended, but can be changed so that they are always visible.",
   "config.item-descriptions.config.displayBlockDescriptionsAlways": "Always show Block Descriptions",
