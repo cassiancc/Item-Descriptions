@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Text wrapping now works based on both a configurable minimum width and the length of the block/item/mob/enchantment/effect. This should lead to less dramatic wrapping at low values.
-- New debug option to generate a resource pack containing missing descriptions. (@sisby-folk)
+- On Fabric, a new debug option to generate a resource pack containing missing descriptions. (@sisby-folk)
 
 ### Changed
 - Minor cleanup of config translations
