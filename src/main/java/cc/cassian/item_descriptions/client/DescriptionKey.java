@@ -8,7 +8,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
-import java.util.Objects;
 
 public class DescriptionKey {
     private final String namespace;
@@ -91,6 +90,10 @@ public class DescriptionKey {
 
     public static DescriptionKey empty() {
         return new DescriptionKey("", "", "");
+    }
+
+    public DescriptionKey orElse(DescriptionKey other) {
+        return this.isEmpty() ? other : this;
     }
 
     public static boolean isMorePrecise(DescriptionKey currentKey, DescriptionKey newKey) {
