@@ -122,8 +122,8 @@ public class DescriptionKey {
      * Convert to a translation key string suffixed with .description,
      * the primary and most specific description Item Descriptions uses.
      */
-    public String asDescriptionTranslation(String prefix) {
-        return combineDotSeperated(List.of(prefix, namespace, path, "description", suffix));
+    public String asDescriptionTranslation() {
+        return combineDotSeperated(List.of(type, namespace, path, "description", suffix));
     }
 
     /**
@@ -145,8 +145,8 @@ public class DescriptionKey {
 
     @Override
     public String toString() {
-        if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation(type))) {
-            return asDescriptionTranslation(type);
+        if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation())) {
+            return asDescriptionTranslation();
         }
         else if (ModHelpers.hasTranslation(asDescTranslation())) {
             return asDescTranslation();

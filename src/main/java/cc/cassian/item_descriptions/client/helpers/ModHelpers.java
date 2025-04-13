@@ -1048,7 +1048,7 @@ public class ModHelpers {
             } else if (keys.stream().noneMatch(I18n::hasTranslation)) {
                 keys.remove(description.asLoreTranslation());
                 if (value instanceof ItemStack stack) keys.remove(getModdedNameMatch(stack).asLoreTranslation()); // Ugly
-                namespaces.computeIfAbsent(key.getValue().getNamespace(), k -> new TreeMap<>()).put(description.asDescTranslation(), " ??? %s".formatted(String.join(", ", keys)));
+                namespaces.computeIfAbsent(key.getValue().getNamespace(), k -> new TreeMap<>()).put(description.asDescriptionTranslation(), " ??? %s".formatted(String.join(", ", keys)));
             }
         }
     }
