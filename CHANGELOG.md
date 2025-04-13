@@ -8,11 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-- Text wrapping now works based on both a configurable minimum width and the length of the block/item/mob/enchantment/effect. This should lead to less dramatic wrapping at low values.
+- Text wrapping now works based on both a configurable minimum width and the length of the block/item/mob/enchantment/effect. This should lead to less dramatic wrapping at low values. (@sisby-folk)
 - On Fabric, a new debug option to generate a resource pack containing missing descriptions. (@sisby-folk)
 
 ### Changed
-- Minor cleanup of config translations
+- Minor cleanup of config translations.
 - Added effect descriptions to mod info.
 - Fixed wiki links in mod info.
 - Updated Heavy and Light Weighted Pressure Plate descriptions.
@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Descriptions for the Spring Drop.
 
 ### Fixed
-- Tooltips not wrapping on indented text (MerchantCalico)
+- Tooltips not wrapping on indented text (@MerchantCalico)
 - Crash with Useful Spyglass on Forge 1.19.2.
 
 ## [2.0.2] - 2025-04-04
