@@ -9,12 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Text wrapping now works based on both a configurable minimum width and the length of the block/item/mob/enchantment/effect. This should lead to less dramatic wrapping at low values.
+- New debug option to generate a resource pack containing missing descriptions. (@sisby-folk)
 
 ### Changed
 - Minor cleanup of config translations
 - Added effect descriptions to mod info.
 - Fixed wiki links in mod info.
 - Updated Heavy and Light Weighted Pressure Plate descriptions.
+- Fixed typos/inaccuracies on Firefly Bush and Arrow descriptions.
 
 ## [2.1.0] - 2025-04-08
 
