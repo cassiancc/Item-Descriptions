@@ -1,12 +1,10 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
+import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.block.*;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,7 +15,6 @@ import net.minecraft.registry.tag.TagKey;
 /*import net.minecraft.tag.TagKey;
  *///?}
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,54 +28,56 @@ public class TagHelpers {
         return newKey.hasTranslation() && (currentKey[0] == null || DescriptionKey.isMorePrecise(currentKey[0], newKey));
     }
 
-    public static @NotNull DescriptionKey checkGenericTagList(ItemStack itemStack) {
-        final Item item = itemStack.getItem();
-        //Temporary - Spawn Eggs do not yet have a tag.
-        if (item instanceof SpawnEggItem) {
-            return new DescriptionKey("tag", "c", "spawn_egg");
-        }
-        final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        itemStack.streamTags().forEach(itemTagKey -> {
-            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-            if (checkMatch(returnedKey, loreKey)) {
-                returnedKey[0] = loreKey;
+    private static DescriptionKey checkGenericTagList(Object object) {
+        // If object is an item, check for Item Tags
+        if (object instanceof ItemStack itemStack) {
+            final Item item = itemStack.getItem();
+            //Temporary - Spawn Eggs do not yet have a tag.
+            if (item instanceof SpawnEggItem) {
+                return new DescriptionKey("tag", "c", "spawn_egg");
             }
-        });
-        // If untagged, check if it is a Block Item and if a Block Tag matches.
-        if (returnedKey[0] == null) {
-            if ((item instanceof BlockItem blockItem)) {
-                blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
-                    DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                    if (checkMatch(returnedKey, loreKey)) {
-                        returnedKey[0] = loreKey;
-                    }
-                });
+            final DescriptionKey[] returnedKey = new DescriptionKey[1];
+            itemStack.streamTags().forEach(itemTagKey -> {
+                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                if (checkMatch(returnedKey, loreKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            // If untagged, check if it is a Block Item and if a Block Tag matches.
+            if (returnedKey[0] == null) {
+                if ((item instanceof BlockItem blockItem)) {
+                    blockItem.getBlock().getDefaultState().streamTags().forEach(itemTagKey -> {
+                        DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                        if (checkMatch(returnedKey, loreKey)) {
+                            returnedKey[0] = loreKey;
+                        }
+                    });
+                }
             }
-        }
-        return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
-    }
+            return returnedKey[0];
 
-    public static @NotNull DescriptionKey checkGenericTagList(BlockState state) {
-        final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        state.streamTags().forEach(itemTagKey -> {
-            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-            if (checkMatch(returnedKey, loreKey)) {
-                returnedKey[0] = loreKey;
-            }
-        });
-        return returnedKey[0];
-    }
-
-    public static @NotNull DescriptionKey checkGenericTagList(EntityType<?> entityType) {
-        final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        entityType.getRegistryEntry().streamTags().forEach(itemTagKey -> {
-            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-            if (checkMatch(returnedKey, loreKey)) {
-                returnedKey[0] = loreKey;
-            }
-        });
-        return returnedKey[0];
-        //If no tag key matches, return empty so a string match can be found.
+            //If object is a blockstate, check it for Block tags
+        } else if (object instanceof BlockState state) {
+            final DescriptionKey[] returnedKey = new DescriptionKey[1];
+            state.streamTags().forEach(itemTagKey -> {
+                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                if (checkMatch(returnedKey, loreKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            return returnedKey[0];
+        } else if (object instanceof Entity entity) {
+            final DescriptionKey[] returnedKey = new DescriptionKey[1];
+            entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
+                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                if (checkMatch(returnedKey, loreKey)) {
+                    returnedKey[0] = loreKey;
+                }
+            });
+            return returnedKey[0];
+            //If no tag key matches, return empty so a string match can be found.
+        }
+        return DescriptionKey.empty();
     }
 
     private static void addSafe(ArrayList<Text> tags, DescriptionKey newAdd) {
@@ -125,23 +124,11 @@ public class TagHelpers {
                 DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                 addSafe(tags, loreKey);
             });
-            addSafe(tags, getDescriptionKey(state));
-        } else if (object instanceof EntityType<?> type) {
-            type.getRegistryEntry().streamTags().forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                addSafe(tags, loreKey);
-            });
-            addSafe(tags, getDescriptionKey(type));
         } else if (object instanceof Entity entity) {
             entity.getType().getRegistryEntry().streamTags().forEach(itemTagKey -> {
                 DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                 addSafe(tags, loreKey);
             });
-            addSafe(tags, getDescriptionKey(entity));
-        } else if (object instanceof StatusEffect effect) {
-            addSafe(tags, new DescriptionKey(effect.getTranslationKey()));
-        } else if (object instanceof Enchantment enchantment) {
-            addSafe(tags, getEnchantmentDescriptionKey(enchantment));
         } else {
             tags.add(Text.empty());
         }
@@ -153,5 +140,17 @@ public class TagHelpers {
      */
     private static DescriptionKey tagKeyToGenericKey(TagKey<?> key) {
         return new DescriptionKey("tag", key.id());
+    }
+
+    public static DescriptionKey getGenericKey(Object object) {
+        if (!ModConfig.get().developer_disableTagDescriptions) {
+            //Iterate through the provided generic tag list.
+            DescriptionKey generic = checkGenericTagList(object);
+            if (generic != null) {
+                if (generic.isEmpty()) return DescriptionKey.empty();
+                else return generic;
+            }
+        }
+        return DescriptionKey.empty();
     }
 }

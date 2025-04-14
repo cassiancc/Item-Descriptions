@@ -67,6 +67,7 @@ import java.util.function.Predicate;
 
 import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
+import static cc.cassian.item_descriptions.client.helpers.TagHelpers.*;
 import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
@@ -225,7 +226,6 @@ public class ModHelpers {
      * Create an item's lore key based off data from its Item Stack.
      */
     public static DescriptionKey findItemLoreKey(ItemStack stack) {
-        DescriptionKey key = getDescriptionKey(stack).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(stack) : DescriptionKey.empty());
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
         //? if >1.20.5 {
             if (PolymerHelpers.getServerIdentifier(stack) != null) {
@@ -238,9 +238,11 @@ public class ModHelpers {
                 *///?} else {
                 var dataValue = data.getString(0);
                 //?}
-
-                key.setSafeSuffix(".custommodeldata." + dataValue);
-                return key;
+                DescriptionKey modelKey = getLoreKey(stack);
+                modelKey.setSuffix(".custommodeldata." + dataValue);
+                if (modelKey.hasTranslation()) {
+                    return modelKey;
+                }
             }
             else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
@@ -263,7 +265,8 @@ public class ModHelpers {
         /*NbtCompound s = stack.getNbt();
             if (s != null) {
                 if (s.contains("CUSTOM_MODEL_DATA", NbtElement.NUMBER_TYPE)) {
-                    key.setSafeSuffix("custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA")));
+                    var key = getLoreKey(stack);
+                    key.setSuffix("custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA")));
                 }
                 else if (s.contains("SkullOwner", NbtElement.STRING_TYPE)) {
                     DescriptionKey profileKey = getProfile(stack);
@@ -278,7 +281,7 @@ public class ModHelpers {
             return name;
         }
         //Find the tooltip translation key for the provided item stack.
-        return key;
+        return checkLoreKey(getLoreKey(stack));
     }
 
     public static DescriptionKey getModdedNameMatch(ItemStack stack) {
@@ -577,7 +580,7 @@ public class ModHelpers {
         /*var optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
          *///?}
         if (!optionalProfileName.isEmpty()) {
-            DescriptionKey profileKey = findItemLoreKey(stack);
+            DescriptionKey profileKey = getLoreKey(stack);
             profileKey.setSuffix("profile." + optionalProfileName);
             if (profileKey.hasTranslation()) {
                 return profileKey;
@@ -699,21 +702,14 @@ public class ModHelpers {
      * Shorthand to check a block's lore key.
      */
     public static DescriptionKey findBlockLoreKey(Block block) {
-        return checkLoreKey(getDescriptionKey(block).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(block.getDefaultState()) : DescriptionKey.empty()));
+        return checkLoreKey(getLoreKey(block));
     }
 
     /**
      * Shorthand to check an entity's lore key.
      */
     public static DescriptionKey findEntityLoreKey(Entity entity) {
-        return checkLoreKey(getDescriptionKey(entity).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(entity.getType()) : DescriptionKey.empty()));
-    }
-
-    /**
-     * Shorthand to check an entity's lore key.
-     */
-    public static DescriptionKey findEntityTypeLoreKey(EntityType<?> entityType) {
-        return checkLoreKey(getDescriptionKey(entityType).orElse(ModConfig.get().developer_disableTagDescriptions ? TagHelpers.checkGenericTagList(entityType) : DescriptionKey.empty()));
+        return checkLoreKey(getLoreKey(entity));
     }
 
     /**
@@ -723,6 +719,18 @@ public class ModHelpers {
         //Check if the tooltip translation key exists. If so, use the provided tooltip.
         if (loreKey.hasTranslation()) return loreKey;
         else return DescriptionKey.empty();
+    }
+
+    /**
+     * Check if a tag exists, or if a generic one should be used.
+     */
+    private static @NotNull DescriptionKey getLoreKey(Object object) {
+        @NotNull DescriptionKey key = getDescriptionKey(object);
+        if (key.hasTranslation()) {
+            return key;
+        } else {
+            return getGenericKey(object);
+        }
     }
 
     /**
