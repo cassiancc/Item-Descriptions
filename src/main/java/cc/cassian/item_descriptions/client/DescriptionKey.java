@@ -147,8 +147,11 @@ public class DescriptionKey {
     public String toString() {
         if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation())) {
             return asDescriptionTranslation();
-        }
-        else if (ModHelpers.hasTranslation(asDescTranslation())) {
+        } else if (type.equals("item") && ModHelpers.hasTranslation(asLoreTranslation())) {
+            return asLoreTranslation();
+        } else if (type.equals("block") && ModHelpers.hasTranslation(asLoreTranslation())) {
+            return asLoreTranslation();
+        } else if (ModHelpers.hasTranslation(asDescTranslation())) {
             return asDescTranslation();
         }
         else return asLoreTranslation();
