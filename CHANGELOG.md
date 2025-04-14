@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+- Reverted internal changes that broke tag translations in 2.1.1.
+
+## [2.1.1] - 2025-04-13
+
 ### Added
 - Text wrapping now works based on both a configurable minimum width and the length of the block/item/mob/enchantment/effect. This should lead to less dramatic wrapping at low values. (@sisby-folk)
 - On Fabric, a new debug option to generate a resource pack containing missing descriptions. (@sisby-folk)
