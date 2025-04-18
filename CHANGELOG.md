@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+- New developer options to disable built-in tooltips on items, either on individual item IDs or on all items.
+
+### Fixed
+- Music Discs have the correct descriptions again.
+
+## [2.1.2] - 2025-04-18
+
 ### Fixed
 - Reverted internal changes that broke tag translations in 2.1.1.
 

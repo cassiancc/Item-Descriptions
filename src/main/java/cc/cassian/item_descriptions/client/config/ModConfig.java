@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.config;
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.helpers.ModLists;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class ModConfig {
 
@@ -81,6 +83,10 @@ public class ModConfig {
      */
     public boolean developer_showAllPotentialKeys = false;
     /**
+     * List of items that have their built-in tooltips disabled.
+     */
+    public List<String> developer_items_with_tooltips_to_hide = List.of("");
+    /**
      * Show lore tags on untranslated items. This includes items meant to have generic descriptions! Disable after testing.
      */
     public boolean developer_showUntranslated = false;
@@ -116,7 +122,8 @@ public class ModConfig {
     /**
      * Force enable Effect Descriptions, even when other mods are installed.
      */
-    public boolean developer_forceEnableEffectDescriptions = false;
+    public boolean developer_force_enable_effect_descriptions = false;
+    public boolean developer_hide_other_tooltips = false;
 
     public static void load() {
         if (!Files.exists(configPath())) {
@@ -137,6 +144,7 @@ public class ModConfig {
         } catch (IOException e) {
             ModClient.LOGGER.warn("Unable to save config file!");
         }
+        ModLists.loadLists();
     }
 
     public static ModConfig get() {

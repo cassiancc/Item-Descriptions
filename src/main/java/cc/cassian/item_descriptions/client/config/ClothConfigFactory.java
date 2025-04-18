@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Locale;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -75,6 +76,12 @@ public class ClothConfigFactory {
                         .setSaveConsumer(fieldSetter(configInstance, field))
                         .setTooltip(fieldTooltip(field))
                         .setDefaultValue((int) fieldGet(DEFAULT_VALUES, field)).build());
+            }
+            else if (field.getType() == List.class) {
+                category.addEntry(entryBuilder.startStrList(fieldName(field), fieldGet(configInstance, field))
+                        .setSaveConsumer(fieldSetter(configInstance, field))
+                        .setTooltip(fieldTooltip(field))
+                        .setDefaultValue((List<String>) fieldGet(DEFAULT_VALUES, field)).build());
             }
         }
         builder.setSavingRunnable(ModConfig::save);

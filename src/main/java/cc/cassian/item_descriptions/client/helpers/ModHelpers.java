@@ -101,7 +101,7 @@ public class ModHelpers {
      * Check if another Enchantment Descriptions is installed and our descriptions should be disabled.
      */
     public static boolean useInternalEffectDescriptions() {
-        if (ModConfig.get().developer_forceEnableEffectDescriptions)
+        if (ModConfig.get().developer_force_enable_effect_descriptions)
             return true;
         else return !(isLoaded("potiondescriptions") || isLoaded("effectdescriptions"));
     }
@@ -640,6 +640,11 @@ public class ModHelpers {
     }
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
+        if (ModConfig.get().developer_hide_other_tooltips || ModLists.hidden_items.contains(stack.getItem())) {
+            var first = lines.getFirst();
+            lines.clear();
+            lines.add(first);
+        }
         boolean enchant = createEnchantmentDescription(stack, lines);
         boolean effect = checkForEffectDescription(stack);
         if (ModConfig.get().display_effect_descriptions_only && effect) return;
@@ -675,7 +680,8 @@ public class ModHelpers {
         if (!useInternalWrapper())
             return;
         fixEnchantmentDescription(stack, lines);
-        fixItemDescription(stack, lines);
+        if (useInternalWrapper())
+            fixItemDescription(stack, lines);
     }
 
     /**
