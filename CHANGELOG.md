@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Music Discs have the correct descriptions again.
+- Revised typos and incorrect descriptions.
 
 ## [2.1.2] - 2025-04-18
 
