@@ -1250,6 +1250,7 @@
   "tag.c.ingots.iron.description": "A shiny ingot which can be used to craft equipment and utilities.",
   "tag.c.ingots.netherite.description": "An alloy that can be applied to your Diamond Tools to make them stronger and fire resistant.",
   "tag.c.ladder.description": "A block that can be used to climb vertically.",
+  "tag.c.ladders.description": "A block that can be used to climb vertically.",
   "tag.c.lamp.description": "A block that emits light.",
   "tag.c.lantern.description": "A block that provides a light source. It can be hung from the ceiling or placed on the ground.",
   "tag.c.leathers.description": "An item that is used to craft armor and books.",
