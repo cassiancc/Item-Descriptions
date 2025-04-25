@@ -71,8 +71,8 @@ dependencies {
     modRuntimeOnly("lol.bai:badpackets:forge-${common.mod.dep("badpackets_version")}")
 
     // Useful Spyglass
-    if (stonecutter.eval(mcVersion, "<1.21.3") && stonecutter.eval(mcVersion, ">1.19.3")) {
-        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}")
+    if (stonecutter.eval(mcVersion, "<1.21.3")) {
+        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-forge,$minecraft") // Useful Spyglass - optional compat
     }
 
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }
