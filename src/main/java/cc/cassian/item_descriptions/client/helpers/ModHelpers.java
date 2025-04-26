@@ -119,13 +119,6 @@ public class ModHelpers {
     /**
      * Used in Config to change the tooltip's formatting.
      */
-    public static Style getStyle() {
-        return getStyle(ModConfig.get().style_color);
-    }
-
-    /**
-     * Used in Config to change the tooltip's formatting.
-     */
     public static Style getStyle(String colour) {
         return Style.EMPTY.withColor(getColour(colour)).withItalic(ModConfig.get().style_italics).withBold(ModConfig.get().style_bold);
     }
@@ -395,7 +388,7 @@ public class ModHelpers {
                     TextContent description = lines.get(i).getContent();
                     if (description instanceof TranslatableTextContent translatableTextContent) {
                         var descriptionKey = new DescriptionKey(translatableTextContent.getKey());
-                        lines.add(i+1, descriptionKey.toText().setStyle(getStyle(ModConfig.get().enchantmentDescriptions_color).withItalic(ModConfig.get().enchantmentDescriptions_italics)));
+                        lines.add(i+1, descriptionKey.toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS));
                     }
                 }
             }
@@ -481,7 +474,7 @@ public class ModHelpers {
                 if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
                     if (!translatableTextContent.getKey().startsWith("effect.duration")) {
                         var key = new DescriptionKey(translatableTextContent.getKey());
-                        List<Text> tooltip = ModHelpers.createTooltip(text1, key.toString(), true, ModHelpers.getStyle(ModConfig.get().effect_descriptions_color));
+                        List<Text> tooltip = ModHelpers.createTooltip(text1, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
                         if (showEffectDescriptions()) {
                             lines.addAll(tooltip);
                         }
@@ -498,7 +491,7 @@ public class ModHelpers {
     public static void createEffectDescription(Text name, Consumer<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
         if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
             var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
-            List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModHelpers.getStyle(ModConfig.get().effect_descriptions_color));
+            List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
                 for (Text line : tooltip) {
                  textConsumer.accept(line);
@@ -510,7 +503,7 @@ public class ModHelpers {
     public static void createEffectDescription(Text name, List<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
         if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
             var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
-            List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModHelpers.getStyle(ModConfig.get().effect_descriptions_color));
+            List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
                 textConsumer.addAll(tooltip);
             }
@@ -518,7 +511,7 @@ public class ModHelpers {
     }
 
     public static void addHint(List<Text> lines) {
-        lines.add(1, getHintText().getWithStyle(ModHelpers.getStyle(ModConfig.get().hint_color).withItalic(ModConfig.get().hint_italics)).get(0));
+        lines.add(1, getHintText().getWithStyle(ModStyle.HINT).getFirst());
     }
 
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
@@ -532,7 +525,7 @@ public class ModHelpers {
                 tooltip = List.of(descriptionKey.toText());
             }
             else return false;
-            tooltip = tooltip.stream().map(text -> (Text)text.copy().setStyle(getStyle())).toList();
+            tooltip = tooltip.stream().map(text -> (Text)text.copy().setStyle(ModStyle.ITEM_DESCRIPTIONS)).toList();
             if (showItemDescriptions())
                 lines.addAll(tooltip);
             else return descriptionKey.hasTranslation();
@@ -659,7 +652,7 @@ public class ModHelpers {
         }
         if (ModHelpers.showItemDescriptions() && ModConfig.get().showModName) {
             Identifier id = Registries.ITEM.getId(stack.getItem());
-            lines.addLast(Text.of(WordUtils.capitalize(id.getNamespace())).getWithStyle(ModHelpers.getStyle(ModConfig.get().style_modNameColor).withItalic(true)).getFirst());
+            lines.addLast(Text.of(WordUtils.capitalize(id.getNamespace())).getWithStyle(ModStyle.MOD_NAME).getFirst());
         }
     }
 
@@ -844,7 +837,7 @@ public class ModHelpers {
      * @param wrap Whether to use the built-in wrapper.
      */
     public static List<Text> createTooltip(Text name, String loreKey, boolean wrap) {
-        return createTooltip(name, loreKey, wrap, ModHelpers.getStyle());
+        return createTooltip(name, loreKey, wrap, ModStyle.ITEM_DESCRIPTIONS);
     }
 
 

@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.config;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
+import cc.cassian.item_descriptions.client.helpers.ModStyle;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -150,6 +151,7 @@ public class ModConfig {
             ModClient.LOGGER.warn("Unable to save config file!");
         }
         ModLists.loadLists();
+        ModStyle.updateStyles();
     }
 
     public static ModConfig get() {

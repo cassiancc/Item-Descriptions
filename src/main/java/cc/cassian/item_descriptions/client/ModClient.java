@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client;
 
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
+import cc.cassian.item_descriptions.client.helpers.ModStyle;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,7 @@ public class ModClient {
     public static final Identifier ENTITY_DESCRIPTIONS = Identifier.of(MOD_ID, "entity_descriptions");
     public static void init() {
         ModConfig.load();
+        ModStyle.updateStyles();
         ModClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
-        ModLists.loadLists();
     }
 }
