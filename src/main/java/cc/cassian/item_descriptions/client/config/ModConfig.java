@@ -37,6 +37,7 @@ public class ModConfig {
     public boolean style_italics = false;
     public boolean style_bold = false;
     public int style_length = 160;
+    public String style_modNameColor = "Blue";
     //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;

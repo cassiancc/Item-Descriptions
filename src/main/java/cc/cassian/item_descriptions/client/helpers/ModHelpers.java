@@ -169,6 +169,9 @@ public class ModHelpers {
             return TextColor.fromFormatting(Formatting.byCode(colour.charAt(0)));
         }
         else {
+            try {
+                return TextColor.fromRgb(Integer.parseInt(colour));
+            } catch (NumberFormatException ignored) {}
             String replacedColour = colour.toLowerCase().replace(" ", "_");
             return switch (replacedColour) {
                 case "black", "dark_blue", "dark_green", "dark_red", "dark_purple",
@@ -656,7 +659,7 @@ public class ModHelpers {
         }
         if (ModHelpers.showItemDescriptions() && ModConfig.get().showModName) {
             Identifier id = Registries.ITEM.getId(stack.getItem());
-            lines.addLast(Text.of(WordUtils.capitalize(id.getNamespace())).getWithStyle(ModHelpers.getStyle("blue").withItalic(true)).getFirst());
+            lines.addLast(Text.of(WordUtils.capitalize(id.getNamespace())).getWithStyle(ModHelpers.getStyle(ModConfig.get().style_modNameColor).withItalic(true)).getFirst());
         }
     }
 

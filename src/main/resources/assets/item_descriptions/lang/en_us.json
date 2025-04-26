@@ -1462,6 +1462,7 @@
   "config.item-descriptions.config.display_effect_descriptions_always.tooltip": "By default, descriptions are only shown when a keybind is pressed. This is intended, but can be changed so that they are always visible.",
   "config.item-descriptions.config.showModName": "Show mod name",
   "config.item-descriptions.config.showModName.tooltip": "Show mod name when hovering over an item and Item Descriptions is active.",
+  "config.item-descriptions.config.style_modNameColor": "Mod name color",
   "lore.minecraft.dried_ghast": "A dry block that when submerged in water will slowly regenerate into a Ghastling.",
   "tag.minecraft.harnesses.description": "An item that can be used on a Happy Ghast to allow you to ride them.",
   "entity.minecraft.happy_ghast.description": "A passive mob grown from a Dried Ghast that can be tempted with Snowballs and ridden with a Harness."
