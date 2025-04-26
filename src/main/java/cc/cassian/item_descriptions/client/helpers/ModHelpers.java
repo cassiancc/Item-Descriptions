@@ -652,7 +652,8 @@ public class ModHelpers {
         }
         if (ModHelpers.showItemDescriptions() && ModConfig.get().showModName) {
             Identifier id = Registries.ITEM.getId(stack.getItem());
-            lines.addLast(Text.of(WordUtils.capitalize(id.getNamespace())).getWithStyle(ModStyle.MOD_NAME).getFirst());
+            String namespace = id.getNamespace();
+            lines.addLast(Text.translatableWithFallback("modmenu.nameTranslation."+namespace, WordUtils.capitalize(namespace)).getWithStyle(ModStyle.MOD_NAME).getFirst());
         }
     }
 
