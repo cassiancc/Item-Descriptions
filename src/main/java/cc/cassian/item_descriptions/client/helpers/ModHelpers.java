@@ -37,6 +37,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 //? if >1.21 {
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -53,6 +54,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -651,6 +653,10 @@ public class ModHelpers {
         boolean item = createItemDescription(stack, lines);
         if (ModConfig.get().hint_enabled && (item || enchant)) {
             addHint(lines);
+        }
+        if (ModHelpers.showItemDescriptions() && ModConfig.get().showModName) {
+            Identifier id = Registries.ITEM.getId(stack.getItem());
+            lines.addLast(Text.of(WordUtils.capitalize(id.getNamespace())).getWithStyle(ModHelpers.getStyle("blue").withItalic(true)).getFirst());
         }
     }
 

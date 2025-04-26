@@ -23,6 +23,10 @@ public class ModConfig {
     //General settings
     public boolean itemDescriptions = true;
     public boolean displayAlways = false;
+    /**
+     * When Item Descriptions are being displayed, also display the mod name.
+     */
+    public boolean showModName = false;
     // Hint
     public boolean hint_enabled = false;
     public boolean hint_showKeybind = true;
