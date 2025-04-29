@@ -157,14 +157,7 @@ public class DescriptionKey {
 
     public MutableText toText() {
         var newAdd = toString();
-        //? if >1.20 {
-        return Text.translatableWithFallback(newAdd, newAdd);
-        //?} else {
-        /*if (ModHelpers.hasTranslation(newAdd)) {
-            return Text.translatable(newAdd);
-        }
-        else return Text.literal(newAdd);
-        *///?}
+        return ModHelpers.translatableWithFallback(newAdd, newAdd);
     }
 
     public boolean hasTranslation() {

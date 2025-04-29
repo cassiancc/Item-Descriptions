@@ -651,10 +651,27 @@ public class ModHelpers {
             addHint(lines);
         }
         if (ModHelpers.showItemDescriptions() && ModConfig.get().showModName) {
-            Identifier id = Registries.ITEM.getId(stack.getItem());
+            //? if >1.20 {
+            var registry = Registries.ITEM;
+            //?} else {
+            /*var registry = Registry.ITEM;
+             *///?}
+            Identifier id = registry.getId(stack.getItem());
             String namespace = id.getNamespace();
-            lines.addLast(Text.translatableWithFallback("modmenu.nameTranslation."+namespace, WordUtils.capitalize(namespace)).getWithStyle(ModStyle.MOD_NAME).getFirst());
+            Text text = translatableWithFallback("modmenu.nameTranslation."+namespace, WordUtils.capitalize(namespace));
+            lines.addLast(text.getWithStyle(ModStyle.MOD_NAME).getFirst());
         }
+    }
+
+    public static MutableText translatableWithFallback(String translatable, String fallback) {
+        //? if >1.20 {
+        text = Text.translatableWithFallback(translatable, fallback);
+         //?} else {
+        /*if (ModHelpers.hasTranslation(translatable)) {
+            return Text.translatable(translatable);
+        }
+        return Text.literal(fallback);
+        *///?}
     }
 
     private static boolean checkForEffectDescription(ItemStack stack) {
