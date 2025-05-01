@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 *///?}
 public class PotionContentsComponentMixin {
 
-    //? if =1.21.5 {
+    //? if >=1.21.5 {
     @Inject(method = "buildTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))
     private static void mixin(Iterable<StatusEffectInstance> effects, Consumer<Text> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local StatusEffectInstance statusEffectInstance) {
         ModHelpers.createEffectDescription(Text.translatable(statusEffectInstance.getTranslationKey()), textConsumer, statusEffectInstance);

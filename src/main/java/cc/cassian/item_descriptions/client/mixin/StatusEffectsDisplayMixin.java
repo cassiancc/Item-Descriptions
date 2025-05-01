@@ -1,6 +1,8 @@
 package cc.cassian.item_descriptions.client.mixin;
 
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import net.minecraft.client.font.TextRenderer;
 
 
@@ -10,16 +12,19 @@ import net.minecraft.client.gui.screen.ingame.StatusEffectsDisplay;
 /*import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 *///?}
 //? if >1.21 {
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.tooltip.TooltipData;
 //?}
 //? if >1.20 {
 import net.minecraft.client.gui.DrawContext;
  //?}
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +33,22 @@ import java.util.Optional;
 @Mixin(StatusEffectsDisplay.class)
 //?} else
 /*@Mixin(AbstractInventoryScreen.class)*/
-public class StatusEffectsDisplayMixin {
-    //? if >1.21.1 {
+public abstract class StatusEffectsDisplayMixin {
+    @Shadow protected abstract void drawStatusEffectDescriptions(DrawContext context, int x, int height, Iterable<StatusEffectInstance> statusEffects);
+
+    //? if >1.21.5 {
+    /*@Redirect(method = "drawStatusEffectTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTooltip(Lnet/minecraft/client/font/TextRenderer;Ljava/util/List;Ljava/util/Optional;II)V"))
+    private void renderEffects(DrawContext context, TextRenderer textRenderer, List<Text> text, Optional<TooltipData> data, int mouseX, int mouseY) {
+        List<Text> tooltipText = ModHelpers.createEffectDescription(text);
+        context.drawTooltip(textRenderer, tooltipText, Optional.empty(), mouseX, mouseY);
+    }
+    @Inject(method = "drawStatusEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffectSprites(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"))
+    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(name = "i") int i, @Local(name = "k") int k, @Local Iterable<StatusEffectInstance> iterable) {
+        this.drawStatusEffectDescriptions(context, i, k, iterable);
+        booleanRef.set(false);
+    }
+
+    *///?} else if >1.21.1 {
     @Redirect(method = "drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTooltip(Lnet/minecraft/client/font/TextRenderer;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(DrawContext context, TextRenderer textRenderer, List<Text> text, Optional<TooltipData> data, int mouseX, int mouseY) {
         List<Text> tooltipText = ModHelpers.createEffectDescription(text);

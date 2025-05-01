@@ -244,7 +244,7 @@ public class ModHelpers {
             }
             else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
-                //? if =1.21.5 {
+                //? if >=1.21.5 {
                 var variant = toTranslationKey(data.copyNbt().getString("variant").orElse(""));
                  //?} else {
                 /*var variant = toTranslationKey(data.copyNbt().getString("variant"));
@@ -665,7 +665,7 @@ public class ModHelpers {
 
     public static MutableText translatableWithFallback(String translatable, String fallback) {
         //? if >1.20 {
-        text = Text.translatableWithFallback(translatable, fallback);
+        return Text.translatableWithFallback(translatable, fallback);
          //?} else {
         /*if (ModHelpers.hasTranslation(translatable)) {
             return Text.translatable(translatable);

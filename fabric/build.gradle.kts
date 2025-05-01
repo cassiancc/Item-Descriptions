@@ -59,6 +59,7 @@ dependencies {
     // Fabric
     modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${common.mod.dep("fabric_api")}")
+    if (stonecutter.eval(mcVersion, "<1.21.6")) {
 
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
@@ -104,7 +105,15 @@ dependencies {
         }
     }
 
+    }
+    else {
+        modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
 
+        // Mod Menu
+        modCompileOnly("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
+        modCompileOnly("maven.modrinth:jade:${common.mod.dep("jade_fabric_version")}")
+
+    }
 
     // Stonecutter/Arch
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }
