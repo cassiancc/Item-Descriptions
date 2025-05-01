@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-//? if 1.21.1 {
-/*import cc.cassian.item_descriptions.client.config.ModConfig;
+//? if 1.21.1 || 1.21.5 {
+import cc.cassian.item_descriptions.client.config.ModConfig;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.block.Block;
@@ -128,4 +128,4 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         return searchKey;
     }
 }
-*///?}
+//?}

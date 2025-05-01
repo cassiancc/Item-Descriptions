@@ -82,10 +82,14 @@ dependencies {
         modLocalRuntime("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight
         modLocalRuntime("folk.sisby:kaleido-config:0.3.1+1.3.1") // Glowcase dependency
     }
+    if (stonecutter.eval(mcVersion, "=1.21.5")) {
+        modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}") // Limelight dependency
+        modImplementation("maven.modrinth:limelight:${common.mod.dep("limelight_version")}") // Limelight
+    }
 
     // Useful Spyglass and Glowcase
     if (stonecutter.eval(mcVersion, "<1.21.4")) {
-        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric,$minecraft") // Useful Spyglass - optional compat
+//        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric,$minecraft") // Useful Spyglass - optional compat
 //        modLocalRuntime("maven.modrinth:glowcase:${common.mod.dep("glowcase")}") // Glowcase - optional compat
         modLocalRuntime("maven.modrinth:placeholder-api:${common.mod.dep("placeholder_api")}") // Glowcase dependency
     }

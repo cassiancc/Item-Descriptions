@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New developer options to disable built-in tooltips on items, either on individual item IDs or on all items.
 - New option to display the mod name as part of the Item Description. This is disabled by default, as most players are using EMI. This option is translatable, based off Mod Menu's Translation API (`"modmenu.nameTranslation.modmenu": "Menu o' mods!"`).
-- Support for the Useful Spyglass 1.19.2 backport.
+- Support for 1.21.6 snapshots (25w18a and above).
+- Support for Useful Spyglass for 1.19.2.
+- Support for Limelight for 1.21.5.
 - Colour options now support [decimal colour](https://minecraft.wiki/w/Calculators/Decimal_representation_of_color), in addition to colour names and formatting codes.
 
 ### Fixed
 - Music Discs have the correct descriptions again.
 - Revised typos and incorrect descriptions.
+- Status effect descriptions not rendering.
 
 ## [2.1.2] - 2025-04-18
 

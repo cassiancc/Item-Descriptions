@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-//? if 1.21.1 {
-/*import io.wispforest.limelight.api.builtin.bangs.BangDefinition;
+//? if 1.21.1 || 1.21.5 {
+import io.wispforest.limelight.api.builtin.bangs.BangDefinition;
 import io.wispforest.limelight.api.builtin.bangs.BangsProvider;
 import io.wispforest.limelight.api.entry.ResultEntry;
 import io.wispforest.limelight.api.entry.ResultGatherContext;
@@ -41,4 +41,4 @@ public class DescriptionsExtension implements LimelightExtension, BangsProvider 
         }
     }
 }
-*///?}
+//?}
