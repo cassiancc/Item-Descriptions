@@ -20,6 +20,7 @@ repositories {
     maven ( "https://api.modrinth.com/maven") // Jade/Useful Spyglass
     maven ( "https://maven2.bai.lol" ) // WTHIT
     maven ( "https://maven.nucleoid.xyz") // Polymer
+    maven ("https://maven.terraformersmc.com/") // EMI
 }
 
 dependencies {
@@ -36,6 +37,10 @@ dependencies {
     modCompileOnly("maven.modrinth:useful-spyglass:${mod.dep("useful_spyglass")}-fabric")
     modCompileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
     modCompileOnly("maven.modrinth:glowcase:${mod.dep("glowcase")}")
+    if (stonecutter.eval(mcVersion, "<1.21.2")) {
+        modCompileOnly("dev.emi:emi-xplat-intermediary:${mod.dep("emi")}+$minecraft")
+    }
+
 
     if (stonecutter.eval(mcVersion, ">1.21")) {
         modCompileOnly("eu.pb4:polymer-core:${mod.dep("polymer")}")

@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.compat.EmiCompat;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
@@ -658,7 +659,17 @@ public class ModHelpers {
              *///?}
             Identifier id = registry.getId(stack.getItem());
             String namespace = id.getNamespace();
-            Text text = translatableWithFallback("modmenu.nameTranslation."+namespace, WordUtils.capitalize(namespace));
+            Text text;
+            String key = "modmenu.nameTranslation."+namespace;
+            if (I18n.hasTranslation(key)) {
+                text = Text.translatable(key);
+            } else {
+                if (ModHelpers.isLoaded("emi")) {
+                    text = Text.literal(EmiCompat.getModName(namespace));
+                } else {
+                    text = Text.literal(WordUtils.capitalize(namespace));
+                }
+            }
             lines.addLast(text.getWithStyle(ModStyle.MOD_NAME).getFirst());
         }
     }

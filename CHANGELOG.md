@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - New developer options to disable built-in tooltips on items, either on individual item IDs or on all items.
-- New option to display the mod name as part of the Item Description. This is disabled by default, as most players are using EMI. This option is translatable, based off Mod Menu's Translation API (`"modmenu.nameTranslation.modmenu": "Menu o' mods!"`).
+- New option to display the mod name as part of the Item Description. This is disabled by default to prevent overlap with similar mods. This option is translatable, based off Mod Menu's Translation API (`"modmenu.nameTranslation.modmenu": "Menu o' mods!"`).
 - Support for 1.21.6 snapshots (25w18a and above).
 - Support for Useful Spyglass for 1.19.2.
 - Support for Limelight for 1.21.5.

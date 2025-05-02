@@ -43,8 +43,9 @@ public abstract class StatusEffectsDisplayMixin {
     @Shadow protected abstract void drawStatusEffectDescriptions(DrawContext context, int x, int height, Iterable<StatusEffectInstance> statusEffects);
 
     @Inject(method = "drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffectSprites(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(name = "i") int i, @Local(name = "k") int k, @Local Iterable<StatusEffectInstance> iterable) {
-        this.drawStatusEffectDescriptions(context, i, k, iterable);
+    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local(ordinal = 3) int k, @Local Iterable<StatusEffectInstance> iterable) {
+        if (booleanRef.get())
+            this.drawStatusEffectDescriptions(context, i, k, iterable);
         booleanRef.set(false);
     }
 
@@ -78,8 +79,9 @@ public abstract class StatusEffectsDisplayMixin {
     @Shadow protected abstract void drawStatusEffectDescriptions(DrawContext context, int x, int height, Iterable<StatusEffectInstance> statusEffects);
 
     @Inject(method = "drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/AbstractInventoryScreen;drawStatusEffectSprites(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(name = "i") int i, @Local(name = "k") int k, @Local Iterable<StatusEffectInstance> iterable) {
-        this.drawStatusEffectDescriptions(context, i, k, iterable);
+    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local(ordinal = 3) int k, @Local Iterable<StatusEffectInstance> iterable) {
+        if (booleanRef.get())
+            this.drawStatusEffectDescriptions(context, i, k, iterable);
         booleanRef.set(false);
     }
     *///?} else {
@@ -92,8 +94,9 @@ public abstract class StatusEffectsDisplayMixin {
     }
 
     @Inject(method = "drawStatusEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/AbstractInventoryScreen;drawStatusEffectSprites(Lnet/minecraft/client/util/math/MatrixStack;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(name = "i") int i, @Local(name = "k") int k, @Local Iterable<StatusEffectInstance> iterable) {
-        this.drawStatusEffectDescriptions(matrices, i, k, iterable);
+    private void forceShowDescriptions(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local(ordinal = 3) int k, @Local Iterable<StatusEffectInstance> iterable) {
+        if (booleanRef.get())
+            this.drawStatusEffectDescriptions(matrices, i, k, iterable);
         booleanRef.set(false);
     }
     *///?}
