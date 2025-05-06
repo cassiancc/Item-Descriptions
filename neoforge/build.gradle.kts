@@ -1,9 +1,16 @@
 @file:Suppress("UnstableApiUsage")
 
+import java.io.FileInputStream
+import java.util.*
+
+
 plugins {
     id("dev.architectury.loom")
     id("architectury-plugin")
     id("com.github.johnrengelman.shadow")
+    id("maven-publish")
+    id("me.modmuss50.mod-publish-plugin") version "0.8.4"
+
 }
 
 val loader = prop("loom.platform")!!
@@ -141,4 +148,56 @@ tasks.register<Copy>("buildAndCollect") {
     from(tasks.remapJar.get().archiveFile, tasks.remapSourcesJar.get().archiveFile)
     into(rootProject.layout.buildDirectory.file("libs/${mod.version}/$loader"))
     dependsOn("build")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mod") {
+            artifact(rootProject.layout.buildDirectory.file("libs/${mod.version}/$loader/${mod.id}-$loader-$version.jar"))
+            artifactId = mod.id + "-" + loader
+            group = mod.group
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
+    }
+}
+
+val prop = Properties().apply {
+    load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+}
+
+publishMods {
+    file = (rootProject.layout.buildDirectory.file("libs/${mod.version}/$loader/${mod.id}-$loader-${mod.version}+${mcVersion}.jar"))
+    displayName = "${mod.name} ${mod.version} for $mcVersion"
+    version = mod.version
+    changelog = rootProject.file("CHANGELOG-LATEST.md").readText()
+    type = STABLE
+    modLoaders.add("neoforge")
+
+    dryRun = false;
+
+    modrinth {
+        projectId = property("publish.modrinth").toString()
+        accessToken = prop.getProperty("modrinth_token")
+        minecraftVersions.add(mcVersion)
+        optional {
+            slug = "cloth-config"
+        }
+    }
+
+    curseforge {
+        projectId = property("publish.curseforge").toString()
+        accessToken = prop.getProperty("curseforge_token")
+        if (stonecutter.eval(mcVersion, "25w18a")) {
+            minecraftVersions.add("1.21.6-snapshot")
+        } else {
+            minecraftVersions.add(mcVersion)
+        }
+    }
 }

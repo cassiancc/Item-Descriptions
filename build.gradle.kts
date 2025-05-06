@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     id("dev.architectury.loom")
     id("architectury-plugin")
