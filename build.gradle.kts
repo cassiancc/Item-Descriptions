@@ -16,7 +16,7 @@ base {
 
 architectury.common(stonecutter.tree.branches.mapNotNull {
     if (stonecutter.current.project !in it) null
-    else it.prop("loom.platform")
+    else it.project.prop("loom.platform")
 })
 
 repositories {

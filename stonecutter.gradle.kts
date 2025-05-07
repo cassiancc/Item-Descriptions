@@ -6,7 +6,6 @@ plugins {
     id("org.moddedmc.wiki.toolkit") version "0.2.7"
 }
 stonecutter active "1.21.5" /* [SC] DO NOT EDIT */
-stonecutter.automaticPlatformConstants = true
 
 // Builds every version into `build/libs/{mod.version}/{loader}`
 stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
@@ -38,8 +37,8 @@ for (it in stonecutter.tree.nodes) {
     if (it.metadata != stonecutter.current || it.branch.id.isEmpty()) continue
     val types = listOf("Client", "Server")
     val loader = it.branch.id.upperCaseFirst()
-    for (type in types) it.tasks.register("runActive$type$loader") {
+    for (type in types) tasks.register("runActive$type$loader") {
         group = "project"
-        dependsOn("run$type")
+        dependsOn("${it.hierarchy}run$type")
     }
 }
