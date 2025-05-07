@@ -169,7 +169,9 @@ publishing {
 }
 
 val prop = Properties().apply {
-    load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+    val properties = File(rootProject.rootDir, "local.properties")
+    if (properties.exists())
+        load(FileInputStream(properties))
 }
 
 publishMods {
