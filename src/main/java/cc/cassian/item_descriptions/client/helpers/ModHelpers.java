@@ -18,7 +18,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 
-import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 //? if >1.21 {
@@ -93,7 +92,7 @@ public class ModHelpers {
      * Check if ToolTipFix is installed and its wrapper should be used.
      */
     public static boolean useInternalWrapper() {
-        return !isLoaded("tooltipfix");
+        return true;
     }
 
     /**

@@ -37,6 +37,7 @@ public final class ItemDescriptionsNeoForge {
 
     public void addTooltips() {
         NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
+        NeoForge.EVENT_BUS.addListener(this::onItemTooltipEventLowestPriority);
     }
 
     //Add Item Descriptions to item tooltips.
