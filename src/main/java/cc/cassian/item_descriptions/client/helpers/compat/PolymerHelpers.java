@@ -166,7 +166,7 @@ permanent authorization for you to choose that version for the
 Library.
  */
 
-//? if >1.20.5 {
+//? if >1.21 {
 package cc.cassian.item_descriptions.client.helpers.compat;
 
 import com.mojang.serialization.MapCodec;

@@ -8,10 +8,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
 import org.spongepowered.asm.mixin.Mixin;
-//? if >1.20.5 {
+//? if >1.21 {
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.component.type.PotionContentsComponent;
-//?} else {
+//?} else if >1.20.5 {
+/*import net.minecraft.component.type.PotionContentsComponent;
+*///?} else {
 /*import net.minecraft.potion.PotionUtil;
 *///?}
 import net.minecraft.text.Text;

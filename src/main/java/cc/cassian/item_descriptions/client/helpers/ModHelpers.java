@@ -17,12 +17,18 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
+
+import net.minecraft.component.type.CustomModelDataComponent;
+import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.entity.effect.StatusEffect;
-//? if >1.20.5 {
+//? if >1.21 {
 import net.minecraft.component.ComponentType;
-import net.minecraft.component.DataComponentTypes;
 import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
-//?} else {
+import net.minecraft.component.DataComponentTypes;
+//?} else if >1.20.5 {
+/*import net.minecraft.component.DataComponentType;
+import net.minecraft.component.DataComponentTypes;
+*///?} else {
 /*import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -32,7 +38,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -226,10 +231,12 @@ public class ModHelpers {
      */
     public static DescriptionKey findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
+        //? if >1.21 {
+        if (PolymerHelpers.getServerIdentifier(stack) != null) {
+            return new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
+        }
+        //?}
         //? if >1.20.5 {
-            if (PolymerHelpers.getServerIdentifier(stack) != null) {
-                return new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
-            } else 
             if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA));
                 //? if <1.21.4 {
@@ -304,7 +311,7 @@ public class ModHelpers {
     public static DescriptionKey createBlockDescription(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         DescriptionKey loreKey = findBlockLoreKey(block);
-        //? if >1.20.5 {
+        //? if >1.21 {
         if (isLoaded("polymer-bundled"))
             if (PolymerHelpers.isPolymerBlock(pos)) {
                 loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockIdentifier(pos));
@@ -369,7 +376,9 @@ public class ModHelpers {
                 return false;
             //? if >1.21 {
             final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
-            //?} else {
+             //?} else if >1.20.5 {
+            /*final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
+            *///?} else {
             /*final var enchantments = EnchantmentHelper.get(stack).keySet();
             *///?}
             if (enchantments.isEmpty()) return false;
@@ -382,7 +391,10 @@ public class ModHelpers {
                 for (int i = 0; i < lines.size(); i++) {
                     //? if >1.21 {
                     if (!lines.get(i).getContent().equals(enchantment.description().getContent())) continue;
-                    //?} else {
+                     //?} else if >1.20.5 {
+                    /*if (!(lines.get(i).getContent() instanceof TranslatableTextContent text)) continue;
+                    if (!text.getKey().equals(enchantment.value().getTranslationKey())) continue;
+                    *///?} else {
                     /*if (!(lines.get(i).getContent() instanceof TranslatableTextContent text)) continue;
                     if (!text.getKey().equals(enchantment.getTranslationKey())) continue;
                     *///?}
@@ -415,7 +427,7 @@ public class ModHelpers {
             if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return;
 
-            //? if >1.21 {
+            //? if >1.20.5 {
             final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
             //?} else {
             /*final var enchantments = EnchantmentHelper.get(stack).keySet();
@@ -563,7 +575,16 @@ public class ModHelpers {
     /**
      * Check if an Item Stack has a particular component.
      */
-    //? if >1.20.5 {
+    //? if =1.20.6 {
+    /*public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
+        return stack.getComponents().contains(type);
+    }
+    *///?}
+
+    /**
+     * Check if an Item Stack has a particular component.
+     */
+    //? if >1.21 {
     public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
         return stack.getComponents().contains(type);
     }
