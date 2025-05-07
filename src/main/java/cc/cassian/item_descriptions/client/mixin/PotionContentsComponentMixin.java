@@ -10,6 +10,7 @@ import net.minecraft.item.PotionItem;
 import org.spongepowered.asm.mixin.Mixin;
 //? if >1.21 {
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.component.type.PotionContentsComponent;
 //?} else if >1.20.5 {
 /*import net.minecraft.component.type.PotionContentsComponent;
 *///?} else {

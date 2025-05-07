@@ -60,7 +60,8 @@ public abstract class StatusEffectsDisplayMixin {
     }
     @Inject(method = "drawStatusEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffectSprites(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"))
     private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(name = "i") int i, @Local(name = "k") int k, @Local Iterable<StatusEffectInstance> iterable) {
-        this.drawStatusEffectDescriptions(context, i, k, iterable);
+        if (booleanRef.get())
+            this.drawStatusEffectDescriptions(context, i, k, iterable);
         booleanRef.set(false);
     }
 
