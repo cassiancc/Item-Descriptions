@@ -221,7 +221,7 @@ val prop = Properties().apply {
 
 publishMods {
     file = (rootProject.layout.buildDirectory.file("libs/${mod.version}/$loader/${mod.id}-$loader-${mod.version}+${mcVersion}.jar"))
-    displayName = "${mod.name} ${mod.version} for $mcVersion"
+    displayName = "${mod.name} ${mod.version} for Fabric $mcVersion"
     version = mod.version
     changelog = rootProject.file("CHANGELOG-LATEST.md").readText()
     type = STABLE
