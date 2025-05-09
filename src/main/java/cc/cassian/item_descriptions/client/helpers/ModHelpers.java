@@ -523,7 +523,7 @@ public class ModHelpers {
     }
 
     public static void addHint(List<Text> lines) {
-        lines.add(1, getHintText().getWithStyle(ModStyle.HINT).getFirst());
+        lines.add(1, getHintText().getWithStyle(ModStyle.HINT).get(0));
     }
 
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
@@ -660,7 +660,7 @@ public class ModHelpers {
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
         if (ModConfig.get().developer_hide_other_tooltips || ModLists.hidden_items.contains(stack.getItem())) {
-            var first = lines.getFirst();
+            var first = lines.get(0);
             lines.clear();
             lines.add(first);
         }
@@ -690,7 +690,7 @@ public class ModHelpers {
                     text = Text.literal(WordUtils.capitalize(namespace));
                 }
             }
-            lines.addLast(text.getWithStyle(ModStyle.MOD_NAME).getFirst());
+            lines.add(text.getWithStyle(ModStyle.MOD_NAME).get(0));
         }
     }
 
