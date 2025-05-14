@@ -21,29 +21,40 @@ public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private static ModConfig INSTANCE = new ModConfig();
+
+
     //General settings
     public boolean itemDescriptions = true;
     public boolean displayAlways = false;
+    public boolean spawnEggsShowEntity = true;
     /**
      * When Item Descriptions are being displayed, also display the mod name.
      */
     public boolean showModName = false;
+
+
     // Hint
     public boolean hint_enabled = false;
     public boolean hint_showKeybind = true;
     public String hint_color = "Gray";
     public boolean hint_italics = false;
+
+
     //Style
     public String style_color = "Gray";
     public boolean style_italics = false;
     public boolean style_bold = false;
     public int style_length = 160;
     public String style_modNameColor = "Blue";
+
+
     //Keybinds
     public boolean keybind_displayWhenControlIsHeld = true;
     public boolean keybind_displayWhenShiftIsHeld = false;
     public boolean keybind_displayWhenAltIsHeld = false;
     public boolean keybind_invert = false;
+
+
     // Block/Entity Descriptions
     /**
      * This will show Block Descriptions in compatible mods. This can also be disabled in Jade/WTHIT's settings.
@@ -61,6 +72,7 @@ public class ModConfig {
      * Always show Entity Descriptions, not just when a key is held.
      */
     public boolean displayEntityDescriptionsAlways = false;
+
     //Enchantment Descriptions
     public boolean enchantmentDescriptions = true;
     /**
@@ -83,6 +95,8 @@ public class ModConfig {
      * Italicize Enchantment Descriptions
      */
     public boolean enchantmentDescriptions_italics = false;
+
+
     //Developer settings
     /**
      * Replaces the description with a list of translation keys that can be used to match that item. Hold Alt to view their translations.

@@ -671,7 +671,7 @@ public class ModHelpers {
         if (ModConfig.get().hint_enabled && (item || enchant)) {
             addHint(lines);
         }
-        if (ModHelpers.showItemDescriptions() && ModConfig.get().showModName) {
+        if ((tooltipKeyPressed() || ModConfig.get().displayAlways) && ModConfig.get().showModName) {
             //? if >1.20 {
             var registry = Registries.ITEM;
             //?} else {

@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
+import net.minecraft.client.MinecraftClient;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,6 +15,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 import static cc.cassian.item_descriptions.client.ModClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
@@ -28,12 +30,23 @@ public final class ItemDescriptionsNeoForge {
         //Register config screen.
         registerModsPage();
         eventBus.addListener(ItemDescriptionsNeoForge::loadComplete);
+        //? if >1.21.1 {
+        eventBus.addListener(ItemDescriptionsNeoForge::worldLoad);
+        //?}
     }
 
     @SubscribeEvent
     public static void loadComplete(FMLClientSetupEvent event) {
         ModLists.loadLists();
     }
+
+    //? if >1.21.1 {
+
+    @SubscribeEvent
+    public static void worldLoad(PlayerEvent.PlayerLoggedInEvent event) {
+        lookup = MinecraftClient.getInstance().world.getRegistryManager();
+    }
+    //?}
 
     public void addTooltips() {
         NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);

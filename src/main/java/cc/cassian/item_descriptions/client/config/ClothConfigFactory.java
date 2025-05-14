@@ -50,7 +50,7 @@ public class ClothConfigFactory {
             ConfigCategory category;
             if (is(field, "keybind_")) category = keyBindsCategory;
             else if (is(field,"block")) category = pluginsCategory;
-            else if (is(field,"entity")) category = pluginsCategory;
+            else if (is(field,"entitydescriptions")) category = pluginsCategory;
             else if (is(field,"developer")) category = developerCategory;
             else if (is(field,"style")) category = styleCategory;
             else if (is(field,"hint_")) category = hintCategory;

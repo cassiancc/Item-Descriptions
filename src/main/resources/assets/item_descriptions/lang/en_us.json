@@ -62,6 +62,8 @@
   "config.item-descriptions.config.style_italics": "Italicize Descriptions",
   "config.item-descriptions.config.style_length": "Minimum Tooltip Width",
   "config.item-descriptions.config.style_length.tooltip": "Changes the minimum width of multi-line tooltip. Expands for longer item names. Ignored when ToolTipFix is present.",
+  "config.item-descriptions.config.spawnEggsShowEntity": "Spawn Eggs show their entity",
+  "config.item-descriptions.config.spawnEggsShowEntity.tooltip": "When enabled, prioritizes the Entity Description of the spawn egg over the generic spawn egg description.",
   "config.item-descriptions.developer_options_title": "Developer Options",
   "config.item-descriptions.enchantment_descriptions_title": "Enchantments",
   "config.item-descriptions.entity_descriptions_title": "Entity Descriptions",
