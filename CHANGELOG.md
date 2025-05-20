@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2025-05-20
+
+### Added
+- Spawn eggs now show entity descriptions, instead of a generic spawn egg description. This can be reverted in the config.
+- Translations for 25w20a.
+
+### Changed
+- Show mod name option has been decoupled from Item Descriptions config option.
+
+### Fixed
+- Misaligned status effect text.
+
 ## [2.2.2] - 2025-05-09
 
 ### Fixed

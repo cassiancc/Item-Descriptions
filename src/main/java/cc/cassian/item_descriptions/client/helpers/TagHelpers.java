@@ -40,11 +40,11 @@ public class TagHelpers {
                     EntityType<?> entityType = spawnEggItem.getEntityType(
                             //? if >1.21.1 {
                             ModClient.lookup, itemStack
-                            //?} else if >1.20 {
+                            //?} else if >1.20.1 {
                             /*itemStack
                             *///?} else {
-                            /*itemStack.getNbt()*/
-                            //?}
+                            /*itemStack.getNbt()
+                            *///?}
                     );
                     var key = ModHelpers.getDescriptionKey(entityType);
                     if (key.hasTranslation()) return key;
