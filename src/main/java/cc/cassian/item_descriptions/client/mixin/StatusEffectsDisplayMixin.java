@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +44,14 @@ public abstract class StatusEffectsDisplayMixin {
     @Shadow protected abstract void drawStatusEffectDescriptions(DrawContext context, int x, int height, Iterable<StatusEffectInstance> statusEffects);
 
     @Inject(method = "drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffectSprites(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local(ordinal = 3) int k, @Local Iterable<StatusEffectInstance> iterable) {
-        if (booleanRef.get())
+    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<StatusEffectInstance> collection, @Local Iterable<StatusEffectInstance> iterable) {
+        if (booleanRef.get()) {
+            int k = 33;
+            if (collection.size() > 5) {
+                k = 132 / (collection.size() - 1);
+            }
             this.drawStatusEffectDescriptions(context, i, k, iterable);
+        }
         booleanRef.set(false);
     }
 
@@ -59,9 +65,14 @@ public abstract class StatusEffectsDisplayMixin {
         context.drawTooltip(textRenderer, tooltipText, Optional.empty(), mouseX, mouseY);
     }
     @Inject(method = "drawStatusEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/StatusEffectsDisplay;drawStatusEffectSprites(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local(ordinal = 3) int k, @Local Iterable<StatusEffectInstance> iterable) {
-        if (booleanRef.get())
+    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<StatusEffectInstance> collection, @Local Iterable<StatusEffectInstance> iterable) {
+        if (booleanRef.get()) {
+            int k = 33;
+            if (collection.size() > 5) {
+                k = 132 / (collection.size() - 1);
+            }
             this.drawStatusEffectDescriptions(context, i, k, iterable);
+        }
         booleanRef.set(false);
     }
 
@@ -80,9 +91,14 @@ public abstract class StatusEffectsDisplayMixin {
     @Shadow protected abstract void drawStatusEffectDescriptions(DrawContext context, int x, int height, Iterable<StatusEffectInstance> statusEffects);
 
     @Inject(method = "drawStatusEffects(Lnet/minecraft/client/gui/DrawContext;II)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/AbstractInventoryScreen;drawStatusEffectSprites(Lnet/minecraft/client/gui/DrawContext;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local(ordinal = 3) int k, @Local Iterable<StatusEffectInstance> iterable) {
-        if (booleanRef.get())
+    private void forceShowDescriptions(DrawContext context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<StatusEffectInstance> collection, @Local Iterable<StatusEffectInstance> iterable) {
+        if (booleanRef.get()) {
+            int k = 33;
+            if (collection.size() > 5) {
+                k = 132 / (collection.size() - 1);
+            }
             this.drawStatusEffectDescriptions(context, i, k, iterable);
+        }
         booleanRef.set(false);
     }
     *///?} else {
@@ -95,9 +111,14 @@ public abstract class StatusEffectsDisplayMixin {
     }
 
     @Inject(method = "drawStatusEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/AbstractInventoryScreen;drawStatusEffectSprites(Lnet/minecraft/client/util/math/MatrixStack;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local(ordinal = 3) int k, @Local Iterable<StatusEffectInstance> iterable) {
-        if (booleanRef.get())
+    private void forceShowDescriptions(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<StatusEffectInstance> collection, @Local Iterable<StatusEffectInstance> iterable) {
+        if (booleanRef.get()) {
+            int k = 33;
+            if (collection.size() > 5) {
+                k = 132 / (collection.size() - 1);
+            }
             this.drawStatusEffectDescriptions(matrices, i, k, iterable);
+        }
         booleanRef.set(false);
     }
     *///?}

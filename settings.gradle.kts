@@ -20,7 +20,7 @@ stonecutter {
     kotlinController = true
     create(rootProject) {
         // Root `src/` functions as the 'common' project
-        versions("1.19.2", "1.20.1", "1.20.6", "1.21.1", "1.21.4", "1.21.5")
+        versions("1.19.2", "1.20.1", "1.20.6", "1.21.1", "1.21.4", "1.21.5", "25w20a")
         branch("fabric") // Copies versions from root
         branch("forge") { versions("1.19.2", "1.20.1") }
         branch("neoforge") { versions("1.21.1", "1.21.4", "1.21.5") }

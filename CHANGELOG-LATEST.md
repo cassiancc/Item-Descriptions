@@ -4,3 +4,6 @@
 
 ### Changed
 - Show mod name option has been decoupled from Item Descriptions config option.
+
+### Fixed
+- Misaligned status effect text.
