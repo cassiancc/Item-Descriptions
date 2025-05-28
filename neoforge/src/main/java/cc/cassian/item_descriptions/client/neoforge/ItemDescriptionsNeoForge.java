@@ -31,7 +31,7 @@ public final class ItemDescriptionsNeoForge {
         registerModsPage();
         eventBus.addListener(ItemDescriptionsNeoForge::loadComplete);
         //? if >1.21.1 {
-        eventBus.addListener(ItemDescriptionsNeoForge::worldLoad);
+        NeoForge.EVENT_BUS.addListener(ItemDescriptionsNeoForge::worldLoad);
         //?}
     }
 
