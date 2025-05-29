@@ -78,7 +78,15 @@ import static cc.cassian.item_descriptions.client.helpers.TagHelpers.*;
 import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
-    public static final Identifier FABRIC_EVENT_PHASE = Identifier.of(MOD_ID, "description_tooltip");
+    public static final Identifier FABRIC_EVENT_PHASE = of("description_tooltip");
+
+    public static Identifier of(String path) {
+        return Identifier.of(MOD_ID, path);
+    }
+
+    public static Identifier of(String namespace, String path) {
+        return Identifier.of(namespace, path);
+    }
 
     /**
      * Check if Cloth Config is installed and its configuration can be used.
@@ -139,15 +147,21 @@ public class ModHelpers {
         var alt = config.keybind_displayWhenAltIsHeld;
         if (config.hint_showKeybind) {
             if (ctrl) {
-                sb.append(I18n.translate("key.keyboard.ctrl"));
+                var ctrlText = I18n.translate("key.keyboard.ctrl");
+                if (ModConfig.get().hint_uppercase) ctrlText = ctrlText.toUpperCase(Locale.ROOT);
+                sb.append(ctrlText);
                 if (shift || alt) sb.append("/");
             }
             if (alt) {
-                sb.append(I18n.translate("key.keyboard.alt"));
+                var altText = I18n.translate("key.keyboard.alt");
+                if (ModConfig.get().hint_uppercase) altText = altText.toUpperCase(Locale.ROOT);
+                sb.append(altText);
                 if (shift) sb.append("/");
             }
             if (shift) {
-                sb.append(I18n.translate("key.keyboard.shift"));
+                var shiftText = I18n.translate("key.keyboard.shift");
+                if (ModConfig.get().hint_uppercase) shiftText = shiftText.toUpperCase(Locale.ROOT);
+                sb.append(shiftText);
             }
             sb.append(": ");
         }

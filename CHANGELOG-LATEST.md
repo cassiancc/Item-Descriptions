@@ -1,2 +1,2 @@
 ### Fixed
-- Crash on startup on new versions of NeoForge.
+- Conflicting translation keys with EMI (#26).

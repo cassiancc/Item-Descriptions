@@ -20,6 +20,7 @@ public class ModConfig {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
+
     private static ModConfig INSTANCE = new ModConfig();
 
 
@@ -38,7 +39,7 @@ public class ModConfig {
     public boolean hint_showKeybind = true;
     public String hint_color = "Gray";
     public boolean hint_italics = false;
-
+    public boolean hint_uppercase = true;
 
     //Style
     public String style_color = "Gray";
