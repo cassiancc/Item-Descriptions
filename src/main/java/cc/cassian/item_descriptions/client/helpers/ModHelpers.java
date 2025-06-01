@@ -3,7 +3,6 @@ package cc.cassian.item_descriptions.client.helpers;
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.compat.EmiCompat;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
 import com.google.gson.Gson;
@@ -38,6 +37,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -107,7 +107,7 @@ public class ModHelpers {
      * Check if another Enchantment Descriptions is installed and our descriptions should be disabled.
      */
     public static boolean useInternalEnchantmentDescriptions() {
-        if (ModConfig.get().developer_forceEnableEnchantmentDescriptions)
+        if (ModClient.CONFIG.developer.forceEnableEnchantmentDescriptions)
             return true;
         else return !(isLoaded("idwtialsimmoedm") || isLoaded("enchdesc"));
     }
@@ -116,7 +116,7 @@ public class ModHelpers {
      * Check if another Enchantment Descriptions is installed and our descriptions should be disabled.
      */
     public static boolean useInternalEffectDescriptions() {
-        if (ModConfig.get().developer_force_enable_effect_descriptions)
+        if (ModClient.CONFIG.developer.forceEnableEffectDescriptions)
             return true;
         else return !(isLoaded("potiondescriptions") || isLoaded("effectdescriptions"));
     }
@@ -133,7 +133,7 @@ public class ModHelpers {
      * Used in Config to change the tooltip's formatting.
      */
     public static Style getStyle(String colour) {
-        return Style.EMPTY.withColor(getColour(colour)).withItalic(ModConfig.get().style_italics).withBold(ModConfig.get().style_bold);
+        return Style.EMPTY.withColor(getColour(colour)).withItalic(ModClient.CONFIG.style.italics).withBold(ModClient.CONFIG.style.bold);
     }
 
     /**
@@ -141,31 +141,31 @@ public class ModHelpers {
      */
     public static Text getHintText() {
         var sb = new StringBuilder();
-        var config = ModConfig.get();
-        var shift = config.keybind_displayWhenShiftIsHeld;
-        var ctrl = config.keybind_displayWhenControlIsHeld;
-        var alt = config.keybind_displayWhenAltIsHeld;
-        if (config.hint_showKeybind) {
+        var config = ModClient.CONFIG;
+        var shift = config.keybinds.displayWhenShiftIsHeld;
+        var ctrl = config.keybinds.displayWhenControlIsHeld;
+        var alt = config.keybinds.displayWhenAltIsHeld;
+        if (config.hint.showKeybind) {
             if (ctrl) {
                 var ctrlText = I18n.translate("key.keyboard.ctrl");
-                if (ModConfig.get().hint_uppercase) ctrlText = ctrlText.toUpperCase(Locale.ROOT);
+                if (ModClient.CONFIG.hint.uppercase) ctrlText = ctrlText.toUpperCase(Locale.ROOT);
                 sb.append(ctrlText);
                 if (shift || alt) sb.append("/");
             }
             if (alt) {
                 var altText = I18n.translate("key.keyboard.alt");
-                if (ModConfig.get().hint_uppercase) altText = altText.toUpperCase(Locale.ROOT);
+                if (ModClient.CONFIG.hint.uppercase) altText = altText.toUpperCase(Locale.ROOT);
                 sb.append(altText);
                 if (shift) sb.append("/");
             }
             if (shift) {
                 var shiftText = I18n.translate("key.keyboard.shift");
-                if (ModConfig.get().hint_uppercase) shiftText = shiftText.toUpperCase(Locale.ROOT);
+                if (ModClient.CONFIG.hint.uppercase) shiftText = shiftText.toUpperCase(Locale.ROOT);
                 sb.append(shiftText);
             }
             sb.append(": ");
         }
-        if (config.keybind_invert)
+        if (config.keybinds.invert)
             sb.append(I18n.translate("hint.item-descriptions.hint_inverted"));
         else
             sb.append(I18n.translate("hint.item-descriptions.hint"));
@@ -220,9 +220,9 @@ public class ModHelpers {
      * Check if a keybind is pressed and a tooltip should be displayed.
      */
     public static boolean tooltipKeyPressed() {
-        if (ModConfig.get().keybind_displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
-        else if (ModConfig.get().keybind_displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
-        else if (ModConfig.get().keybind_displayWhenAltIsHeld && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
+        if (ModClient.CONFIG.keybinds.displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
+        else if (ModClient.CONFIG.keybinds.displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
+        else if (ModClient.CONFIG.keybinds.displayWhenAltIsHeld && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
         else return false;
     }
 
@@ -231,7 +231,7 @@ public class ModHelpers {
      */
     @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
     public static boolean checkKey(boolean key) {
-        boolean invert = ModConfig.get().keybind_invert;
+        boolean invert = ModClient.CONFIG.keybinds.invert;
         //If key is pressed, display the tooltip unless inverted.
         if (key) return !invert;
         //If key is not pressed, don't display the tooltip unless inverted.
@@ -271,7 +271,7 @@ public class ModHelpers {
                 /*var variant = toTranslationKey(data.copyNbt().getString("variant"));
                 *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
-                if (paintingKey.hasTranslation() || ModConfig.get().developer_showAllPotentialKeys) return paintingKey;
+                if (paintingKey.hasTranslation() || ModClient.CONFIG.developer.showAllPotentialKeys) return paintingKey;
             }
             //Ensure player heads with Profile components get a custom key instead of a vanilla one.
             else if (hasComponent(stack, DataComponentTypes.PROFILE)) {
@@ -314,7 +314,7 @@ public class ModHelpers {
     }
 
     public static boolean hasTranslation(String key) {
-        if (ModConfig.get().developer_showUntranslated) return true;
+        if (ModClient.CONFIG.developer.showUntranslated) return true;
         return I18n.hasTranslation(key);
     }
 
@@ -384,8 +384,8 @@ public class ModHelpers {
 
     public static boolean createEnchantmentDescription(ItemStack stack, List<Text> lines) {
         boolean descriptionFound = false;
-        if (ModConfig.get().enchantmentDescriptions && showEnchantmentDescriptions()) {
-            if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
+        if (ModClient.CONFIG.enchantmentDescriptions.enable && showEnchantmentDescriptions()) {
+            if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
             //? if >1.21 {
             final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
@@ -436,8 +436,8 @@ public class ModHelpers {
     }
 
     public static void fixEnchantmentDescription(ItemStack stack, List<Text> lines) {
-        if (ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions()) {
-            if (ModConfig.get().displayEnchantmentDescriptionsOnlyOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
+        if (ModClient.CONFIG.enchantmentDescriptions.enable && useInternalEnchantmentDescriptions()) {
+            if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return;
 
             //? if >1.20.5 {
@@ -495,7 +495,7 @@ public class ModHelpers {
 
     public static List<Text> createEffectDescription(List<Text> text) {
         ArrayList<Text> lines = new ArrayList<>(text);
-        if (ModConfig.get().effectDescriptions) {
+        if (ModClient.CONFIG.effectDescriptions.enable) {
             for (Text text1 : text) {
                 if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
                     if (!translatableTextContent.getKey().startsWith("effect.duration")) {
@@ -504,7 +504,7 @@ public class ModHelpers {
                         if (showEffectDescriptions()) {
                             lines.addAll(tooltip);
                         }
-                        else if (ModConfig.get().hint_enabled && (key.hasTranslation())) {
+                        else if (ModClient.CONFIG.hint.enabled && (key.hasTranslation())) {
                             addHint(lines);
                         }
                     }
@@ -515,7 +515,7 @@ public class ModHelpers {
     }
 
     public static void createEffectDescription(Text name, Consumer<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
-        if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
+        if (ModClient.CONFIG.effectDescriptions.enable && showEffectDescriptions()) {
             var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
             List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
@@ -527,7 +527,7 @@ public class ModHelpers {
     }
 
     public static void createEffectDescription(Text name, List<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
-        if (ModConfig.get().effectDescriptions && showEffectDescriptions()) {
+        if (ModClient.CONFIG.effectDescriptions.enable && showEffectDescriptions()) {
             var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
             List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
@@ -541,11 +541,11 @@ public class ModHelpers {
     }
 
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
-        if (ModConfig.get().itemDescriptions) {
+        if (ModClient.CONFIG.itemDescriptions) {
             //Create and add tooltip.
             List<Text> tooltip;
             DescriptionKey descriptionKey = findItemLoreKey(stack);
-            if (ModConfig.get().developer_showAllPotentialKeys) {
+            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
             } else if (descriptionKey.hasTranslation()) {
                 tooltip = List.of(descriptionKey.toText());
@@ -560,11 +560,11 @@ public class ModHelpers {
     }
 
     public static void fixItemDescription(ItemStack stack, List<Text> lines) {
-        if (ModConfig.get().itemDescriptions && showItemDescriptions()) {
+        if (ModClient.CONFIG.itemDescriptions && showItemDescriptions()) {
             //Find and wrap tooltip. Will be disabled if TooltipFix is installed.
             List<Text> tooltip;
             DescriptionKey descriptionKey = findItemLoreKey(stack);
-            if (ModConfig.get().developer_showAllPotentialKeys) {
+            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
             } else {
                 tooltip = List.of(descriptionKey.toText());
@@ -644,48 +644,48 @@ public class ModHelpers {
      * Check if block descriptions should be shown based off configuration.
      */
     public static boolean showBlockDescriptions() {
-        return ModConfig.get().blockDescriptions && (tooltipKeyPressed() || ModConfig.get().displayBlockDescriptionsAlways);
+        return ModClient.CONFIG.blockDescriptions.enable && (tooltipKeyPressed() || ModClient.CONFIG.blockDescriptions.showAlways);
     }
 
     /**
      * Check if item descriptions should be shown based off configuration.
      */
     public static boolean showItemDescriptions() {
-        return ModConfig.get().itemDescriptions && (tooltipKeyPressed() || ModConfig.get().displayAlways);
+        return ModClient.CONFIG.itemDescriptions && (tooltipKeyPressed() || ModClient.CONFIG.displayAlways);
     }
     /**
      * Check if enchantment descriptions should be shown based off configuration.
      */
     public static boolean showEnchantmentDescriptions() {
-        return ModConfig.get().enchantmentDescriptions && useInternalEnchantmentDescriptions() && (tooltipKeyPressed() || ModConfig.get().displayEnchantmentDescriptionsAlways);
+        return ModClient.CONFIG.enchantmentDescriptions.enable && useInternalEnchantmentDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.enchantmentDescriptions.displayAlways);
     }
     /**
      * Check if entity descriptions should be shown based off configuration.
      */
     public static boolean showEntityDescriptions() {
-        return ModConfig.get().entityDescriptions && (tooltipKeyPressed() || ModConfig.get().displayEntityDescriptionsAlways);
+        return ModClient.CONFIG.entityDescriptions.enable && (tooltipKeyPressed() || ModClient.CONFIG.entityDescriptions.showAlways);
     }
     /**
      * Check if effect descriptions should be shown based off configuration.
      */
     public static boolean showEffectDescriptions() {
-        return ModConfig.get().effectDescriptions && useInternalEffectDescriptions() && (tooltipKeyPressed() || ModConfig.get().display_effect_descriptions_always);
+        return ModClient.CONFIG.effectDescriptions.enable && useInternalEffectDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.effectDescriptions.displayAlways);
     }
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
-        if (ModConfig.get().developer_hide_other_tooltips || ModLists.hidden_items.contains(stack.getItem())) {
+        if (ModClient.CONFIG.developer.hideOtherTooltips || ModLists.hidden_items.contains(stack.getItem())) {
             var first = lines.get(0);
             lines.clear();
             lines.add(first);
         }
         boolean enchant = createEnchantmentDescription(stack, lines);
         boolean effect = checkForEffectDescription(stack);
-        if (ModConfig.get().display_effect_descriptions_only && effect) return;
+        if (ModClient.CONFIG.effectDescriptions.onlyShowEffectDescriptions && effect) return;
         boolean item = createItemDescription(stack, lines);
-        if (ModConfig.get().hint_enabled && (item || enchant)) {
+        if (ModClient.CONFIG.hint.enabled && (item || enchant)) {
             addHint(lines);
         }
-        if ((tooltipKeyPressed() || ModConfig.get().displayAlways) && ModConfig.get().showModName) {
+        if ((tooltipKeyPressed() || ModClient.CONFIG.displayAlways) && ModClient.CONFIG.showModName) {
             //? if >1.20 {
             var registry = Registries.ITEM;
             //?} else {
@@ -862,7 +862,7 @@ public class ModHelpers {
      */
     public static String getEntityTranslationKey(Entity entity) {
         //Allow for custom player descriptions
-        if (entity.isPlayer()) {
+        if (entity instanceof PlayerEntity) {
             //? if >1.21 {
             String playerKey = "entity.minecraft.player.%s".formatted(entity.getName().getLiteralString());;
             //?} else
@@ -962,8 +962,8 @@ public class ModHelpers {
      */
     private static void wrapTooltip(Text name, List<Text> lines, List<Text> keys) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        if (textRenderer != null && ModConfig.get().style_length != 0) {
-            int maxLength = Math.max(ModConfig.get().style_length, textRenderer.getWidth(name));
+        if (textRenderer != null && ModClient.CONFIG.style.length != 0) {
+            int maxLength = Math.max(ModClient.CONFIG.style.length, textRenderer.getWidth(name));
             for (Text originalText : keys) {
                 // Get the text without siblings, as they're individually handled after the initial content.
                 Text translated = originalText.copyContentOnly().setStyle(originalText.getStyle());

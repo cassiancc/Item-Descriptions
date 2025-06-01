@@ -15,6 +15,8 @@ public class ModClient {
     public static final String MOD_ID_NEO = "item_descriptions";
     public static final String MOD_NAME = "Item Descriptions";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+    public static final ModConfig CONFIG = ModConfig.createToml(ModConfig.configPath(), "", ModClient.MOD_ID_NEO, ModConfig.class);
+
     public static final Identifier BLOCK_DESCRIPTIONS = ModHelpers.of("block_descriptions");
     public static final Identifier ENTITY_DESCRIPTIONS = ModHelpers.of("entity_descriptions");
 
@@ -23,7 +25,6 @@ public class ModClient {
     //?}
 
     public static void init() {
-        ModConfig.load();
         ModStyle.updateStyles();
         ModClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
     }

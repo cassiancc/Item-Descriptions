@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.limelight;
 
 //? if 1.21.1 || 1.21.5 {
-import cc.cassian.item_descriptions.client.config.ModConfig;
+import cc.cassian.item_descriptions.client.ModClient;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.block.Block;
@@ -56,13 +56,13 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             item = splitS[1];
         }
         //Check to see if that namespaced identifier matches an item. If so, return that item's lore key.
-        if (ModConfig.get().itemDescriptions) {
+        if (ModClient.CONFIG.itemDescriptions) {
             var itemStack = createMultilineTranslation(findItemLoreKey(Registries.ITEM.get(Identifier.of(namespace, item)).getDefaultStack()).toString());
             if (!Objects.requireNonNull(itemStack.getLiteralString()).isEmpty()) return itemStack;
         }
         //Check to see if that namespaced identifier matches a mob. If so, return that item's lore key.
         //This seems to return a Pig if it isn't matched correctly, so that is ignored if "pig" isn't actually typed in.
-        if (ModConfig.get().entityDescriptions) {
+        if (ModClient.CONFIG.entityDescriptions.enable) {
             var mobRegistry = Registries.ENTITY_TYPE.get(Identifier.of(namespace, item)).getTranslationKey();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
                 if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
@@ -71,12 +71,12 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                 return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
         }
         // If a namespace match is not found, iterate through block and item registries for a name match.
-        if (ModConfig.get().itemDescriptions) {
+        if (ModClient.CONFIG.itemDescriptions) {
             Text itemRegistry = iterateRegistry(Registries.ITEM, lowerS);
             if (itemRegistry != null)
                 return itemRegistry;
         }
-        if (ModConfig.get().blockDescriptions) {
+        if (ModClient.CONFIG.blockDescriptions.enable) {
             Text blockRegistry = iterateRegistry(Registries.BLOCK, lowerS);
             if (blockRegistry != null)
                 return blockRegistry;

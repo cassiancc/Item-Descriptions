@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.wthit;
 
-import cc.cassian.item_descriptions.client.config.ModConfig;
+import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import mcp.mobius.waila.api.*;
 import net.minecraft.block.Block;
@@ -31,7 +31,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
         //Check if block descriptions are enabled in mod config.
         if (showBlockDescriptions() && config.getBoolean(BLOCK_DESCRIPTIONS)) {
             List<Text> tooltip;
-            if (ModConfig.get().developer_showAllPotentialKeys) {
+            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
@@ -48,7 +48,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
         //Check if entity descriptions are enabled in mod config.
         if (showEntityDescriptions()  && config.getBoolean(ENTITY_DESCRIPTIONS)) {
             List<Text> tooltip;
-            if (ModConfig.get().developer_showAllPotentialKeys) {
+            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());
             }
             else {

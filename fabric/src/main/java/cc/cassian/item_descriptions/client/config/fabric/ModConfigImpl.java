@@ -7,6 +7,6 @@ import java.nio.file.Path;
 
 public class ModConfigImpl {
     public static Path configPath() {
-        return FabricLoader.getInstance().getConfigDir().resolve("item-descriptions.json");
+        return FabricLoader.getInstance().getConfigDir();
     }
 }

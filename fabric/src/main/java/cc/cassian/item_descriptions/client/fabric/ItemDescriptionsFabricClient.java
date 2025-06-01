@@ -34,7 +34,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
             createDescriptionsFromItemStack(stack, lines);
         });
 
-        if (ModConfig.get().developer_generateMissing) {
+        if (ModClient.CONFIG.developer.generateMissing) {
             CommonLifecycleEvents.TAGS_LOADED.register(Identifier.of(ModClient.MOD_ID, "missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
                     manager::getOptional
             ));

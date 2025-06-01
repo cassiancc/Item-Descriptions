@@ -36,7 +36,7 @@ public class TagHelpers {
             final Item item = itemStack.getItem();
             //Temporary - Spawn Eggs do not yet have a tag.
             if (item instanceof SpawnEggItem spawnEggItem) {
-                if (ModConfig.get().spawnEggsShowEntity) {
+                if (ModClient.CONFIG.spawnEggsShowEntity) {
                     EntityType<?> entityType = spawnEggItem.getEntityType(
                             //? if >1.21.1 {
                             ModClient.lookup, itemStack
@@ -158,7 +158,7 @@ public class TagHelpers {
     }
 
     public static DescriptionKey getGenericKey(Object object) {
-        if (!ModConfig.get().developer_disableTagDescriptions) {
+        if (!ModClient.CONFIG.developer.disableTagDescriptions) {
             //Iterate through the provided generic tag list.
             DescriptionKey generic = checkGenericTagList(object);
             if (generic != null) {

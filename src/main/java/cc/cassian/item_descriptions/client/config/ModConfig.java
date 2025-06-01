@@ -1,181 +1,186 @@
 package cc.cassian.item_descriptions.client.config;
 
-import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.helpers.ModLists;
-import cc.cassian.item_descriptions.client.helpers.ModStyle;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import folk.sisby.kaleido.api.WrappedConfig;
+import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
+import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueList;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ModConfig {
-
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-
-
-    private static ModConfig INSTANCE = new ModConfig();
+public class ModConfig extends WrappedConfig {
 
 
     //General settings
+
+    @Comment("Enable Item Descriptions")
     public boolean itemDescriptions = true;
+
+    @Comment("Always show Item Descriptions while hovering over an item in your inventory.")
     public boolean displayAlways = false;
+
+    @Comment("Prioritize the Entity Description of the spawn egg over the generic spawn egg description.")
     public boolean spawnEggsShowEntity = true;
-    /**
-     * When Item Descriptions are being displayed, also display the mod name.
-     */
+
+    @Comment("When Item Descriptions are being displayed, also display the mod name.")
     public boolean showModName = false;
 
 
-    // Hint
-    public boolean hint_enabled = false;
-    public boolean hint_showKeybind = true;
-    public String hint_color = "Gray";
-    public boolean hint_italics = false;
-    public boolean hint_uppercase = true;
+    /**
+     * Hint settings.
+     */
+    public Hint hint = new Hint();
+    public static class Hint implements Section {
 
-    //Style
-    public String style_color = "Gray";
-    public boolean style_italics = false;
-    public boolean style_bold = false;
-    public int style_length = 160;
-    public String style_modNameColor = "Blue";
+        @Comment("When descriptions on an item are not visible, show a tooltip with the default text 'Show more' and the keybind.")
+        public boolean enabled = false;
 
+        @Comment("Show keybinds in hint text.")
+        public boolean showKeybind = true;
+
+        @Comment("This setting changes what Minecraft colour is used for hint tooltips, either by colour code or name.")
+        public String color = "Gray";
+
+        @Comment("Italicize Hints")
+        public boolean italics = false;
+
+        @Comment("Force-uppercase hint keybinds.")
+        public boolean uppercase = true;
+    }
+
+    /**
+     * Style settings.
+     */
+    public Style style = new Style();
+    public static class Style implements Section {
+
+        @Comment("This setting changes what Minecraft colour is used for block, item, and entity tooltips, either by colour code or name.")
+        public String color = "Gray";
+
+        @Comment("This setting changes whether block, item, and entity tooltips are italicized.")
+        public boolean italics = false;
+
+        @Comment("This setting changes whether block, item, and entity tooltips are bolded.")
+        public boolean bold = false;
+
+        @Comment("Changes the minimum width of multi-line tooltip. Expands for longer item names. Ignored when ToolTipFix is present.")
+        public int length = 160;
+
+        @Comment("Color of the mod name tooltip")
+        public String modNameColor = "Blue";
+    }
 
     //Keybinds
-    public boolean keybind_displayWhenControlIsHeld = true;
-    public boolean keybind_displayWhenShiftIsHeld = false;
-    public boolean keybind_displayWhenAltIsHeld = false;
-    public boolean keybind_invert = false;
+    public Keybinds keybinds = new Keybinds();
+    public static class Keybinds implements Section {
 
+        @Comment("Show descriptions when the Ctrl key is held.")
+        public boolean displayWhenControlIsHeld = true;
 
-    // Block/Entity Descriptions
-    /**
-     * This will show Block Descriptions in compatible mods. This can also be disabled in Jade/WTHIT's settings.
-     */
-    public boolean blockDescriptions = true;
-    /**
-     * Always show Block Descriptions, not just when a key is held.
-     */
-    public boolean displayBlockDescriptionsAlways = false;
-    /**
-     * This will show Entity Descriptions in compatible mods. This can also be disabled in Jade/WTHIT's settings.
-     */
-    public boolean entityDescriptions = true;
-    /**
-     * Always show Entity Descriptions, not just when a key is held.
-     */
-    public boolean displayEntityDescriptionsAlways = false;
+        @Comment("Show descriptions when the Shift key is held.")
+        public boolean displayWhenShiftIsHeld = false;
 
-    //Enchantment Descriptions
-    public boolean enchantmentDescriptions = true;
-    /**
-     * Always show Enchantment Descriptions, not just when a key is held.
-     */
-    public boolean displayEnchantmentDescriptionsAlways = false;
-    /**
-     * By default, descriptions are shown on all enchanted items. Disable if this should only apply to books.
-     */
-    public boolean displayEnchantmentDescriptionsOnlyOnBooks = false;
-    /**
-     * Hides Item Descriptions when Enchantment Descriptions are visible.
-     */
-//    public boolean hideItemDescriptionIfEnchantmentDescriptionPresent = false;
-    /**
-     * This setting changes what Minecraft colour is used for enchantment tooltips, either by colour code or name.
-     */
-    public String enchantmentDescriptions_color = "Dark Gray";
-    /**
-     * Italicize Enchantment Descriptions
-     */
-    public boolean enchantmentDescriptions_italics = false;
+        @Comment("Show descriptions when the Alt key is held.")
+        public boolean displayWhenAltIsHeld = false;
 
+        @Comment("Invert all Item Descriptions keybinds.")
+        public boolean invert = false;
+    }
+
+    public BlockDescriptions blockDescriptions = new BlockDescriptions();
+    public static class BlockDescriptions implements Section {
+
+        @Comment("This will show Block Descriptions in compatible mods. This can also be disabled in Jade/WTHIT's settings.")
+        public boolean enable = true;
+
+        @Comment("Always show Block Descriptions, not just when a key is held.")
+        public boolean showAlways = false;
+    }
+
+    public EntityDescriptions entityDescriptions = new EntityDescriptions();
+    public static class EntityDescriptions implements Section {
+
+        @Comment("This will show Entity Descriptions in compatible mods. This can also be disabled in Jade/WTHIT's settings.")
+        public boolean enable = true;
+
+        @Comment("Always show Entity Descriptions, not just when a key is held.")
+        public boolean showAlways = false;
+    }
+
+    public EnchantmentDescriptions enchantmentDescriptions = new EnchantmentDescriptions();
+    public static class EnchantmentDescriptions implements Section {
+
+        @Comment("Enable enchantment descriptions.")
+        public boolean enable = true;
+
+        @Comment("Always show Enchantment Descriptions, not just when a key is held.")
+        public boolean displayAlways = false;
+
+        @Comment("By default, descriptions are shown on all enchanted items. Disable if this should only apply to books.")
+        public boolean onlyShowOnBooks = false;
+        /**
+         * Hides Item Descriptions when Enchantment Descriptions are visible.
+         */
+    //    public boolean hideItemDescriptionIfEnchantmentDescriptionPresent = false;
+
+        @Comment("This setting changes what Minecraft colour is used for enchantment tooltips, either by colour code or name.")
+        public String color = "Dark Gray";
+
+        @Comment("Italicize Enchantment Descriptions")
+        public boolean italics = false;
+    }
 
     //Developer settings
-    /**
-     * Replaces the description with a list of translation keys that can be used to match that item. Hold Alt to view their translations.
-     */
-    public boolean developer_showAllPotentialKeys = false;
-    /**
-     * List of items that have their built-in tooltips disabled.
-     */
-    public List<String> developer_items_with_tooltips_to_hide = List.of("");
-    /**
-     * Show lore tags on untranslated items. This includes items meant to have generic descriptions! Disable after testing.
-     */
-    public boolean developer_showUntranslated = false;
-    /**
-     * This will disable descriptions for items based off the
-     * block or item tags when a more specific description is not present
-     * (e.g. planks, slabs, stairs, tools, etc.).
-     */
-    public boolean developer_disableTagDescriptions = false;
-    /**
-     * Forces Enchantment Descriptions to be enabled, even while similar mods are installed.
-     */
-    public boolean developer_forceEnableEnchantmentDescriptions = false;
-    /**
-     * Creates placeholder en_us language files per-namespace in the minecraft/data/missing folder.
-     */
-    public boolean developer_generateMissing = false;
+    public DeveloperOptions developer = new DeveloperOptions();
+    public static class DeveloperOptions implements Section {
 
-    // Effect Descriptions
-    /**
-     * Enable descriptions for Status Effects.
-     */
-    public boolean effectDescriptions = true;
-    /**
-     * Always show Effect Descriptions, not just when a key is held.
-     */
-    public boolean display_effect_descriptions_always = false;
-    public String effect_descriptions_color = "Dark Gray";
-    /**
-     * Replace Item Descriptions with Effect Descriptions when present.
-     */
-    public boolean display_effect_descriptions_only = false;
-    /**
-     * Force enable Effect Descriptions, even when other mods are installed.
-     */
-    public boolean developer_force_enable_effect_descriptions = false;
-    public boolean developer_hide_other_tooltips = false;
+        @Comment("Replaces the description with a list of translation keys that can be used to match that item. Hold Alt to view their translations.")
+        public boolean showAllPotentialKeys = false;
 
-    public static void load() {
-        if (!Files.exists(configPath())) {
-            save();
-            return;
-        }
+        @Comment("List of items that have their built-in tooltips disabled.")
+        public List<String> items_with_tooltips_to_hide = ValueList.create("");
 
-        try (var input = Files.newInputStream(configPath())) {
-            INSTANCE = GSON.fromJson(new InputStreamReader(input, StandardCharsets.UTF_8), ModConfig.class);
-        } catch (IOException e) {
-            ModClient.LOGGER.warn("Unable to load config file!");
-        }
+         @Comment("Show lore tags on untranslated items. This includes items meant to have generic descriptions! Disable after testing.")
+        public boolean showUntranslated = false;
+
+        @Comment("This will disable descriptions for items based off the block or item tags when a more specific description is not present (e.g. planks, slabs, stairs, tools, etc.).")
+        public boolean disableTagDescriptions = false;
+
+        @Comment("Forces Enchantment Descriptions to be enabled, even while similar mods are installed.")
+        public boolean forceEnableEnchantmentDescriptions = false;
+
+        @Comment("Creates placeholder en_us language files per-namespace in the minecraft/data/missing folder.")
+        public boolean generateMissing = false;
+
+        @Comment("Force enable Effect Descriptions, even when other mods are installed.")
+        public boolean forceEnableEffectDescriptions = false;
+
+        @Comment("Hide tooltips from other mods.")
+        public boolean hideOtherTooltips = false;
+
     }
 
-    public static void save() {
-        try (var output = Files.newOutputStream(configPath()); var writer = new OutputStreamWriter(output, StandardCharsets.UTF_8)) {
-            GSON.toJson(INSTANCE, writer);
-        } catch (IOException e) {
-            ModClient.LOGGER.warn("Unable to save config file!");
-        }
-        ModLists.loadLists();
-        ModStyle.updateStyles();
-    }
+    /**
+     * Effect Descriptions
+     */
+    public EffectDescriptions effectDescriptions = new EffectDescriptions();
+    public static class EffectDescriptions implements Section {
 
-    public static ModConfig get() {
-        if (INSTANCE == null) INSTANCE = new ModConfig();
-        return INSTANCE;
+        @Comment("Enable descriptions for Status Effects.")
+        public boolean enable = true;
+
+        @Comment("Always show Effect Descriptions, not just when a key is held.")
+        public boolean displayAlways = false;
+
+        @Comment("This setting changes what Minecraft colour is used for effect tooltips, either by colour code or name.")
+        public String color = "Dark Gray";
+
+        @Comment("Replace Item Descriptions with Effect Descriptions when present.")
+        public boolean onlyShowEffectDescriptions = false;
     }
 
     @ExpectPlatform
-    static Path configPath() {
+    public static Path configPath() {
         throw new AssertionError();
     }
 }
