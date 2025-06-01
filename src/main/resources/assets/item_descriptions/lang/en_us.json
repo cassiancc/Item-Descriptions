@@ -1429,7 +1429,7 @@
   "effect.minecraft.hunger.description": "An effect that causes you to rapidly lose saturation.",
   "effect.minecraft.infested.description": "An effect that causes you to spawn Silverfish when you take damage.",
   "effect.minecraft.instant_damage.description": "An effect that damages you.",
-  "effect.minecraft.instant_health.description": "An effect that damages you.",
+  "effect.minecraft.instant_health.description": "An effect that heals you.",
   "effect.minecraft.invisibility.description": "An effect that causes you to become invisible.",
   "effect.minecraft.jump_boost.description": "An effect that causes you to jump higher.",
   "effect.minecraft.levitation.description": "An effect that causes you levitate into the air.",
