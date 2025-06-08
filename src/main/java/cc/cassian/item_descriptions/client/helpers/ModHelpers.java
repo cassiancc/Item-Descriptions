@@ -139,7 +139,7 @@ public class ModHelpers {
     /**
      * Used in Config to change the tooltip's formatting.
      */
-    public static Text getHintText() {
+    public static MutableText getHintText() {
         var sb = new StringBuilder();
         var config = ModConfig.get();
         var shift = config.keybind_displayWhenShiftIsHeld;
@@ -169,7 +169,7 @@ public class ModHelpers {
             sb.append(I18n.translate("hint.item-descriptions.hint_inverted"));
         else
             sb.append(I18n.translate("hint.item-descriptions.hint"));
-        return Text.of(sb.toString());
+        return Text.literal(sb.toString());
     }
 
     /**
@@ -537,7 +537,7 @@ public class ModHelpers {
     }
 
     public static void addHint(List<Text> lines) {
-        lines.add(1, getHintText().getWithStyle(ModStyle.HINT).get(0));
+        lines.add(1, getHintText().setStyle(ModStyle.HINT));
     }
 
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
@@ -696,7 +696,7 @@ public class ModHelpers {
              *///?}
             Identifier id = registry.getId(stack.getItem());
             String namespace = id.getNamespace();
-            Text text;
+            MutableText text;
             String key = "modmenu.nameTranslation."+namespace;
             if (I18n.hasTranslation(key)) {
                 text = Text.translatable(key);
@@ -707,7 +707,7 @@ public class ModHelpers {
                     text = Text.literal(WordUtils.capitalize(namespace));
                 }
             }
-            lines.add(text.getWithStyle(ModStyle.MOD_NAME).get(0));
+            lines.add(text.setStyle(ModStyle.MOD_NAME));
         }
     }
 
@@ -1019,7 +1019,7 @@ public class ModHelpers {
         if (text.getString().contains("\n")) {
             lineLength = text.getString().indexOf("\n");
         } else {
-            while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(text.getString().substring(0, lineLength))) >= maxLength) {
+            while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.literal(text.getString().substring(0, lineLength))) >= maxLength) {
                 lineLength = getIndex(text.getString(), lineLength);
             }
         }
