@@ -4,6 +4,7 @@ import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;

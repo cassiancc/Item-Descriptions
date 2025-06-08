@@ -597,6 +597,9 @@ public class ModHelpers {
     /**
      * Check if an Item Stack has a particular component.
      */
+    //? if >1.21.4 {
+    @ExpectPlatform
+    //?}
     //? if >1.21 {
     public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
         return stack.getComponents().contains(type);
@@ -721,7 +724,7 @@ public class ModHelpers {
 
     private static boolean checkForEffectDescription(ItemStack stack) {
         //? if >1.20.5 {
-        if (stack.getComponents().contains(DataComponentTypes.POTION_CONTENTS)) {
+        if (hasComponent(stack, DataComponentTypes.POTION_CONTENTS)) {
             var contents = stack.getComponents().get(DataComponentTypes.POTION_CONTENTS);
             if (contents == null) return false;
             for (StatusEffectInstance effect : contents.getEffects()) {
@@ -1013,8 +1016,12 @@ public class ModHelpers {
     private static Text createNewLine(List<Text> lines, Text text, TextRenderer textRenderer, int maxLength) {
         int lineLength = text.getString().length();
         // Find where to end this line, starting from the remaining string.
-        while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(text.getString().substring(0, lineLength))) >= maxLength) {
-            lineLength = getIndex(text.getString(), lineLength);
+        if (text.getString().contains("\n")) {
+            lineLength = text.getString().indexOf("\n");
+        } else {
+            while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.of(text.getString().substring(0, lineLength))) >= maxLength) {
+                lineLength = getIndex(text.getString(), lineLength);
+            }
         }
         Text newLine = subText(text, 0, lineLength);
         if (indentationText != null) {
