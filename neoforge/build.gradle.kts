@@ -53,6 +53,8 @@ repositories {
     maven ( "https://maven.wispforest.io/releases/" )
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
+    maven ("https://repo.sleeping.town/" )
+
 }
 
 dependencies {
@@ -68,6 +70,11 @@ dependencies {
         implementation(it)
         include(it)
     }
+
+    // Kaleido Config
+    implementation("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
+    include("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
+    forgeRuntimeLibrary("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
 
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-neoforge:${common.mod.dep("cloth_version")}")

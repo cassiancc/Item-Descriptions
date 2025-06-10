@@ -1,10 +1,9 @@
 # Item Descriptions
 
-<center text-align='center'>
 <a href='https://modrinth.com/mod/pyrite/versions?l=fabric'><img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg"></a>
 <a href='https://modrinth.com/mod/pyrite/versions?l=neoforge&l=forge'><img alt="forge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg"></a>
 <a href='https://modfest.net/vanity/bc25'><img height="56" src="https://raw.githubusercontent.com/worldwidepixel/badges/refs/heads/main/bc25/featured_in/cozy.svg"></a>
-</center>
+<br>
 
 This mod adds a unique description to all blocks, items, and entities that is displayed when pressing the Ctrl key. These descriptions sum up what it can be used for, its source, and/or any other useful info. It strikes a compromise between not knowing anything about an item and constantly checking the Minecraft Wiki for detailed in-depth descriptions.
 

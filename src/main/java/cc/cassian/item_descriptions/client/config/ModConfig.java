@@ -158,6 +158,8 @@ public class ModConfig extends WrappedConfig {
         @Comment("Hide tooltips from other mods.")
         public boolean hideOtherTooltips = false;
 
+        @Comment("Override the backend config library. Available options are 'cloth-config' and 'yacl'")
+        public String configScreen = "";
     }
 
     /**

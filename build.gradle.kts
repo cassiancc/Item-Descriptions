@@ -25,6 +25,9 @@ repositories {
     maven ( "https://maven.nucleoid.xyz") // Polymer
     maven ("https://maven.terraformersmc.com/") // EMI
     maven ("https://repo.sleeping.town/" )
+    maven("https://maven.isxander.dev/releases") {
+        name = "Xander Maven"
+    }
 }
 
 dependencies {
@@ -47,6 +50,7 @@ dependencies {
     if (stonecutter.eval(mcVersion, "<1.21.2")) {
         modCompileOnly("dev.emi:emi-xplat-intermediary:${mod.dep("emi")}+$minecraft")
     }
+    modCompileOnly("dev.isxander:yet-another-config-lib:${mod.dep("yacl")}-fabric")
 
 
     if (stonecutter.eval(mcVersion, ">1.21")) {

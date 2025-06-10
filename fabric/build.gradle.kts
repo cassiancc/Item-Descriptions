@@ -54,6 +54,9 @@ repositories {
     maven ("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
     maven ("https://repo.sleeping.town/" )
     maven ( "https://maven.nucleoid.xyz" ) // Polymer
+    maven("https://maven.isxander.dev/releases") {
+        name = "Xander Maven"
+    }
 }
 
 dependencies {
@@ -64,62 +67,63 @@ dependencies {
     // Fabric
     modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${common.mod.dep("fabric_api")}")
+
+    // Kaleido Config
+    implementation("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
+    include("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
+
     if (stonecutter.eval(mcVersion, "<1.21.6")) {
 
-    // Cloth Config
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
-    implementation("folk.sisby:kaleido-config:0.3.1+1.3.1")
-    include("folk.sisby:kaleido-config:0.3.1+1.3.1")
+        // Config APIs
+        modApi("dev.isxander:yet-another-config-lib:${common.mod.dep("yacl")}-fabric")
+        modApi("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
 
-    // Mod Menu
-    modApi("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
 
-    // Jade
-    modImplementation("maven.modrinth:jade:${common.mod.dep("jade_fabric_version")}")
+        // Mod Menu
+        modApi("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
 
-    // WTHIT
-    if (stonecutter.eval(mcVersion, "<1.21.5")) {
-        modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${common.mod.dep("wthit_version")}")
-        modRuntimeOnly("lol.bai:badpackets:fabric-${common.mod.dep("badpackets_version")}")
-    }
+        // Jade
+        modImplementation("maven.modrinth:jade:${common.mod.dep("jade_fabric_version")}")
 
-    if (stonecutter.eval(mcVersion, "=1.21.1")) {
-        modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}") // Limelight dependency
-        modCompileOnly("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight "API"
-        modLocalRuntime("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight
-        modLocalRuntime("folk.sisby:kaleido-config:0.3.1+1.3.1") // Glowcase dependency
-    }
-    if (stonecutter.eval(mcVersion, "=1.21.5")) {
-        modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}") // Limelight dependency
-        modImplementation("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight
-    }
-
-    // Useful Spyglass and Glowcase
-    if (stonecutter.eval(mcVersion, "<1.21.4")) {
-//        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric,$minecraft") // Useful Spyglass - optional compat
-//        modLocalRuntime("maven.modrinth:glowcase:${common.mod.dep("glowcase")}") // Glowcase - optional compat
-        modLocalRuntime("maven.modrinth:placeholder-api:${common.mod.dep("placeholder_api")}") // Glowcase dependency
-    }
-    if (stonecutter.eval(mcVersion, "=1.19.2")) {
-        modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
-    }
-    else {
-        modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
-    }
-
-    //Polymer
-    if (stonecutter.eval(mcVersion, ">1.21")) {
-        modLocalRuntime("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
+        // WTHIT
         if (stonecutter.eval(mcVersion, "<1.21.5")) {
-            modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
-            modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
+            modRuntimeOnly("mcp.mobius.waila:wthit:fabric-${common.mod.dep("wthit_version")}")
+            modRuntimeOnly("lol.bai:badpackets:fabric-${common.mod.dep("badpackets_version")}")
+        }
+
+        if (stonecutter.eval(mcVersion, "=1.21.1")) {
+            modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}") // Limelight dependency
+            modCompileOnly("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight "API"
+            modLocalRuntime("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight
+        }
+        if (stonecutter.eval(mcVersion, "=1.21.5")) {
+            modImplementation("io.wispforest:owo-lib:${common.mod.dep("owo_version")}") // Limelight dependency
+            modImplementation("io.wispforest:limelight:${common.mod.dep("limelight_version")}") // Limelight
+        }
+
+        // Useful Spyglass and Glowcase
+        if (stonecutter.eval(mcVersion, "<1.21.4")) {
+    //        modImplementation("maven.modrinth:useful-spyglass:${common.mod.dep("useful_spyglass")}-fabric,$minecraft") // Useful Spyglass - optional compat
+    //        modLocalRuntime("maven.modrinth:glowcase:${common.mod.dep("glowcase")}") // Glowcase - optional compat
+            modLocalRuntime("maven.modrinth:placeholder-api:${common.mod.dep("placeholder_api")}") // Glowcase dependency
+        }
+        if (stonecutter.eval(mcVersion, "=1.19.2")) {
+            modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
+        }
+        else {
+            modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
+        }
+
+        //Polymer
+        if (stonecutter.eval(mcVersion, ">1.21")) {
+            modLocalRuntime("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
+            if (stonecutter.eval(mcVersion, "<1.21.5")) {
+                modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
+                modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
+            }
         }
     }
-
-    }
     else {
-        modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
-
         // Mod Menu
         modCompileOnly("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
         modCompileOnly("maven.modrinth:jade:${common.mod.dep("jade_fabric_version")}")

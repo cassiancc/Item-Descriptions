@@ -50,6 +50,8 @@ repositories {
     maven ( "https://maven.wispforest.io/releases/" )
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
+    maven ("https://repo.sleeping.town/" )
+
 }
 
 val mcVersion = stonecutter.current.project.substringBeforeLast('-')
@@ -63,7 +65,10 @@ dependencies {
         include(it)
     }
 
-
+    // Kaleido Config
+    implementation("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
+    include("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
+    forgeRuntimeLibrary("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
 
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-forge:${common.mod.dep("cloth_version")}")

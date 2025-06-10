@@ -89,14 +89,6 @@ public class ModHelpers {
     }
 
     /**
-     * Check if Cloth Config is installed and its configuration can be used.
-     */
-    @ExpectPlatform
-    public static boolean clothConfigInstalled() {
-        throw new AssertionError();
-    }
-
-    /**
      * Check if ToolTipFix is installed and its wrapper should be used.
      */
     public static boolean useInternalWrapper() {

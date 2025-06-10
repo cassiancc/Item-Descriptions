@@ -9,6 +9,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 
@@ -68,6 +69,11 @@ public final class ItemDescriptionsNeoForge {
 
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.
     public void registerModsPage() {
-        if (clothConfigInstalled()) ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, ModConfigFactory::new);
+        //Display Cloth Config/YACL screen if mod present, else error.
+        if (ModList.get().isLoaded("cloth_config") && !ModClient.CONFIG.developer.configScreen.equals("yacl")) {
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new ModConfigFactory("cloth-config"));
+        } else if (ModList.get().isLoaded("yet_another_config_lib_v3")) {
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new ModConfigFactory("yacl"));
+        }
     }
 }
