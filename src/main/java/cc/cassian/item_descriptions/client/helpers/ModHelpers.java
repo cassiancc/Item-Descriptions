@@ -1066,15 +1066,21 @@ public class ModHelpers {
     /**
      * Automatically generate translation keys for config options.
      */
-    public static Text fieldName(Field field) {
-        return Text.translatable("config.%s.config.%s".formatted(MOD_ID, field.getName()));
+    public static Text fieldName(Field field, String category) {
+        if (category == null) {
+            category = "config";
+        }
+        return Text.translatable("config.%s.%s.%s".formatted(MOD_ID, category, field.getName()));
     }
     
     /**
      * Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
      */
-    public static Text[] fieldTooltip(Field field) {
-        String tooltipKey = "config.%s.config.%s.tooltip".formatted(MOD_ID, field.getName());
+    public static Text[] fieldTooltip(Field field, String category) {
+        if (category == null) {
+            category = "config";
+        }
+        String tooltipKey = "config.%s.%s.%s.tooltip".formatted(MOD_ID, category, field.getName());
         return createTooltip(Text.empty(), tooltipKey).toArray(new Text[0]);
     }
 
