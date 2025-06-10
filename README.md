@@ -22,6 +22,10 @@ If you have [Jade](https://modrinth.com/mod/jade) or [WTHIT](https://modrinth.co
 
 Item Descriptions supports descriptions for enchantments as well, with descriptions for every vanilla enchantments included. Item Descriptions prefers its own descriptions, but will support mods that support [Enchantment Descriptions](https://modrinth.com/mod/enchantment-descriptions) out of the box.
 
+## Effect Descriptions
+
+Item Descriptions supports descriptions for enchantments as well, with descriptions for every vanilla enchantments included. Item Descriptions prefers its own descriptions, but will support mods that support [Effect Descriptions](https://modrinth.com/mod/effect-descriptions) out of the box.
+
 ## Installation
 
 Item Descriptions is a completely clientside mod for Fabric and NeoForge. 
@@ -62,6 +66,6 @@ For more information, including details on support for Custom Model Data, see th
 ## Credits
 The descriptions present in the mod are inspired by the Minecraft Legacy Console Editions. 
 The interface used was inspired by the one present in the Better Than Adventure mod for Minecraft b1.7.3. 
-Mod Menu/Cloth Config integration and the code for reading an item's enchantments are both based on code present in [idwtialsimmoedm](https://modrinth.com/mod/idwtialsimmoedm) under its [MIT License](https://github.com/gliscowo/idwtialsimmoedm/blob/1.21/LICENSE).
+The code for reading an item's enchantments is based on code present in [idwtialsimmoedm](https://modrinth.com/mod/idwtialsimmoedm) under its [MIT License](https://github.com/gliscowo/idwtialsimmoedm/blob/1.21/LICENSE).
 
 For Polymer support, some code was copied from Polymer under its [LGPL License](https://github.com/Patbox/polymer/blob/dev/1.21.4/LICENSE).
