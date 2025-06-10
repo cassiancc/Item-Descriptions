@@ -161,7 +161,7 @@ public class DescriptionKey {
     }
 
     public boolean hasTranslation() {
-        if (ModConfig.get().developer_showUntranslated) return true;
+        if (ModClient.CONFIG.developer.showUntranslated) return true;
         return I18n.hasTranslation(toString());
     }
 }

@@ -22,7 +22,7 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
         //Check if entity descriptions are enabled in mod config.
         if (showEntityDescriptions()) {
             List<Text> tooltip;
-            if (ModConfig.get().developer_showAllPotentialKeys) {
+            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());
             }
             else {

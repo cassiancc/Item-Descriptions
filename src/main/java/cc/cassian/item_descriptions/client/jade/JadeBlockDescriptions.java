@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -23,7 +22,7 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
         if (showBlockDescriptions()) {
             //Create and add tooltip.
             List<Text> tooltip;
-            if (ModConfig.get().developer_showAllPotentialKeys) {
+            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {

@@ -68,6 +68,8 @@ dependencies {
 
     // Cloth Config
     modApi("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
+    implementation("folk.sisby:kaleido-config:0.3.1+1.3.1")
+    include("folk.sisby:kaleido-config:0.3.1+1.3.1")
 
     // Mod Menu
     modApi("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")

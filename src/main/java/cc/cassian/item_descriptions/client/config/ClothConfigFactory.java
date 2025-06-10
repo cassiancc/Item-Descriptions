@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.config;
 
 
+import cc.cassian.item_descriptions.client.ModClient;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import net.minecraft.client.gui.screen.Screen;
@@ -8,7 +9,6 @@ import net.minecraft.text.Text;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Locale;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -25,66 +25,55 @@ public class ClothConfigFactory {
         return builder.getOrCreateCategory(Text.translatable("config.item-descriptions.%stitle".formatted(section)));
     }
 
-    private static boolean is(Field field, String name) {
-        return field.getName().toLowerCase(Locale.ROOT).contains(name);
-    }
-
     public static Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
                 .setTitle(Text.translatable("modmenu.nameTranslation.item-descriptions"));
 
-        final var entryBuilder = builder.entryBuilder();
-        final var configInstance = ModConfig.get();
-        final var generalCategory = createCategory(null, builder);
-        final var styleCategory = createCategory("style", builder);
-        final var enchantmentCategory = createCategory("enchantment_descriptions", builder);
-        final var effectCategory = createCategory("effect_descriptions", builder);
-        final var pluginsCategory = createCategory("plugins", builder);
-        final var hintCategory = createCategory("hint", builder);
-        final var keyBindsCategory = createCategory("keybinds", builder);
-        final var developerCategory = createCategory("developer_options", builder);
+        addEntries(ModConfig.class.getFields(), ModClient.CONFIG, DEFAULT_VALUES, null, builder);
+        addEntries(ModConfig.Style.class.getFields(), ModClient.CONFIG.style, DEFAULT_VALUES.style, "style", builder);
+        addEntries(ModConfig.EnchantmentDescriptions.class.getFields(), ModClient.CONFIG.enchantmentDescriptions, DEFAULT_VALUES.enchantmentDescriptions, "enchantment_descriptions", builder);
+        addEntries(ModConfig.EffectDescriptions.class.getFields(), ModClient.CONFIG.effectDescriptions, DEFAULT_VALUES.effectDescriptions, "effect_descriptions", builder);
+        addEntries(ModConfig.BlockDescriptions.class.getFields(), ModClient.CONFIG.blockDescriptions, DEFAULT_VALUES.blockDescriptions, "block_descriptions" , builder);
+        addEntries(ModConfig.EntityDescriptions.class.getFields(), ModClient.CONFIG.entityDescriptions, DEFAULT_VALUES.entityDescriptions, "entity_descriptions", builder);
+        addEntries(ModConfig.Hint.class.getFields(), ModClient.CONFIG.hint, DEFAULT_VALUES.hint, "hint", builder);
+        addEntries(ModConfig.Keybinds.class.getFields(), ModClient.CONFIG.keybinds, DEFAULT_VALUES.keybinds, "keybinds", builder);
+        addEntries(ModConfig.DeveloperOptions.class.getFields(), ModClient.CONFIG.developer, DEFAULT_VALUES.developer, "developer_options", builder);
 
+        builder.setSavingRunnable(ModClient.CONFIG::save);
+        return builder.build();
+    }
 
-        for (var field : ModConfig.class.getFields()) {
-            ConfigCategory category;
-            if (is(field, "keybind_")) category = keyBindsCategory;
-            else if (is(field,"block")) category = pluginsCategory;
-            else if (is(field,"entitydescriptions")) category = pluginsCategory;
-            else if (is(field,"developer")) category = developerCategory;
-            else if (is(field,"style")) category = styleCategory;
-            else if (is(field,"hint_")) category = hintCategory;
-            else if (is(field,"enchantment")) category = enchantmentCategory;
-            else if (is(field,"effect")) category = effectCategory;
-            else category = generalCategory;
-            
+    private static void addEntries(Field[] fields, Object config, Object defaultValues, String categoryName, ConfigBuilder builder) {
+        var entryBuilder = builder.entryBuilder();
+        var category = createCategory(categoryName, builder);
+        for (var field : fields) {
+
             if (field.getType() == boolean.class) {
-                category.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
-                        .setSaveConsumer(fieldSetter(configInstance, field))
-                        .setTooltip(fieldTooltip(field))
-                        .setDefaultValue((boolean) fieldGet(DEFAULT_VALUES, field)).build());
+                category.addEntry(entryBuilder.startBooleanToggle(fieldName(field, categoryName), fieldGet(config, field))
+                        .setSaveConsumer(fieldSetter(config, field))
+                        .setTooltip(fieldTooltip(field, categoryName))
+                        .setDefaultValue((boolean) fieldGet(defaultValues, field)).build());
 
             }
             else if (field.getType() == String.class) {
-                category.addEntry(entryBuilder.startStrField(fieldName(field), fieldGet(configInstance, field))
-                        .setSaveConsumer(fieldSetter(configInstance, field))
-                        .setTooltip(fieldTooltip(field))
-                        .setDefaultValue((String) fieldGet(DEFAULT_VALUES, field)).build());
+                category.addEntry(entryBuilder.startStrField(fieldName(field, categoryName), fieldGet(config, field))
+                        .setSaveConsumer(fieldSetter(config, field))
+                        .setTooltip(fieldTooltip(field, categoryName))
+                        .setDefaultValue((String) fieldGet(defaultValues, field)).build());
             }
             else if (field.getType() == int.class) {
-                category.addEntry(entryBuilder.startIntField(fieldName(field), fieldGet(configInstance, field))
-                        .setSaveConsumer(fieldSetter(configInstance, field))
-                        .setTooltip(fieldTooltip(field))
-                        .setDefaultValue((int) fieldGet(DEFAULT_VALUES, field)).build());
+                category.addEntry(entryBuilder.startIntField(fieldName(field, categoryName), fieldGet(config, field))
+                        .setSaveConsumer(fieldSetter(config, field))
+                        .setTooltip(fieldTooltip(field, categoryName))
+                        .setDefaultValue((int) fieldGet(defaultValues, field)).build());
             }
             else if (field.getType() == List.class) {
-                category.addEntry(entryBuilder.startStrList(fieldName(field), fieldGet(configInstance, field))
-                        .setSaveConsumer(fieldSetter(configInstance, field))
-                        .setTooltip(fieldTooltip(field))
-                        .setDefaultValue((List<String>) fieldGet(DEFAULT_VALUES, field)).build());
+                category.addEntry(entryBuilder.startStrList(fieldName(field, categoryName), fieldGet(config, field))
+                        .setSaveConsumer(fieldSetter(config, field))
+                        .setTooltip(fieldTooltip(field, categoryName))
+                        .setDefaultValue((List<String>) fieldGet(defaultValues, field)).build());
             }
         }
-        builder.setSavingRunnable(ModConfig::save);
-        return builder.build();
     }
 }
