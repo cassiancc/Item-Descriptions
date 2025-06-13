@@ -2,7 +2,6 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import net.minecraft.block.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
@@ -36,7 +35,7 @@ public class TagHelpers {
             final Item item = itemStack.getItem();
             //Temporary - Spawn Eggs do not yet have a tag.
             if (item instanceof SpawnEggItem spawnEggItem) {
-                if (ModClient.CONFIG.spawnEggsShowEntity) {
+                if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
                     EntityType<?> entityType = spawnEggItem.getEntityType(
                             //? if >1.21.1 {
                             ModClient.lookup, itemStack
@@ -158,7 +157,7 @@ public class TagHelpers {
     }
 
     public static DescriptionKey getGenericKey(Object object) {
-        if (!ModClient.CONFIG.developer.disableTagDescriptions) {
+        if (!ModClient.CONFIG.developerOptions.disableTagDescriptions.value()) {
             //Iterate through the provided generic tag list.
             DescriptionKey generic = checkGenericTagList(object);
             if (generic != null) {

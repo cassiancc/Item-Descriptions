@@ -22,7 +22,7 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
         if (showBlockDescriptions()) {
             //Create and add tooltip.
             List<Text> tooltip;
-            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
+            if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {

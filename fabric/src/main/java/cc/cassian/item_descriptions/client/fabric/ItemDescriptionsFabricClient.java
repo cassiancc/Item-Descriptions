@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.fabric;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
 import net.fabricmc.api.ClientModInitializer;
@@ -34,7 +33,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
             createDescriptionsFromItemStack(stack, lines);
         });
 
-        if (ModClient.CONFIG.developer.generateMissing) {
+        if (ModClient.CONFIG.developerOptions.generateMissing.value()) {
             CommonLifecycleEvents.TAGS_LOADED.register(Identifier.of(ModClient.MOD_ID, "missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
                     manager::getOptional
             ));

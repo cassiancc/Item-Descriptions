@@ -1,10 +1,8 @@
 package cc.cassian.item_descriptions.client;
 
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -161,7 +159,7 @@ public class DescriptionKey {
     }
 
     public boolean hasTranslation() {
-        if (ModClient.CONFIG.developer.showUntranslated) return true;
+        if (ModClient.CONFIG.developerOptions.showUntranslated.value()) return true;
         return I18n.hasTranslation(toString());
     }
 }

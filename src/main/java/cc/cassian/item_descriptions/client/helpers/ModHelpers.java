@@ -8,6 +8,7 @@ import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -99,7 +100,7 @@ public class ModHelpers {
      * Check if another Enchantment Descriptions is installed and our descriptions should be disabled.
      */
     public static boolean useInternalEnchantmentDescriptions() {
-        if (ModClient.CONFIG.developer.forceEnableEnchantmentDescriptions)
+        if (ModClient.CONFIG.developerOptions.forceEnableEnchantmentDescriptions.value())
             return true;
         else return !(isLoaded("idwtialsimmoedm") || isLoaded("enchdesc"));
     }
@@ -108,7 +109,7 @@ public class ModHelpers {
      * Check if another Enchantment Descriptions is installed and our descriptions should be disabled.
      */
     public static boolean useInternalEffectDescriptions() {
-        if (ModClient.CONFIG.developer.forceEnableEffectDescriptions)
+        if (ModClient.CONFIG.developerOptions.forceEnableEffectDescriptions.value())
             return true;
         else return !(isLoaded("potiondescriptions") || isLoaded("effectdescriptions"));
     }
@@ -125,7 +126,7 @@ public class ModHelpers {
      * Used in Config to change the tooltip's formatting.
      */
     public static Style getStyle(String colour) {
-        return Style.EMPTY.withColor(getColour(colour)).withItalic(ModClient.CONFIG.style.italics).withBold(ModClient.CONFIG.style.bold);
+        return Style.EMPTY.withColor(getColour(colour)).withItalic(ModClient.CONFIG.style.italics.value()).withBold(ModClient.CONFIG.style.bold.getDefaultValue());
     }
 
     /**
@@ -134,30 +135,30 @@ public class ModHelpers {
     public static MutableText getHintText() {
         var sb = new StringBuilder();
         var config = ModClient.CONFIG;
-        var shift = config.keybinds.displayWhenShiftIsHeld;
-        var ctrl = config.keybinds.displayWhenControlIsHeld;
-        var alt = config.keybinds.displayWhenAltIsHeld;
-        if (config.hint.showKeybind) {
+        var shift = config.keybinds.displayWhenShiftIsHeld.value();
+        var ctrl = config.keybinds.displayWhenCtrlIsHeld.value();
+        var alt = config.keybinds.displayWhenAltIsHeld.value();
+        if (config.hint.showKeybinds.value()) {
             if (ctrl) {
                 var ctrlText = I18n.translate("key.keyboard.ctrl");
-                if (ModClient.CONFIG.hint.uppercase) ctrlText = ctrlText.toUpperCase(Locale.ROOT);
+                if (ModClient.CONFIG.hint.uppercase.value()) ctrlText = ctrlText.toUpperCase(Locale.ROOT);
                 sb.append(ctrlText);
                 if (shift || alt) sb.append("/");
             }
             if (alt) {
                 var altText = I18n.translate("key.keyboard.alt");
-                if (ModClient.CONFIG.hint.uppercase) altText = altText.toUpperCase(Locale.ROOT);
+                if (ModClient.CONFIG.hint.uppercase.value()) altText = altText.toUpperCase(Locale.ROOT);
                 sb.append(altText);
                 if (shift) sb.append("/");
             }
             if (shift) {
                 var shiftText = I18n.translate("key.keyboard.shift");
-                if (ModClient.CONFIG.hint.uppercase) shiftText = shiftText.toUpperCase(Locale.ROOT);
+                if (ModClient.CONFIG.hint.uppercase.value()) shiftText = shiftText.toUpperCase(Locale.ROOT);
                 sb.append(shiftText);
             }
             sb.append(": ");
         }
-        if (config.keybinds.invert)
+        if (config.keybinds.invert.value())
             sb.append(I18n.translate("hint.item-descriptions.hint_inverted"));
         else
             sb.append(I18n.translate("hint.item-descriptions.hint"));
@@ -212,9 +213,9 @@ public class ModHelpers {
      * Check if a keybind is pressed and a tooltip should be displayed.
      */
     public static boolean tooltipKeyPressed() {
-        if (ModClient.CONFIG.keybinds.displayWhenControlIsHeld && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
-        else if (ModClient.CONFIG.keybinds.displayWhenShiftIsHeld && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
-        else if (ModClient.CONFIG.keybinds.displayWhenAltIsHeld && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
+        if (ModClient.CONFIG.keybinds.displayWhenCtrlIsHeld.value() && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
+        else if (ModClient.CONFIG.keybinds.displayWhenShiftIsHeld.value() && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
+        else if (ModClient.CONFIG.keybinds.displayWhenAltIsHeld.value() && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
         else return false;
     }
 
@@ -223,7 +224,7 @@ public class ModHelpers {
      */
     @SuppressWarnings({"DuplicateCondition", "ConstantValue"})
     public static boolean checkKey(boolean key) {
-        boolean invert = ModClient.CONFIG.keybinds.invert;
+        boolean invert = ModClient.CONFIG.keybinds.invert.value();
         //If key is pressed, display the tooltip unless inverted.
         if (key) return !invert;
         //If key is not pressed, don't display the tooltip unless inverted.
@@ -263,7 +264,7 @@ public class ModHelpers {
                 /*var variant = toTranslationKey(data.copyNbt().getString("variant"));
                 *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
-                if (paintingKey.hasTranslation() || ModClient.CONFIG.developer.showAllPotentialKeys) return paintingKey;
+                if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) return paintingKey;
             }
             //Ensure player heads with Profile components get a custom key instead of a vanilla one.
             else if (hasComponent(stack, DataComponentTypes.PROFILE)) {
@@ -306,7 +307,7 @@ public class ModHelpers {
     }
 
     public static boolean hasTranslation(String key) {
-        if (ModClient.CONFIG.developer.showUntranslated) return true;
+        if (ModClient.CONFIG.developerOptions.showUntranslated.value()) return true;
         return I18n.hasTranslation(key);
     }
 
@@ -376,8 +377,8 @@ public class ModHelpers {
 
     public static boolean createEnchantmentDescription(ItemStack stack, List<Text> lines) {
         boolean descriptionFound = false;
-        if (ModClient.CONFIG.enchantmentDescriptions.enable && showEnchantmentDescriptions()) {
-            if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
+        if (ModClient.CONFIG.enchantmentDescriptions.enable.value() && showEnchantmentDescriptions()) {
+            if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
             //? if >1.21 {
             final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
@@ -428,8 +429,8 @@ public class ModHelpers {
     }
 
     public static void fixEnchantmentDescription(ItemStack stack, List<Text> lines) {
-        if (ModClient.CONFIG.enchantmentDescriptions.enable && useInternalEnchantmentDescriptions()) {
-            if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks && !stack.getItem().equals(Items.ENCHANTED_BOOK))
+        if (ModClient.CONFIG.enchantmentDescriptions.enable.value() && useInternalEnchantmentDescriptions()) {
+            if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return;
 
             //? if >1.20.5 {
@@ -487,7 +488,7 @@ public class ModHelpers {
 
     public static List<Text> createEffectDescription(List<Text> text) {
         ArrayList<Text> lines = new ArrayList<>(text);
-        if (ModClient.CONFIG.effectDescriptions.enable) {
+        if (ModClient.CONFIG.effectDescriptions.enable.value()) {
             for (Text text1 : text) {
                 if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
                     if (!translatableTextContent.getKey().startsWith("effect.duration")) {
@@ -496,7 +497,7 @@ public class ModHelpers {
                         if (showEffectDescriptions()) {
                             lines.addAll(tooltip);
                         }
-                        else if (ModClient.CONFIG.hint.enabled && (key.hasTranslation())) {
+                        else if (ModClient.CONFIG.hint.enabled.value() && (key.hasTranslation())) {
                             addHint(lines);
                         }
                     }
@@ -507,7 +508,7 @@ public class ModHelpers {
     }
 
     public static void createEffectDescription(Text name, Consumer<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
-        if (ModClient.CONFIG.effectDescriptions.enable && showEffectDescriptions()) {
+        if (ModClient.CONFIG.effectDescriptions.enable.value() && showEffectDescriptions()) {
             var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
             List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
@@ -519,7 +520,7 @@ public class ModHelpers {
     }
 
     public static void createEffectDescription(Text name, List<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
-        if (ModClient.CONFIG.effectDescriptions.enable && showEffectDescriptions()) {
+        if (ModClient.CONFIG.effectDescriptions.enable.value() && showEffectDescriptions()) {
             var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
             List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
@@ -533,11 +534,11 @@ public class ModHelpers {
     }
 
     public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
-        if (ModClient.CONFIG.itemDescriptions) {
+        if (ModClient.CONFIG.itemDescriptions.value()) {
             //Create and add tooltip.
             List<Text> tooltip;
             DescriptionKey descriptionKey = findItemLoreKey(stack);
-            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
+            if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
             } else if (descriptionKey.hasTranslation()) {
                 tooltip = List.of(descriptionKey.toText());
@@ -552,11 +553,11 @@ public class ModHelpers {
     }
 
     public static void fixItemDescription(ItemStack stack, List<Text> lines) {
-        if (ModClient.CONFIG.itemDescriptions && showItemDescriptions()) {
+        if (ModClient.CONFIG.itemDescriptions.value() && showItemDescriptions()) {
             //Find and wrap tooltip. Will be disabled if TooltipFix is installed.
             List<Text> tooltip;
             DescriptionKey descriptionKey = findItemLoreKey(stack);
-            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
+            if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
             } else {
                 tooltip = List.of(descriptionKey.toText());
@@ -639,48 +640,48 @@ public class ModHelpers {
      * Check if block descriptions should be shown based off configuration.
      */
     public static boolean showBlockDescriptions() {
-        return ModClient.CONFIG.blockDescriptions.enable && (tooltipKeyPressed() || ModClient.CONFIG.blockDescriptions.showAlways);
+        return ModClient.CONFIG.blockDescriptions.enable.value() && (tooltipKeyPressed() || ModClient.CONFIG.blockDescriptions.showAlways.value());
     }
 
     /**
      * Check if item descriptions should be shown based off configuration.
      */
     public static boolean showItemDescriptions() {
-        return ModClient.CONFIG.itemDescriptions && (tooltipKeyPressed() || ModClient.CONFIG.displayAlways);
+        return ModClient.CONFIG.itemDescriptions.value() && (tooltipKeyPressed() || ModClient.CONFIG.displayAlways.value());
     }
     /**
      * Check if enchantment descriptions should be shown based off configuration.
      */
     public static boolean showEnchantmentDescriptions() {
-        return ModClient.CONFIG.enchantmentDescriptions.enable && useInternalEnchantmentDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.enchantmentDescriptions.displayAlways);
+        return ModClient.CONFIG.enchantmentDescriptions.enable.value() && useInternalEnchantmentDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.enchantmentDescriptions.displayAlways.value());
     }
     /**
      * Check if entity descriptions should be shown based off configuration.
      */
     public static boolean showEntityDescriptions() {
-        return ModClient.CONFIG.entityDescriptions.enable && (tooltipKeyPressed() || ModClient.CONFIG.entityDescriptions.showAlways);
+        return ModClient.CONFIG.entityDescriptions.enable.value() && (tooltipKeyPressed() || ModClient.CONFIG.entityDescriptions.showAlways.value());
     }
     /**
      * Check if effect descriptions should be shown based off configuration.
      */
     public static boolean showEffectDescriptions() {
-        return ModClient.CONFIG.effectDescriptions.enable && useInternalEffectDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.effectDescriptions.displayAlways);
+        return ModClient.CONFIG.effectDescriptions.enable.value() && useInternalEffectDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.effectDescriptions.displayAlways.value());
     }
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
-        if (ModClient.CONFIG.developer.hideOtherTooltips || ModLists.hidden_items.contains(stack.getItem())) {
+        if (ModClient.CONFIG.developerOptions.hideOtherTooltips.value() || ModLists.hidden_items.contains(stack.getItem())) {
             var first = lines.get(0);
             lines.clear();
             lines.add(first);
         }
         boolean enchant = createEnchantmentDescription(stack, lines);
         boolean effect = checkForEffectDescription(stack);
-        if (ModClient.CONFIG.effectDescriptions.onlyShowEffectDescriptions && effect) return;
+        if (ModClient.CONFIG.effectDescriptions.onlyShowEffectDescriptions.value() && effect) return;
         boolean item = createItemDescription(stack, lines);
-        if (ModClient.CONFIG.hint.enabled && (item || enchant)) {
+        if (ModClient.CONFIG.hint.enabled.value() && (item || enchant)) {
             addHint(lines);
         }
-        if ((tooltipKeyPressed() || ModClient.CONFIG.displayAlways) && ModClient.CONFIG.showModName) {
+        if ((tooltipKeyPressed() || ModClient.CONFIG.displayAlways.value()) && ModClient.CONFIG.showModName.value()) {
             //? if >1.20 {
             var registry = Registries.ITEM;
             //?} else {
@@ -957,8 +958,8 @@ public class ModHelpers {
      */
     private static void wrapTooltip(Text name, List<Text> lines, List<Text> keys) {
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        if (textRenderer != null && ModClient.CONFIG.style.length != 0) {
-            int maxLength = Math.max(ModClient.CONFIG.style.length, textRenderer.getWidth(name));
+        if (textRenderer != null && ModClient.CONFIG.style.length.value() != 0) {
+            int maxLength = Math.max(ModClient.CONFIG.style.length.value(), textRenderer.getWidth(name));
             for (Text originalText : keys) {
                 // Get the text without siblings, as they're individually handled after the initial content.
                 Text translated = originalText.copyContentOnly().setStyle(originalText.getStyle());
@@ -1065,47 +1066,34 @@ public class ModHelpers {
     /**
      * Automatically generate translation keys for config options.
      */
-    public static Text fieldName(Field field, String category) {
-        if (category == null) {
-            category = "config";
-        }
-        return Text.translatable("config.%s.%s.%s".formatted(MOD_ID, category, field.getName()));
+    public static Text fieldName(TrackedValue<?> field) {
+        return Text.translatable("config.%s.%s".formatted(MOD_ID, toSnakeCase(field.key().toString())));
+    }
+
+    public static String toSnakeCase(String field) {
+        return field.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
     }
     
     /**
      * Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
      */
-    public static Text[] fieldTooltip(Field field, String category) {
-        if (category == null) {
-            category = "config";
-        }
-        String tooltipKey = "config.%s.%s.%s.tooltip".formatted(MOD_ID, category, field.getName());
-        return createTooltip(Text.empty(), tooltipKey).toArray(new Text[0]);
-    }
 
-    /**
-     * Get the current value of a config field.
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T fieldGet(Object instance, Field field) {
-        try {
-            return (T) field.get(instance);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+    public static Text[] fieldTooltip(TrackedValue<?> field) {
+        String tooltipKey = "config.%s.%s.tooltip".formatted(MOD_ID, toSnakeCase(field.key().toString()));
+        return createTooltip(Text.empty(), tooltipKey).toArray(new Text[0]);
     }
 
     /**
      * Set a config field.
      */
-    public static <T> Consumer<T> fieldSetter(Object instance, Field field) {
-        return t -> {
-            try {
-                field.set(instance, t);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        };
+    public static void fieldSetter(boolean instance, TrackedValue<Boolean> field) {
+        field.setValue(instance);
+    }
+    public static void fieldSetter(Integer instance, TrackedValue<Integer> field) {
+        field.setValue(instance);
+    }
+    public static void fieldSetter(String instance, TrackedValue<String> field) {
+        field.setValue(instance);
     }
 
     /**

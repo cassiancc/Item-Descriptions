@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -22,7 +21,7 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
         //Check if entity descriptions are enabled in mod config.
         if (showEntityDescriptions()) {
             List<Text> tooltip;
-            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
+            if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());
             }
             else {

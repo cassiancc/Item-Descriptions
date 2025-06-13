@@ -6,17 +6,17 @@ import net.minecraft.text.Style;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.getStyle;
 
 public class ModStyle {
-    public static Style HINT = getStyle(ModClient.CONFIG.hint.color).withItalic(ModClient.CONFIG.hint.italics);
-    public static Style MOD_NAME = getStyle(ModClient.CONFIG.style.modNameColor).withItalic(true);
-    public static Style ITEM_DESCRIPTIONS = getStyle(ModClient.CONFIG.style.color);
-    public static Style ENCHANTMENT_DESCRIPTIONS = getStyle(ModClient.CONFIG.enchantmentDescriptions.color).withItalic(ModClient.CONFIG.enchantmentDescriptions.italics);
-    public static Style EFFECT_DESCRIPTIONS = getStyle(ModClient.CONFIG.effectDescriptions.color);
+    public static Style HINT = getStyle(ModClient.CONFIG.hint.color.value()).withItalic(ModClient.CONFIG.hint.italics.value());
+    public static Style MOD_NAME = getStyle(ModClient.CONFIG.style.modNameColor.value()).withItalic(true);
+    public static Style ITEM_DESCRIPTIONS = getStyle(ModClient.CONFIG.style.color.value());
+    public static Style ENCHANTMENT_DESCRIPTIONS = getStyle(ModClient.CONFIG.enchantmentDescriptions.color.value()).withItalic(ModClient.CONFIG.enchantmentDescriptions.italics.value());
+    public static Style EFFECT_DESCRIPTIONS = getStyle(ModClient.CONFIG.effectDescriptions.color.value());
 
     public static void updateStyles() {
-        HINT = getStyle(ModClient.CONFIG.hint.color).withItalic(ModClient.CONFIG.hint.italics);
-        MOD_NAME = getStyle(ModClient.CONFIG.style.modNameColor).withItalic(true);
-        ITEM_DESCRIPTIONS = getStyle(ModClient.CONFIG.style.color);
-        ENCHANTMENT_DESCRIPTIONS = getStyle(ModClient.CONFIG.enchantmentDescriptions.color).withItalic(ModClient.CONFIG.enchantmentDescriptions.italics);
-        EFFECT_DESCRIPTIONS = getStyle(ModClient.CONFIG.effectDescriptions.color);
+        HINT = getStyle(ModClient.CONFIG.hint.color.value()).withItalic(ModClient.CONFIG.hint.italics.value());
+        MOD_NAME = getStyle(ModClient.CONFIG.style.modNameColor.value()).withItalic(true);
+        ITEM_DESCRIPTIONS = getStyle(ModClient.CONFIG.style.color.value());
+        ENCHANTMENT_DESCRIPTIONS = getStyle(ModClient.CONFIG.enchantmentDescriptions.color.value()).withItalic(ModClient.CONFIG.enchantmentDescriptions.italics.value());
+        EFFECT_DESCRIPTIONS = getStyle(ModClient.CONFIG.effectDescriptions.color.value());
     }
 }

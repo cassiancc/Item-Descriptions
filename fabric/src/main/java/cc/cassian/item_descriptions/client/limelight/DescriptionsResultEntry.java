@@ -56,13 +56,13 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             item = splitS[1];
         }
         //Check to see if that namespaced identifier matches an item. If so, return that item's lore key.
-        if (ModClient.CONFIG.itemDescriptions) {
+        if (ModClient.CONFIG.itemDescriptions.value()) {
             var itemStack = createMultilineTranslation(findItemLoreKey(Registries.ITEM.get(Identifier.of(namespace, item)).getDefaultStack()).toString());
             if (!Objects.requireNonNull(itemStack.getLiteralString()).isEmpty()) return itemStack;
         }
         //Check to see if that namespaced identifier matches a mob. If so, return that item's lore key.
         //This seems to return a Pig if it isn't matched correctly, so that is ignored if "pig" isn't actually typed in.
-        if (ModClient.CONFIG.entityDescriptions.enable) {
+        if (ModClient.CONFIG.entityDescriptions.enable.value()) {
             var mobRegistry = Registries.ENTITY_TYPE.get(Identifier.of(namespace, item)).getTranslationKey();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
                 if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
@@ -71,12 +71,12 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                 return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
         }
         // If a namespace match is not found, iterate through block and item registries for a name match.
-        if (ModClient.CONFIG.itemDescriptions) {
+        if (ModClient.CONFIG.itemDescriptions.value()) {
             Text itemRegistry = iterateRegistry(Registries.ITEM, lowerS);
             if (itemRegistry != null)
                 return itemRegistry;
         }
-        if (ModClient.CONFIG.blockDescriptions.enable) {
+        if (ModClient.CONFIG.blockDescriptions.enable.value()) {
             Text blockRegistry = iterateRegistry(Registries.BLOCK, lowerS);
             if (blockRegistry != null)
                 return blockRegistry;

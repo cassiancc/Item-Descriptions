@@ -24,7 +24,7 @@ public class ModLists {
         /*var registry = Registry.ITEM;
          *///?}
         hidden_items = new ArrayList<>();
-        for (String disabledItem : ModClient.CONFIG.developer.items_with_tooltips_to_hide) {
+        for (String disabledItem : ModClient.CONFIG.developerOptions.itemsWithTooltipsToHide.value()) {
             Optional<Item> item = registry.
             //? if >1.21.2 {
             getOptionalValue
