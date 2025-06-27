@@ -2,7 +2,6 @@ package cc.cassian.item_descriptions.client.helpers.fabric;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.component.ComponentType;
 import net.minecraft.item.ItemStack;
 
 import java.io.File;

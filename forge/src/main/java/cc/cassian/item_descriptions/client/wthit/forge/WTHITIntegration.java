@@ -31,7 +31,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
         //Check if block descriptions are enabled in mod config.
         if (showBlockDescriptions() && config.getBoolean(BLOCK_DESCRIPTIONS)) {
             List<Text> tooltip;
-            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
+            if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
@@ -48,7 +48,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
         //Check if entity descriptions are enabled in mod config.
         if (showEntityDescriptions()  && config.getBoolean(ENTITY_DESCRIPTIONS)) {
             List<Text> tooltip;
-            if (ModClient.CONFIG.developer.showAllPotentialKeys) {
+            if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());
             }
             else {

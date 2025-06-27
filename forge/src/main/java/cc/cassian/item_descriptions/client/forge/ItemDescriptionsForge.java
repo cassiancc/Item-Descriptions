@@ -60,7 +60,7 @@ public final class ItemDescriptionsForge {
     //Integrate Cloth Config screen (if mod present) with Forge mod menu.
     public static void registerModsPage() {
         //Display Cloth Config/YACL screen if mod present, else error.
-        if (ModList.get().isLoaded("cloth_config") && !ModClient.CONFIG.developer.configScreen.equals("yacl")) {
+        if (ModList.get().isLoaded("cloth_config") && !CONFIG.developerOptions.configScreen.value().equals("yacl")) {
             ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((screen)-> ModConfigFactory.createScreen(null, screen, "cloth-config")));
         } else if (ModList.get().isLoaded("yet_another_config_lib_v3")) {
             ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((screen)-> ModConfigFactory.createScreen(null, screen, "yacl")));
