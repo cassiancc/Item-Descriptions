@@ -4,11 +4,12 @@
   "package": "cc.cassian.item_descriptions.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-	"InfoOverlayMixin",
-	"StatusEffectsDisplayMixin",
-  "PotionContentsComponentMixin"
+    "EnchantmentScreenMixin",
+    "InfoOverlayMixin",
+    "PotionContentsComponentMixin",
+    "StatusEffectsDisplayMixin"
   ],
   "injectors": {
-	"defaultRequire": 1
+    "defaultRequire": 1
   }
 }

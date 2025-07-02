@@ -46,6 +46,7 @@ dependencies {
     modCompileOnly("mcp.mobius.waila:wthit-api:fabric-${mod.dep("wthit_version")}")
     modCompileOnly("maven.modrinth:useful-spyglass:${mod.dep("useful_spyglass")}-fabric")
     modCompileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
+    modCompileOnly("maven.modrinth:puzzles-lib:${mod.dep("puzzles_lib")}")
     modCompileOnly("maven.modrinth:glowcase:${mod.dep("glowcase")}")
     if (stonecutter.eval(mcVersion, "<1.21.2")) {
         modCompileOnly("dev.emi:emi-xplat-intermediary:${mod.dep("emi")}+$minecraft")

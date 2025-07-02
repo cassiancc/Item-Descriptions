@@ -72,7 +72,7 @@ dependencies {
     implementation("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
     include("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
 
-    if (stonecutter.eval(mcVersion, "<1.21.6")) {
+    if (stonecutter.eval(mcVersion, "<1.21.8")) { // Runtime dependencies, used on release versions
 
         // Config APIs
         modApi("dev.isxander:yet-another-config-lib:${common.mod.dep("yacl")}-fabric")
@@ -116,7 +116,7 @@ dependencies {
 
         //Polymer
         if (stonecutter.eval(mcVersion, ">1.21")) {
-            modLocalRuntime("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
+//            modLocalRuntime("eu.pb4:polymer-core:${common.mod.dep("polymer")}")
             if (stonecutter.eval(mcVersion, "<1.21.5")) {
                 modLocalRuntime("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
                 modLocalRuntime("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")

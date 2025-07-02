@@ -1,4 +1,5 @@
 ### Added
+- Enchantment Descriptions are now visible in the Enchanting Table.
 - Support for newlines (\n) in descriptions.
 - If Cloth Config is not present, the mod can now be configured through YACL.
 
