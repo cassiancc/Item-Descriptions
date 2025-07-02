@@ -1,6 +1,6 @@
 ### Added
 - Support for newlines (\n) in descriptions.
-- Support for YACL to display configs instead of Cloth Config.
+- If Cloth Config is not present, the mod can now be configured through YACL.
 
 ### Changed
 - Migrated internal configuration to Kaleido Config. Item Descriptions config file is now `item_descriptions.toml`, and is now organized and properly commented.
