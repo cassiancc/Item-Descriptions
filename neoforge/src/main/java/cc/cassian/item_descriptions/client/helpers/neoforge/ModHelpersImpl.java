@@ -29,6 +29,10 @@ public class ModHelpersImpl {
     }
 
     public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
+        //? if >=1.21.5 {
         return stack.getComponents().has(type);
+        //?} else {
+        /*return stack.getComponents().contains(type);
+        *///?}
     }
 }

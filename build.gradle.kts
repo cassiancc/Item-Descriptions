@@ -40,7 +40,7 @@ dependencies {
     }
 
     modApi("me.shedaniel.cloth:cloth-config-fabric:${mod.dep("cloth_version")}")
-    implementation("folk.sisby:kaleido-config:0.3.1+1.3.1")
+    implementation("folk.sisby:kaleido-config:${mod.dep("kaleido")}")
 
     modCompileOnly("maven.modrinth:jade:${mod.dep("jade_fabric_version")}")
     modCompileOnly("mcp.mobius.waila:wthit-api:fabric-${mod.dep("wthit_version")}")
