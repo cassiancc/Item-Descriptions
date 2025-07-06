@@ -2,6 +2,7 @@
 - Enchantment Descriptions are now visible in the Enchanting Table.
 - Support for newlines (\n) in descriptions.
 - If Cloth Config is not present, the mod can now be configured through YACL.
+- Description for 1.21.7's music disc.
 
 ### Changed
 - Migrated internal configuration to Kaleido Config. Item Descriptions config file is now `item_descriptions.toml`, and is now organized and properly commented.

@@ -10,7 +10,7 @@ authors = "cassiancc"
 description = '''
 This mod adds unique descriptions for all blocks, items, enchantments, effects, and mobs - built in a way that makes it easy to add modded content.
 '''
-logoFile = "assets/item_descriptions/icon.png"
+logoFile = "assets/item-descriptions/icon.png"
 issueTrackerURL = "https://github.com/cassiancc/Item-Descriptions/issues"
 displayURL="https://moddedmc.wiki/en/project/item-descriptions/"
 modURL="https://moddedmc.wiki/en/project/item-descriptions/"
