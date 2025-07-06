@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client.mixin;
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
+import cc.cassian.item_descriptions.client.helpers.ModStyle;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -41,7 +42,7 @@ public class EnchantmentScreenMixin {
             /*enchantment.getName(1);
             *///?}
             if (name.getContent() instanceof TranslatableTextContent content) {
-                List<Text> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()));
+                List<Text> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
                 components.addAll(tooltip);
             }
         }
