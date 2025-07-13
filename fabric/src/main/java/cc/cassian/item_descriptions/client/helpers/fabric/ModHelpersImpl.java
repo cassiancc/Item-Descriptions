@@ -3,12 +3,15 @@ package cc.cassian.item_descriptions.client.helpers.fabric;
 import cc.cassian.item_descriptions.client.ModClient;
 import net.fabricmc.loader.api.FabricLoader;
 //? if >1.21 {
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.component.ComponentType;
 //?}
 import net.minecraft.item.ItemStack;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class ModHelpersImpl {
 
@@ -30,4 +33,13 @@ public class ModHelpersImpl {
         return stack.getComponents().contains(type);
     }
     //?}
+
+    public static String getModName(ItemStack stack, String namespace) {
+        Optional<ModContainer> modContainer = FabricLoader.getInstance().getModContainer(namespace);
+        if (modContainer.isPresent()) {
+            return modContainer.get().getMetadata().getName();
+        } else {
+            return WordUtils.capitalize(namespace);
+        }
+    }
 }

@@ -2,7 +2,6 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.compat.EmiCompat;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
 import com.google.gson.Gson;
@@ -17,7 +16,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
-
 import net.minecraft.entity.decoration.painting.PaintingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 //? if >1.21 {
@@ -43,6 +41,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 //? if >1.21 {
+import net.minecraft.item.PotionItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -60,13 +59,11 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
@@ -682,26 +679,24 @@ public class ModHelpers {
             addHint(lines);
         }
         if ((tooltipKeyPressed() || ModClient.CONFIG.displayAlways.value()) && ModClient.CONFIG.showModName.value()) {
-            //? if >1.20 {
-            var registry = Registries.ITEM;
-            //?} else {
-            /*var registry = Registry.ITEM;
-             *///?}
-            Identifier id = registry.getId(stack.getItem());
-            String namespace = id.getNamespace();
-            MutableText text;
-            String key = "modmenu.nameTranslation."+namespace;
-            if (I18n.hasTranslation(key)) {
-                text = Text.translatable(key);
-            } else {
-                if (ModHelpers.isLoaded("emi")) {
-                    text = Text.literal(EmiCompat.getModName(namespace));
-                } else {
-                    text = Text.literal(WordUtils.capitalize(namespace));
-                }
-            }
-            lines.add(text.setStyle(ModStyle.MOD_NAME));
+            addModName(stack, lines);
         }
+    }
+
+    private static void addModName(ItemStack stack, List<Text> lines) {
+        //? if >1.20 {
+        var registry = Registries.ITEM;
+        //?} else {
+        /*var registry = Registry.ITEM;
+         *///?}
+        String namespace = registry.getId(stack.getItem()).getNamespace();
+        MutableText text = translatableWithFallback("modmenu.nameTranslation."+namespace, getModName(stack, namespace));
+        lines.add(text.setStyle(ModStyle.MOD_NAME));
+    }
+
+    @ExpectPlatform
+    public static String getModName(ItemStack stack, String namespace) {
+        throw new AssertionError();
     }
 
     public static MutableText translatableWithFallback(String translatable, String fallback) {

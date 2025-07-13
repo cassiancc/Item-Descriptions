@@ -1,13 +1,3 @@
 ### Added
-- Enchantment Descriptions are now visible in the Enchanting Table.
-- Support for newlines (\n) in descriptions.
-- If Cloth Config is not present, the mod can now be configured through YACL.
-- Description for 1.21.7's music disc.
-
-### Changed
-- Migrated internal configuration to Kaleido Config. Item Descriptions config file is now `item_descriptions.toml`, and is now organized and properly commented.
-- Block Descriptions and Entity Descriptions configs have been separated into their own tabs.
-
-### Fixed
-- Conflicting translation keys with EMI (#26).
-- Crash from renamed method on NeoForge 1.21.5+.
+- Mod name tooltip now better handles mod IDs with spaces.
+- On (Neo)Forge, mod name tooltip now respects the `getCreatorModId` extension. Fabric support will be added following [#4746](https://github.com/FabricMC/fabric/pull/4746).
