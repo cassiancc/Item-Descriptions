@@ -57,7 +57,7 @@ public class DescriptionKey {
         return switch (namespace) {
             case "c", "forge" -> 0;
             case "minecraft" -> 1;
-            case "item-descriptions" -> 3;
+            case "item-descriptions", "item_descriptions" -> 3;
             default -> 2;
         };
     }
