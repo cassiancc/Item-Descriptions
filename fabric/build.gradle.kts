@@ -51,19 +51,23 @@ repositories {
     maven ( "https://maven.wispforest.io/releases/" )
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
-    maven ("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
-    maven ("https://repo.sleeping.town/" )
+    maven ( "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+    maven ( "https://repo.sleeping.town/" )
     maven ( "https://maven.nucleoid.xyz" ) // Polymer
-    maven("https://maven.isxander.dev/releases") {
+    maven ( "https://maven.isxander.dev/releases") {
         name = "Xander Maven"
     }
+    maven ( "https://maven.parchmentmc.org") // Parchment
 }
 
 dependencies {
     // Minecraft
     minecraft("com.mojang:minecraft:$minecraft")
-    mappings("net.fabricmc:yarn:$minecraft+build.${common.mod.dep("yarn_build")}:v2")
-
+    mappings(loom.layered {
+        officialMojangMappings()
+        if (stonecutter.eval(mcVersion, "<1.21.6")) {
+            parchment("org.parchmentmc.data:parchment-${common.mod.dep("parchment")}@zip")
+    }})
     // Fabric
     modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${common.mod.dep("fabric_api")}")

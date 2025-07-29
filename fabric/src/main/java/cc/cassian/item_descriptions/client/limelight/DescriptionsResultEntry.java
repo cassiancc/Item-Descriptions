@@ -2,47 +2,47 @@ package cc.cassian.item_descriptions.client.limelight;
 
 //? if 1.21.1 || 1.21.5 {
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
-import net.minecraft.block.Block;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.Item;
-import net.minecraft.registry.DefaultedRegistry;
-import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.DefaultedRegistry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 import java.util.Objects;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
-import static net.minecraft.client.resource.language.I18n.hasTranslation;
-import static net.minecraft.client.resource.language.I18n.translate;
 
 public class DescriptionsResultEntry implements InvokeResultEntry {
-    Text searchKey;
+    Component searchKey;
 
     public DescriptionsResultEntry(String s) {
         super();
         searchKey = findTranslationKey(s);
     }
 
-    public static Text createMultilineTranslation(String loreKey) {
+    public static Component createMultilineTranslation(String loreKey) {
         // Setup list to store (potentially multi-line) tooltip.
         StringBuilder lines = new StringBuilder();
         //Check if the key exists.
         if (!loreKey.isEmpty()) {
             // Translate the lore key.
-            String translatedKey = translate(loreKey);
+            String translatedKey = I18n.get(loreKey);
             // Check if the translated key exists.
             if (hasTranslation(loreKey)) {
                 // Add the final tooltip.
                 lines.append(translatedKey);
             }
         }
-        return Text.literal(String.valueOf(lines));
+        return Component.literal(String.valueOf(lines));
     }
 
-    private Text findTranslationKey(String s) {
+    private Component findTranslationKey(String s) {
         String lowerS = s.toLowerCase();
         // Take in user input, remove the #, and remove any spaces.
         String trimmedS = lowerS.replace(" ", "_");
@@ -55,15 +55,27 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             namespace = splitS[0];
             item = splitS[1];
         }
-        //Check to see if that namespaced identifier matches an item. If so, return that item's lore key.
+        //Check to see if that namespaced ResourceLocation matches an item. If so, return that item's lore key.
         if (ModClient.CONFIG.itemDescriptions.value()) {
-            var itemStack = createMultilineTranslation(findItemLoreKey(Registries.ITEM.get(Identifier.of(namespace, item)).getDefaultStack()).toString());
-            if (!Objects.requireNonNull(itemStack.getLiteralString()).isEmpty()) return itemStack;
+            var itemStack = createMultilineTranslation(findItemLoreKey(BuiltInRegistries.ITEM
+                    //? if >=1.21.2 {
+                    .getValue
+                     //?} else {
+                    /*.get
+                    *///?}
+                    (ModHelpers.of(namespace, item)).getDefaultInstance()).toString());
+            if (!Objects.requireNonNull(itemStack.tryCollapseToString()).isEmpty()) return itemStack;
         }
-        //Check to see if that namespaced identifier matches a mob. If so, return that item's lore key.
+        //Check to see if that namespaced ResourceLocation matches a mob. If so, return that item's lore key.
         //This seems to return a Pig if it isn't matched correctly, so that is ignored if "pig" isn't actually typed in.
         if (ModClient.CONFIG.entityDescriptions.enable.value()) {
-            var mobRegistry = Registries.ENTITY_TYPE.get(Identifier.of(namespace, item)).getTranslationKey();
+            var mobRegistry = BuiltInRegistries.ENTITY_TYPE
+                    //? if >=1.21.2 {
+                    .getValue
+                     //?} else {
+                    /*.get
+                    *///?}
+                    (ModHelpers.of(namespace, item)).getDescriptionId();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
                 if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
             }
@@ -72,33 +84,33 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         }
         // If a namespace match is not found, iterate through block and item registries for a name match.
         if (ModClient.CONFIG.itemDescriptions.value()) {
-            Text itemRegistry = iterateRegistry(Registries.ITEM, lowerS);
+            Component itemRegistry = iterateRegistry(BuiltInRegistries.ITEM, lowerS);
             if (itemRegistry != null)
                 return itemRegistry;
         }
         if (ModClient.CONFIG.blockDescriptions.enable.value()) {
-            Text blockRegistry = iterateRegistry(Registries.BLOCK, lowerS);
+            Component blockRegistry = iterateRegistry(BuiltInRegistries.BLOCK, lowerS);
             if (blockRegistry != null)
                 return blockRegistry;
         }
         //If no match is found, return an empty string.
-        return Text.literal("");
+        return Component.literal("");
 
 
     }
 
-    public Text iterateRegistry(DefaultedRegistry<?> registries, String lowerS) {
-        final Text[] returnedKey = new Text[1];
+    public Component iterateRegistry(DefaultedRegistry<?> registries, String lowerS) {
+        final Component[] returnedKey = new Component[1];
         registries.stream().forEach(registryEntry -> {
             String registryKey;
             if (registryEntry instanceof Block block) {
-                registryKey = block.getTranslationKey();
+                registryKey = block.getDescriptionId();
             }
             else if (registryEntry instanceof Item item) {
-                registryKey = item.getTranslationKey();
+                registryKey = item.getDescriptionId();
             }
             else return;
-            if (lowerS.equals(translate(registryKey).toLowerCase())) {
+            if (lowerS.equals(I18n.get(registryKey).toLowerCase())) {
                 returnedKey[0] = createMultilineTranslation(convertToLoreKey(registryKey).toString());
             }
         });
@@ -107,7 +119,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
 
     @Override
     public void run() {
-        MinecraftClient.getInstance().keyboard.setClipboard(searchKey.getLiteralString());
+        Minecraft.getInstance().keyboardHandler.setClipboard(searchKey.getString());
     }
 
     @Override
@@ -124,7 +136,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
     }
 
     @Override
-    public Text text() {
+    public Component text() {
         return searchKey;
     }
 }

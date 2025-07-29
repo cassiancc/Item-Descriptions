@@ -2,8 +2,8 @@ package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -21,21 +21,21 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
         //Check if block descriptions are enabled in mod config.
         if (showBlockDescriptions()) {
             //Create and add tooltip.
-            List<Text> tooltip;
+            List<Component> tooltip;
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
                 tooltip = createTooltip(blockAccessor.getBlock().getName(), createBlockDescription(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
             }
-            for (Text text : tooltip) {
+            for (Component text : tooltip) {
                 lines.add(text);
             }
         }
     }
 
     @Override
-    public Identifier getUid() {
+    public ResourceLocation getUid() {
         return ModClient.BLOCK_DESCRIPTIONS;
     }
 }

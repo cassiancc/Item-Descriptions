@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import net.minecraft.text.Style;
+import net.minecraft.network.chat.Style;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.getStyle;
 

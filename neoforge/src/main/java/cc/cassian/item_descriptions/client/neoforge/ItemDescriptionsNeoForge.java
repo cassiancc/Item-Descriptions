@@ -3,7 +3,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.neoforge.ModConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -45,7 +45,7 @@ public final class ItemDescriptionsNeoForge {
 
     @SubscribeEvent
     public static void worldLoad(PlayerEvent.PlayerLoggedInEvent event) {
-        lookup = MinecraftClient.getInstance().world.getRegistryManager();
+        lookup = Minecraft.getInstance().level.registryAccess();
     }
     //?}
 

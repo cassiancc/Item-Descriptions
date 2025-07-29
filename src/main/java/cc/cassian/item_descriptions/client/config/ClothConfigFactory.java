@@ -5,8 +5,8 @@ import cc.cassian.item_descriptions.client.ModClient;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -18,13 +18,13 @@ public class ClothConfigFactory {
         } else {
             section += "_";
         }
-        return builder.getOrCreateCategory(Text.translatable("config.item-descriptions.%stitle".formatted(section)));
+        return builder.getOrCreateCategory(Component.translatable("config.item-descriptions.%stitle".formatted(section)));
     }
 
     public static Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.translatable("modmenu.nameTranslation.item-descriptions"));
+                .setTitle(Component.translatable("modmenu.nameTranslation.item-descriptions"));
 
         addEntries(ModClient.CONFIG.values(), builder);
 

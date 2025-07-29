@@ -1,10 +1,9 @@
 package cc.cassian.item_descriptions.client.helpers.neoforge;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.ComponentType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
@@ -34,18 +33,14 @@ public class ModHelpersImpl {
         return savePath.toFile();
     }
 
-    public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
-        //? if >=1.21.5 {
-        return stack.getComponents().has(type);
-        //?} else {
-        /*return stack.getComponents().contains(type);
-        *///?}
-    }
-
     public static String getModName(ItemStack stack, String namespace) {
         String creatorModId;
-        if (MinecraftClient.getInstance().world != null) {
-            creatorModId = stack.getItem().getCreatorModId(MinecraftClient.getInstance().world.getRegistryManager(), stack);
+        if (Minecraft.getInstance().level != null) {
+            creatorModId = stack.getItem().getCreatorModId(
+                    //? if >=1.21.2 {
+                     Minecraft.getInstance().level.registryAccess(),
+                     //?}
+                   stack);
             if (creatorModId != null) {
                 namespace = creatorModId;
             }

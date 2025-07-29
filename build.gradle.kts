@@ -23,16 +23,19 @@ repositories {
     maven ( "https://api.modrinth.com/maven") // Jade/Useful Spyglass
     maven ( "https://maven2.bai.lol" ) // WTHIT
     maven ( "https://maven.nucleoid.xyz") // Polymer
-    maven ("https://maven.terraformersmc.com/") // EMI
-    maven ("https://repo.sleeping.town/" )
-    maven("https://maven.isxander.dev/releases") {
-        name = "Xander Maven"
-    }
+    maven ( "https://maven.terraformersmc.com/") // EMI
+    maven ( "https://repo.sleeping.town/" ) // Kaleido Config
+    maven ( "https://maven.isxander.dev/releases") // YACL
+    maven ( "https://maven.parchmentmc.org") // Parchment
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
-    mappings("net.fabricmc:yarn:$minecraft+build.${mod.dep("yarn_build")}:v2")
+    mappings(loom.layered {
+        officialMojangMappings()
+        if (stonecutter.eval(mcVersion, "<1.21.6")) {
+            parchment("org.parchmentmc.data:parchment-${mod.dep("parchment")}@zip")
+    }})
     modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
     "io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras")}".let {
         annotationProcessor(it)

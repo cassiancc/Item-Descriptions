@@ -53,18 +53,19 @@ repositories {
     maven ( "https://maven.wispforest.io/releases/" )
     maven ( "https://api.modrinth.com/maven")
     maven ( "https://maven2.bai.lol" )
-    maven ("https://repo.sleeping.town/" )
+    maven ( "https://repo.sleeping.town/" )
+    maven ( "https://maven.parchmentmc.org") // Parchment
+
 
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
     mappings(loom.layered {
-        mappings("net.fabricmc:yarn:$minecraft+build.${common.mod.dep("yarn_build")}:v2")
-        common.mod.dep("neoforge_patch").takeUnless { it.startsWith('[') }?.let {
-            mappings("dev.architectury:yarn-mappings-patch-neoforge:$it")
-        }
-    })
+        officialMojangMappings()
+        if (stonecutter.eval(mcVersion, "<1.21.6")) {
+            parchment("org.parchmentmc.data:parchment-${common.mod.dep("parchment")}@zip")
+    }})
     "neoForge"("net.neoforged:neoforge:${common.mod.dep("neoforge_loader")}")
     "io.github.llamalad7:mixinextras-neoforge:${mod.dep("mixin_extras")}".let {
         implementation(it)

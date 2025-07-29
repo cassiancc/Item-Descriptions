@@ -6,7 +6,7 @@ import cc.cassian.item_descriptions.client.config.ClothConfigFactory;
 import cc.cassian.item_descriptions.client.config.YetAnotherConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 public class ModConfigFactory implements ConfigScreenFactory<Screen> {
 

@@ -4,9 +4,9 @@ import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModStyle;
 //? if >1.21.1 {
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.core.RegistryAccess;
 //?}
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,11 +17,11 @@ public class ModClient {
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
     public static final ModConfig CONFIG = ModConfig.createToml(ModConfig.configPath(), "", ModClient.MOD_ID_NEO, ModConfig.class);
 
-    public static final Identifier BLOCK_DESCRIPTIONS = ModHelpers.of("block_descriptions");
-    public static final Identifier ENTITY_DESCRIPTIONS = ModHelpers.of("entity_descriptions");
+    public static final ResourceLocation BLOCK_DESCRIPTIONS = ModHelpers.of("block_descriptions");
+    public static final ResourceLocation ENTITY_DESCRIPTIONS = ModHelpers.of("entity_descriptions");
 
     //? if >1.21.1 {
-    public static DynamicRegistryManager lookup = null;
+    public static RegistryAccess lookup = null;
     //?}
 
     public static void init() {

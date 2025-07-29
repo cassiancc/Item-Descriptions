@@ -1,8 +1,8 @@
 package cc.cassian.item_descriptions.client.helpers.compat;
 
 import fuzs.fastitemframes.world.level.block.entity.ItemFrameBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class FastItemFramesHelpers {
     public static boolean isFastItemFrame(BlockEntity block) {

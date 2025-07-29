@@ -10,8 +10,8 @@ import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 import java.util.LinkedHashMap;
 
@@ -29,7 +29,7 @@ public class YetAnotherConfigFactory {
             } else {
                 sectionKey += "_";
             }
-            ConfigCategory.Builder category = ConfigCategory.createBuilder().name(Text.translatable("config.item-descriptions.%stitle".formatted(sectionKey)));
+            ConfigCategory.Builder category = ConfigCategory.createBuilder().name(Component.translatable("config.item-descriptions.%stitle".formatted(sectionKey)));
             categories.put(section, category);
             return category;
         }
@@ -37,7 +37,7 @@ public class YetAnotherConfigFactory {
 
     public static Screen create(Screen parent) {
         final YetAnotherConfigLib.Builder builder = YetAnotherConfigLib.createBuilder()
-                .title(Text.translatable("modmenu.nameTranslation.item-descriptions"));
+                .title(Component.translatable("modmenu.nameTranslation.item-descriptions"));
         LinkedHashMap<String, ConfigCategory.Builder> categories = new LinkedHashMap<>();
         addEntries(ModClient.CONFIG.values(), categories);
         for (ConfigCategory.Builder s : categories.values()) {

@@ -8,57 +8,59 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.SkullBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.entity.decoration.painting.PaintingEntity;
-import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.entity.decoration.Painting;
+import net.minecraft.world.effect.MobEffect;
 //? if >1.21 {
-import net.minecraft.component.ComponentType;
+import net.minecraft.core.component.DataComponentType;
 import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
-import net.minecraft.component.DataComponentTypes;
+import net.minecraft.core.component.DataComponents;
 //?} else if >1.20.5 {
 /*import net.minecraft.component.DataComponentType;
 import net.minecraft.component.DataComponentTypes;
 *///?} else {
-/*import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
+/*import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 *///?}
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 //? if >1.21 {
-import net.minecraft.item.PotionItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.Holder;
 //?} else if >1.20 {
-/*import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.Registries;
+/*import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.registries.BuiltInRegistries;
 *///?} else {
-/*import net.minecraft.util.registry.RegistryKey;
+/*import net.minecraft.util.registry.ResourceKey;
 import net.minecraft.util.registry.Registry;
 *///?}
-import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.*;
+import net.minecraft.ChatFormatting;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -73,17 +75,20 @@ import java.util.function.Predicate;
 import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 import static cc.cassian.item_descriptions.client.helpers.TagHelpers.*;
-import static net.minecraft.client.resource.language.I18n.translate;
 
 public class ModHelpers {
-    public static final Identifier FABRIC_EVENT_PHASE = of("description_tooltip");
+    public static final ResourceLocation FABRIC_EVENT_PHASE = of("description_tooltip");
 
-    public static Identifier of(String path) {
-        return Identifier.of(MOD_ID, path);
+    public static ResourceLocation of(String path) {
+        return ModHelpers.of(MOD_ID, path);
     }
 
-    public static Identifier of(String namespace, String path) {
-        return Identifier.of(namespace, path);
+    public static ResourceLocation of(String namespace, String path) {
+        //? if >=1.21 {
+        return ResourceLocation.fromNamespaceAndPath(namespace, path);
+        //?} else {
+        /*return new ResourceLocation(namespace, path);
+        *///?}
     }
 
     /**
@@ -129,7 +134,7 @@ public class ModHelpers {
     /**
      * Used in Config to change the tooltip's formatting.
      */
-    public static MutableText getHintText() {
+    public static MutableComponent getHintText() {
         var sb = new StringBuilder();
         var config = ModClient.CONFIG;
         var shift = config.keybinds.displayWhenShiftIsHeld.value();
@@ -137,29 +142,29 @@ public class ModHelpers {
         var alt = config.keybinds.displayWhenAltIsHeld.value();
         if (config.hint.showKeybinds.value()) {
             if (ctrl) {
-                var ctrlText = I18n.translate("key.keyboard.ctrl");
+                var ctrlText = I18n.get("key.keyboard.ctrl");
                 if (ModClient.CONFIG.hint.uppercase.value()) ctrlText = ctrlText.toUpperCase(Locale.ROOT);
                 sb.append(ctrlText);
                 if (shift || alt) sb.append("/");
             }
             if (alt) {
-                var altText = I18n.translate("key.keyboard.alt");
+                var altText = I18n.get("key.keyboard.alt");
                 if (ModClient.CONFIG.hint.uppercase.value()) altText = altText.toUpperCase(Locale.ROOT);
                 sb.append(altText);
                 if (shift) sb.append("/");
             }
             if (shift) {
-                var shiftText = I18n.translate("key.keyboard.shift");
+                var shiftText = I18n.get("key.keyboard.shift");
                 if (ModClient.CONFIG.hint.uppercase.value()) shiftText = shiftText.toUpperCase(Locale.ROOT);
                 sb.append(shiftText);
             }
             sb.append(": ");
         }
         if (config.keybinds.invert.value())
-            sb.append(I18n.translate("hint.item-descriptions.hint_inverted"));
+            sb.append(I18n.get("hint.item-descriptions.hint_inverted"));
         else
-            sb.append(I18n.translate("hint.item-descriptions.hint"));
-        return Text.literal(sb.toString());
+            sb.append(I18n.get("hint.item-descriptions.hint"));
+        return Component.literal(sb.toString());
     }
 
     /**
@@ -168,7 +173,7 @@ public class ModHelpers {
     public static TextColor getColour(String colour) {
         int length = colour.length();
         if (length == 1) {
-            return TextColor.fromFormatting(Formatting.byCode(colour.charAt(0)));
+            return TextColor.fromLegacyFormat(ChatFormatting.getByCode(colour.charAt(0)));
         }
         else {
             try {
@@ -178,16 +183,16 @@ public class ModHelpers {
             return switch (replacedColour) {
                 case "black", "dark_blue", "dark_green", "dark_red", "dark_purple",
                      "blue", "green", "aqua", "red", "yellow", "white" ->
-                        TextColor.fromFormatting(Formatting.byName(colour));
+                        TextColor.fromLegacyFormat(ChatFormatting.getByName(colour));
                 case "pink", "light_purple" ->
-                        TextColor.fromFormatting(Formatting.byName("light_purple"));
+                        TextColor.fromLegacyFormat(ChatFormatting.getByName("light_purple"));
                 case "dark_gray", "dark_grey" ->
-                        TextColor.fromFormatting(Formatting.byName("dark_gray"));
+                        TextColor.fromLegacyFormat(ChatFormatting.getByName("dark_gray"));
                 case "cyan", "dark_aqua" ->
-                        TextColor.fromFormatting(Formatting.byName("dark_aqua"));
+                        TextColor.fromLegacyFormat(ChatFormatting.getByName("dark_aqua"));
                 case "orange", "gold", "dark_yellow" ->
-                        TextColor.fromFormatting(Formatting.byName("gold"));
-                default -> TextColor.fromFormatting(Formatting.byName("gray"));
+                        TextColor.fromLegacyFormat(ChatFormatting.getByName("gold"));
+                default -> TextColor.fromLegacyFormat(ChatFormatting.getByName("gray"));
             };
         }
     }
@@ -234,17 +239,17 @@ public class ModHelpers {
      */
     public static DescriptionKey findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
-        if (ModClient.CONFIG.enchantmentDescriptions.onlyEnchantmentDescriptionsOnBooks.value() && stack.isOf(Items.ENCHANTED_BOOK)) {
+        if (ModClient.CONFIG.enchantmentDescriptions.onlyEnchantmentDescriptionsOnBooks.value() && stack.is(Items.ENCHANTED_BOOK)) {
             return DescriptionKey.empty();
         }
         //? if >1.21 {
-        if (PolymerHelpers.getServerIdentifier(stack) != null) {
-            return new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
+        if (PolymerHelpers.getServerResourceLocation(stack) != null) {
+            return new DescriptionKey(PolymerHelpers.getServerResourceLocation(stack));
         }
         //?}
         //? if >1.20.5 {
-            if (hasComponent(stack, DataComponentTypes.CUSTOM_MODEL_DATA)) {
-                var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.CUSTOM_MODEL_DATA));
+            if (hasComponent(stack, DataComponents.CUSTOM_MODEL_DATA)) {
+                var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.CUSTOM_MODEL_DATA));
                 //? if <1.21.4 {
                  /*var dataValue = data.value();
                 *///?} else {
@@ -256,31 +261,31 @@ public class ModHelpers {
                     return modelKey;
                 }
             }
-            else if (stack.isOf(Items.PAINTING) && hasComponent(stack, DataComponentTypes.ENTITY_DATA)) {
-                var data = Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.ENTITY_DATA));
+            else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
+                var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
                 //? if >=1.21.5 {
-                var variant = toTranslationKey(data.copyNbt().getString("variant").orElse(""));
+                var variant = toTranslationKey(data.copyTag().getString("variant").orElse(""));
                  //?} else {
-                /*var variant = toTranslationKey(data.copyNbt().getString("variant"));
+                /*var variant = toTranslationKey(data.copyTag().getString("variant"));
                 *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
                 if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) return paintingKey;
             }
             //Ensure player heads with Profile components get a custom key instead of a vanilla one.
-            else if (hasComponent(stack, DataComponentTypes.PROFILE)) {
+            else if (hasComponent(stack, DataComponents.PROFILE)) {
                 DescriptionKey profileKey = getProfile(stack);
                 if (profileKey.hasTranslation()) {
                     return profileKey;
                 }
             }
         //?} else {
-        /*NbtCompound s = stack.getNbt();
+        /*CompoundTag s = stack.getTag();
             if (s != null) {
-                if (s.contains("CUSTOM_MODEL_DATA", NbtElement.NUMBER_TYPE)) {
+                if (s.contains("CUSTOM_MODEL_DATA", Tag.TAG_ANY_NUMERIC)) {
                     var key = getLoreKey(stack);
                     key.setSuffix("custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA")));
                 }
-                else if (s.contains("SkullOwner", NbtElement.STRING_TYPE)) {
+                else if (s.contains("SkullOwner", Tag.STRING_SIZE)) {
                     DescriptionKey profileKey = getProfile(stack);
                     if (profileKey.hasTranslation()) {
                         return profileKey;
@@ -308,19 +313,19 @@ public class ModHelpers {
 
     public static boolean hasTranslation(String key) {
         if (ModClient.CONFIG.developerOptions.showUntranslated.value()) return true;
-        return I18n.hasTranslation(key);
+        return I18n.exists(key);
     }
 
     /**
      * Create a block's lore key based off data from WAILA-based Block Accessors like Jade/WTHIT/HYWLA.
      */
-    public static DescriptionKey createBlockDescription(Block block, World world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+    public static DescriptionKey createBlockDescription(Block block, Level world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         DescriptionKey loreKey = findBlockLoreKey(block);
         //? if >1.21 {
         if (isLoaded("polymer-bundled"))
             if (PolymerHelpers.isPolymerBlock(pos)) {
-                loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockIdentifier(pos));
+                loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockResourceLocation(pos));
             }
         //?}
         //Custom handling of Player Heads so custom profiles give custom descriptions.
@@ -348,9 +353,9 @@ public class ModHelpers {
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!loreKey.hasTranslation()) {
             //? if <1.21.2 {
-            /*return findItemLoreKey(block.getPickStack(world, pos, state));
+            /*return findItemLoreKey(block.getCloneItemStack(world, pos, state));
             *///?} else
-            return findItemLoreKey(block.getDefaultState().getPickStack(world, pos, true));
+            return findItemLoreKey(block.defaultBlockState().getCloneItemStack(world, pos, true));
 
         }
         return loreKey;
@@ -359,15 +364,15 @@ public class ModHelpers {
     /**
      * Create an entity's lore key based off its entity data.
      */
-    public static List<Text> createEntityDescription(Entity entity) {
+    public static List<Component> createEntityDescription(Entity entity) {
         //Create and add tooltip.
-        Text name = entity.getName();
-        if (entity instanceof ItemFrameEntity itemFrameEntity && !itemFrameEntity.getHeldItemStack().isEmpty()) {
-            return createTooltip(name, findItemLoreKey(itemFrameEntity.getHeldItemStack()));
+        Component name = entity.getName();
+        if (entity instanceof ItemFrame itemFrameEntity && !itemFrameEntity.getItem().isEmpty()) {
+            return createTooltip(name, findItemLoreKey(itemFrameEntity.getItem()));
         }
         //? if >1.21 {
-        else if (entity instanceof PaintingEntity painting && painting.getVariant().hasKeyAndValue()) {
-            var loreKey = new DescriptionKey("lore", "minecraft", "painting", toTranslationKey(painting.getVariant().getIdAsString()));
+        else if (entity instanceof Painting painting && painting.getVariant().isBound()) {
+            var loreKey = new DescriptionKey("lore", "minecraft", "painting", toTranslationKey(painting.getVariant().getRegisteredName()));
             if (loreKey.hasTranslation())
                 return createTooltip(name, loreKey);
         }
@@ -375,37 +380,37 @@ public class ModHelpers {
         return createTooltip(name, findEntityLoreKey(entity));
     }
 
-    public static boolean createEnchantmentDescription(ItemStack stack, List<Text> lines) {
+    public static boolean createEnchantmentDescription(ItemStack stack, List<Component> lines) {
         boolean descriptionFound = false;
         if (ModClient.CONFIG.enchantmentDescriptions.enable.value() && showEnchantmentDescriptions()) {
             if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
             //? if >1.21 {
-            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
+            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
              //?} else if >1.20.5 {
-            /*final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
+            /*final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).entrySet());
             *///?} else {
-            /*final var enchantments = EnchantmentHelper.get(stack).keySet();
+            /*final var enchantments = EnchantmentHelper.getEnchantments(stack).keySet();
             *///?}
             if (enchantments.isEmpty()) return false;
             for (var enchantmentEntry : enchantments) {
                 //? if >1.21 {
-                 var enchantment = enchantmentEntry.value();
+                     var enchantment = enchantmentEntry.value();
                 //?} else {
                 /*var enchantment = enchantmentEntry;
                 *///?}
                 for (int i = 0; i < lines.size(); i++) {
                     //? if >1.21 {
-                    if (!lines.get(i).getContent().equals(enchantment.description().getContent())) continue;
+                    if (!lines.get(i).getContents().equals(enchantment.description().getContents())) continue;
                      //?} else if >1.20.5 {
-                    /*if (!(lines.get(i).getContent() instanceof TranslatableTextContent text)) continue;
+                    /*if (!(lines.get(i).getContent() instanceof TranslatableContents text)) continue;
                     if (!text.getKey().equals(enchantment.value().getTranslationKey())) continue;
                     *///?} else {
-                    /*if (!(lines.get(i).getContent() instanceof TranslatableTextContent text)) continue;
-                    if (!text.getKey().equals(enchantment.getTranslationKey())) continue;
+                    /*if (!(lines.get(i).getContents() instanceof TranslatableContents text)) continue;
+                    if (!text.getKey().equals(enchantment.getDescriptionId())) continue;
                     *///?}
-                    TextContent description = lines.get(i).getContent();
-                    if (description instanceof TranslatableTextContent translatableTextContent) {
+                    ComponentContents description = lines.get(i).getContents();
+                    if (description instanceof TranslatableContents translatableTextContent) {
                         var descriptionKey = new DescriptionKey(translatableTextContent.getKey());
                         lines.add(i+1, descriptionKey.toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS));
                     }
@@ -415,28 +420,28 @@ public class ModHelpers {
         return descriptionFound;
     }
 
-    private static boolean checkTranslatableText(Text text, Predicate<TranslatableTextContent> predicate) {
-        TextContent contents = null;
-        if (text instanceof MutableText mutable) {
+    private static boolean checkTranslatableText(Component text, Predicate<TranslatableContents> predicate) {
+        ComponentContents contents = null;
+        if (text instanceof MutableComponent mutable) {
             if (mutable.getSiblings().stream().anyMatch(c -> checkTranslatableText(c, predicate))) {
                 return true;
             }
-            contents = mutable.getContent();
+            contents = mutable.getContents();
         }
         if (contents == null)
             return false;
-        return contents instanceof TranslatableTextContent translatable && predicate.test(translatable);
+        return contents instanceof TranslatableContents translatable && predicate.test(translatable);
     }
 
-    public static void fixEnchantmentDescription(ItemStack stack, List<Text> lines) {
+    public static void fixEnchantmentDescription(ItemStack stack, List<Component> lines) {
         if (ModClient.CONFIG.enchantmentDescriptions.enable.value() && useInternalEnchantmentDescriptions()) {
             if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return;
 
             //? if >1.20.5 {
-            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantments(stack).getEnchantments());
+            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
             //?} else {
-            /*final var enchantments = EnchantmentHelper.get(stack).keySet();
+            /*final var enchantments = EnchantmentHelper.getEnchantments(stack).keySet();
              *///?}
 
             if (enchantments.isEmpty())
@@ -445,7 +450,7 @@ public class ModHelpers {
             for (int i = 0; i < lines.size(); ++i) {
                 if (isEnchantmentDescription(lines.get(i), (Set)enchantments)) {
                     // Create the tooltip.
-                    var newLines = createTooltip(stack.getName(), lines.get(i), useInternalWrapper());
+                    var newLines = createTooltip(stack.getDisplayName(), lines.get(i), useInternalWrapper());
                     if (newLines.isEmpty())
                         continue;
                     // To avoid warnings, we don't remove from lines and instead modify the initial line to the first line.
@@ -459,9 +464,9 @@ public class ModHelpers {
         }
     }
 
-    private static boolean isEnchantmentDescription(Text text, Set<Object> enchantments) {
+    private static boolean isEnchantmentDescription(Component text, Set<Object> enchantments) {
         // If the Minecraft world is null, we cannot check if this is an enchantment key.
-        if (MinecraftClient.getInstance().world == null)
+        if (Minecraft.getInstance().level == null)
             return false;
         return checkTranslatableText(text, content -> {
             // Split the lang key of this translatable content.
@@ -475,25 +480,25 @@ public class ModHelpers {
             if (hasTranslation(content.getKey()) && (split.length == 4 && split[0].equals("enchantment") && (split[3].equals("description") || split[3].equals("desc")) || split.length == 3 && split[0].equals("lore"))) {
                 // Whether the namespace and path maps to an enchantment on this item. If so, return true.
                 //? if >1.21 {
-                return enchantments.stream().anyMatch(entry -> ((RegistryEntry<Enchantment>)(Object)entry).matchesId(Identifier.of(namespace, path)));
+                return enchantments.stream().anyMatch(entry -> ((Holder<Enchantment>)(Object)entry).is(ModHelpers.of(namespace, path)));
                 //?} else if >1.20 {
-                /*return enchantments.stream().anyMatch(entry -> Registries.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(new Identifier(namespace, path)));
+                /*return enchantments.stream().anyMatch(entry -> BuiltInRegistries.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
                  *///?} else {
-                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(new Identifier(namespace, path)));
+                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
                  *///?}
             }
             return false;
         });
     }
 
-    public static List<Text> createEffectDescription(List<Text> text) {
-        ArrayList<Text> lines = new ArrayList<>(text);
+    public static List<Component> createEffectDescription(List<Component> text) {
+        ArrayList<Component> lines = new ArrayList<>(text);
         if (ModClient.CONFIG.effectDescriptions.enable.value()) {
-            for (Text text1 : text) {
-                if (text1.getContent() instanceof TranslatableTextContent translatableTextContent) {
+            for (Component text1 : text) {
+                if (text1.getContents() instanceof TranslatableContents translatableTextContent) {
                     if (!translatableTextContent.getKey().startsWith("effect.duration")) {
                         var key = new DescriptionKey(translatableTextContent.getKey());
-                        List<Text> tooltip = ModHelpers.createTooltip(text1, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
+                        List<Component> tooltip = ModHelpers.createTooltip(text1, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
                         if (showEffectDescriptions()) {
                             lines.addAll(tooltip);
                         }
@@ -507,36 +512,36 @@ public class ModHelpers {
         return lines;
     }
 
-    public static void createEffectDescription(Text name, Consumer<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
+    public static void createEffectDescription(Component name, Consumer<Component> textConsumer, MobEffectInstance statusEffectInstance) {
         if (ModClient.CONFIG.effectDescriptions.enable.value() && showEffectDescriptions()) {
-            var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
-            List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
+            var key = new DescriptionKey(statusEffectInstance.getDescriptionId());
+            List<Component> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
-                for (Text line : tooltip) {
+                for (Component line : tooltip) {
                  textConsumer.accept(line);
                 }
             }
         }
     }
 
-    public static void createEffectDescription(Text name, List<Text> textConsumer, StatusEffectInstance statusEffectInstance) {
+    public static void createEffectDescription(Component name, List<Component> textConsumer, MobEffectInstance statusEffectInstance) {
         if (ModClient.CONFIG.effectDescriptions.enable.value() && showEffectDescriptions()) {
-            var key = new DescriptionKey(statusEffectInstance.getTranslationKey());
-            List<Text> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
+            var key = new DescriptionKey(statusEffectInstance.getDescriptionId());
+            List<Component> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
                 textConsumer.addAll(tooltip);
             }
         }
     }
 
-    public static void addHint(List<Text> lines) {
+    public static void addHint(List<Component> lines) {
         lines.add(1, getHintText().setStyle(ModStyle.HINT));
     }
 
-    public static boolean createItemDescription(ItemStack stack, List<Text> lines) {
+    public static boolean createItemDescription(ItemStack stack, List<Component> lines) {
         if (ModClient.CONFIG.itemDescriptions.value()) {
             //Create and add tooltip.
-            List<Text> tooltip;
+            List<Component> tooltip;
             DescriptionKey descriptionKey = findItemLoreKey(stack);
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
@@ -544,7 +549,7 @@ public class ModHelpers {
                 tooltip = List.of(descriptionKey.toText());
             }
             else return false;
-            tooltip = tooltip.stream().map(text -> (Text)text.copy().setStyle(ModStyle.ITEM_DESCRIPTIONS)).toList();
+            tooltip = tooltip.stream().map(text -> (Component)text.copy().setStyle(ModStyle.ITEM_DESCRIPTIONS)).toList();
             if (showItemDescriptions())
                 lines.addAll(tooltip);
             else return descriptionKey.hasTranslation();
@@ -552,10 +557,10 @@ public class ModHelpers {
         return false;
     }
 
-    public static void fixItemDescription(ItemStack stack, List<Text> lines) {
+    public static void fixItemDescription(ItemStack stack, List<Component> lines) {
         if (ModClient.CONFIG.itemDescriptions.value() && showItemDescriptions()) {
             //Find and wrap tooltip. Will be disabled if TooltipFix is installed.
-            List<Text> tooltip;
+            List<Component> tooltip;
             DescriptionKey descriptionKey = findItemLoreKey(stack);
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
@@ -566,8 +571,8 @@ public class ModHelpers {
                 // Required for lambda comparison.
                 int finalI = i;
                 // Check if any of the tooltips' content matches the current line's content.
-                if (tooltip.stream().anyMatch(text -> text.getContent().equals(lines.get(finalI).getContent()))) {
-                    var newLines = createTooltip(stack.getName(), lines.get(i), useInternalWrapper());
+                if (tooltip.stream().anyMatch(text -> text.getContents().equals(lines.get(finalI).getContents()))) {
+                    var newLines = createTooltip(stack.getDisplayName(), lines.get(i), useInternalWrapper());
                     lines.set(i, newLines.get(0));
                     if (newLines.size() > 1) {
                         lines.addAll(i+1, newLines.subList(1, newLines.size()));
@@ -582,7 +587,7 @@ public class ModHelpers {
      * Check if an Item Stack has a particular component.
      */
     //? if =1.20.6 {
-    /*public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
+    /*public static boolean hasComponent(ItemStack stack, DataDataComponentType<?> type) {
         return stack.getComponents().contains(type);
     }
     *///?}
@@ -590,12 +595,9 @@ public class ModHelpers {
     /**
      * Check if an Item Stack has a particular component.
      */
-    //? if >1.21.4 {
-    @ExpectPlatform
-    //?}
     //? if >1.21 {
-    public static boolean hasComponent(ItemStack stack, ComponentType<?> type) {
-        return stack.getComponents().contains(type);
+    public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
+        return stack.getComponents().has(type);
     }
     //?}
 
@@ -604,9 +606,9 @@ public class ModHelpers {
      */
     public static DescriptionKey getProfile(ItemStack stack) {
         //? if >1.20.5 {
-        var optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponentTypes.PROFILE)).name()).orElse("");
+        var optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponents.PROFILE)).name()).orElse("");
         //?} else {
-        /*var optionalProfileName = Objects.requireNonNull(stack.getNbt().get("CUSTOM_MODEL_DATA")).toString();
+        /*var optionalProfileName = Objects.requireNonNull(stack.getTag().get("CUSTOM_MODEL_DATA")).toString();
          *///?}
         if (!optionalProfileName.isEmpty()) {
             DescriptionKey profileKey = getLoreKey(stack);
@@ -625,9 +627,9 @@ public class ModHelpers {
         String optionalProfileName;
         try {
             //? if >1.20.5 {
-            optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).name().orElse("");
+            optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwnerProfile()).name().orElse("");
             //?} else
-            /*optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwner()).getName();*/
+            /*optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwnerProfile()).getName();*/
         }
         catch (NullPointerException nullPointerException) {
             return loreKey;
@@ -668,7 +670,7 @@ public class ModHelpers {
         return ModClient.CONFIG.effectDescriptions.enable.value() && useInternalEffectDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.effectDescriptions.displayAlways.value());
     }
 
-    public static void createDescriptionsFromItemStack(ItemStack stack, List<Text> lines) {
+    public static void createDescriptionsFromItemStack(ItemStack stack, List<Component> lines) {
         if (ModClient.CONFIG.developerOptions.hideOtherTooltips.value() || ModLists.hidden_items.contains(stack.getItem())) {
             var first = lines.get(0);
             lines.clear();
@@ -686,14 +688,14 @@ public class ModHelpers {
         }
     }
 
-    private static void addModName(ItemStack stack, List<Text> lines) {
+    private static void addModName(ItemStack stack, List<Component> lines) {
         //? if >1.20 {
-        var registry = Registries.ITEM;
+        var registry = BuiltInRegistries.ITEM;
         //?} else {
         /*var registry = Registry.ITEM;
          *///?}
-        String namespace = registry.getId(stack.getItem()).getNamespace();
-        MutableText text = translatableWithFallback("modmenu.nameTranslation."+namespace, getModName(stack, namespace));
+        String namespace = registry.getKey(stack.getItem()).getNamespace();
+        MutableComponent text = translatableWithFallback("modmenu.nameTranslation."+namespace, getModName(stack, namespace));
         lines.add(text.setStyle(ModStyle.MOD_NAME));
     }
 
@@ -702,40 +704,40 @@ public class ModHelpers {
         throw new AssertionError();
     }
 
-    public static MutableText translatableWithFallback(String translatable, String fallback) {
+    public static MutableComponent translatableWithFallback(String translatable, String fallback) {
         //? if >1.20 {
-        return Text.translatableWithFallback(translatable, fallback);
+        return Component.translatableWithFallback(translatable, fallback);
          //?} else {
         /*if (ModHelpers.hasTranslation(translatable)) {
-            return Text.translatable(translatable);
+            return Component.translatable(translatable);
         }
-        return Text.literal(fallback);
+        return Component.literal(fallback);
         *///?}
     }
 
     private static boolean checkForEffectDescription(ItemStack stack) {
         //? if >1.20.5 {
-        if (hasComponent(stack, DataComponentTypes.POTION_CONTENTS)) {
-            var contents = stack.getComponents().get(DataComponentTypes.POTION_CONTENTS);
+        if (hasComponent(stack, DataComponents.POTION_CONTENTS)) {
+            var contents = stack.getComponents().get(DataComponents.POTION_CONTENTS);
             if (contents == null) return false;
-            for (StatusEffectInstance effect : contents.getEffects()) {
-                var key = new DescriptionKey(effect.getTranslationKey());
+            for (MobEffectInstance effect : contents.getAllEffects()) {
+                var key = new DescriptionKey(effect.getDescriptionId());
                 if (key.hasTranslation()) {
                     return true;
                 }
             }
         }
         //?} else {
-        /*if (stack.hasNbt()) {
-            assert stack.getNbt() != null;
-            String potion = stack.getNbt().getString("Potion");
-            return new DescriptionKey("effect", new Identifier(potion)).hasTranslation();
+        /*if (stack.hasTag()) {
+            assert stack.getTag() != null;
+            String potion = stack.getTag().getString("Potion");
+            return new DescriptionKey("effect", new ResourceLocation(potion)).hasTranslation();
         }
         *///?}
         return false;
     }
 
-    public static void fixItemStackDescriptionTooltip(ItemStack stack, List<Text> lines) {
+    public static void fixItemStackDescriptionTooltip(ItemStack stack, List<Component> lines) {
         if (!useInternalWrapper())
             return;
         fixEnchantmentDescription(stack, lines);
@@ -827,17 +829,17 @@ public class ModHelpers {
      */
     public static @NotNull DescriptionKey getDescriptionKey(Object object) {
         if (object instanceof ItemStack stack) {
-            return convertToLoreKey(stack.getItem().getTranslationKey());
+            return convertToLoreKey(stack.getItem().getDescriptionId());
         } else if (object instanceof BlockState blockState) {
-            return convertToLoreKey(blockState.getBlock().getTranslationKey());
+            return convertToLoreKey(blockState.getBlock().getDescriptionId());
         } else if (object instanceof Block block) {
-            return convertToLoreKey(block.getTranslationKey());
+            return convertToLoreKey(block.getDescriptionId());
         } else if (object instanceof EntityType<?> entityType) {
-            return convertToLoreKey(entityType.getTranslationKey());
+            return convertToLoreKey(entityType.getDescriptionId());
         } else if (object instanceof Entity entity) {
             return convertToLoreKey(getEntityTranslationKey(entity));
-        } else if (object instanceof StatusEffect effect) {
-            return new DescriptionKey(effect.getTranslationKey());
+        } else if (object instanceof MobEffect effect) {
+            return new DescriptionKey(effect.getDescriptionId());
         } else if (object instanceof Enchantment enchantment) {
             return getEnchantmentDescriptionKey(enchantment);
         }
@@ -846,9 +848,9 @@ public class ModHelpers {
 
     public static DescriptionKey getEnchantmentDescriptionKey(Enchantment enchantment) {
         //? if >1.21 {
-        return enchantment.description().getContent() instanceof TranslatableTextContent translatable ? new DescriptionKey(translatable.getKey()) : DescriptionKey.empty();
+        return enchantment.description().getContents() instanceof TranslatableContents translatable ? new DescriptionKey(translatable.getKey()) : DescriptionKey.empty();
          //?} else
-        /*return new DescriptionKey(enchantment.getTranslationKey());*/
+        /*return new DescriptionKey(enchantment.getDescriptionId());*/
     }
 
     /**
@@ -856,9 +858,9 @@ public class ModHelpers {
      */
     public static String getEntityTranslationKey(Entity entity) {
         //Allow for custom player descriptions
-        if (entity instanceof PlayerEntity) {
+        if (entity instanceof Player) {
             //? if >1.21 {
-            String playerKey = "entity.minecraft.player.%s".formatted(entity.getName().getLiteralString());;
+            String playerKey = "entity.minecraft.player.%s".formatted(entity.getName().tryCollapseToString());;
             //?} else
             /*String playerKey = "entity.minecraft.player." + entity.getName().getString();;*/
             //Check if a custom player description exists.
@@ -866,7 +868,7 @@ public class ModHelpers {
             //If not, use the default one.
             else return "entity.minecraft.player";
         } else {
-            return entity.getType().getTranslationKey();
+            return entity.getType().getDescriptionId();
         }
     }
 
@@ -875,7 +877,7 @@ public class ModHelpers {
      *
      * @param loreKey The translation key that will be translated and wrapped.
      */
-    public static List<Text> createTooltip(Text name, DescriptionKey loreKey) {
+    public static List<Component> createTooltip(Component name, DescriptionKey loreKey) {
         return createTooltip(name, loreKey.toString(), true);
     }
 
@@ -884,7 +886,7 @@ public class ModHelpers {
      *
      * @param loreKey The translation key that will be translated and wrapped.
      */
-    public static List<Text> createTooltip(Text name, String loreKey) {
+    public static List<Component> createTooltip(Component name, String loreKey) {
         return createTooltip(name, loreKey, true);
     }
 
@@ -893,16 +895,16 @@ public class ModHelpers {
      * @param loreKey The translation key that will be translated.
      * @param wrap Whether to use the built-in wrapper.
      */
-    public static List<Text> createTooltip(Text name, String loreKey, boolean wrap) {
+    public static List<Component> createTooltip(Component name, String loreKey, boolean wrap) {
         return createTooltip(name, loreKey, wrap, ModStyle.ITEM_DESCRIPTIONS);
     }
 
 
-    public static List<Text> createTooltip(Text name, Text text, boolean wrap) {
+    public static List<Component> createTooltip(Component name, Component text, boolean wrap) {
         if (!wrap || text.getString().isEmpty())
             return List.of(text);
         //Setup list to store (potentially multi-line) tooltip.
-        ArrayList<Text> lines = new ArrayList<>();
+        ArrayList<Component> lines = new ArrayList<>();
         //Check if the key exists.
         wrapTooltip(name, lines, List.of(text));
         resetWrapValues();
@@ -916,20 +918,20 @@ public class ModHelpers {
      * @param wrap    Whether to use the built-in wrapper.
      * @param style   How to style the text content
      */
-    public static List<Text> createTooltip(Text name, String loreKey, boolean wrap, Style style) {
+    public static List<Component> createTooltip(Component name, String loreKey, boolean wrap, Style style) {
         //Setup list to store (potentially multi-line) tooltip.
-        ArrayList<Text> lines = new ArrayList<>();
+        ArrayList<Component> lines = new ArrayList<>();
         //Check if the key exists.
         if (!loreKey.isBlank()) {
             //Translate the lore key.
-            String translatedKey = translate(loreKey);
+            String translatedKey = I18n.get(loreKey);
             //Check if the translated key exists.
             if (hasTranslation(loreKey)) {
                 if (!wrap) {
-                    if (!translatedKey.isBlank()) lines.add(Text.translatable(loreKey).setStyle(style));
+                    if (!translatedKey.isBlank()) lines.add(Component.translatable(loreKey).setStyle(style));
                 }
                 else {
-                    wrapTooltip(name, lines, List.of(Text.literal(translatedKey).setStyle(style)));
+                    wrapTooltip(name, lines, List.of(Component.literal(translatedKey).setStyle(style)));
                     resetWrapValues();
                 }
             }
@@ -941,7 +943,7 @@ public class ModHelpers {
     private static int lineTextWidth = 0;
     // This is a hook for any mod that wishes to indent the description text while it is translatable.
     private static boolean shouldIndent = false;
-    private static Text indentationText = null;
+    private static Component indentationText = null;
 
     private static void resetWrapValues() {
         lineTextWidth = 0;
@@ -952,20 +954,20 @@ public class ModHelpers {
     /**
      * An internal method for wrapping this tooltip.
      * @param lines The lines for the final tooltip.
-     * @param keys Any contents that make up this text object. Obtained through {@link Text#getSiblings()}.
+     * @param keys Any contents that make up this text object. Obtained through {@link Component#getSiblings()}.
      */
-    private static void wrapTooltip(Text name, List<Text> lines, List<Text> keys) {
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    private static void wrapTooltip(Component name, List<Component> lines, List<Component> keys) {
+        Font textRenderer = Minecraft.getInstance().font;
         if (textRenderer != null && ModClient.CONFIG.style.length.value() != 0) {
-            int maxLength = Math.max(ModClient.CONFIG.style.length.value(), textRenderer.getWidth(name));
-            for (Text originalText : keys) {
+            int maxLength = Math.max(ModClient.CONFIG.style.length.value(), textRenderer.width(name));
+            for (Component originalText : keys) {
                 // Get the text without siblings, as they're individually handled after the initial content.
-                Text translated = originalText.copyContentOnly().setStyle(originalText.getStyle());
-                if (translated.getContent() instanceof TranslatableTextContent translatable)
-                    translated = Text.literal(translate(translatable.getKey())).setStyle(translated.getStyle());
+                Component translated = originalText.plainCopy().setStyle(originalText.getStyle());
+                if (translated.getContents() instanceof TranslatableContents translatable)
+                    translated = Component.literal(I18n.get(translatable.getKey())).setStyle(translated.getStyle());
 
                 if (shouldIndent && translated.getString().isBlank() && !translated.getString().isEmpty()) {
-                    indentationText = originalText.copyContentOnly();
+                    indentationText = originalText.plainCopy();
                     // Before moving onto the next bit of text, handle any siblings of the original text.
                     wrapTooltip(name, lines, originalText.getSiblings());
                     shouldIndent = false;
@@ -973,7 +975,7 @@ public class ModHelpers {
                 }
                 shouldIndent = false;
                 //Any tooltip longer than XX pixels should be shortened.
-                while (lineTextWidth + textRenderer.getWidth(translated) >= maxLength && translated.getString().contains(" ")) {
+                while (lineTextWidth + textRenderer.width(translated) >= maxLength && translated.getString().contains(" ")) {
                     // Reset the line width.
                     lineTextWidth = 0;
                     // Remove the line substring from the start of the remaining string. Repeat.
@@ -982,18 +984,18 @@ public class ModHelpers {
                 //Add the remainder of this tooltip text.
                 if (!translated.getString().isEmpty()) {
                     //Any additional tooltip less than XX pixels should be merged and shortened.
-                    if (!lines.isEmpty() && lines.size() > 1 && textRenderer.getWidth(lines.get(lines.size() - 1)) + textRenderer.getWidth(translated) < maxLength && translated.getString().contains(" ")) {
+                    if (!lines.isEmpty() && lines.size() > 1 && textRenderer.width(lines.get(lines.size() - 1)) + textRenderer.width(translated) < maxLength && translated.getString().contains(" ")) {
                         // Remove the previous text...
-                        Text oldText = lines.remove(lines.size() - 1);
+                        Component oldText = lines.remove(lines.size() - 1);
                         // And merge it into the new one.
-                        Text newText = oldText.copy().append(translated);
+                        Component newText = oldText.copy().append(translated);
                         // Create a new line with the merged text object.
                         createNewLine(lines, newText, textRenderer, maxLength);
                         // Set the text line width
                         lineTextWidth = 0;
                     } else {
                         // Set the text line width
-                        lineTextWidth = textRenderer.getWidth(translated);
+                        lineTextWidth = textRenderer.width(translated);
                         createNewLine(lines, translated, textRenderer, maxLength);
                     }
                 }
@@ -1004,17 +1006,17 @@ public class ModHelpers {
         }
     }
 
-    private static Text createNewLine(List<Text> lines, Text text, TextRenderer textRenderer, int maxLength) {
+    private static Component createNewLine(List<Component> lines, Component text, Font textRenderer, int maxLength) {
         int lineLength = text.getString().length();
         // Find where to end this line, starting from the remaining string.
         if (text.getString().contains("\n")) {
             lineLength = text.getString().indexOf("\n");
         } else {
-            while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.getWidth(Text.literal(text.getString().substring(0, lineLength))) >= maxLength) {
+            while (text.getString().substring(0, lineLength).contains(" ") && textRenderer.width(Component.literal(text.getString().substring(0, lineLength))) >= maxLength) {
                 lineLength = getIndex(text.getString(), lineLength);
             }
         }
-        Text newLine = subText(text, 0, lineLength);
+        Component newLine = subText(text, 0, lineLength);
         if (indentationText != null) {
             newLine = indentationText.copy().append(newLine);
         }
@@ -1024,16 +1026,16 @@ public class ModHelpers {
         return subText(text, lineLength + 1);
     }
 
-    private static Text subText(Text text, int beginIndex) {
+    private static Component subText(Component text, int beginIndex) {
         return subText(text, beginIndex, text.getString().length());
     }
 
-    private static Text subText(Text text, int beginIndex, int endIndex) {
+    private static Component subText(Component text, int beginIndex, int endIndex) {
         return subText(text, beginIndex, endIndex, 0);
     }
 
-    private static Text subText(Text text, int beginIndex, int endIndex, int currentIndex) {
-        MutableText mutable = text.copyContentOnly();
+    private static Component subText(Component text, int beginIndex, int endIndex, int currentIndex) {
+        MutableComponent mutable = text.plainCopy();
 
         if (beginIndex > mutable.getString().length()) {
             beginIndex -= mutable.getString().length();
@@ -1042,17 +1044,17 @@ public class ModHelpers {
             // Substring the beginning index.
             String string = mutable.getString();
             string = string.substring(beginIndex, Math.min(endIndex - currentIndex, string.length()));
-            mutable = Text.literal(string).setStyle(text.getStyle());
+            mutable = Component.literal(string).setStyle(text.getStyle());
             currentIndex += string.length();
         }
 
         if (currentIndex >= endIndex)
             return mutable;
 
-        for (Text sibling : text.getSiblings()) {
+        for (Component sibling : text.getSiblings()) {
             if (currentIndex >= endIndex)
                 break;
-            Text subTextSibling = subText(sibling, beginIndex, endIndex, currentIndex);
+            Component subTextSibling = subText(sibling, beginIndex, endIndex, currentIndex);
             currentIndex += subTextSibling.getString().length();
             mutable.append(subTextSibling);
         }
@@ -1064,8 +1066,8 @@ public class ModHelpers {
     /**
      * Automatically generate translation keys for config options.
      */
-    public static Text fieldName(TrackedValue<?> field) {
-        return Text.translatable("config.%s.%s".formatted(MOD_ID, toSnakeCase(field.key().toString())));
+    public static Component fieldName(TrackedValue<?> field) {
+        return Component.translatable("config.%s.%s".formatted(MOD_ID, toSnakeCase(field.key().toString())));
     }
 
     public static String toSnakeCase(String field) {
@@ -1076,9 +1078,9 @@ public class ModHelpers {
      * Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
      */
 
-    public static Text[] fieldTooltip(TrackedValue<?> field) {
+    public static Component[] fieldTooltip(TrackedValue<?> field) {
         String tooltipKey = "config.%s.%s.tooltip".formatted(MOD_ID, toSnakeCase(field.key().toString()));
-        return createTooltip(Text.empty(), tooltipKey).toArray(new Text[0]);
+        return createTooltip(Component.empty(), tooltipKey).toArray(new Component[0]);
     }
 
     /**
@@ -1109,22 +1111,31 @@ public class ModHelpers {
     }
 
     private static <T> void addMissingTranslations(Registry<T> registry, Map<String, Map<String, String>> namespaces, Function<T, ?> valueTransform) {
-        for (RegistryKey<T> key : registry.getKeys()) {
-            Object value = valueTransform.apply(registry.get(key));
+        for (ResourceKey<T> key : registry.registryKeySet()) {
+            Object value = valueTransform.apply
+            //? if >=1.21.2 {
+            (registry.getValue(key));
+            //?} else {
+            /*(registry.get(key));
+            *///?}
             DescriptionKey description = getDescriptionKey(value);
-            List<String> keys = new ArrayList<>(TagHelpers.findAllPotentialKeys(value).stream().map(Text::getString).toList());
+            List<String> keys = new ArrayList<>(TagHelpers.findAllPotentialKeys(value).stream().map(Component::getString).toList());
             if (description.isEmpty()) {
-              LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getKey().getValue(), key.getValue());
-            } else if (keys.stream().noneMatch(I18n::hasTranslation)) {
+                //? if >=1.21 {
+                 LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), key.location());
+                 //?} else {
+                /*LOGGER.warn("[Item Descriptions] Couldn't get lore key for: {}!", key.location());
+                *///?}
+            } else if (keys.stream().noneMatch(I18n::exists)) {
                 keys.remove(description.asLoreTranslation());
                 if (value instanceof ItemStack stack) keys.remove(getModdedNameMatch(stack).asLoreTranslation()); // Ugly
-                namespaces.computeIfAbsent(key.getValue().getNamespace(), k -> new TreeMap<>()).put(description.asDescriptionTranslation(), " ??? %s".formatted(String.join(", ", keys)));
+                namespaces.computeIfAbsent(key.location().getNamespace(), k -> new TreeMap<>()).put(description.asDescriptionTranslation(), " ??? %s".formatted(String.join(", ", keys)));
             }
         }
     }
     
     public interface RegistryGetter {
-        <E> Optional<? extends Registry<E>> get(RegistryKey<? extends Registry<? extends E>> key);
+        <E> Optional<? extends Registry<E>> get(ResourceKey<? extends Registry<? extends E>> key);
     }
 
     @SuppressWarnings("unchecked")
@@ -1133,11 +1144,11 @@ public class ModHelpers {
         File folder = getMissingTranslationsPath();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Map<String, Map<String, String>> namespaces = new HashMap<>();
-        addMissingTranslations((Registry<EntityType<?>>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "entity_type"))).orElse(null), namespaces, Function.identity());
-        addMissingTranslations((Registry<Item>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "item"))).orElse(null), namespaces, Item::getDefaultStack);
-        addMissingTranslations((Registry<Enchantment>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "enchantment"))).orElse(null), namespaces, Function.identity());
-        addMissingTranslations((Registry<Block>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "block"))).orElse(null), namespaces, Block::getDefaultState); // Blocks will overwrite items
-        addMissingTranslations((Registry<StatusEffect>) (Object) registryGetter.get(RegistryKey.ofRegistry(Identifier.of("minecraft", "mob_effect"))).orElse(null), namespaces, Function.identity());
+        addMissingTranslations((Registry<EntityType<?>>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","entity_type"))).orElse(null), namespaces, Function.identity());
+        addMissingTranslations((Registry<Item>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft", "item"))).orElse(null), namespaces, Item::getDefaultInstance);
+        addMissingTranslations((Registry<Enchantment>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","enchantment"))).orElse(null), namespaces, Function.identity());
+        addMissingTranslations((Registry<Block>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","block"))).orElse(null), namespaces, Block::defaultBlockState); // Blocks will overwrite items
+        addMissingTranslations((Registry<MobEffect>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","mob_effect"))).orElse(null), namespaces, Function.identity());
         for (Map.Entry<String, Map<String, String>> entry : namespaces.entrySet()) {
             String namespace = entry.getKey();
             Map<String, String> map = entry.getValue();

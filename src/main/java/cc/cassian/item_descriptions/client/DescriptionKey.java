@@ -1,9 +1,9 @@
 package cc.cassian.item_descriptions.client;
 
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.MutableText;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
@@ -27,25 +27,25 @@ public class DescriptionKey {
         this.suffix = suffix;
     }
 
-    public DescriptionKey(Identifier identifier) {
+    public DescriptionKey(ResourceLocation ResourceLocation) {
         this.type = "lore";
-        this.namespace = identifier.getNamespace();
-        this.path = identifier.getPath();
+        this.namespace = ResourceLocation.getNamespace();
+        this.path = ResourceLocation.getPath();
         this.suffix = "";
     }
 
-    public DescriptionKey(String identifier) {
-        var id = identifier.split("\\.");
+    public DescriptionKey(String ResourceLocation) {
+        var id = ResourceLocation.split("\\.");
         this.type = id[0];
         this.namespace = id[1];
         this.path = id[2];
         this.suffix = "";
     }
 
-    public DescriptionKey(String type, Identifier identifier) {
+    public DescriptionKey(String type, ResourceLocation ResourceLocation) {
         this.type = type;
-        this.namespace = identifier.getNamespace();
-        this.path = identifier.getPath();
+        this.namespace = ResourceLocation.getNamespace();
+        this.path = ResourceLocation.getPath();
         this.suffix = "";
     }
 
@@ -153,13 +153,13 @@ public class DescriptionKey {
         else return asLoreTranslation();
     }
 
-    public MutableText toText() {
+    public MutableComponent toText() {
         var newAdd = toString();
         return ModHelpers.translatableWithFallback(newAdd, newAdd);
     }
 
     public boolean hasTranslation() {
         if (ModClient.CONFIG.developerOptions.showUntranslated.value()) return true;
-        return I18n.hasTranslation(toString());
+        return I18n.exists(toString());
     }
 }

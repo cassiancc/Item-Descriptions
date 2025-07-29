@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -34,8 +34,12 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         });
 
         if (ModClient.CONFIG.developerOptions.generateMissing.value()) {
-            CommonLifecycleEvents.TAGS_LOADED.register(Identifier.of(ModClient.MOD_ID, "missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
-                    manager::getOptional
+            CommonLifecycleEvents.TAGS_LOADED.register(ModHelpers.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
+                    //? if >=1.21.2 {
+                    manager::lookup
+                     //?} else {
+                    /*manager::registry
+            *///?}
             ));
         }
         ItemTooltipCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, FABRIC_EVENT_PHASE);
@@ -50,8 +54,8 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
             ModLists.loadLists();
         }));
         //? if >1.21.1 {
-        ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register(((minecraftClient, clientWorld) -> {
-            ModClient.lookup = clientWorld.getRegistryManager();
+        ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register(((minecraftClient, clientLevel) -> {
+            ModClient.lookup = clientLevel.registryAccess();
         }));
         //?}
     }

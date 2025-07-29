@@ -4,9 +4,9 @@ import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import mcp.mobius.waila.api.*;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Block;
 
 import java.util.List;
 
@@ -30,14 +30,14 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
     public void appendBody(ITooltip lines, IBlockAccessor blockAccessor, IPluginConfig config) {
         //Check if block descriptions are enabled in mod config.
         if (showBlockDescriptions() && config.getBoolean(BLOCK_DESCRIPTIONS)) {
-            List<Text> tooltip;
+            List<Component> tooltip;
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
                 tooltip = createTooltip(blockAccessor.getBlock().getName(), createBlockDescription(blockAccessor.getBlock(), blockAccessor.getWorld(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
             }
-            for (Text text : tooltip) {
+            for (Component text : tooltip) {
                 lines.addLine(text);
             }
         }
@@ -47,14 +47,14 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
     public void appendBody(ITooltip lines, IEntityAccessor entityAccessor, IPluginConfig config) {
         //Check if entity descriptions are enabled in mod config.
         if (showEntityDescriptions()  && config.getBoolean(ENTITY_DESCRIPTIONS)) {
-            List<Text> tooltip;
+            List<Component> tooltip;
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());
             }
             else {
                 tooltip = createEntityDescription(entityAccessor.getEntity());
             }
-            for (Text text : tooltip) {
+            for (Component text : tooltip) {
                 lines.addLine(text);
             }
         }

@@ -2,8 +2,8 @@ package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -20,21 +20,21 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
     public void appendTooltip(ITooltip lines, EntityAccessor entityAccessor, IPluginConfig iPluginConfig) {
         //Check if entity descriptions are enabled in mod config.
         if (showEntityDescriptions()) {
-            List<Text> tooltip;
+            List<Component> tooltip;
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());
             }
             else {
                 tooltip = createEntityDescription(entityAccessor.getEntity());
             }
-            for (Text text : tooltip) {
+            for (Component text : tooltip) {
                 lines.add(text);
             }
         }
     }
 
     @Override
-    public Identifier getUid() {
+    public ResourceLocation getUid() {
         return ModClient.ENTITY_DESCRIPTIONS;
     }
 

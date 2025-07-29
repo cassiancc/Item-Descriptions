@@ -1,8 +1,8 @@
 package cc.cassian.item_descriptions.client.helpers.forge;
 
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.LoadingModList;

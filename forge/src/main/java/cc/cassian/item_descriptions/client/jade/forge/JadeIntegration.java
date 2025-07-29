@@ -2,8 +2,8 @@ package cc.cassian.item_descriptions.client.jade.forge;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.jade.*;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Block;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;

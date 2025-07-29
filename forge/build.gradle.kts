@@ -58,7 +58,10 @@ val mcVersion = stonecutter.current.project.substringBeforeLast('-')
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
-    mappings("net.fabricmc:yarn:$minecraft+build.${common.mod.dep("yarn_build")}:v2")
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${common.mod.dep("parchment")}@zip")
+    })
     "forge"("net.minecraftforge:forge:$minecraft-${common.mod.dep("forge_loader")}")
     "io.github.llamalad7:mixinextras-forge:${mod.dep("mixin_extras")}".let {
         implementation(it)

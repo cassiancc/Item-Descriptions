@@ -21,7 +21,7 @@ public class ItemDescriptionsMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.endsWith("StatusEffectsDisplayMixin")) {
+        if (mixinClassName.endsWith("MobEffectsDisplayMixin")) {
             return !(ModHelpers.isLoadingLoaded("effectdescriptions") || ModHelpers.isLoadingLoaded("idwtialsimmoedm"));
         }
         return true;

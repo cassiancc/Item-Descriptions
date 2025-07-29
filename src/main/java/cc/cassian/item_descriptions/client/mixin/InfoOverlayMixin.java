@@ -3,11 +3,11 @@ package cc.cassian.item_descriptions.client.mixin;
 import com.brokenkeyboard.usefulspyglass.InfoOverlay;
 import com.brokenkeyboard.usefulspyglass.TooltipInfo;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.hit.HitResult;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.phys.HitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,9 +27,9 @@ public class InfoOverlayMixin {
     private static void spyglassEntityDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local LivingEntity entity) {
         if (showEntityDescriptions()) {
             //Create and add tooltip.
-            List<Text> tooltip = createTooltip(entity.getName(), findEntityLoreKey(entity));
-            for (Text text : tooltip) {
-                tooltipList.add(new TooltipInfo.TextTooltip(TooltipComponent.of(text.asOrderedText())));
+            List<Component> tooltip = createTooltip(entity.getName(), findEntityLoreKey(entity));
+            for (Component text : tooltip) {
+                tooltipList.add(new TooltipInfo.TextTooltip(ClientTooltipComponent.create(text.getVisualOrderText())));
             }
         }
     }
@@ -38,9 +38,9 @@ public class InfoOverlayMixin {
     private static void spyglassBlockDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local BlockState state) {
         if (showBlockDescriptions()) {
             //Create and add tooltip.
-            List<Text> tooltip = createTooltip(state.getBlock().getName(), findBlockLoreKey(state.getBlock()));
-            for (Text text : tooltip) {
-                tooltipList.add(new TooltipInfo.BlockInfo(TooltipComponent.of(text.asOrderedText())));
+            List<Component> tooltip = createTooltip(state.getBlock().getName(), findBlockLoreKey(state.getBlock()));
+            for (Component text : tooltip) {
+                tooltipList.add(new TooltipInfo.BlockInfo(ClientTooltipComponent.create(text.getVisualOrderText())));
             }
         }
     }

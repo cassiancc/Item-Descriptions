@@ -3,7 +3,7 @@ package cc.cassian.item_descriptions.client.config.neoforge;
 
 import cc.cassian.item_descriptions.client.config.ClothConfigFactory;
 import cc.cassian.item_descriptions.client.config.YetAnotherConfigFactory;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.jetbrains.annotations.NotNull;
