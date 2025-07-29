@@ -117,3 +117,5 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+!versions/1.20.1/libs/Quark-4.0-463-deobf.jar
+!versions/1.21.1/libs/Quark-4.0-463.jar

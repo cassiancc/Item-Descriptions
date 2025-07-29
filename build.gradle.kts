@@ -27,6 +27,7 @@ repositories {
     maven ( "https://repo.sleeping.town/" ) // Kaleido Config
     maven ( "https://maven.isxander.dev/releases") // YACL
     maven ( "https://maven.parchmentmc.org") // Parchment
+    flatDir { dirs("libs") }
 }
 
 dependencies {
@@ -59,6 +60,12 @@ dependencies {
 
     if (stonecutter.eval(mcVersion, ">1.21")) {
         modCompileOnly("eu.pb4:polymer-core:${mod.dep("polymer")}")
+    }
+    if (stonecutter.eval(mcVersion, "=1.21.1")) {
+        modCompileOnly("maven.local:quark:4.0-463")
+    }
+    if (stonecutter.eval(mcVersion, "=1.20.1")) {
+        modCompileOnly("maven.local:quark:4.0-463-deobf")
     }
 
 }

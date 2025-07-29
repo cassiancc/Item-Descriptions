@@ -68,3 +68,5 @@ The interface used was inspired by the one present in the Better Than Adventure 
 The code for reading an item's enchantments is based on code present in [idwtialsimmoedm](https://modrinth.com/mod/idwtialsimmoedm) under its [MIT License](https://github.com/gliscowo/idwtialsimmoedm/blob/1.21/LICENSE).
 
 For Polymer support, some code was copied from Polymer under its [LGPL License](https://github.com/Patbox/polymer/blob/dev/1.21.4/LICENSE).
+
+This repository contains a compiled JAR of Quark to allow for the mod to be compiled against. Quark is distributed here in accordance with its [Attribution-NonCommercial-ShareAlike 3.0 Unported License](https://github.com/VazkiiMods/Quark/blob/master/LICENSE.md).
