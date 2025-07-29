@@ -138,6 +138,10 @@ public class ModConfig extends ReflectiveConfig {
         @Comment("By default, descriptions are shown on all enchanted items. Disable if this should only apply to books.")
         public final TrackedValue<Boolean> onlyShowOnBooks = this.value(false);
 
+        @SerializedName("only_enchantment_descriptions_on_books")
+        @Comment("Hide Item Descriptions on Enchanted Books, since they'll always have an Enchantment Description.")
+        public final TrackedValue<Boolean> onlyEnchantmentDescriptionsOnBooks = this.value(true);
+
         @SerializedName("show_in_table")
         @Comment("Show Enchantment Descriptions in the Enchanting Table")
         public final TrackedValue<Boolean> enchantingTable = this.value(true);

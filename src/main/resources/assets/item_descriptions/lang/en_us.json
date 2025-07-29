@@ -32,6 +32,8 @@
   "config.item-descriptions.enchantment_descriptions.display_always.tooltip": "By default, descriptions are only shown when a keybind is pressed. This is intended, but can be changed so that they are always visible.",
   "config.item-descriptions.enchantment_descriptions.only_show_on_books": "Only show on books",
   "config.item-descriptions.enchantment_descriptions.only_show_on_books.tooltip": "By default, descriptions are shown on all enchanted items. Disable if this should only apply to books.",
+  "config.item-descriptions.enchantment_descriptions.only_enchantment_descriptions_on_books": "Only Enchantment Descriptions on Books",
+  "config.item-descriptions.enchantment_descriptions.only_enchantment_descriptions_on_books.tooltip": "Without this setting enabled, both Item Descriptions and Enchantment Descriptions are shown on Enchanted Books. Disable if you want to see both.",
   "config.item-descriptions.entity_descriptions.show_always": "Always show Entity Descriptions",
   "config.item-descriptions.entity_descriptions.show_always.tooltip": "By default, descriptions are only shown when a keybind is pressed. This is intended, but can be changed so that they are always visible.",
   "config.item-descriptions.enchantment_descriptions.enable": "Enable Enchantment Descriptions",

@@ -234,6 +234,9 @@ public class ModHelpers {
      */
     public static DescriptionKey findItemLoreKey(ItemStack stack) {
         //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
+        if (ModClient.CONFIG.enchantmentDescriptions.onlyEnchantmentDescriptionsOnBooks.value() && stack.isOf(Items.ENCHANTED_BOOK)) {
+            return DescriptionKey.empty();
+        }
         //? if >1.21 {
         if (PolymerHelpers.getServerIdentifier(stack) != null) {
             return new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
