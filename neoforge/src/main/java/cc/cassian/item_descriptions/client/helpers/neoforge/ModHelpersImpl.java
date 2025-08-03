@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.helpers.neoforge;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModContainer;
@@ -33,21 +34,21 @@ public class ModHelpersImpl {
         return savePath.toFile();
     }
 
-    public static String getModName(ItemStack stack, String namespace) {
-        String creatorModId;
+    public static String getModName(ItemStack stack) {
+        String namespace = "minecraft";
         if (Minecraft.getInstance().level != null) {
-            creatorModId = stack.getItem().getCreatorModId(
+            namespace = stack.getItem().getCreatorModId(
                     //? if >=1.21.2 {
                      Minecraft.getInstance().level.registryAccess(),
                      //?}
                    stack);
-            if (creatorModId != null) {
-                namespace = creatorModId;
-            }
         }
+        String key = "modmenu.nameTranslation."+namespace;
         Optional<? extends ModContainer> modContainer = ModList.get().getModContainerById(namespace);
         if (modContainer.isPresent()) {
             return modContainer.get().getModInfo().getDisplayName();
+        } else if (I18n.exists(key)) {
+            return I18n.get(key);
         } else {
             return WordUtils.capitalize(namespace);
         }

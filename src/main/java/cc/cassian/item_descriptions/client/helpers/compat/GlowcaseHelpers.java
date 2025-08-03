@@ -12,9 +12,9 @@ public class GlowcaseHelpers {
     public static ItemStack getItemDisplayContents(BlockEntity blockEntity) {
         if (blockEntity instanceof ItemDisplayBlockEntity be) {
             //? if >1.21.5 {
-            /*return be.getStack();
-            *///?} else
-            return be.getDisplayedStack();
+            return be.getStack();
+            //?} else
+            /*return be.getDisplayedStack();*/
         }
         return null;
     }

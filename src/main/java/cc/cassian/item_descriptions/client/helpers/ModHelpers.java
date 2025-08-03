@@ -691,18 +691,13 @@ public class ModHelpers {
     }
 
     private static void addModName(ItemStack stack, List<Component> lines) {
-        //? if >1.20 {
-        var registry = BuiltInRegistries.ITEM;
-        //?} else {
-        /*var registry = Registry.ITEM;
-         *///?}
-        String namespace = registry.getKey(stack.getItem()).getNamespace();
-        MutableComponent text = translatableWithFallback("modmenu.nameTranslation."+namespace, getModName(stack, namespace));
+        String namespace = getModName(stack);
+        MutableComponent text = Component.literal(namespace);
         lines.add(text.setStyle(ModStyle.MOD_NAME));
     }
 
     @ExpectPlatform
-    public static String getModName(ItemStack stack, String namespace) {
+    public static String getModName(ItemStack stack) {
         throw new AssertionError();
     }
 

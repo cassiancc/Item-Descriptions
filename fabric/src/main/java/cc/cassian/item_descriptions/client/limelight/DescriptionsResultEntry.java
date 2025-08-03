@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.limelight;
 
 //? if 1.21.1 || 1.21.5 {
-import cc.cassian.item_descriptions.client.ModClient;
+/*import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
@@ -61,8 +61,8 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                     //? if >=1.21.2 {
                     .getValue
                      //?} else {
-                    /*.get
-                    *///?}
+                    /^.get
+                    ^///?}
                     (ModHelpers.of(namespace, item)).getDefaultInstance()).toString());
             if (!Objects.requireNonNull(itemStack.tryCollapseToString()).isEmpty()) return itemStack;
         }
@@ -73,8 +73,8 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                     //? if >=1.21.2 {
                     .getValue
                      //?} else {
-                    /*.get
-                    *///?}
+                    /^.get
+                    ^///?}
                     (ModHelpers.of(namespace, item)).getDescriptionId();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
                 if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
@@ -140,4 +140,4 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         return searchKey;
     }
 }
-//?}
+*///?}
