@@ -37,7 +37,9 @@ public class TagHelpers {
             if (item instanceof SpawnEggItem spawnEggItem) {
                 if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
                     EntityType<?> entityType = spawnEggItem.getType(
-                            //? if >1.21.1 {
+                            //? if >1.21.8 {
+                            /*itemStack
+                            *///?} else if >1.21.1 {
                             ModClient.lookup, itemStack
                             //?} else if >1.20.1 {
                             /*itemStack

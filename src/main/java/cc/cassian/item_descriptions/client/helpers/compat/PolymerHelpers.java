@@ -197,6 +197,7 @@ public class PolymerHelpers {
     }
 
     public static ResourceLocation getServerResourceLocation(CustomData nbtData) {
+        //? if 1.21.1 || 1.21.4 || 1.21.5 || =1.21.8 {
         if (nbtData == null) {
             return null;
         }
@@ -212,11 +213,13 @@ public class PolymerHelpers {
 
             }
         }
+        //?}
 
         return null;
     }
 
     public static ResourceLocation getPolymerResourceLocation(CustomData custom) {
+        //? if 1.21.1 || 1.21.4 || 1.21.5 || =1.21.8 {
         if (custom != null && custom.contains(POLYMER_STACK)) {
             try {
                 return custom.read(POLYMER_STACK_ID_CODEC).result().orElse(null);
@@ -224,6 +227,7 @@ public class PolymerHelpers {
 
             }
         }
+        //?}
 
         return null;
     }

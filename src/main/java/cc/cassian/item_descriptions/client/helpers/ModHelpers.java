@@ -263,9 +263,11 @@ public class ModHelpers {
             }
             else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
-                //? if >=1.21.5 {
+                //? if >1.21.8 {
+                /*var variant = toTranslationKey(data.copyTagWithoutId().getStringOr("variant", ""));
+                *///?} else if >=1.21.5 {
                 var variant = toTranslationKey(data.copyTag().getString("variant").orElse(""));
-                 //?} else {
+                //?} else {
                 /*var variant = toTranslationKey(data.copyTag().getString("variant"));
                 *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
