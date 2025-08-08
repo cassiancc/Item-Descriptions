@@ -204,8 +204,8 @@ publishMods {
     curseforge {
         projectId = property("publish.curseforge").toString()
         accessToken = prop.getProperty("curseforge_token")
-        if (stonecutter.eval(mcVersion, "25w19a")) {
-            minecraftVersions.add("1.21.6-snapshot")
+        if (stonecutter.eval(mcVersion, "25w32a")) {
+            minecraftVersions.add("1.21.9-snapshot")
         } else {
             minecraftVersions.add(mcVersion)
         }
