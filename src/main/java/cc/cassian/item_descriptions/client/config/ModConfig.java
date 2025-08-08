@@ -76,6 +76,10 @@ public class ModConfig extends ReflectiveConfig {
         @SerializedName("mod_name_color")
         @Comment("Color of the mod name tooltip")
         public final TrackedValue<String> modNameColor = this.value("Blue");
+
+        @SerializedName("mod_name_italics")
+        @Comment("Whether to italicize the mod name tooltip")
+        public final TrackedValue<Boolean> modNameItalics = this.value(true);
     }
 
     //Keybinds

@@ -30,7 +30,7 @@ public class ModHelpersImpl {
 
     public static String getModName(ItemStack stack) {
         String namespace =
-        //? if >=1.21.8 {
+        //? if >=1.21.8 || =1.21.4 || =1.21.5 || =1.21.1 {
         stack.getCreatorNamespace();
         //?} else {
         /*BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();

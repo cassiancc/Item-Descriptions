@@ -14,7 +14,7 @@ public class ModStyle {
 
     public static void updateStyles() {
         HINT = getStyle(ModClient.CONFIG.hint.color.value()).withItalic(ModClient.CONFIG.hint.italics.value());
-        MOD_NAME = getStyle(ModClient.CONFIG.style.modNameColor.value()).withItalic(true);
+        MOD_NAME = getStyle(ModClient.CONFIG.style.modNameColor.value()).withItalic(ModClient.CONFIG.style.modNameItalics.value());
         ITEM_DESCRIPTIONS = getStyle(ModClient.CONFIG.style.color.value());
         ENCHANTMENT_DESCRIPTIONS = getStyle(ModClient.CONFIG.enchantmentDescriptions.color.value()).withItalic(ModClient.CONFIG.enchantmentDescriptions.italics.value());
         EFFECT_DESCRIPTIONS = getStyle(ModClient.CONFIG.effectDescriptions.color.value());
