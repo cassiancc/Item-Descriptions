@@ -31,23 +31,12 @@ public final class ItemDescriptionsNeoForge {
         //Register config screen.
         registerModsPage();
         eventBus.addListener(ItemDescriptionsNeoForge::loadComplete);
-        //? if >1.21.1 {
-        NeoForge.EVENT_BUS.addListener(ItemDescriptionsNeoForge::worldLoad);
-        //?}
     }
 
     @SubscribeEvent
     public static void loadComplete(FMLClientSetupEvent event) {
         ModLists.loadLists();
     }
-
-    //? if >1.21.1 {
-
-    @SubscribeEvent
-    public static void worldLoad(PlayerEvent.PlayerLoggedInEvent event) {
-        lookup = Minecraft.getInstance().level.registryAccess();
-    }
-    //?}
 
     public void addTooltips() {
         NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);

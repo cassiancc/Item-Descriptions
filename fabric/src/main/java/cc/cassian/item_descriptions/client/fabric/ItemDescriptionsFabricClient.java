@@ -53,10 +53,5 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         ClientLifecycleEvents.CLIENT_STARTED.register((client -> {
             ModLists.loadLists();
         }));
-        //? if >1.21.1 {
-        ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register(((minecraftClient, clientLevel) -> {
-            ModClient.lookup = clientLevel.registryAccess();
-        }));
-        //?}
     }
 }

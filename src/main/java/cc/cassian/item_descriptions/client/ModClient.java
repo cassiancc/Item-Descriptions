@@ -20,10 +20,6 @@ public class ModClient {
     public static final ResourceLocation BLOCK_DESCRIPTIONS = ModHelpers.of("block_descriptions");
     public static final ResourceLocation ENTITY_DESCRIPTIONS = ModHelpers.of("entity_descriptions");
 
-    //? if >1.21.1 {
-    public static RegistryAccess lookup = null;
-    //?}
-
     public static void init() {
         ModStyle.updateStyles();
         ModClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");

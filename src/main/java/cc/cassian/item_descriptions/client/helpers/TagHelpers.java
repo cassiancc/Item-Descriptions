@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -40,7 +41,7 @@ public class TagHelpers {
                             //? if >1.21.8 {
                             /*itemStack
                             *///?} else if >1.21.1 {
-                            ModClient.lookup, itemStack
+                            Minecraft.getInstance().level.registryAccess(), itemStack
                             //?} else if >1.20.1 {
                             /*itemStack
                             *///?} else {
