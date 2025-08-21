@@ -95,7 +95,7 @@ public class ModHelpers {
      * Check if ToolTipFix is installed and its wrapper should be used.
      */
     public static boolean useInternalWrapper() {
-        return true;
+        return !isLoaded("tooltipfix");
     }
 
     /**
