@@ -1,0 +1,38 @@
+# Depending on Item Descriptions
+
+While Item Descriptions is entirely handled via resource packs, mod developers may want to add it to their developer environment in order to easily test against the mod. For that reason, it is available on my maven.
+
+## gradle.properties
+```gradle
+item_descriptions_version = 2.5.0
+```
+
+## Adding the maven
+```gradle
+repositories {
+    maven {
+        name = "cassian's maven"
+        url = "https://maven.cassian.cc"
+    }
+}
+```
+
+## Fabric
+```gradle
+modImplementation "cc.cassian.item_descriptions:item_descriptions-fabric:${item_descriptions_version}+${minecraft_version}"
+```
+
+## NeoForge
+```gradle
+implementation "cc.cassian.item_descriptions:item_descriptions-neoforge:${item_descriptions_version}+${minecraft_version}"
+```
+
+## Forge
+```gradle
+implementation(fg.deobf("cc.cassian.item_descriptions:item_descriptions-forge:${item_descriptions_version}+${minecraft_version}"))
+```
+
+## Architectury Common
+```gradle
+modImplementation "cc.cassian.item_descriptions:item_descriptions-common:${item_descriptions_version}+${minecraft_version}"
+```

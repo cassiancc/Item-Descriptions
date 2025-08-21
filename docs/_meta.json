@@ -3,6 +3,7 @@
     "icon": "Notebook",
     "name": "Writing Descriptions"
   },
+  "depending-on-item-descriptions.mdx": "Depending on Item Descriptions",
   "mods": "For Modders/Modpacks",
   "data": "For Datapacks"
 }
