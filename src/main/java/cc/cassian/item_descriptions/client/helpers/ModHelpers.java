@@ -238,16 +238,28 @@ public class ModHelpers {
      * Create an item's lore key based off data from its Item Stack.
      */
     public static DescriptionKey findItemLoreKey(ItemStack stack) {
-        //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
+        // Disable Item Descriptions on Enchanted Books
         if (ModClient.CONFIG.enchantmentDescriptions.onlyEnchantmentDescriptionsOnBooks.value() && stack.is(Items.ENCHANTED_BOOK)) {
             return DescriptionKey.empty();
         }
+        //Ensure items from Polymer get the correct key instead of a vanilla one.
         //? if >1.21 {
         if (PolymerHelpers.getServerResourceLocation(stack) != null) {
             return new DescriptionKey(PolymerHelpers.getServerResourceLocation(stack));
         }
         //?}
         //? if >1.20.5 {
+            //Ensure items with Custom Models get a custom key instead of a vanilla one.
+            //? if >1.21.2 {
+            if (hasComponent(stack, DataComponents.ITEM_MODEL))  {
+                ResourceLocation data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
+                DescriptionKey modelKey = new DescriptionKey(data);
+                if (modelKey.hasTranslation()) {
+                    return modelKey;
+                }
+            } else
+            //?}
+            //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
             if (hasComponent(stack, DataComponents.CUSTOM_MODEL_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.CUSTOM_MODEL_DATA));
                 //? if <1.21.4 {
@@ -261,6 +273,7 @@ public class ModHelpers {
                     return modelKey;
                 }
             }
+            //Ensure Paintings get a custom key instead of a vanilla one.
             else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
                 //? if >1.21.8 {
@@ -589,7 +602,7 @@ public class ModHelpers {
      * Check if an Item Stack has a particular component.
      */
     //? if =1.20.6 {
-    /*public static boolean hasComponent(ItemStack stack, DataDataComponentType<?> type) {
+    /*public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
         return stack.getComponents().contains(type);
     }
     *///?}

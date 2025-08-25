@@ -38,11 +38,9 @@
   },
   "recommends": {
     "cloth-config": "*",
-    "modmenu": "*",
-    "tooltipfix": "*"
+    "modmenu": "*"
   },
   "suggests": {
-    "jade": "*",
-    "limelight": "*"
+    "jade": "*"
   }
 }
