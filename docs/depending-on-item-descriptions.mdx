@@ -17,12 +17,12 @@ repositories {
 }
 ```
 
-## Fabric
+## Fabric Loom/Architectury Loom
 ```groovy
 modImplementation "cc.cassian.item_descriptions:item_descriptions-fabric:${item_descriptions_version}+${minecraft_version}"
 ```
 
-## NeoForge
+## NeoForge/ModDevGradle
 ```groovy
 implementation "cc.cassian.item_descriptions:item_descriptions-neoforge:${item_descriptions_version}+${minecraft_version}"
 ```
@@ -30,9 +30,4 @@ implementation "cc.cassian.item_descriptions:item_descriptions-neoforge:${item_d
 ## Forge
 ```groovy
 implementation(fg.deobf("cc.cassian.item_descriptions:item_descriptions-forge:${item_descriptions_version}+${minecraft_version}"))
-```
-
-## Architectury Common
-```groovy
-modImplementation "cc.cassian.item_descriptions:item_descriptions-common:${item_descriptions_version}+${minecraft_version}"
 ```
