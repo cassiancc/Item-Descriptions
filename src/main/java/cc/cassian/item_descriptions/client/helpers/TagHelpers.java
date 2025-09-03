@@ -99,7 +99,13 @@ public class TagHelpers {
 
     private static void addSafe(ArrayList<Component> tags, DescriptionKey newAdd) {
         Component newText;
-        if (Screen.hasAltDown())
+        if (
+        //? if >1.21.8 {
+        /*Minecraft.getInstance()
+        *///?} else {
+        Screen
+        //?}
+        .hasAltDown())
             newText = newAdd.toText();
         else {
             newText = Component.literal(newAdd.toString());

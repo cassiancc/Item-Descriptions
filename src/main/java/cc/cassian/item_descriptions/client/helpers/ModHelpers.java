@@ -215,9 +215,30 @@ public class ModHelpers {
      * Check if a keybind is pressed and a tooltip should be displayed.
      */
     public static boolean tooltipKeyPressed() {
-        if (ModClient.CONFIG.keybinds.displayWhenCtrlIsHeld.value() && Screen.hasControlDown()) return checkKey(Screen.hasControlDown());
-        else if (ModClient.CONFIG.keybinds.displayWhenShiftIsHeld.value() && Screen.hasShiftDown()) return checkKey(Screen.hasShiftDown());
-        else if (ModClient.CONFIG.keybinds.displayWhenAltIsHeld.value() && Screen.hasAltDown()) return checkKey(Screen.hasAltDown());
+        var ctrl =
+            //? if >1.21.8 {
+            /*Minecraft.getInstance()
+            *///?} else {
+            Screen
+            //?}
+            .hasControlDown();
+        var alt =
+            //? if >1.21.8 {
+            /*Minecraft.getInstance()
+            *///?} else {
+            Screen
+            //?}
+            .hasAltDown();
+        var shift =
+            //? if >1.21.8 {
+            /*Minecraft.getInstance()
+            *///?} else {
+            Screen
+            //?}
+            .hasShiftDown();
+        if (ModClient.CONFIG.keybinds.displayWhenCtrlIsHeld.value() && ctrl) return checkKey(ctrl);
+        else if (ModClient.CONFIG.keybinds.displayWhenShiftIsHeld.value() && shift) return checkKey(shift);
+        else if (ModClient.CONFIG.keybinds.displayWhenAltIsHeld.value() && alt) return checkKey(alt);
         else return false;
     }
 
