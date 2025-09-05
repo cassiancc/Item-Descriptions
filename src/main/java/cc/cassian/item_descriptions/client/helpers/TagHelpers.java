@@ -39,11 +39,16 @@ public class TagHelpers {
         //Temporary - Spawn Eggs do not yet have a tag.
         if (item instanceof SpawnEggItem spawnEggItem) {
             if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
+                //? if >1.21.1 && <1.21.8 {
+                var level = Minecraft.getInstance().level;
+                if (level == null)
+                    return new DescriptionKey("tag", "c", "spawn_egg");
+                //?}
                 EntityType<?> entityType = spawnEggItem.getType(
                         //? if >1.21.8 {
                         /*stack
                          *///?} else if >1.21.1 {
-                        Minecraft.getInstance().level.registryAccess(), stack
+                        level.registryAccess(), stack
                         //?} else if >1.20.1 {
                         /*stack
                          *///?} else {
@@ -77,18 +82,18 @@ public class TagHelpers {
     }
 
     public static DescriptionKey checkGenericTagList(BlockState state) {
-        return checkGenericTagList(state.getBlock());
-    }
-
-    public static DescriptionKey checkGenericTagList(Block block) {
         final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        block.builtInRegistryHolder().tags().forEach(tagKey -> {
+        state.getTags().forEach(tagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(tagKey);
             if (checkMatch(returnedKey, loreKey)) {
                 returnedKey[0] = loreKey;
             }
         });
         return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
+    }
+
+    public static DescriptionKey checkGenericTagList(Block block) {
+        return checkGenericTagList(block.defaultBlockState());
     }
 
     public static DescriptionKey checkGenericTagList(Entity entity) {
@@ -148,18 +153,18 @@ public class TagHelpers {
     }
 
     public static List<Component> findAllPotentialKeys(BlockState state) {
-        return findAllPotentialKeys(state.getBlock());
-    }
-
-    public static List<Component> findAllPotentialKeys(Block block) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        addSafe(tags, getDescriptionKey(block));
-        addSafe(tags, findLoreKey(block));
-        block.builtInRegistryHolder().tags().forEach(itemTagKey -> {
+        addSafe(tags, getDescriptionKey(state));
+        addSafe(tags, findLoreKey(state));
+        state.getTags().forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
         });
         return tags;
+    }
+
+    public static List<Component> findAllPotentialKeys(Block block) {
+        return findAllPotentialKeys(block.defaultBlockState());
     }
 
     public static List<Component> findAllPotentialKeys(Entity entity) {

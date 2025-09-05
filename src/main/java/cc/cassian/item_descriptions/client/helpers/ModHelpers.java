@@ -806,6 +806,14 @@ public class ModHelpers {
     }
 
     /**
+     * Shorthand to check a blockstate's lore key.
+     */
+    public static DescriptionKey findLoreKey(BlockState state) {
+        DescriptionKey key = getDescriptionKey(state);
+        return checkLoreKey(key.hasTranslation() ? key : TagHelpers.checkGenericTagList(state));
+    }
+
+    /**
      * Shorthand to check an entity's lore key.
      */
     public static DescriptionKey findLoreKey(Entity entity) {
