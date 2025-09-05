@@ -255,7 +255,7 @@ public class ModHelpers {
     /**
      * Create an item's lore key based off data from its Item Stack.
      */
-    public static DescriptionKey findItemLoreKey(ItemStack stack) {
+    public static DescriptionKey findLoreKey(ItemStack stack) {
         // Disable Item Descriptions on Enchanted Books
         if (ModClient.CONFIG.enchantmentDescriptions.onlyEnchantmentDescriptionsOnBooks.value() && stack.is(Items.ENCHANTED_BOOK)) {
             return DescriptionKey.empty();
@@ -357,7 +357,7 @@ public class ModHelpers {
      */
     public static DescriptionKey createBlockDescription(Block block, Level world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
-        DescriptionKey loreKey = findBlockLoreKey(block);
+        DescriptionKey loreKey = findLoreKey(block);
         //? if >1.21 {
         if (isLoaded("polymer-bundled"))
             if (PolymerHelpers.isPolymerBlock(pos)) {
@@ -376,14 +376,14 @@ public class ModHelpers {
             if (FastItemFramesHelpers.isFastItemFrame(blockEntity)) {
                 var contents = FastItemFramesHelpers.getFastItemFrameContents(blockEntity);
                 if (contents != null)
-                    return findItemLoreKey(contents);
+                    return findLoreKey(contents);
             }
         }
         if (isLoaded("glowcase")) {
             if (GlowcaseHelpers.isItemDisplay(blockEntity)) {
                 var contents = GlowcaseHelpers.getItemDisplayContents(blockEntity);
                 if (contents != null)
-                    return findItemLoreKey(contents);
+                    return findLoreKey(contents);
             }
         }
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
@@ -391,7 +391,7 @@ public class ModHelpers {
             //? if <1.21.2 {
             /*return findItemLoreKey(block.getCloneItemStack(world, pos, state));
             *///?} else
-            return findItemLoreKey(block.defaultBlockState().getCloneItemStack(world, pos, true));
+            return findLoreKey(block.defaultBlockState().getCloneItemStack(world, pos, true));
 
         }
         return loreKey;
@@ -404,7 +404,7 @@ public class ModHelpers {
         //Create and add tooltip.
         Component name = entity.getName();
         if (entity instanceof ItemFrame itemFrameEntity && !itemFrameEntity.getItem().isEmpty()) {
-            return createTooltip(name, findItemLoreKey(itemFrameEntity.getItem()));
+            return createTooltip(name, findLoreKey(itemFrameEntity.getItem()));
         }
         //? if >1.21 {
         else if (entity instanceof Painting painting && painting.getVariant().isBound()) {
@@ -413,7 +413,7 @@ public class ModHelpers {
                 return createTooltip(name, loreKey);
         }
         //?}
-        return createTooltip(name, findEntityLoreKey(entity));
+        return createTooltip(name, findLoreKey(entity));
     }
 
     public static boolean createEnchantmentDescription(ItemStack stack, List<Component> lines) {
@@ -578,7 +578,7 @@ public class ModHelpers {
         if (ModClient.CONFIG.itemDescriptions.value()) {
             //Create and add tooltip.
             List<Component> tooltip;
-            DescriptionKey descriptionKey = findItemLoreKey(stack);
+            DescriptionKey descriptionKey = findLoreKey(stack);
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
             } else if (descriptionKey.hasTranslation()) {
@@ -597,7 +597,7 @@ public class ModHelpers {
         if (ModClient.CONFIG.itemDescriptions.value() && showItemDescriptions()) {
             //Find and wrap tooltip. Will be disabled if TooltipFix is installed.
             List<Component> tooltip;
-            DescriptionKey descriptionKey = findItemLoreKey(stack);
+            DescriptionKey descriptionKey = findLoreKey(stack);
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
             } else {
@@ -800,7 +800,7 @@ public class ModHelpers {
     /**
      * Shorthand to check a block's lore key.
      */
-    public static DescriptionKey findBlockLoreKey(Block block) {
+    public static DescriptionKey findLoreKey(Block block) {
         DescriptionKey key = getDescriptionKey(block);
         return checkLoreKey(key.hasTranslation() ? key : TagHelpers.checkGenericTagList(block));
     }
@@ -808,7 +808,14 @@ public class ModHelpers {
     /**
      * Shorthand to check an entity's lore key.
      */
-    public static DescriptionKey findEntityLoreKey(Entity entity) {
+    public static DescriptionKey findLoreKey(Entity entity) {
+        return findLoreKey(entity.getType());
+    }
+
+    /**
+     * Shorthand to check an entity's lore key.
+     */
+    public static DescriptionKey findLoreKey(EntityType<?> entity) {
         DescriptionKey key = getDescriptionKey(entity);
         return checkLoreKey(key.hasTranslation() ? key : TagHelpers.checkGenericTagList(entity));
     }
@@ -818,7 +825,7 @@ public class ModHelpers {
      */
     public static DescriptionKey checkLoreKey(DescriptionKey loreKey) {
         //Check if the tooltip translation key exists. If so, use the provided tooltip.
-        if (loreKey.hasTranslation()) return loreKey;
+        if (loreKey != null && loreKey.hasTranslation()) return loreKey;
         else return DescriptionKey.empty();
     }
 
@@ -1181,6 +1188,9 @@ public class ModHelpers {
         addMissingTranslations((Registry<Enchantment>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","enchantment"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         addMissingTranslations((Registry<Block>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","block"))).orElse(null), namespaces, Block::defaultBlockState, ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys); // Blocks will overwrite items
         addMissingTranslations((Registry<MobEffect>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","mob_effect"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        Map<String, String> combined = new TreeMap<>();
+        namespaces.values().forEach(combined::putAll);
+        namespaces.put(ModClient.MOD_ID_NEO, combined);
         for (Map.Entry<String, Map<String, String>> entry : namespaces.entrySet()) {
             String namespace = entry.getKey();
             Map<String, String> map = entry.getValue();

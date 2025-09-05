@@ -73,7 +73,7 @@ public class TagHelpers {
                 });
             }
         }
-        return returnedKey[0];
+        return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
     }
 
     public static DescriptionKey checkGenericTagList(BlockState state) {
@@ -82,24 +82,28 @@ public class TagHelpers {
 
     public static DescriptionKey checkGenericTagList(Block block) {
         final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        block.builtInRegistryHolder().tags().forEach(itemTagKey -> {
-            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+        block.builtInRegistryHolder().tags().forEach(tagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(tagKey);
             if (checkMatch(returnedKey, loreKey)) {
                 returnedKey[0] = loreKey;
             }
         });
-        return returnedKey[0];
+        return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
     }
 
     public static DescriptionKey checkGenericTagList(Entity entity) {
+        return checkGenericTagList(entity.getType());
+    }
+
+    public static DescriptionKey checkGenericTagList(EntityType<?> type) {
         final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        entity.getType().builtInRegistryHolder().tags().forEach(itemTagKey -> {
-            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+        type.builtInRegistryHolder().tags().forEach(tagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(tagKey);
             if (checkMatch(returnedKey, loreKey)) {
                 returnedKey[0] = loreKey;
             }
         });
-        return returnedKey[0];
+        return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
     }
 
     private static void addSafe(ArrayList<Component> tags, DescriptionKey newAdd) {
@@ -121,7 +125,7 @@ public class TagHelpers {
 
     public static List<Component> findAllPotentialKeys(ItemStack itemStack) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        addSafe(tags, findItemLoreKey(itemStack));
+        addSafe(tags, ModHelpers.findLoreKey(itemStack));
         addSafe(tags, getDescriptionKey(itemStack));
         addSafe(tags, getModdedNameMatch(itemStack));
         final Item item = itemStack.getItem();
@@ -149,6 +153,8 @@ public class TagHelpers {
 
     public static List<Component> findAllPotentialKeys(Block block) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
+        addSafe(tags, getDescriptionKey(block));
+        addSafe(tags, findLoreKey(block));
         block.builtInRegistryHolder().tags().forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
@@ -162,6 +168,8 @@ public class TagHelpers {
 
     public static List<Component> findAllPotentialKeys(EntityType<?> type) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
+        addSafe(tags, getDescriptionKey(type));
+        addSafe(tags, findLoreKey(type));
         type.builtInRegistryHolder().tags().forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
