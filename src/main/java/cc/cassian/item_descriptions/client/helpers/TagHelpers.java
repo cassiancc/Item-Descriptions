@@ -39,7 +39,7 @@ public class TagHelpers {
         //Temporary - Spawn Eggs do not yet have a tag.
         if (item instanceof SpawnEggItem spawnEggItem) {
             if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
-                //? if >1.21.1 && <1.21.8 {
+                //? if >1.21.1 && <=1.21.8 {
                 var level = Minecraft.getInstance().level;
                 if (level == null)
                     return new DescriptionKey("tag", "c", "spawn_egg");
