@@ -389,7 +389,7 @@ public class ModHelpers {
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!loreKey.hasTranslation()) {
             //? if <1.21.2 {
-            /*return findItemLoreKey(block.getCloneItemStack(world, pos, state));
+            /*return findLoreKey(block.getCloneItemStack(world, pos, state));
             *///?} else
             return findLoreKey(block.defaultBlockState().getCloneItemStack(world, pos, true));
 
@@ -1168,7 +1168,7 @@ public class ModHelpers {
             } else if (keys.stream().noneMatch(I18n::exists)) {
                 keys.remove(description.asLoreTranslation());
                 if (value instanceof ItemStack stack) keys.remove(getModdedNameMatch(stack).asLoreTranslation()); // Ugly
-                namespaces.computeIfAbsent(key.location().getNamespace(), k -> new TreeMap<>()).put(description.asDescriptionTranslation(), " ??? %s".formatted(String.join(", ", keys)));
+                namespaces.computeIfAbsent(key.location().getNamespace(), k -> new TreeMap<>()).compute(value instanceof Block || value instanceof Item ? description.asLoreTranslation() : description.asDescriptionTranslation(), (k, v) -> Objects.requireNonNullElse(v, " ??? ") + String.join(", ", keys));
             }
         }
     }
