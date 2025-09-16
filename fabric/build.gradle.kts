@@ -76,7 +76,7 @@ dependencies {
     implementation("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
     include("folk.sisby:kaleido-config:${common.mod.dep("kaleido")}")
 
-    if (stonecutter.eval(mcVersion, "<1.21.8")) { // Runtime dependencies, used on release versions
+    if (stonecutter.eval(mcVersion, "<1.21.9")) { // Runtime dependencies, used on release versions
 
         // Config APIs
         modApi("dev.isxander:yet-another-config-lib:${common.mod.dep("yacl")}-fabric")

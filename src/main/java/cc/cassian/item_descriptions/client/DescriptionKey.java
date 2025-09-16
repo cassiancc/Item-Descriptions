@@ -5,6 +5,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DescriptionKey {
@@ -27,25 +28,31 @@ public class DescriptionKey {
         this.suffix = suffix;
     }
 
-    public DescriptionKey(ResourceLocation ResourceLocation) {
+    public DescriptionKey(ResourceLocation resourceLocation) {
         this.type = "lore";
-        this.namespace = ResourceLocation.getNamespace();
-        this.path = ResourceLocation.getPath();
+        this.namespace = resourceLocation.getNamespace();
+        this.path = resourceLocation.getPath();
         this.suffix = "";
     }
 
-    public DescriptionKey(String ResourceLocation) {
-        var id = ResourceLocation.split("\\.");
-        this.type = id[0];
-        this.namespace = id[1];
-        this.path = id[2];
+    public DescriptionKey(String resourceLocation) {
+        var id = resourceLocation.split("\\.");
+        if (id.length>2) {
+            this.type = id[0];
+            this.namespace = id[1];
+            this.path = id[2];
+        } else {
+            this.type = id[0];
+            this.namespace = "minecraft";
+            this.path = id[1];
+        }
         this.suffix = "";
     }
 
-    public DescriptionKey(String type, ResourceLocation ResourceLocation) {
+    public DescriptionKey(String type, ResourceLocation resourceLocation) {
         this.type = type;
-        this.namespace = ResourceLocation.getNamespace();
-        this.path = ResourceLocation.getPath();
+        this.namespace = resourceLocation.getNamespace();
+        this.path = resourceLocation.getPath();
         this.suffix = "";
     }
 
