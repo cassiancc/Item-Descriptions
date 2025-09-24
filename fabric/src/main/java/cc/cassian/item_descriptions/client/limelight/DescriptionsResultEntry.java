@@ -57,7 +57,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
         }
         //Check to see if that namespaced ResourceLocation matches an item. If so, return that item's lore key.
         if (ModClient.CONFIG.itemDescriptions.value()) {
-            var itemStack = createMultilineTranslation(findItemLoreKey(BuiltInRegistries.ITEM
+            var itemStack = createMultilineTranslation(findLoreKey(BuiltInRegistries.ITEM
                     //? if >=1.21.2 {
                     .getValue
                      //?} else {

@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.mixin;
 
+import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import com.brokenkeyboard.usefulspyglass.InfoOverlay;
 import com.brokenkeyboard.usefulspyglass.TooltipInfo;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -27,7 +28,7 @@ public class InfoOverlayMixin {
     private static void spyglassEntityDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local LivingEntity entity) {
         if (showEntityDescriptions()) {
             //Create and add tooltip.
-            List<Component> tooltip = createTooltip(entity.getName(), findEntityLoreKey(entity));
+            List<Component> tooltip = createTooltip(entity.getName(), findLoreKey(entity));
             for (Component text : tooltip) {
                 tooltipList.add(new TooltipInfo.TextTooltip(ClientTooltipComponent.create(text.getVisualOrderText())));
             }
@@ -38,7 +39,7 @@ public class InfoOverlayMixin {
     private static void spyglassBlockDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local BlockState state) {
         if (showBlockDescriptions()) {
             //Create and add tooltip.
-            List<Component> tooltip = createTooltip(state.getBlock().getName(), findBlockLoreKey(state.getBlock()));
+            List<Component> tooltip = createTooltip(state.getBlock().getName(), ModHelpers.findLoreKey(state.getBlock()));
             for (Component text : tooltip) {
                 tooltipList.add(new TooltipInfo.BlockInfo(ClientTooltipComponent.create(text.getVisualOrderText())));
             }

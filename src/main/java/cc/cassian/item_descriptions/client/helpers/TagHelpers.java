@@ -4,6 +4,7 @@ import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
@@ -16,6 +17,8 @@ import net.minecraft.tags.TagKey;
 /*import net.minecraft.tag.TagKey;
  *///?}
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
@@ -30,71 +33,82 @@ public class TagHelpers {
         return newKey.hasTranslation() && (currentKey[0] == null || DescriptionKey.isMorePrecise(currentKey[0], newKey));
     }
 
-    private static DescriptionKey checkGenericTagList(Object object) {
-        // If object is an item, check for Item Tags
-        if (object instanceof ItemStack itemStack) {
-            final Item item = itemStack.getItem();
-            //Temporary - Spawn Eggs do not yet have a tag.
-            if (item instanceof SpawnEggItem spawnEggItem) {
-                if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
-                    EntityType<?> entityType = spawnEggItem.getType(
-                            //? if >1.21.8 {
-                            /*itemStack
-                            *///?} else if >1.21.1 {
-                            Minecraft.getInstance().level.registryAccess(), itemStack
-                            //?} else if >1.20.1 {
-                            /*itemStack
-                            *///?} else {
-                            /*itemStack.getTag()
-                            *///?}
-                    );
-                    var key = ModHelpers.getDescriptionKey(entityType);
-                    if (key.hasTranslation()) return key;
-                }
-                return new DescriptionKey("tag", "c", "spawn_egg");
+    public static DescriptionKey checkGenericTagList(ItemStack stack) {
+        if (ModClient.CONFIG.developerOptions.disableTagDescriptions.value()) return DescriptionKey.empty();
+        final Item item = stack.getItem();
+        //Temporary - Spawn Eggs do not yet have a tag.
+        if (item instanceof SpawnEggItem spawnEggItem) {
+            if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
+                //? if >1.21.1 && <=1.21.8 {
+                var level = Minecraft.getInstance().level;
+                if (level == null)
+                    return new DescriptionKey("tag", "c", "spawn_egg");
+                //?}
+                EntityType<?> entityType = spawnEggItem.getType(
+                        //? if >1.21.8 {
+                        /*stack
+                         *///?} else if >1.21.1 {
+                        level.registryAccess(), stack
+                        //?} else if >1.20.1 {
+                        /*stack
+                         *///?} else {
+                        /*stack.getTag()
+                         *///?}
+                );
+                var key = ModHelpers.getDescriptionKey(entityType);
+                if (key.hasTranslation()) return key;
             }
-            final DescriptionKey[] returnedKey = new DescriptionKey[1];
-            itemStack.getTags().forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                if (checkMatch(returnedKey, loreKey)) {
-                    returnedKey[0] = loreKey;
-                }
-            });
-            // If untagged, check if it is a Block Item and if a Block Tag matches.
-            if (returnedKey[0] == null) {
-                if ((item instanceof BlockItem blockItem)) {
-                    blockItem.getBlock().defaultBlockState().getTags().forEach(itemTagKey -> {
-                        DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                        if (checkMatch(returnedKey, loreKey)) {
-                            returnedKey[0] = loreKey;
-                        }
-                    });
-                }
-            }
-            return returnedKey[0];
-
-            //If object is a blockstate, check it for Block tags
-        } else if (object instanceof BlockState state) {
-            final DescriptionKey[] returnedKey = new DescriptionKey[1];
-            state.getTags().forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                if (checkMatch(returnedKey, loreKey)) {
-                    returnedKey[0] = loreKey;
-                }
-            });
-            return returnedKey[0];
-        } else if (object instanceof Entity entity) {
-            final DescriptionKey[] returnedKey = new DescriptionKey[1];
-            entity.getType().builtInRegistryHolder().tags().forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                if (checkMatch(returnedKey, loreKey)) {
-                    returnedKey[0] = loreKey;
-                }
-            });
-            return returnedKey[0];
-            //If no tag key matches, return empty so a string match can be found.
+            return new DescriptionKey("tag", "c", "spawn_egg");
         }
-        return DescriptionKey.empty();
+        final DescriptionKey[] returnedKey = new DescriptionKey[1];
+        stack.getTags().forEach(itemTagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+            if (checkMatch(returnedKey, loreKey)) {
+                returnedKey[0] = loreKey;
+            }
+        });
+        // If untagged, check if it is a Block Item and if a Block Tag matches.
+        if (returnedKey[0] == null) {
+            if ((item instanceof BlockItem blockItem)) {
+                blockItem.getBlock().defaultBlockState().getTags().forEach(itemTagKey -> {
+                    DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                    if (checkMatch(returnedKey, loreKey)) {
+                        returnedKey[0] = loreKey;
+                    }
+                });
+            }
+        }
+        return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
+    }
+
+    public static DescriptionKey checkGenericTagList(BlockState state) {
+        final DescriptionKey[] returnedKey = new DescriptionKey[1];
+        state.getTags().forEach(tagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(tagKey);
+            if (checkMatch(returnedKey, loreKey)) {
+                returnedKey[0] = loreKey;
+            }
+        });
+        return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
+    }
+
+    public static DescriptionKey checkGenericTagList(Block block) {
+        return checkGenericTagList(block.defaultBlockState());
+    }
+
+    public static DescriptionKey checkGenericTagList(Entity entity) {
+        return checkGenericTagList(entity.getType());
+    }
+
+    public static DescriptionKey checkGenericTagList(EntityType<?> type) {
+        final DescriptionKey[] returnedKey = new DescriptionKey[1];
+        type.builtInRegistryHolder().tags().forEach(tagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(tagKey);
+            if (checkMatch(returnedKey, loreKey)) {
+                returnedKey[0] = loreKey;
+            }
+        });
+        return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
     }
 
     private static void addSafe(ArrayList<Component> tags, DescriptionKey newAdd) {
@@ -114,47 +128,69 @@ public class TagHelpers {
             tags.add(newText);
     }
 
-    /**
-     * Check an object for potential keys. This includes all of its block/item/entity tags,
-     * as well as its direct match and any implemented custom component data.
-     */
-    public static List<Component> findAllPotentialKeys(Object object) {
+    public static List<Component> findAllPotentialKeys(ItemStack itemStack) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        // If object is an item, check for Item Tags
-        if (Objects.requireNonNull(object) instanceof ItemStack itemStack) {
-            addSafe(tags, findItemLoreKey(itemStack));
-            addSafe(tags, getDescriptionKey(itemStack));
-            addSafe(tags, getModdedNameMatch(itemStack));
-            final Item item = itemStack.getItem();
-            //Temporary - Spawn Eggs do not yet have a tag.
-            if (item instanceof SpawnEggItem) {
-                addSafe(tags, new DescriptionKey("tag", "c", "spawn_egg"));
-            }
-            itemStack.getTags().forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                addSafe(tags, loreKey);
-            });
-            // If untagged, check if it is a Block Item and if a Block Tag matches.
-            if ((item instanceof BlockItem blockItem)) {
-                blockItem.getBlock().defaultBlockState().getTags().forEach(itemTagKey -> {
-                    DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                    addSafe(tags, loreKey);
-                });
-            }
-            //If object is a blockstate, check it for Block tags
-        } else if (object instanceof BlockState state) {
-            state.getTags().forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                addSafe(tags, loreKey);
-            });
-        } else if (object instanceof Entity entity) {
-            entity.getType().builtInRegistryHolder().tags().forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                addSafe(tags, loreKey);
-            });
-        } else {
-            tags.add(Component.empty());
+        addSafe(tags, ModHelpers.findLoreKey(itemStack));
+        addSafe(tags, getDescriptionKey(itemStack));
+        addSafe(tags, getModdedNameMatch(itemStack));
+        final Item item = itemStack.getItem();
+        //Temporary - Spawn Eggs do not yet have a tag.
+        if (item instanceof SpawnEggItem) {
+            addSafe(tags, new DescriptionKey("tag", "c", "spawn_egg"));
         }
+        itemStack.getTags().forEach(itemTagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+            addSafe(tags, loreKey);
+        });
+        // If untagged, check if it is a Block Item and if a Block Tag matches.
+        if ((item instanceof BlockItem blockItem)) {
+            blockItem.getBlock().defaultBlockState().getTags().forEach(itemTagKey -> {
+                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                addSafe(tags, loreKey);
+            });
+        }
+        return tags;
+    }
+
+    public static List<Component> findAllPotentialKeys(BlockState state) {
+        ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
+        addSafe(tags, getDescriptionKey(state));
+        addSafe(tags, findLoreKey(state));
+        state.getTags().forEach(itemTagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+            addSafe(tags, loreKey);
+        });
+        return tags;
+    }
+
+    public static List<Component> findAllPotentialKeys(Block block) {
+        return findAllPotentialKeys(block.defaultBlockState());
+    }
+
+    public static List<Component> findAllPotentialKeys(Entity entity) {
+        return findAllPotentialKeys(entity.getType());
+    }
+
+    public static List<Component> findAllPotentialKeys(EntityType<?> type) {
+        ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
+        addSafe(tags, getDescriptionKey(type));
+        addSafe(tags, findLoreKey(type));
+        type.builtInRegistryHolder().tags().forEach(itemTagKey -> {
+            DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+            addSafe(tags, loreKey);
+        });
+        return tags;
+    }
+
+    public static List<Component> findAllPotentialKeys(Enchantment enchantment) {
+        ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
+        addSafe(tags, getDescriptionKey(enchantment));
+        return tags;
+    }
+
+    public static List<Component> findAllPotentialKeys(MobEffect mobEffect) {
+        ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
+        addSafe(tags, getDescriptionKey(mobEffect));
         return tags;
     }
 
@@ -163,17 +199,5 @@ public class TagHelpers {
      */
     private static DescriptionKey tagKeyToGenericKey(TagKey<?> key) {
         return new DescriptionKey("tag", key.location());
-    }
-
-    public static DescriptionKey getGenericKey(Object object) {
-        if (!ModClient.CONFIG.developerOptions.disableTagDescriptions.value()) {
-            //Iterate through the provided generic tag list.
-            DescriptionKey generic = checkGenericTagList(object);
-            if (generic != null) {
-                if (generic.isEmpty()) return DescriptionKey.empty();
-                else return generic;
-            }
-        }
-        return DescriptionKey.empty();
     }
 }
