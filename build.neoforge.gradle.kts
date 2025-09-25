@@ -199,7 +199,7 @@ publishMods {
     type = STABLE
     displayName = "${property("mod.name")} ${property("mod.version")} for ${stonecutter.current.version} Neoforge"
     version = "${property("mod.version")}+${property("deps.minecraft")}-neoforge"
-    changelog = provider { rootProject.file("CHANGELOG.md").readText() }
+    changelog = provider { rootProject.file("CHANGELOG-LATEST.md").readText() }
     modLoaders.add("neoforge")
 
     modrinth {
