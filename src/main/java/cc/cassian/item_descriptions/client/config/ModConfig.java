@@ -1,13 +1,11 @@
 package cc.cassian.item_descriptions.client.config;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import folk.sisby.kaleido.api.ReflectiveConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.SerializedName;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.ValueList;
 
-import java.nio.file.Path;
 import java.util.List;
 
 public class ModConfig extends ReflectiveConfig {
@@ -225,10 +223,5 @@ public class ModConfig extends ReflectiveConfig {
         @SerializedName("config_screen")
         @Comment("Override the backend config library. Available options are 'cloth-config' and 'yacl'")
         public final TrackedValue<String> configScreen = this.value("");
-    }
-
-    @ExpectPlatform
-    public static Path configPath() {
-        throw new AssertionError();
     }
 }

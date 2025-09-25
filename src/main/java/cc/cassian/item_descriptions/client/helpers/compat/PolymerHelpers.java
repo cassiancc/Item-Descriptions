@@ -165,7 +165,7 @@ apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.
  */
-
+//? if fabric {
 //? if >1.21 {
 package cc.cassian.item_descriptions.client.helpers.compat;
 
@@ -243,4 +243,5 @@ public class PolymerHelpers {
     }
 
 }
+//?}
 //?}

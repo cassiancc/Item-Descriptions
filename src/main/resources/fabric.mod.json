@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "item-descriptions",
+  "version": "${version}",
+  "name": "Item Descriptions",
+  "description": "This mod adds unique descriptions for all blocks, items, enchantments, effects, and mobs - built in a way that makes it easy to add modded content.",
+  "authors": [
+    "cassiancc"
+  ],
+  "contact": {
+    "repo": "https://github.com/cassiancc/Item-Descriptions",
+    "issues": "https://github.com/cassiancc/Item-Descriptions/issues",
+    "homepage": "https://moddedmc.wiki/en/project/item-descriptions/",
+    "sources": "https://github.com/cassiancc/Item-Descriptions"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "client",
+  "mixins": ["item-descriptions.mixins.json"],
+  "entrypoints": {
+    "client": [
+      "cc.cassian.item_descriptions.client.fabric.ItemDescriptionsFabricClient"
+    ],
+    "modmenu": [
+      "cc.cassian.item_descriptions.client.config.fabric.ModMenuIntegration"
+    ],
+    "jade": [
+      "cc.cassian.item_descriptions.client.jade.fabric.JadeIntegration"
+    ],
+    "limelight": [
+      "cc.cassian.item_descriptions.client.limelight.LimelightIntegration"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.7",
+    "minecraft": "${minecraft}",
+    "fabric-api": "*"
+  },
+  "recommends": {
+    "cloth-config": "*",
+    "modmenu": "*"
+  },
+  "suggests": {
+    "jade": "*"
+  }
+}

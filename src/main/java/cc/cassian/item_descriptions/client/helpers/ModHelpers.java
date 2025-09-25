@@ -2,11 +2,12 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
+//? if fabric
 import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.decoration.Painting;
 import net.minecraft.world.effect.MobEffect;
 //? if >1.21 {
 import net.minecraft.core.component.DataComponentType;
+//? if fabric
 import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
 import net.minecraft.core.component.DataComponents;
 //?} else if >1.20.5 {
@@ -116,9 +118,8 @@ public class ModHelpers {
     /**
      * Check if a mod is loaded
      */
-    @ExpectPlatform
     public static boolean isLoaded(String mod) {
-        throw new AssertionError();
+        return Platform.INSTANCE.isLoaded(mod);
     }
 
     /**
@@ -261,7 +262,7 @@ public class ModHelpers {
             return DescriptionKey.empty();
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
-        //? if >1.21 {
+        //? if >1.21 && fabric {
         if (PolymerHelpers.getServerResourceLocation(stack) != null) {
             return new DescriptionKey(PolymerHelpers.getServerResourceLocation(stack));
         }
@@ -358,7 +359,7 @@ public class ModHelpers {
     public static DescriptionKey createBlockDescription(Block block, Level world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         DescriptionKey loreKey = findLoreKey(block);
-        //? if >1.21 {
+        //? if >1.21 && fabric {
         if (isLoaded("polymer-bundled"))
             if (PolymerHelpers.isPolymerBlock(pos)) {
                 loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockResourceLocation(pos));
@@ -379,6 +380,7 @@ public class ModHelpers {
                     return findLoreKey(contents);
             }
         }
+        //? if fabric {
         if (isLoaded("glowcase")) {
             if (GlowcaseHelpers.isItemDisplay(blockEntity)) {
                 var contents = GlowcaseHelpers.getItemDisplayContents(blockEntity);
@@ -386,6 +388,7 @@ public class ModHelpers {
                     return findLoreKey(contents);
             }
         }
+        //?}
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!loreKey.hasTranslation()) {
             //? if <1.21.2 {
@@ -726,14 +729,13 @@ public class ModHelpers {
     }
 
     private static void addModName(ItemStack stack, List<Component> lines) {
-        String namespace = getModName(stack);
+        String namespace = Platform.INSTANCE.getModName(stack);
         MutableComponent text = Component.literal(namespace);
         lines.add(text.setStyle(ModStyle.MOD_NAME));
     }
 
-    @ExpectPlatform
     public static String getModName(ItemStack stack) {
-        throw new AssertionError();
+        return Platform.INSTANCE.getModName(stack);
     }
 
     public static MutableComponent translatableWithFallback(String translatable, String fallback) {
@@ -907,7 +909,7 @@ public class ModHelpers {
         //Allow for custom player descriptions
         if (entity instanceof Player) {
             //? if >1.21 {
-            String playerKey = "entity.minecraft.player.%s".formatted(entity.getName().tryCollapseToString());;
+            String playerKey = "entity.minecraft.player.%s".formatted(entity.getName().tryCollapseToString());
             //?} else
             /*String playerKey = "entity.minecraft.player." + entity.getName().getString();;*/
             //Check if a custom player description exists.
@@ -1143,20 +1145,6 @@ public class ModHelpers {
         field.setValue(instance);
     }
 
-    /**
-     * Checks if a mod is loaded while the mod is loading.
-     * Required on Forge.
-     */
-    @ExpectPlatform
-    public static boolean isLoadingLoaded(String mod) {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static File getMissingTranslationsPath() {
-        throw new AssertionError();
-    }
-
     private static <T, V> void addMissingTranslations(Registry<T> registry, Map<String, Map<String, String>> namespaces, Function<T, V> valueTransform, Function<V, DescriptionKey> descGetter, Function<V, List<Component>> potentialKeys) {
         for (ResourceKey<T> key : registry.registryKeySet()) {
             V value = valueTransform.apply
@@ -1188,7 +1176,7 @@ public class ModHelpers {
     @SuppressWarnings("unchecked")
     public static void generateMissingTranslations(RegistryGetter registryGetter) {
         ModClient.LOGGER.info("[Item Descriptions] Creating missing translations files");
-        File folder = getMissingTranslationsPath();
+        File folder = Platform.INSTANCE.getMissingTranslationsPath();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Map<String, Map<String, String>> namespaces = new HashMap<>();
         addMissingTranslations((Registry<EntityType<?>>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","entity_type"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);

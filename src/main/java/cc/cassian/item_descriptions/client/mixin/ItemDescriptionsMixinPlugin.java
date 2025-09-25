@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.mixin;
 
+import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -22,7 +23,7 @@ public class ItemDescriptionsMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (mixinClassName.endsWith("MobEffectsDisplayMixin")) {
-            return !(ModHelpers.isLoadingLoaded("effectdescriptions") || ModHelpers.isLoadingLoaded("idwtialsimmoedm"));
+            return !(Platform.INSTANCE.isLoadingLoaded("effectdescriptions") || Platform.INSTANCE.isLoadingLoaded("idwtialsimmoedm"));
         }
         return true;
 
