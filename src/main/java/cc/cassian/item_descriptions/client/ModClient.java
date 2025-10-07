@@ -22,6 +22,5 @@ public class ModClient {
 
     public static void init() {
         ModStyle.updateStyles();
-        ModClient.LOGGER.info("Successfully initialized Item Descriptions. Your items are now described!");
     }
 }

@@ -7,11 +7,23 @@
   "authors": [
     "cassiancc"
   ],
+  "contributors": [
+    "sisby-folk",
+    "MerchantCalico"
+  ],
   "contact": {
     "repo": "https://github.com/cassiancc/Item-Descriptions",
     "issues": "https://github.com/cassiancc/Item-Descriptions/issues",
     "homepage": "https://moddedmc.wiki/en/project/item-descriptions/",
     "sources": "https://github.com/cassiancc/Item-Descriptions"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.modrinth": "https://modrinth.com/mod/item-descriptions/",
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/item-descriptions"
+      }
+    }
   },
   "license": "MIT",
   "icon": "icon.png",

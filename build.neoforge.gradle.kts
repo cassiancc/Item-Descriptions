@@ -2,6 +2,7 @@ plugins {
     id("net.neoforged.moddev")
     id("dev.kikugie.postprocess.jsonlang")
     id("me.modmuss50.mod-publish-plugin")
+    id("maven-publish")
 }
 
 val minecraft = stonecutter.current.version
@@ -214,5 +215,17 @@ publishMods {
         accessToken = env.CURSEFORGE_API_KEY.orNull()
         minecraftVersions.add(stonecutter.current.version)
         minecraftVersions.addAll(additionalVersions)
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "cc.cassian.item-descriptions"
+            artifactId = "item-descriptions-neoforge"
+            version = "${property("mod.version")}+${property("deps.minecraft")}"
+
+            from(components["java"])
+        }
     }
 }

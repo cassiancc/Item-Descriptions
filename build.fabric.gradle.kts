@@ -4,6 +4,7 @@ plugins {
     id("fabric-loom")
     id("dev.kikugie.postprocess.jsonlang")
     id("me.modmuss50.mod-publish-plugin")
+    id("maven-publish")
 }
 
 val minecraft = stonecutter.current.version
@@ -14,7 +15,7 @@ tasks.named<ProcessResources>("processResources") {
 
     val props = HashMap<String, String>().apply {
         this["version"] = prop("mod.version") + "+" + prop("deps.minecraft")
-        this["minecraft"] = prop("deps.minecraft")
+        this["minecraft"] = prop("mod.mc_dep_fabric")
     }
 
     filesMatching(listOf("fabric.mod.json", "META-INF/neoforge.mods.toml", "META-INF/mods.toml")) {
@@ -221,5 +222,17 @@ publishMods {
         minecraftVersions.add(stonecutter.current.version)
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "cc.cassian.item-descriptions"
+            artifactId = "item-descriptions-fabric"
+            version = "${property("mod.version")}+${property("deps.minecraft")}"
+
+            from(components["java"])
+        }
     }
 }
