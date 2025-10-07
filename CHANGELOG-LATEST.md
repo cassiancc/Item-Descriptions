@@ -1,9 +1,6 @@
-### Added
-- Russian translation (@Kuikuachu)
-
 ### Changed
-- Internal restructures to remove the use of Object (@sisby-folk)
+- Tweaked ice block descriptions.
 
 ### Fixed
-- Revised multiple descriptions to fix typos and inaccuracy (@Kuikuachu)
-- Crash when parsing item names from [GregTech CEu Modern](https://modrinth.com/mod/gregtechceu-modern) (#33).
+- Jade integration on NeoForge.
+- Versioning inside the mod is now set correctly.

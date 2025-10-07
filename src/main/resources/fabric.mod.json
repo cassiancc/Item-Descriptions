@@ -25,7 +25,7 @@
       "cc.cassian.item_descriptions.client.config.fabric.ModMenuIntegration"
     ],
     "jade": [
-      "cc.cassian.item_descriptions.client.jade.fabric.JadeIntegration"
+      "cc.cassian.item_descriptions.client.jade.JadeIntegration"
     ],
     "limelight": [
       "cc.cassian.item_descriptions.client.limelight.LimelightIntegration"

@@ -13,7 +13,7 @@ tasks.named<ProcessResources>("processResources") {
     fun prop(name: String) = project.property(name) as String
 
     val props = HashMap<String, String>().apply {
-        this["version"] = prop("mod.version")
+        this["version"] = prop("mod.version") + "+" + prop("deps.minecraft")
         this["minecraft"] = prop("deps.minecraft")
     }
 
@@ -123,7 +123,7 @@ dependencies {
         modCompileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
         modLocalRuntime("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
     } else {
-        modCompileOnly("maven.modrinth:puzzles-lib:7Km4n5kj")
+        modCompileOnly("maven.modrinth:puzzles-lib:g7qeFvxG")
     }
     if (hasProperty("deps.forge_config_api_port")) {
         modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")

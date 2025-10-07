@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.2]
+
+### Added
+- Russian translation (@Kuikuachu)
+
+### Changed
+- Internal restructures to remove the use of Object (@sisby-folk)
+
+### Fixed
+- Revised multiple descriptions to fix typos and inaccuracy (@Kuikuachu)
+- Crash when parsing item names from [GregTech CEu Modern](https://modrinth.com/mod/gregtechceu-modern) (#33).
+
 ## [2.5.1]
 
 ### Added

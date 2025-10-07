@@ -1,10 +1,6 @@
-package cc.cassian.item_descriptions.client.jade.fabric;
-//? fabric {
+package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
-import cc.cassian.item_descriptions.client.jade.*;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import snownee.jade.api.IWailaClientRegistration;
@@ -16,7 +12,6 @@ public class JadeIntegration implements IWailaPlugin {
     static IWailaClientRegistration client;
 
     @Override
-    @Environment(EnvType.CLIENT)
     public void registerClient(IWailaClientRegistration registration) {
         client = registration;
         //Register Block Descriptions plugin.
@@ -30,4 +25,3 @@ public class JadeIntegration implements IWailaPlugin {
 
     }
 }
-//?}
