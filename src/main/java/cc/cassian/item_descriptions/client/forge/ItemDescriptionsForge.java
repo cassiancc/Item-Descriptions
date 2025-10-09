@@ -16,13 +16,15 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import static cc.cassian.item_descriptions.client.ModClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 @Mod(MOD_ID_NEO)
 public final class ItemDescriptionsForge {
-    public ItemDescriptionsForge(IEventBus eventBus, ModContainer modContainer) {
+    public ItemDescriptionsForge() {
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // Load config.
         ModClient.init();
         //Add Tooltips

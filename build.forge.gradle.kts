@@ -72,66 +72,6 @@ repositories {
     flatDir { dirs("libs") }
 }
 
-dependencies {
-    implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-    jarJar("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-//    runtimeOnly("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-
-
-
-    // YACL
-    if (hasProperty("deps.yacl")) {
-        implementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-forge")
-        implementation("thedarkcolour:kotlinforforge:4.11.0")
-    } else {
-        compileOnly("dev.isxander:yet-another-config-lib:3.6.6+1.20.1-forge")
-    }
-    // Cloth Config
-    if (hasProperty("deps.cloth_version")) {
-        implementation("me.shedaniel.cloth:cloth-config-forge:${property("deps.cloth_version")}")
-    } else {
-        compileOnly("me.shedaniel.cloth:cloth-config-forge:11.0.136")
-    }
-    // Useful Spyglass
-    if (hasProperty("deps.useful_spyglass")) {
-        implementation("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
-    } else {
-        compileOnly("maven.modrinth:useful-spyglass:0.7.0-forge")
-    }
-    // Fast Item Frames
-//    if (hasProperty("deps.fast_item_frames")) {
-//        runtimeOnly("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
-//    }
-    compileOnly("maven.modrinth:fast-item-frames:R0MOnh2f")
-    if (hasProperty("deps.puzzles_lib")) {
-        compileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
-        runtimeOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
-    } else {
-        compileOnly("maven.modrinth:puzzles-lib:mIyVGf3d")
-    }
-    if (hasProperty("deps.forge_config_api_port")) {
-        runtimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-forge:${property("deps.forge_config_api_port")}")
-    }
-    // Jade
-    if (hasProperty("deps.jade")) {
-        runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
-    }
-    compileOnly("maven.modrinth:jade:11.13.2+forge")
-    // WTHIT
-    compileOnly("mcp.mobius.waila:wthit-api:forge-${property("deps.wthit_version")}")
-    if (hasProperty("deps.badpackets_version")) {
-        runtimeOnly("mcp.mobius.waila:wthit:forge-${property("deps.wthit_version")}")
-        runtimeOnly("lol.bai:badpackets:forge-${property("deps.badpackets_version")}")
-    }
-    if (stonecutter.eval(mcVersion, "=1.21.1")) {
-        compileOnly("maven.local:quark:4.0-463")
-    }
-    implementation("io.github.llamalad7:mixinextras-forge:0.5.0")
-    jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")
-    annotationProcessor("io.github.llamalad7:mixinextras-forge:0.5.0")
-
-}
-
 legacyForge {
     version = property("deps.forge") as String
     validateAccessTransformers = true
@@ -159,6 +99,67 @@ legacyForge {
         }
     }
     sourceSets["main"].resources.srcDir("src/main/generated")
+}
+
+
+dependencies {
+    implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    jarJar("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+    "additionalRuntimeClasspath"("folk.sisby:kaleido-config:${property("deps.kaleido")}")
+
+
+
+    // YACL
+    if (hasProperty("deps.yacl")) {
+        modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-forge")
+        modImplementation("thedarkcolour:kotlinforforge:4.11.0")
+    } else {
+        compileOnly("dev.isxander:yet-another-config-lib:3.6.6+1.20.1-forge")
+    }
+    // Cloth Config
+    if (hasProperty("deps.cloth_version")) {
+        modImplementation("me.shedaniel.cloth:cloth-config-forge:${property("deps.cloth_version")}")
+    } else {
+        compileOnly("me.shedaniel.cloth:cloth-config-forge:11.0.136")
+    }
+    // Useful Spyglass
+    if (hasProperty("deps.useful_spyglass")) {
+        modImplementation("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
+    } else {
+        compileOnly("maven.modrinth:useful-spyglass:0.8.0-forge")
+    }
+    // Fast Item Frames
+//    if (hasProperty("deps.fast_item_frames")) {
+//        runtimeOnly("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
+//    }
+    compileOnly("maven.modrinth:fast-item-frames:R0MOnh2f")
+    if (hasProperty("deps.puzzles_lib")) {
+        modCompileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+        modRuntimeOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+    } else {
+        modCompileOnly("maven.modrinth:puzzles-lib:mIyVGf3d")
+    }
+    if (hasProperty("deps.forge_config_api_port")) {
+        modRuntimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-forge:${property("deps.forge_config_api_port")}")
+    }
+    // Jade
+    if (hasProperty("deps.jade")) {
+        modRuntimeOnly("maven.modrinth:jade:${property("deps.jade")}")
+    }
+    modCompileOnly("maven.modrinth:jade:11.13.2+forge")
+    // WTHIT
+    modCompileOnly("mcp.mobius.waila:wthit-api:forge-${property("deps.wthit_version")}")
+    if (hasProperty("deps.badpackets_version")) {
+        modRuntimeOnly("mcp.mobius.waila:wthit:forge-${property("deps.wthit_version")}")
+        modRuntimeOnly("lol.bai:badpackets:forge-${property("deps.badpackets_version")}")
+    }
+    if (stonecutter.eval(mcVersion, "=1.21.1")) {
+        modCompileOnly("maven.local:quark:4.0-463")
+    }
+    modCompileOnly("io.github.llamalad7:mixinextras-common:0.5.0")
+    implementation("io.github.llamalad7:mixinextras-forge:0.5.0")
+    jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")
+
 }
 
 tasks {
