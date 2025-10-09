@@ -6,4 +6,5 @@
 
 ### Fixed
 - Jade integration on NeoForge.
+- Polymer integration on 1.21.10.
 - Versioning inside the mod is now set correctly.

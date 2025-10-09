@@ -1,8 +1,11 @@
 package cc.cassian.item_descriptions.client.mixin;
 
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 //? if >1.21.2 {
 import net.minecraft.client.gui.screens.inventory.EffectsInInventory;
@@ -56,7 +59,21 @@ public abstract class StatusEffectsDisplayMixin {
     }
 
     *///?}
-    //? if >1.21.5 {
+
+    //? if >1.21.10 {
+    /*@WrapOperation(method = "renderText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
+    private void renderEffects(GuiGraphics instance, Font font, List<Component> lines, Optional<TooltipComponent> tooltipImage, int x, int y, Operation<Void> original) {
+        List<Component> tooltipText = ModHelpers.createEffectDescription(lines);
+        original.call(instance, font, tooltipText, tooltipImage, x, y);
+    }
+
+    @Inject(method = "renderText", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;III)V"))
+    private void forceShowDescriptions(GuiGraphics context, MobEffectInstance mobEffectInstance, Component component, Font font, int i, int j, int k, int l, int m, int n, CallbackInfo ci, @Local LocalBooleanRef bl) {
+        if (!bl.get())
+            bl.set(true);
+    }
+
+    *///?} else if >1.21.5 {
     @Shadow protected abstract void renderLabels(GuiGraphics context, int x, int height, Iterable<MobEffectInstance> statusEffects);
 
     @Redirect(method = "renderTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))

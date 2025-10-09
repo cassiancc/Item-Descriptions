@@ -179,6 +179,7 @@
   "entity.minecraft.glow_squid.description": "An aquatic passive mob found in deep waters and sunken caves. Drops Glow Ink.",
   "entity.minecraft.goat.description": "A neutral mob found on mountain peaks that rams idle mobs. Drops a Goat Horn if it hits a hard surface.",
   "entity.minecraft.guardian.description": "An aquatic ranged hostile mob found around Ocean Monuments that fires a high-damage laser and has thorns-like defensive spikes.",
+  "entity.minecraft.happy_ghast.description": "A passive mob grown from a Dried Ghast that can be tempted with Snowballs and ridden with a Harness.",
   "entity.minecraft.hoglin.description": "A hostile mob found in The Nether. Avoids warped fungus.",
   "entity.minecraft.hopper_minecart.description": "An entity that travels along rails. Collects items on the tracks and transfers items to and from containers.",
   "entity.minecraft.horse.description": "A passive mob found in Plains and Savannas that can be tamed through riding.",
@@ -508,6 +509,7 @@
   "lore.minecraft.dragon_breath": "The bottled form of an Ender Dragon's breath attack, this can be used to create Lingering Potions. It's an uncommon find.",
   "lore.minecraft.dragon_egg": "A one of a kind block that symbolizes the defeat of the Dragon in The End.",
   "lore.minecraft.dragon_head": "An item that can be worn, placed on a Note Block, or powered with redstone. It's an epic find!",
+  "lore.minecraft.dried_ghast": "A dry block that when submerged in water will slowly regenerate into a Ghastling.",
   "lore.minecraft.dried_kelp": "This can be eaten faster than other foods, but it's not a great food source.",
   "lore.minecraft.dried_kelp_block": "A solid block of Dried Kelp. This can be used as furnace fuel.",
   "lore.minecraft.dripstone_block": "A solid block of Dripstone.",
@@ -1400,6 +1402,7 @@
   "tag.minecraft.fences.description": "A block that cannot be jumped over and can be used to keep out mobs.",
   "tag.minecraft.flowers.description": "A flower that can be crafted into dye.",
   "tag.minecraft.foot_armor.description": "An item that reduces damage when worn.",
+  "tag.minecraft.harnesses.description": "An item that can be used on a Happy Ghast to allow you to ride them.",
   "tag.minecraft.hanging_signs.description": "A sign that can display up to four lines of text. Placed on ceilings and walls.",
   "tag.minecraft.head_armor.description": "An item that reduces damage when worn.",
   "tag.minecraft.hoes.description": "A tool that can be used to till soil and plant crops. It is also more effective at mining some natural blocks.",
@@ -1491,8 +1494,5 @@
   "config.item-descriptions.show_mod_name": "Show mod name",
   "config.item-descriptions.show_mod_name.tooltip": "Show mod name when hovering over an item and Item Descriptions is active.",
   "config.item-descriptions.style.mod_name_color": "Mod name color",
-  "config.item-descriptions.style.mod_name_italics": "Italicize mod name",
-  "lore.minecraft.dried_ghast": "A dry block that when submerged in water will slowly regenerate into a Ghastling.",
-  "tag.minecraft.harnesses.description": "An item that can be used on a Happy Ghast to allow you to ride them.",
-  "entity.minecraft.happy_ghast.description": "A passive mob grown from a Dried Ghast that can be tempted with Snowballs and ridden with a Harness."
+  "config.item-descriptions.style.mod_name_italics": "Italicize mod name"
 }
