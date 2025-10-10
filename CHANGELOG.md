@@ -5,7 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.5.2]
+## [2.5.3] - 2025-10-09
+
+### Added
+- Descriptions for the Mounts of Mayhem drop and support for 1.21.11 snapshots.
+
+### Changed
+- Tweaked ice block descriptions.
+
+### Fixed
+- Jade integration on NeoForge.
+- Polymer integration on 1.21.10.
+- Versioning inside the mod is now set correctly.
+
+## [2.5.2] - 2025-09-29
 
 ### Added
 - Russian translation (@Kuikuachu)
@@ -17,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Revised multiple descriptions to fix typos and inaccuracy (@Kuikuachu)
 - Crash when parsing item names from [GregTech CEu Modern](https://modrinth.com/mod/gregtechceu-modern) (#33).
 
-## [2.5.1]
+## [2.5.1] 2025-08-25
 
 ### Added
 - Items with custom item models (1.21.2+) now use the Item Description of their custom model.
@@ -26,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Crash from cached registry access.
 - Wrapping with ToolTipFix installed.
 
-## [2.5.0]
+## [2.5.0] - 2025-08-08
 
 ### Added
 - Support for 1.21.9 snapshots, alongside descriptions for currently released 1.21.9 content.
@@ -41,7 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Revised descriptions and fixed some minor typos in existing descriptions.
 
-## [2.4.0]
+## [2.4.0] - 2025-07-05
 
 ### Added
 - Enchantment Descriptions are now visible in the Enchanting Table.

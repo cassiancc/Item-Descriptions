@@ -49,9 +49,9 @@ public class PotionContentsComponentMixin {
         ModHelpers.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), list, statusEffectInstance);
     }
     *///?} else {
-    /*@Inject(method = "buildTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))
-    private static void mixin(ItemStack stack, List<Text> list, float durationMultiplier, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
-        ModHelpers.createEffectDescription(Text.translatable(statusEffectInstance.getTranslationKey()), list, statusEffectInstance);
+    /*@Inject(method = "addPotionTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))
+    private static void mixin(ItemStack stack, List<Component> list, float durationMultiplier, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
+        ModHelpers.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), list, statusEffectInstance);
     }
     *///?}
 }

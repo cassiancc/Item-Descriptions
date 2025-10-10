@@ -11,11 +11,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
-//? if >1.20 {
 import net.minecraft.tags.TagKey;
-//?} else {
-/*import net.minecraft.tag.TagKey;
- *///?}
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;

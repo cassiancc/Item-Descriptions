@@ -127,13 +127,20 @@ dependencies {
         modCompileOnly("maven.modrinth:puzzles-lib:g7qeFvxG")
     }
     if (hasProperty("deps.forge_config_api_port")) {
-        modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
+        if (stonecutter.eval(mcVersion, "=1.19.2")) {
+            modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
+        }
+        else {
+            modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
+        }
     }
     // Jade
     if (hasProperty("deps.jade")) {
+        modCompileOnly("maven.modrinth:jade:${property("deps.jade")}")
         modLocalRuntime("maven.modrinth:jade:${property("deps.jade")}")
+    } else {
+        modCompileOnly("maven.modrinth:jade:19.3.2+fabric")
     }
-    modCompileOnly("maven.modrinth:jade:19.3.2+fabric")
     // Glowcase
     modCompileOnly("maven.modrinth:glowcase:${property("deps.glowcase")}")
     // Polymer
@@ -157,6 +164,12 @@ dependencies {
         modImplementation("io.wispforest:limelight:${property("deps.limelight_version")}") // Limelight
     }
 
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
+    }
 }
 
 fabricApi {

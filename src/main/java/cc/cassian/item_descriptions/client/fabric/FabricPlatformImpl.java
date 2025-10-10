@@ -6,6 +6,7 @@ import cc.cassian.item_descriptions.client.Platform;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -44,9 +45,11 @@ public class FabricPlatformImpl implements Platform {
         String namespace =
                 //? if >=1.21.8 || =1.21.4 || =1.21.5 || =1.21.1 {
                 stack.getCreatorNamespace();
-        //?} else {
+        //?} else if >1.20 {
         /*BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();
-         *///?}
+         *///?} else {
+        /*Registry.ITEM.getKey(stack.getItem()).getNamespace();
+        *///?}
         String key = "modmenu.nameTranslation."+namespace;
         Optional<ModContainer> modContainer = FabricLoader.getInstance().getModContainer(namespace);
         if (modContainer.isPresent()) {

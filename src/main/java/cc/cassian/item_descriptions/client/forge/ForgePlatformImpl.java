@@ -28,11 +28,11 @@ public class ForgePlatformImpl implements Platform {
 
     @Override
     public String loader() {
-        return "neoforge";
+        return "forge";
     }
 
     public File getMissingTranslationsPath() {
-        Path savePath = FMLPaths.getOrCreateGameRelativePath(Path.of("data").resolve(ModClient.MOD_ID).resolve("missing"));
+        Path savePath = FMLPaths.GAMEDIR.get().resolve("data").resolve(ModClient.MOD_ID).resolve("missing");
         return savePath.toFile();
     }
 
@@ -46,8 +46,8 @@ public class ForgePlatformImpl implements Platform {
         if (Minecraft.getInstance().level != null) {
             namespace = stack.getItem().getCreatorModId(
                     //? if >=1.21.2 {
-                    Minecraft.getInstance().level.registryAccess(),
-                    //?}
+                    /^Minecraft.getInstance().level.registryAccess(),
+                    ^///?}
                     stack);
         }
         String key = "modmenu.nameTranslation."+namespace;

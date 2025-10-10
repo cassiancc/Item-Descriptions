@@ -21,7 +21,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.client.gui.GuiGraphics;
  //?}
 //? if =1.19.2 {
-/*import net.minecraft.client.util.math.MatrixStack;
+/*import com.mojang.blaze3d.vertex.PoseStack;
 *///?}
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -119,22 +119,22 @@ public abstract class StatusEffectsDisplayMixin {
         booleanRef.set(false);
     }
     *///?} else {
-    /*@Shadow protected abstract void drawMobEffectDescriptions(MatrixStack matrices, int x, int height, Iterable<MobEffectInstance> statusEffects);
+    /*@Shadow protected abstract void renderLabels(PoseStack matrices, int x, int height, Iterable<MobEffectInstance> statusEffects);
 
-    @Redirect(method = "drawMobEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/AbstractInventoryScreen;renderTooltip(Lnet/minecraft/client/util/math/MatrixStack;Ljava/util/List;Ljava/util/Optional;II)V"))
-    private void renderEffects(AbstractInventoryScreen instance, MatrixStack stack, List<Text> text, Optional optional, int mouseX, int mouseY) {
-        List<Text> tooltipText = ModHelpers.createEffectDescription(text);
+    @Redirect(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"))
+    private void renderEffects(EffectRenderingInventoryScreen instance, PoseStack stack, List<Component> text, Optional optional, int mouseX, int mouseY) {
+        List<Component> tooltipText = ModHelpers.createEffectDescription(text);
         instance.renderTooltip(stack, tooltipText, Optional.empty(), mouseX, mouseY);
     }
 
-    @Inject(method = "drawMobEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screen/ingame/AbstractInventoryScreen;drawMobEffectSprites(Lnet/minecraft/client/util/math/MatrixStack;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(MatrixStack matrices, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<MobEffectInstance> collection, @Local Iterable<MobEffectInstance> iterable) {
+    @Inject(method = "renderEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderIcons(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;Z)V"))
+    private void forceShowDescriptions(PoseStack matrices, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<MobEffectInstance> collection, @Local Iterable<MobEffectInstance> iterable) {
         if (booleanRef.get()) {
             int k = 33;
             if (collection.size() > 5) {
                 k = 132 / (collection.size() - 1);
             }
-            this.drawMobEffectDescriptions(matrices, i, k, iterable);
+            this.renderLabels(matrices, i, k, iterable);
         }
         booleanRef.set(false);
     }

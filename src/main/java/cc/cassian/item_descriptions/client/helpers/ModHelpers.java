@@ -45,17 +45,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 //? if >1.21 {
-import net.minecraft.core.Registry;
+
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Holder;
 //?} else if >1.20 {
-/*import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
+/*
 import net.minecraft.core.registries.BuiltInRegistries;
 *///?} else {
-/*import net.minecraft.util.registry.ResourceKey;
-import net.minecraft.util.registry.Registry;
-*///?}
+
+//?}
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
@@ -523,7 +523,7 @@ public class ModHelpers {
                 //?} else if >1.20 {
                 /*return enchantments.stream().anyMatch(entry -> BuiltInRegistries.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
                  *///?} else {
-                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getId((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
+                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
                  *///?}
             }
             return false;

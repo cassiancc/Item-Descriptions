@@ -2,11 +2,13 @@ package cc.cassian.item_descriptions.client.helpers;
 
 //? if >1.20 {
 
-import cc.cassian.item_descriptions.client.ModClient;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 //?} else {
+
 /*import net.minecraft.core.Registry;
  *///?}
+import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
