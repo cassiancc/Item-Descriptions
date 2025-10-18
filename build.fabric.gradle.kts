@@ -113,13 +113,15 @@ dependencies {
     if (hasProperty("deps.useful_spyglass")) {
         modImplementation("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
     } else {
-        modCompileOnly("maven.modrinth:useful-spyglass:0.7.0-fabric")
+        modCompileOnly("maven.modrinth:useful-spyglass:nX9apSkX")
     }
     // Fast Item Frames
     if (hasProperty("deps.fast_item_frames")) {
+        modCompileOnly("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
         modLocalRuntime("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
+    } else {
+        modCompileOnly("maven.modrinth:fast-item-frames:7Km4n5kj")
     }
-    modCompileOnly("maven.modrinth:fast-item-frames:7Km4n5kj")
     if (hasProperty("deps.puzzles_lib")) {
         modCompileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
         modLocalRuntime("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
@@ -224,18 +226,26 @@ publishMods {
     modrinth {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
-        minecraftVersions.add(stonecutter.current.version)
+        if (!stonecutter.eval(mcVersion, ">1.21.10")) {
+            minecraftVersions.add(stonecutter.current.version)
+        } else {
+            minecraftVersions.add("25w41a")
+        }
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
         optional("cloth-config")
+        optional("jade")
+        optional("modmenu")
     }
 
-    curseforge {
-        projectId = property("publish.curseforge") as String
-        accessToken = env.CURSEFORGE_API_KEY.orNull()
-        minecraftVersions.add(stonecutter.current.version)
-        minecraftVersions.addAll(additionalVersions)
-        requires("fabric-api")
+    if (!stonecutter.eval(mcVersion, ">1.21.10")) {
+        curseforge {
+            projectId = property("publish.curseforge") as String
+            accessToken = env.CURSEFORGE_API_KEY.orNull()
+            minecraftVersions.add(stonecutter.current.version)
+            minecraftVersions.addAll(additionalVersions)
+            requires("fabric-api")
+        }
     }
 }
 

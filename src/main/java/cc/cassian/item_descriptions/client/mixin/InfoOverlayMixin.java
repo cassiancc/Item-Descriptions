@@ -1,8 +1,10 @@
 package cc.cassian.item_descriptions.client.mixin;
 
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
-import com.brokenkeyboard.usefulspyglass.InfoOverlay;
+//? if <1.20 {
+/*import com.brokenkeyboard.usefulspyglass.InfoOverlay;
 import com.brokenkeyboard.usefulspyglass.TooltipInfo;
+*///?}
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -21,10 +23,14 @@ import java.util.List;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 @Pseudo
-@Mixin(InfoOverlay.class)
+//? if <1.20 {
+/*@Mixin(InfoOverlay.class)
+*///?} else {
+@Mixin(BlockState.class)
+//?}
 public class InfoOverlayMixin {
-
-    @Inject(method = "setHitResult", at = @At(value = "INVOKE", target = "Lcom/brokenkeyboard/usefulspyglass/InfoOverlay;setComponent(Ljava/util/List;)V", ordinal = 0), remap = false, require = 0)
+    //? if <1.20 {
+    /*@Inject(method = "setHitResult", at = @At(value = "INVOKE", target = "Lcom/brokenkeyboard/usefulspyglass/InfoOverlay;setComponent(Ljava/util/List;)V", ordinal = 0), remap = false, require = 0)
     private static void spyglassEntityDescriptions(HitResult result, CallbackInfo ci, @Local ArrayList<TooltipInfo> tooltipList, @Local LivingEntity entity) {
         if (showEntityDescriptions()) {
             //Create and add tooltip.
@@ -45,4 +51,5 @@ public class InfoOverlayMixin {
             }
         }
     }
+    *///?}
 }

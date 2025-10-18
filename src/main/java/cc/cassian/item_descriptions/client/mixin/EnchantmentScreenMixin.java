@@ -35,13 +35,10 @@ public class EnchantmentScreenMixin {
      *///?}
     private void addEnchantmentDescriptions(
             //? if >1.20 {
-            GuiGraphics
+            GuiGraphics instance, Font textRenderer
             //?} else {
-            /*EnchantmentScreen instance, PoseStack
+            /*EnchantmentScreen instance, PoseStack textRenderer
             *///?}
-            textRenderer
-            //? if >1.20
-            Font textRenderer
             , List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local
     //? if >=1.21 {
      Optional<Holder.Reference<Enchantment>> optional

@@ -3,8 +3,10 @@ package cc.cassian.item_descriptions.client.forge;
 //? forge {
 
 /*import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
+import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -32,6 +34,12 @@ public final class ItemDescriptionsForge {
         //Register config screen.
         registerModsPage();
         eventBus.addListener(ItemDescriptionsForge::loadComplete);
+        //? if =1.20.1 {
+        /^if (Platform.INSTANCE.isLoaded("usefulspyglass")) {
+            MinecraftForge.EVENT_BUS.addListener(UsefulSpyglassHelpers::registerBlockEvent);
+            MinecraftForge.EVENT_BUS.addListener(UsefulSpyglassHelpers::registerEntityEvent);
+        }
+        ^///?}
     }
 
     @SubscribeEvent

@@ -45,20 +45,20 @@ public class ClothConfigFactory {
             if (field.value().getClass() == Boolean.class) {
                 category.addEntry(entryBuilder.startBooleanToggle(fieldName(field), (boolean) field.value())
                         .setSaveConsumer((o)-> fieldSetter(o, (TrackedValue<Boolean>) field))
-                        .setTooltip(fieldTooltip(field))
+                        .setTooltip(fieldTooltip(field, true))
                         .setDefaultValue((boolean) field.getDefaultValue()).build());
 
             }
             else if (field.value().getClass() == String.class) {
                 category.addEntry(entryBuilder.startStrField(fieldName(field), (String) field.value())
                         .setSaveConsumer((o)-> fieldSetter(o, (TrackedValue<String>) field))
-                        .setTooltip(fieldTooltip(field))
+                        .setTooltip(fieldTooltip(field, true))
                         .setDefaultValue((String) field.getDefaultValue()).build());
             }
             else if (field.value().getClass() == Integer.class) {
                 category.addEntry(entryBuilder.startIntField(fieldName(field), (int) field.value())
                         .setSaveConsumer((o)-> fieldSetter(o, (TrackedValue<Integer>) field))
-                        .setTooltip(fieldTooltip(field))
+                        .setTooltip(fieldTooltip(field, true))
                         .setDefaultValue((int) field.getDefaultValue()).build());
             }
 //            else if (field.getType() == List.class) {

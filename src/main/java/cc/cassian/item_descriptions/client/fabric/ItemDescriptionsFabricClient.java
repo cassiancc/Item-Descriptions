@@ -3,8 +3,10 @@ package cc.cassian.item_descriptions.client.fabric;
 //? fabric {
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
+import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -51,6 +53,9 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         ClientLifecycleEvents.CLIENT_STARTED.register((client -> {
             ModLists.loadLists();
         }));
+        if (Platform.INSTANCE.isLoaded("usefulspyglass")) {
+            UsefulSpyglassHelpers.register();
+        }
     }
 }
 //?}

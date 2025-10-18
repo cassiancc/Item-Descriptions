@@ -3,8 +3,10 @@ package cc.cassian.item_descriptions.client.neoforge;
 //? neoforge {
 
 /*import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
+import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -31,6 +33,10 @@ public final class ItemDescriptionsNeoForge {
         //Register config screen.
         registerModsPage();
         eventBus.addListener(ItemDescriptionsNeoForge::loadComplete);
+        if (Platform.INSTANCE.isLoaded("usefulspyglass")) {
+            NeoForge.EVENT_BUS.addListener(UsefulSpyglassHelpers::registerBlockEvent);
+            NeoForge.EVENT_BUS.addListener(UsefulSpyglassHelpers::registerEntityEvent);
+        }
     }
 
     @SubscribeEvent

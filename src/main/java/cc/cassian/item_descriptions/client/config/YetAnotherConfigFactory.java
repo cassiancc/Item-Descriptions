@@ -62,7 +62,7 @@ public class YetAnotherConfigFactory {
             if (field.value().getClass() == Boolean.class) {
                 category.option(Option.<Boolean>createBuilder()
                         .name(fieldName(field))
-                        .description(OptionDescription.of(fieldTooltip(field)))
+                        .description(OptionDescription.of(fieldTooltip(field, false)))
                         .binding(
                                 (boolean) field.getDefaultValue(),
                                 ()-> (Boolean) field.value(),
@@ -75,7 +75,7 @@ public class YetAnotherConfigFactory {
             else if (field.value().getClass() == String.class) {
                 category.option(Option.<String>createBuilder()
                         .name(fieldName(field))
-                        .description(OptionDescription.of(fieldTooltip(field)))
+                        .description(OptionDescription.of(fieldTooltip(field, false)))
                         .binding(
                                 (String) field.getDefaultValue(),
                                 ()-> (String) field.value(),
@@ -87,7 +87,7 @@ public class YetAnotherConfigFactory {
             else if (field.value().getClass() == Integer.class) {
                 category.option(Option.<Integer>createBuilder()
                         .name(fieldName(field))
-                        .description(OptionDescription.of(fieldTooltip(field)))
+                        .description(OptionDescription.of(fieldTooltip(field, false)))
                         .binding(
                                 (Integer) field.getDefaultValue(),
                                 ()-> (Integer) field.value(),

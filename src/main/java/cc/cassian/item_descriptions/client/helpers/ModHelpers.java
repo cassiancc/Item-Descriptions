@@ -49,8 +49,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Holder;
 //?} else if >1.20 {
-/*
-import net.minecraft.core.registries.BuiltInRegistries;
+
+/*import net.minecraft.core.registries.BuiltInRegistries;
 *///?} else {
 
 //?}
@@ -361,7 +361,7 @@ public class ModHelpers {
         DescriptionKey loreKey = findLoreKey(block);
         //? if >1.21 && fabric {
         if (isLoaded("polymer-bundled"))
-            if (PolymerHelpers.isPolymerBlock(pos)) {
+            if (pos != null && PolymerHelpers.isPolymerBlock(pos)) {
                 loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockResourceLocation(pos));
             }
         //?}
@@ -391,11 +391,11 @@ public class ModHelpers {
         //?}
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!loreKey.hasTranslation()) {
+            if (pos == null) return findLoreKey(block.asItem().getDefaultInstance());
             //? if <1.21.2 {
             /*return findLoreKey(block.getCloneItemStack(world, pos, state));
             *///?} else
-            return findLoreKey(block.defaultBlockState().getCloneItemStack(world, pos, true));
-
+            return findLoreKey(state.getCloneItemStack(world, pos, true));
         }
         return loreKey;
     }
@@ -1127,9 +1127,11 @@ public class ModHelpers {
      * Automatically generate translation keys for config tooltips. Relies on custom tooltip wrapping.
      */
 
-    public static Component[] fieldTooltip(TrackedValue<?> field) {
+    public static Component[] fieldTooltip(TrackedValue<?> field, boolean wrap) {
         String tooltipKey = "config.%s.%s.tooltip".formatted(MOD_ID, toSnakeCase(field.key().toString()));
-        return createTooltip(Component.empty(), tooltipKey).toArray(new Component[0]);
+        if (wrap)
+            return createTooltip(Component.empty(), tooltipKey).toArray(new Component[0]);
+        else return List.of(ModHelpers.translatableWithFallback(tooltipKey, "")).toArray(new Component[0]);
     }
 
     /**
