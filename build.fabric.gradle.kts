@@ -156,14 +156,13 @@ dependencies {
         modLocalRuntime("lol.bai:badpackets:fabric-${property("deps.badpackets_version")}")
     }
     // Limelight
-    if (stonecutter.eval(mcVersion, "=1.21.1")) {
-        modImplementation("io.wispforest:owo-lib:${property("deps.owo_version")}") // Limelight dependency
+    if (hasProperty("deps.owo_version")) {
+        modCompileOnly("io.wispforest:owo-lib:${property("deps.owo_version")}") // Limelight dependency
+        modLocalRuntime("io.wispforest:owo-lib:${property("deps.owo_version")}") // Limelight dependency
+    }
+    if (hasProperty("deps.limelight")) {
         modCompileOnly("io.wispforest:limelight:${property("deps.limelight_version")}") // Limelight "API"
         modLocalRuntime("io.wispforest:limelight:${property("deps.limelight_version")}") // Limelight
-    }
-    if (stonecutter.eval(mcVersion, "=1.21.5")) {
-        modImplementation("io.wispforest:owo-lib:${property("deps.owo_version")}") // Limelight dependency
-        modImplementation("io.wispforest:limelight:${property("deps.limelight_version")}") // Limelight
     }
 
 }
@@ -192,6 +191,10 @@ tasks {
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
         dependsOn("build")
     }
+}
+
+loom.runs.named("server") {
+    isIdeConfigGenerated = false
 }
 
 java {
@@ -238,14 +241,12 @@ publishMods {
         optional("modmenu")
     }
 
-    if (!stonecutter.eval(mcVersion, ">1.21.10")) {
-        curseforge {
-            projectId = property("publish.curseforge") as String
-            accessToken = env.CURSEFORGE_API_KEY.orNull()
-            minecraftVersions.add(stonecutter.current.version)
-            minecraftVersions.addAll(additionalVersions)
-            requires("fabric-api")
-        }
+    curseforge {
+        projectId = property("publish.curseforge") as String
+        accessToken = env.CURSEFORGE_API_KEY.orNull()
+        minecraftVersions.add(stonecutter.current.version)
+        minecraftVersions.addAll(additionalVersions)
+        requires("fabric-api")
     }
 }
 
