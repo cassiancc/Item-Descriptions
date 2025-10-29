@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.4]
+
+### Added
+- Support for Useful Spyglass 1.0.0.
+- Description for the new Lunge enchantment.
+- Support for new 1.21.11 armour convention tags.
+
+### Fixed
+- Wrapping issues in YACL.
+- Re-added Forge tag descriptions removed while porting.
+
 ## [2.5.3] - 2025-10-09
 
 ### Added

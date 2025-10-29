@@ -232,7 +232,7 @@ publishMods {
         if (!stonecutter.eval(mcVersion, ">1.21.10")) {
             minecraftVersions.add(stonecutter.current.version)
         } else {
-            minecraftVersions.add("25w41a")
+            minecraftVersions.add("25w44a")
         }
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
