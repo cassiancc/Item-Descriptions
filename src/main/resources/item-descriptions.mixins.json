@@ -9,6 +9,7 @@
     "PotionContentsComponentMixin",
     "StatusEffectsDisplayMixin"
   ],
+  "plugin": "cc.cassian.item_descriptions.client.mixin.ItemDescriptionsMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }

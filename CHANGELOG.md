@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.5.4]
+## [2.5.4+25w44a] - 2025-10-28
+
+### Added
+- Descriptions for new mobs in 25w44a.
+
+## [2.5.4] - 2025-10-18
 
 ### Added
 - Support for Useful Spyglass 1.0.0.

@@ -161,8 +161,8 @@ dependencies {
         modLocalRuntime("io.wispforest:owo-lib:${property("deps.owo_version")}") // Limelight dependency
     }
     if (hasProperty("deps.limelight")) {
-        modCompileOnly("io.wispforest:limelight:${property("deps.limelight_version")}") // Limelight "API"
-        modLocalRuntime("io.wispforest:limelight:${property("deps.limelight_version")}") // Limelight
+        modCompileOnly("io.wispforest:limelight:${property("deps.limelight")}") // Limelight "API"
+        modLocalRuntime("io.wispforest:limelight:${property("deps.limelight")}") // Limelight
     }
 
 }
@@ -232,7 +232,7 @@ publishMods {
         if (!stonecutter.eval(mcVersion, ">1.21.10")) {
             minecraftVersions.add(stonecutter.current.version)
         } else {
-            minecraftVersions.add("25w44a")
+            minecraftVersions.add(property("deps.minecraft").toString())
         }
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
