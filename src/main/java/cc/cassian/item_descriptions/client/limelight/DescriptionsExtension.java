@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client.limelight;
 //? if fabric {
 //? if 1.21.1 || 1.21.5 {
 /*import cc.cassian.item_descriptions.client.helpers.ModHelpers;
+import cc.cassian.item_descriptions.client.NamespacedKey;
 import io.wispforest.limelight.api.builtin.bangs.BangDefinition;
 import io.wispforest.limelight.api.builtin.bangs.BangsProvider;
 import io.wispforest.limelight.api.entry.ResultEntry;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 
 public class DescriptionsExtension implements LimelightExtension, BangsProvider {
-    public static final ResourceLocation ID = ModHelpers.of("item_descriptions");
+    public static final ResourceLocation ID = NamespacedKey.of("item_descriptions");
     public static final DescriptionsExtension INSTANCE = new DescriptionsExtension();
 
     @Override

@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client.limelight;
 //? if fabric {
 //? if 1.21.1 || 1.21.5 {
 /*import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.NamespacedKey;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
@@ -56,7 +57,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             namespace = splitS[0];
             item = splitS[1];
         }
-        //Check to see if that namespaced ResourceLocation matches an item. If so, return that item's lore key.
+        //Check to see if that namespaced Identifier matches an item. If so, return that item's lore key.
         if (ModClient.CONFIG.itemDescriptions.value()) {
             var itemStack = createMultilineTranslation(findLoreKey(BuiltInRegistries.ITEM
                     //? if >=1.21.2 {
@@ -64,10 +65,10 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                      //?} else {
                     /^.get
                     ^///?}
-                    (ModHelpers.of(namespace, item)).getDefaultInstance()).toString());
+                    (NamespacedKey.of(namespace, item)).getDefaultInstance()).toString());
             if (!Objects.requireNonNull(itemStack.tryCollapseToString()).isEmpty()) return itemStack;
         }
-        //Check to see if that namespaced ResourceLocation matches a mob. If so, return that item's lore key.
+        //Check to see if that namespaced Identifier matches a mob. If so, return that item's lore key.
         //This seems to return a Pig if it isn't matched correctly, so that is ignored if "pig" isn't actually typed in.
         if (ModClient.CONFIG.entityDescriptions.enable.value()) {
             var mobRegistry = BuiltInRegistries.ENTITY_TYPE
@@ -76,7 +77,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                      //?} else {
                     /^.get
                     ^///?}
-                    (ModHelpers.of(namespace, item)).getDescriptionId();
+                    (NamespacedKey.of(namespace, item)).getDescriptionId();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
                 if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
             }

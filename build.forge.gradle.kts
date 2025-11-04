@@ -13,7 +13,7 @@ tasks.named<ProcessResources>("processResources") {
 
     val props = HashMap<String, String>().apply {
         this["version"] = prop("mod.version") + "+" + prop("deps.minecraft")
-        this["minecraft"] = prop("mod.mc_dep_forgelike")
+        this["minecraft"] = prop("mod.mc_dep_forge")
     }
 
     filesMatching(listOf("neoforge.mod.json", "META-INF/neoforge.mods.toml", "META-INF/mods.toml")) {

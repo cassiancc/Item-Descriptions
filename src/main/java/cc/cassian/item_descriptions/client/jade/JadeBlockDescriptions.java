@@ -3,7 +3,11 @@ package cc.cassian.item_descriptions.client.jade;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.network.chat.Component;
+//? if >1.21.10 {
+/*import net.minecraft.resources.Identifier;
+*///?} else {
 import net.minecraft.resources.ResourceLocation;
+ //?}
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -35,7 +39,13 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public
+    //? if >1.21.10 {
+    /*Identifier
+    *///?} else {
+    ResourceLocation
+     //?}
+    getUid() {
         return ModClient.BLOCK_DESCRIPTIONS;
     }
 }

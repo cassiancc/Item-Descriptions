@@ -3,6 +3,7 @@ package cc.cassian.item_descriptions.client.fabric;
 //? fabric {
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.NamespacedKey;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
@@ -34,7 +35,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         });
 
         if (ModClient.CONFIG.developerOptions.generateMissing.value()) {
-            CommonLifecycleEvents.TAGS_LOADED.register(ModHelpers.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
+            CommonLifecycleEvents.TAGS_LOADED.register(NamespacedKey.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
                     //? if >=1.21.2 {
                     manager::lookup
                     //?} else {

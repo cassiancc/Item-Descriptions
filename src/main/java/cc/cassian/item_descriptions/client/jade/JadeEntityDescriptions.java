@@ -3,7 +3,11 @@ package cc.cassian.item_descriptions.client.jade;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.network.chat.Component;
+//? if >1.21.10 {
+/*import net.minecraft.resources.Identifier;
+*///?} else {
 import net.minecraft.resources.ResourceLocation;
+ //?}
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -34,7 +38,13 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public
+    //? if >1.21.10 {
+    /*Identifier
+    *///?} else {
+    ResourceLocation
+     //?}
+    getUid() {
         return ModClient.ENTITY_DESCRIPTIONS;
     }
 

@@ -196,6 +196,7 @@
   "entity.minecraft.llama.description": "A neutral mob found in Savanna Plateaus and Windswept biomes that can be tamed through riding, but not saddled. Can be equipped with a Chest. When leashed, nearby Llamas will follow.",
   "entity.minecraft.llama_spit.description": "A projectile that deals a small amount of damage on hit.",
   "entity.minecraft.magma_cube.description": "A hostile mob found in The Nether that divides on death. Drops magma cream.",
+  "entity.minecraft.mannequin.description": "A convenient mannequin in the shape of a Player.",
   "entity.minecraft.minecart.description": "A single-passenger vehicle that travels along rails.",
   "entity.minecraft.mooshroom.description": "A passive mob found in Mushroom Fields that can be milked for soup using a bowl. Transforms when struck by lightning.",
   "entity.minecraft.mule.description": "A passive mob created when breeding a Horse and a Donkey. Can be tamed through riding and equipped with a chest to store items.",

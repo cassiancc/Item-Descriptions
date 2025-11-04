@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.NamespacedKey;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
 //? if fabric
@@ -58,7 +59,11 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.*;
 import net.minecraft.ChatFormatting;
+//? if >1.21.10 {
+/*import net.minecraft.resources.Identifier;
+*///?} else {
 import net.minecraft.resources.ResourceLocation;
+//?}
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -76,19 +81,14 @@ import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 
 public class ModHelpers {
-    public static final ResourceLocation FABRIC_EVENT_PHASE = of("description_tooltip");
 
-    public static ResourceLocation of(String path) {
-        return ModHelpers.of(MOD_ID, path);
-    }
-
-    public static ResourceLocation of(String namespace, String path) {
-        //? if >=1.21 {
-        return ResourceLocation.fromNamespaceAndPath(namespace, path);
-        //?} else {
-        /*return new ResourceLocation(namespace, path);
-        *///?}
-    }
+    public static final
+    //? if >1.21.10 {
+    /*Identifier
+     *///?} else {
+    ResourceLocation
+    //?}
+    FABRIC_EVENT_PHASE = NamespacedKey.of("description_tooltip");
 
     /**
      * Check if ToolTipFix is installed and its wrapper should be used.
@@ -271,7 +271,7 @@ public class ModHelpers {
             //Ensure items with Custom Models get a custom key instead of a vanilla one.
             //? if >1.21.2 {
             if (hasComponent(stack, DataComponents.ITEM_MODEL))  {
-                ResourceLocation data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
+                var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
                 DescriptionKey modelKey = new DescriptionKey(data);
                 if (modelKey.hasTranslation()) {
                     return modelKey;
@@ -519,11 +519,11 @@ public class ModHelpers {
             if (hasTranslation(content.getKey()) && (split.length == 4 && split[0].equals("enchantment") && (split[3].equals("description") || split[3].equals("desc")) || split.length == 3 && split[0].equals("lore"))) {
                 // Whether the namespace and path maps to an enchantment on this item. If so, return true.
                 //? if >1.21 {
-                return enchantments.stream().anyMatch(entry -> ((Holder<Enchantment>)(Object)entry).is(ModHelpers.of(namespace, path)));
+                return enchantments.stream().anyMatch(entry -> ((Holder<Enchantment>)(Object)entry).is(NamespacedKey.of(namespace, path)));
                 //?} else if >1.20 {
-                /*return enchantments.stream().anyMatch(entry -> BuiltInRegistries.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
+                /*return enchantments.stream().anyMatch(entry -> BuiltInRegistries.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(NamespacedKey.of(namespace, path)));
                  *///?} else {
-                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
+                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(NamespacedKey.of(namespace, path)));
                  *///?}
             }
             return false;
@@ -1158,7 +1158,9 @@ public class ModHelpers {
             DescriptionKey description = descGetter.apply(value);
             List<String> keys = new ArrayList<>(potentialKeys.apply(value).stream().map(Component::getString).toList());
             if (description.isEmpty()) {
-                //? if >=1.21 {
+                //? if >1.21.10 {
+                /*LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), key.identifier());
+                *///?} else if >=1.21 {
                  LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), key.location());
                  //?} else {
                 /*LOGGER.warn("[Item Descriptions] Couldn't get lore key for: {}!", key.location());
@@ -1166,7 +1168,13 @@ public class ModHelpers {
             } else if (keys.stream().noneMatch(I18n::exists)) {
                 keys.remove(description.asLoreTranslation());
                 if (value instanceof ItemStack stack) keys.remove(getModdedNameMatch(stack).asLoreTranslation()); // Ugly
-                namespaces.computeIfAbsent(key.location().getNamespace(), k -> new TreeMap<>()).compute(value instanceof Block || value instanceof Item ? description.asLoreTranslation() : description.asDescriptionTranslation(), (k, v) -> Objects.requireNonNullElse(v, " ??? ") + String.join(", ", keys));
+                namespaces.computeIfAbsent(key.
+                        //? if >1.21.10 {
+                        /*identifier
+                        *///?} else {
+                        location
+                        //?}
+                        ().getNamespace(), k -> new TreeMap<>()).compute(value instanceof Block || value instanceof Item ? description.asLoreTranslation() : description.asDescriptionTranslation(), (k, v) -> Objects.requireNonNullElse(v, " ??? ") + String.join(", ", keys));
             }
         }
     }
@@ -1181,11 +1189,11 @@ public class ModHelpers {
         File folder = Platform.INSTANCE.getMissingTranslationsPath();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Map<String, Map<String, String>> namespaces = new HashMap<>();
-        addMissingTranslations((Registry<EntityType<?>>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","entity_type"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
-        addMissingTranslations((Registry<Item>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft", "item"))).orElse(null), namespaces, Item::getDefaultInstance, ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
-        addMissingTranslations((Registry<Enchantment>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","enchantment"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
-        addMissingTranslations((Registry<Block>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","block"))).orElse(null), namespaces, Block::defaultBlockState, ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys); // Blocks will overwrite items
-        addMissingTranslations((Registry<MobEffect>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","mob_effect"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        addMissingTranslations((Registry<EntityType<?>>) (Object) registryGetter.get(ResourceKey.createRegistryKey(NamespacedKey.ofVanillaId("entity_type"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        addMissingTranslations((Registry<Item>) (Object) registryGetter.get(ResourceKey.createRegistryKey(NamespacedKey.ofVanillaId("item"))).orElse(null), namespaces, Item::getDefaultInstance, ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        addMissingTranslations((Registry<Enchantment>) (Object) registryGetter.get(ResourceKey.createRegistryKey(NamespacedKey.ofVanillaId("enchantment"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        addMissingTranslations((Registry<Block>) (Object) registryGetter.get(ResourceKey.createRegistryKey(NamespacedKey.ofVanillaId("block"))).orElse(null), namespaces, Block::defaultBlockState, ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys); // Blocks will overwrite items
+        addMissingTranslations((Registry<MobEffect>) (Object) registryGetter.get(ResourceKey.createRegistryKey(NamespacedKey.ofVanillaId("mob_effect"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         Map<String, String> combined = new TreeMap<>();
         namespaces.values().forEach(combined::putAll);
         namespaces.put(ModClient.MOD_ID_NEO, combined);

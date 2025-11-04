@@ -9,7 +9,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 /*import net.minecraft.core.Registry;
  *///?}
 import cc.cassian.item_descriptions.client.ModClient;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 import java.util.ArrayList;
@@ -26,7 +25,13 @@ public class ModLists {
          *///?}
         hidden_items = new ArrayList<>();
         for (String disabledItem : ModClient.CONFIG.developerOptions.itemsWithTooltipsToHide.value()) {
-            Optional<Item> item = registry.getOptional(ResourceLocation.tryParse(disabledItem));
+            Optional<Item> item = registry.getOptional(
+                    //? if >1.21.10 {
+                    /*net.minecraft.resources.Identifier
+                    *///?} else {
+                    net.minecraft.resources.ResourceLocation
+                     //?}
+                    .tryParse(disabledItem));
             item.ifPresent(value -> hidden_items.add(value));
         }
     }
