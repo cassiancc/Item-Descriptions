@@ -174,11 +174,7 @@ import eu.pb4.polymer.core.api.client.ClientPolymerBlock;
 import eu.pb4.polymer.core.impl.client.InternalClientRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-//? if >1.21.10 {
-/*import net.minecraft.resources.Identifier;
-*///?} else {
 import net.minecraft.resources.ResourceLocation;
- //?}
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 
@@ -190,53 +186,17 @@ import net.minecraft.world.item.component.CustomData;
 public class PolymerHelpers {
     private static final String POLYMC_STACK = "PolyMcOriginal";
     public static final String POLYMER_STACK = "$polymer:stack";
-    public static final MapCodec<
-            //? if >1.21.10 {
-            /*Identifier
-            *///?} else {
-            ResourceLocation
-             //?}
-            > POLYMER_STACK_ID_CODEC =
-            //? if >1.21.10 {
-            /*Identifier
-            *///?} else {
-            ResourceLocation
-             //?}
-        .CODEC.fieldOf("id").fieldOf(POLYMER_STACK);
-    private static final MapCodec<
-            //? if >1.21.10 {
-            /*Identifier
-            *///?} else {
-            ResourceLocation
-             //?}
-            > POLYMC_STACK_ID_CODEC =
-            //? if >1.21.10 {
-            /*Identifier
-            *///?} else {
-            ResourceLocation
-             //?}
-            .CODEC.fieldOf("id").fieldOf(POLYMC_STACK);
+    public static final MapCodec<ResourceLocation> POLYMER_STACK_ID_CODEC = ResourceLocation.CODEC.fieldOf("id").fieldOf(POLYMER_STACK);
+    private static final MapCodec<ResourceLocation> POLYMC_STACK_ID_CODEC = ResourceLocation.CODEC.fieldOf("id").fieldOf(POLYMC_STACK);
 
     /**
      * Returns stored ResourceLocation of Polymer/other supported server mod ItemStack. If it's invalid, null is returned instead.
      */
-    public static
-    //? if >1.21.10 {
-    /*Identifier
-    *///?} else {
-    ResourceLocation
-     //?}
-    getServerResourceLocation(ItemStack itemStack) {
+    public static ResourceLocation getServerResourceLocation(ItemStack itemStack) {
         return getServerResourceLocation(itemStack.get(DataComponents.CUSTOM_DATA));
     }
 
-    public static
-    //? if >1.21.10 {
-    /*Identifier
-    *///?} else {
-    ResourceLocation
-     //?}
-    getServerResourceLocation(CustomData nbtData) {
+    public static ResourceLocation getServerResourceLocation(CustomData nbtData) {
         //? if >=1.21.1 {
         if (nbtData == null) {
             return null;
@@ -267,13 +227,7 @@ public class PolymerHelpers {
         return null;
     }
 
-    public static
-    //? if >1.21.10 {
-    /*Identifier
-    *///?} else {
-    ResourceLocation
-     //?}
-    getPolymerResourceLocation(CustomData custom) {
+    public static ResourceLocation getPolymerResourceLocation(CustomData custom) {
         //? if >=1.21.1 {
         if (custom != null && custom
                 //? if >1.21.8
@@ -296,13 +250,7 @@ public class PolymerHelpers {
         return null;
     }
 
-    public static
-    //? if >1.21.10 {
-    /*Identifier
-    *///?} else {
-    ResourceLocation
-     //?}
-    findPolymerBlockResourceLocation(BlockPos pos) {
+    public static ResourceLocation findPolymerBlockResourceLocation(BlockPos pos) {
         var block = InternalClientRegistry.getBlockAt(pos);
         return block.block().identifier();
     }

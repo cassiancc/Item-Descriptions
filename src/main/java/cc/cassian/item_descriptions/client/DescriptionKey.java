@@ -3,11 +3,7 @@ package cc.cassian.item_descriptions.client;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
-//? if >1.21.10 {
-/*import net.minecraft.resources.Identifier;
- *///?} else {
 import net.minecraft.resources.ResourceLocation;
-//?}
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,16 +28,10 @@ public class DescriptionKey {
         this.suffix = suffix;
     }
 
-    public DescriptionKey(
-            //? if >1.21.10 {
-            /*Identifier
-            *///?} else {
-            ResourceLocation
-             //?}
-            id) {
+    public DescriptionKey(ResourceLocation resourceLocation) {
         this.type = "lore";
-        this.namespace = id.getNamespace();
-        this.path = id.getPath();
+        this.namespace = resourceLocation.getNamespace();
+        this.path = resourceLocation.getPath();
         this.suffix = "";
     }
 
@@ -59,13 +49,7 @@ public class DescriptionKey {
         this.suffix = "";
     }
 
-    public DescriptionKey(String type,
-                          //? if >1.21.10 {
-                          /*Identifier
-                          *///?} else {
-                          ResourceLocation
-                           //?}
-                          resourceLocation) {
+    public DescriptionKey(String type, ResourceLocation resourceLocation) {
         this.type = type;
         this.namespace = resourceLocation.getNamespace();
         this.path = resourceLocation.getPath();
