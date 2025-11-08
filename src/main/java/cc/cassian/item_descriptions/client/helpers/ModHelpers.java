@@ -215,24 +215,24 @@ public class ModHelpers {
     public static boolean tooltipKeyPressed() {
         var ctrl =
             //? if >1.21.8 {
-            /*Minecraft.getInstance()
-            *///?} else {
-            Screen
-            //?}
+            Minecraft.getInstance()
+            //?} else {
+            /*Screen
+            *///?}
             .hasControlDown();
         var alt =
             //? if >1.21.8 {
-            /*Minecraft.getInstance()
-            *///?} else {
-            Screen
-            //?}
+            Minecraft.getInstance()
+            //?} else {
+            /*Screen
+            *///?}
             .hasAltDown();
         var shift =
             //? if >1.21.8 {
-            /*Minecraft.getInstance()
-            *///?} else {
-            Screen
-            //?}
+            Minecraft.getInstance()
+            //?} else {
+            /*Screen
+            *///?}
             .hasShiftDown();
         if (ModClient.CONFIG.keybinds.displayWhenCtrlIsHeld.value() && ctrl) return checkKey(ctrl);
         else if (ModClient.CONFIG.keybinds.displayWhenShiftIsHeld.value() && shift) return checkKey(shift);
@@ -297,10 +297,10 @@ public class ModHelpers {
             else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
                 //? if >1.21.8 {
-                /*var variant = toTranslationKey(data.copyTagWithoutId().getStringOr("variant", ""));
-                *///?} else if >=1.21.5 {
-                var variant = toTranslationKey(data.copyTag().getString("variant").orElse(""));
-                //?} else {
+                var variant = toTranslationKey(data.copyTagWithoutId().getStringOr("variant", ""));
+                //?} else if >=1.21.5 {
+                /*var variant = toTranslationKey(data.copyTag().getString("variant").orElse(""));
+                *///?} else {
                 /*var variant = toTranslationKey(data.copyTag().getString("variant"));
                 *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
@@ -1157,16 +1157,21 @@ public class ModHelpers {
             *///?}
             DescriptionKey description = descGetter.apply(value);
             List<String> keys = new ArrayList<>(potentialKeys.apply(value).stream().map(Component::getString).toList());
+            //? if >1.21.10 {
+            /*var id = key.identifier();
+            *///?} else {
+            var id = key.location();
+            //?}
             if (description.isEmpty()) {
                 //? if >=1.21 {
-                 LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), key.location());
+                 LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), id);
                  //?} else {
-                /*LOGGER.warn("[Item Descriptions] Couldn't get lore key for: {}!", key.location());
+                /*LOGGER.warn("[Item Descriptions] Couldn't get lore key for: {}!", id);
                 *///?}
             } else if (keys.stream().noneMatch(I18n::exists)) {
                 keys.remove(description.asLoreTranslation());
                 if (value instanceof ItemStack stack) keys.remove(getModdedNameMatch(stack).asLoreTranslation()); // Ugly
-                namespaces.computeIfAbsent(key.location().getNamespace(), k -> new TreeMap<>()).compute(value instanceof Block || value instanceof Item ? description.asLoreTranslation() : description.asDescriptionTranslation(), (k, v) -> Objects.requireNonNullElse(v, " ??? ") + String.join(", ", keys));
+                namespaces.computeIfAbsent(id.getNamespace(), k -> new TreeMap<>()).compute(value instanceof Block || value instanceof Item ? description.asLoreTranslation() : description.asDescriptionTranslation(), (k, v) -> Objects.requireNonNullElse(v, " ??? ") + String.join(", ", keys));
             }
         }
     }

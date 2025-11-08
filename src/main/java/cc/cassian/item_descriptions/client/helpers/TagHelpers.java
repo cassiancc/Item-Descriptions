@@ -36,16 +36,16 @@ public class TagHelpers {
         if (item instanceof SpawnEggItem spawnEggItem) {
             if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
                 //? if >1.21.1 && <=1.21.8 {
-                var level = Minecraft.getInstance().level;
+                /*var level = Minecraft.getInstance().level;
                 if (level == null)
                     return new DescriptionKey("tag", "c", "spawn_egg");
-                //?}
+                *///?}
                 EntityType<?> entityType = spawnEggItem.getType(
                         //? if >1.21.8 {
-                        /*stack
-                         *///?} else if >1.21.1 {
-                        level.registryAccess(), stack
-                        //?} else if >1.20.1 {
+                        stack
+                         //?} else if >1.21.1 {
+                        /*level.registryAccess(), stack
+                        *///?} else if >1.20.1 {
                         /*stack
                          *///?} else {
                         /*stack.getTag()
@@ -111,10 +111,10 @@ public class TagHelpers {
         Component newText;
         if (
         //? if >1.21.8 {
-        /*Minecraft.getInstance()
-        *///?} else {
-        Screen
-        //?}
+        Minecraft.getInstance()
+        //?} else {
+        /*Screen
+        *///?}
         .hasAltDown())
             newText = newAdd.toText();
         else {

@@ -173,6 +173,13 @@ configurations.all {
     }
 }
 
+stonecutter {
+    replacements.string {
+        direction = eval(current.version, ">1.21.10")
+        replace("ResourceLocation", "Identifier")
+    }
+}
+
 fabricApi {
     configureDataGeneration() {
         outputDirectory = file("$rootDir/src/main/generated")

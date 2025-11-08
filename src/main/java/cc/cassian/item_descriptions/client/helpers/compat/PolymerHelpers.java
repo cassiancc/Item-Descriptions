@@ -208,15 +208,15 @@ public class PolymerHelpers {
 
         if (nbtData
                 //? if >1.21.8
-                /*.copyTag()*/
+                .copyTag()
                 .contains(POLYMC_STACK)) {
             try {
                 return nbtData
                         //? if >1.21.8
-                        /*.copyTag()*/
+                        .copyTag()
                         .read(POLYMC_STACK_ID_CODEC)
                         //? if <1.21.9
-                        .result()
+                        /*.result()*/
                         .orElse(null);
             } catch (Throwable ignored) {
 
@@ -231,15 +231,15 @@ public class PolymerHelpers {
         //? if >=1.21.1 {
         if (custom != null && custom
                 //? if >1.21.8
-                /*.copyTag()*/
+                .copyTag()
                 .contains(POLYMER_STACK)) {
             try {
                 return custom
                         //? if >1.21.8
-                        /*.copyTag()*/
+                        .copyTag()
                         .read(POLYMER_STACK_ID_CODEC)
                         //? if <1.21.9
-                        .result()
+                        /*.result()*/
                         .orElse(null);
             } catch (Throwable ignored) {
 
