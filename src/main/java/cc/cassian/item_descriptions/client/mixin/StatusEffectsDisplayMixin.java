@@ -68,7 +68,7 @@ public abstract class StatusEffectsDisplayMixin {
     }
 
     @Inject(method = "renderText", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;III)V"))
-    private void forceShowDescriptions(GuiGraphics context, MobEffectInstance mobEffectInstance, Component component, Font font, int i, int j, int k, int l, int m, int n, CallbackInfo ci, @Local LocalBooleanRef bl) {
+    private void forceShowDescriptions(GuiGraphics graphics, Component effectText, Component duration, Font font, int x0, int y0, int textureWidth, int yStep, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef bl) {
         if (!bl.get())
             bl.set(true);
     }

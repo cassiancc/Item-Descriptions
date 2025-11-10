@@ -17,19 +17,24 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
 
     @Override
     public void register(IRegistrar registrar) {
+        //? if !unobf {
         //Register Block Descriptions plugin.
         registrar.addConfig( BLOCK_DESCRIPTIONS, true );
         registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.BODY, Block.class, 2000 );
         //Register Entity Descriptions plugin.
         registrar.addConfig( ENTITY_DESCRIPTIONS, true );
         registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, Entity.class, 2000 );
-
+        //?}
     }
 
     @Override
     public void appendBody(ITooltip lines, IBlockAccessor blockAccessor, IPluginConfig config) {
         //Check if block descriptions are enabled in mod config.
-        if (showBlockDescriptions() && config.getBoolean(BLOCK_DESCRIPTIONS)) {
+        if (showBlockDescriptions()
+                //? !unobf {
+                && config.getBoolean(BLOCK_DESCRIPTIONS)
+                //?}
+        ) {
             List<Component> tooltip;
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
@@ -46,7 +51,11 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
     @Override
     public void appendBody(ITooltip lines, IEntityAccessor entityAccessor, IPluginConfig config) {
         //Check if entity descriptions are enabled in mod config.
-        if (showEntityDescriptions()  && config.getBoolean(ENTITY_DESCRIPTIONS)) {
+        if (showEntityDescriptions()
+                //? !unobf {
+                && config.getBoolean(ENTITY_DESCRIPTIONS)
+                //?}
+        ) {
             List<Component> tooltip;
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(entityAccessor.getEntity());

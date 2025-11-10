@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.fabric;
 
-//? fabric {
+//? fabric || unobf {
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;

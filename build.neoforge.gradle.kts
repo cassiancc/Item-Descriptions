@@ -72,6 +72,13 @@ repositories {
     flatDir { dirs("libs") }
 }
 
+stonecutter {
+    replacements.string {
+        direction = eval(current.version, ">1.21.10")
+        replace("ResourceLocation", "Identifier")
+    }
+}
+
 neoForge {
     version = property("deps.neoforge") as String
     validateAccessTransformers = true

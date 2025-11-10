@@ -1,5 +1,5 @@
 package cc.cassian.item_descriptions.client.jade;
-
+//? if !unobf {
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.network.chat.Component;
@@ -39,3 +39,4 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
         return ModClient.BLOCK_DESCRIPTIONS;
     }
 }
+//?}

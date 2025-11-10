@@ -13,6 +13,7 @@ public class JadeIntegration implements IWailaPlugin {
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
+        //? if !unobf {
         client = registration;
         //Register Block Descriptions plugin.
         //? if >1.20
@@ -22,6 +23,6 @@ public class JadeIntegration implements IWailaPlugin {
         //? if >1.20
         registration.markAsClientFeature(ModClient.ENTITY_DESCRIPTIONS);
         registration.registerEntityComponent(JadeEntityDescriptions.INSTANCE, Entity.class);
-
+        //?}
     }
 }
