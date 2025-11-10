@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-//? if (=1.21.1 || =1.20.1) && neoforge {
+//? if (=1.21.1 && neoforge) || forge {
 /*import org.violetmoon.quark.addons.oddities.client.screen.MatrixEnchantingScreen;
 import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix;
 *///?} else {
@@ -28,30 +28,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Pseudo
-//? if (=1.21.1 || =1.20.1) && neoforge {
+//? if (=1.21.1 && neoforge) || forge {
 /*@Mixin(MatrixEnchantingScreen.class)
 *///?} else {
 @Mixin(EnchantmentScreen.class)
 //?}
 public class MatrixEnchantmentScreenMixin {
-    //? if (=1.21.1 || =1.20.1) && neoforge {
+    //? if (=1.21.1 && neoforge) || forge {
     /*@Shadow protected EnchantmentMatrix.Piece hoveredPiece;
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
     private void addEnchantmentDescriptions(GuiGraphics instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original) {
         //? if >=1.21 {
-        /^Holder<Enchantment> enchant
-        ^///?} else {
-        Enchantment enchant
-         //?}
+        Holder<Enchantment> enchant
+        //?} else {
+        /^Enchantment enchant
+         ^///?}
         = this.hoveredPiece.enchant;
         if (ModHelpers.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
             Component name =
             //? if >=1.21 {
-             /^Enchantment.getFullname(enchant, 1);
-            ^///?} else {
-            enchant.getFullname(1);
-            //?}
+             Enchantment.getFullname(enchant, 1);
+            //?} else {
+            /^enchant.getFullname(1);
+            ^///?}
             if (name.getContents() instanceof TranslatableContents content) {
                 List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
                 components.addAll(tooltip);

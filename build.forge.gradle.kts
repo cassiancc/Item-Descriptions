@@ -199,10 +199,10 @@ dependencies {
         modRuntimeOnly("mcp.mobius.waila:wthit:forge-${property("deps.wthit_version")}")
         modRuntimeOnly("lol.bai:badpackets:forge-${property("deps.badpackets_version")}")
     }
-    if (stonecutter.eval(mcVersion, "=1.21.1")) {
-        modCompileOnly("maven.local:quark:4.0-463")
+    if (stonecutter.eval(mcVersion, "=1.20.1")) {
+        modCompileOnly("maven.local:quark:4.0-463-deobf")
     }
-    modCompileOnly("io.github.llamalad7:mixinextras-common:0.5.0")
+    compileOnly("io.github.llamalad7:mixinextras-common:0.5.0")
     implementation("io.github.llamalad7:mixinextras-forge:0.5.0")
     jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")
 
