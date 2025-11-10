@@ -152,13 +152,6 @@ stonecutter {
     }
 }
 
-fabricApi {
-    configureDataGeneration() {
-        outputDirectory = file("$rootDir/src/main/generated")
-        client = true
-    }
-}
-
 tasks {
     processResources {
         exclude("**/neoforge.mods.toml", "**/mods.toml")
@@ -178,13 +171,8 @@ loom.runs.named("server") {
 
 java {
     withSourcesJar()
-    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">=1.21")) {
-        JavaVersion.VERSION_21
-    } else {
-        JavaVersion.VERSION_17
-    }
-    sourceCompatibility = javaCompat
-    targetCompatibility = javaCompat
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 val additionalVersionsStr = findProperty("publish.additionalVersions") as String?
