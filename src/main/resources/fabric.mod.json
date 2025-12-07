@@ -46,7 +46,8 @@
   "depends": {
     "fabricloader": ">=0.15.7",
     "minecraft": "${minecraft}",
-    "fabric-api": "*"
+    "fabric-item-api-v1": "*",
+    "fabric-lifecycle-events-v1": "*"
   },
   "recommends": {
     "cloth-config": "*",

@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("net.fabricmc.fabric-loom-no-remap")
+    id("net.fabricmc.fabric-loom")
     id("dev.kikugie.postprocess.jsonlang")
     id("me.modmuss50.mod-publish-plugin")
     id("maven-publish")
@@ -123,6 +123,7 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:${property("deps.minecraft")}")
     implementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
+
     implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
 
     implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")

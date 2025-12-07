@@ -3,9 +3,6 @@ package cc.cassian.item_descriptions.client;
 import cc.cassian.item_descriptions.client.config.ModConfig;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModStyle;
-//? if >1.21.1 {
-import net.minecraft.core.RegistryAccess;
-//?}
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

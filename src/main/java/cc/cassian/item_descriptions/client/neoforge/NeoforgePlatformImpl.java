@@ -46,8 +46,8 @@ public class NeoforgePlatformImpl implements Platform {
         if (Minecraft.getInstance().level != null) {
             namespace = stack.getItem().getCreatorModId(
                     //? if >=1.21.2 {
-                    /^Minecraft.getInstance().level.registryAccess(),
-                    ^///?}
+                    Minecraft.getInstance().level.registryAccess(),
+                    //?}
                     stack);
         }
         String key = "modmenu.nameTranslation."+namespace;

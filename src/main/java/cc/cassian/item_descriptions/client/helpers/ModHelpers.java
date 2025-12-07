@@ -19,7 +19,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
+//? if >1.21.10 {
+/*import net.minecraft.world.entity.decoration.painting.Painting;
+*///?} else {
 import net.minecraft.world.entity.decoration.Painting;
+//?}
 import net.minecraft.world.effect.MobEffect;
 //? if >1.21 {
 import net.minecraft.core.component.DataComponentType;

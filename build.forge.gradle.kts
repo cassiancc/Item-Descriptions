@@ -202,10 +202,25 @@ dependencies {
     if (stonecutter.eval(mcVersion, "=1.20.1")) {
         modCompileOnly("maven.local:quark:4.0-463-deobf")
     }
+    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
     compileOnly("io.github.llamalad7:mixinextras-common:0.5.0")
     implementation("io.github.llamalad7:mixinextras-forge:0.5.0")
     jarJar("io.github.llamalad7:mixinextras-forge:0.5.0")
 
+}
+
+
+mixin {
+    add(sourceSets["main"], "item-descriptions.mixin-refmap.json")
+    config("item-descriptions.mixins.json")
+}
+
+tasks.named<Jar>("jar") {
+    manifest {
+        attributes(
+            "MixinConfigs" to "item-descriptions.mixins.json"
+        )
+    }
 }
 
 tasks {
