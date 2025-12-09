@@ -7,12 +7,14 @@ import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
 import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -23,16 +25,15 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import static cc.cassian.item_descriptions.client.ModClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-@Mod(MOD_ID_NEO)
+@Mod(value = MOD_ID_NEO, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = MOD_ID_NEO)
 public final class ItemDescriptionsNeoForge {
     public ItemDescriptionsNeoForge(IEventBus eventBus, ModContainer modContainer) {
         // Load config.
         ModClient.init();
-        //Add Tooltips
-        addTooltips();
-        //Register config screen.
+        // Register config screen.
         registerModsPage();
-        eventBus.addListener(ItemDescriptionsNeoForge::loadComplete);
+        // Register Useful Spyglass compatibility
         if (Platform.INSTANCE.isLoaded("usefulspyglass")) {
             NeoForge.EVENT_BUS.addListener(UsefulSpyglassHelpers::registerBlockEvent);
             NeoForge.EVENT_BUS.addListener(UsefulSpyglassHelpers::registerEntityEvent);
@@ -44,21 +45,16 @@ public final class ItemDescriptionsNeoForge {
         ModLists.loadLists();
     }
 
-    public void addTooltips() {
-        NeoForge.EVENT_BUS.addListener(this::onItemTooltipEvent);
-        NeoForge.EVENT_BUS.addListener(this::onItemTooltipEventLowestPriority);
-    }
-
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public void onItemTooltipEvent(ItemTooltipEvent event) {
-        createDescriptionsFromItemStack(event.getItemStack(), event.getToolTip());
+        createDescriptionsFromItemStack(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
     // Fix item descriptions
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onItemTooltipEventLowestPriority(ItemTooltipEvent event) {
-        fixItemStackDescriptionTooltip(event.getItemStack(), event.getToolTip());
+        fixItemStackDescriptionTooltip(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.

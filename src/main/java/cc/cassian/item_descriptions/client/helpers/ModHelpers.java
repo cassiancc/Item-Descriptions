@@ -9,17 +9,18 @@ import com.google.gson.GsonBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 //? if >1.21.10 {
 /*import net.minecraft.world.entity.decoration.painting.Painting;
 *///?} else {
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.entity.decoration.Painting;
 //?}
 import net.minecraft.world.effect.MobEffect;
@@ -42,7 +43,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
@@ -628,7 +628,7 @@ public class ModHelpers {
         return ModClient.CONFIG.effectDescriptions.enable.value() && useInternalEffectDescriptions() && (tooltipKeyPressed() || ModClient.CONFIG.effectDescriptions.displayAlways.value());
     }
 
-    public static void createDescriptionsFromItemStack(ItemStack stack, List<Component> lines) {
+    public static void createDescriptionsFromItemStack(ItemStack stack, Item.TooltipContext context, TooltipFlag type, List<Component> lines) {
         if (ModClient.CONFIG.developerOptions.hideOtherTooltips.value() || ModLists.hidden_items.contains(stack.getItem())) {
             var first = lines.getFirst();
             lines.clear();
@@ -674,7 +674,7 @@ public class ModHelpers {
         return false;
     }
 
-    public static void fixItemStackDescriptionTooltip(ItemStack stack, List<Component> lines) {
+    public static void fixItemStackDescriptionTooltip(ItemStack stack, Item.TooltipContext context, TooltipFlag type, List<Component> lines) {
         if (!useInternalWrapper())
             return;
         fixEnchantmentDescription(stack, lines);
