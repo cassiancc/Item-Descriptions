@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.6] - 2025-11-21
+
+### Added
+- Port to 25w46a.
+
+### Changed
+- Internal changes allowing for experimental builds for unobfuscated Minecraft.
+
+### Fixed
+- Typo in Clock description.
+- Crash from mixin on latest snapshot.
+- Quark Matrix Enchanting on 1.20.1 Forge.
+
 ## [2.5.5] - 2025-11-04
 
 ### Added

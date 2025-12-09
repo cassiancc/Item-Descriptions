@@ -594,7 +594,7 @@ public class ModHelpers {
             else return false;
             tooltip = tooltip.stream().map(text -> (Component)text.copy().setStyle(ModStyle.ITEM_DESCRIPTIONS)).toList();
             if (showItemDescriptions())
-                lines.addAll(tooltip);
+                lines.addAll(1, tooltip);
             else return descriptionKey.hasTranslation();
         }
         return false;
