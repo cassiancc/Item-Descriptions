@@ -195,8 +195,8 @@ publishMods {
 
     modrinth {
         projectId = property("publish.modrinth") as String
-        accessToken = env.MODRINTH_API_KEY.orNull()
-        if (!stonecutter.eval(mcVersion, ">1.21.10")) {
+        accessToken = null
+        if (!stonecutter.eval(mcVersion, ">1.21.11")) {
             minecraftVersions.add(stonecutter.current.version)
         } else {
             minecraftVersions.add(property("deps.minecraft").toString())
@@ -210,7 +210,7 @@ publishMods {
 
     curseforge {
         projectId = property("publish.curseforge") as String
-        accessToken = env.CURSEFORGE_API_KEY.orNull()
+        accessToken = null
         minecraftVersions.add(stonecutter.current.version)
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")

@@ -520,14 +520,16 @@ public class ModHelpers {
             DescriptionKey descriptionKey = findLoreKey(stack);
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(stack);
+            } else if (descriptionKey.hasEmptyTranslation()) {
+                return false;
             } else if (descriptionKey.hasTranslation()) {
                 tooltip = List.of(descriptionKey.toText());
             }
             else return false;
-            tooltip = tooltip.stream().map(text -> (Component)text.copy().setStyle(ModStyle.ITEM_DESCRIPTIONS)).toList();
-            if (showItemDescriptions())
+            if (showItemDescriptions()) {
+                tooltip = tooltip.stream().map(text -> (Component)text.copy().setStyle(ModStyle.ITEM_DESCRIPTIONS)).toList();
                 lines.addAll(1, tooltip);
-            else return descriptionKey.hasTranslation();
+            } else return descriptionKey.hasTranslation();
         }
         return false;
     }

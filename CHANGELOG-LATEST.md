@@ -1,2 +1,2 @@
 ### Fixed
-- Hint text and Item Description not being in the same place.
+- Removing an Item Description now causes the hint to disappear.

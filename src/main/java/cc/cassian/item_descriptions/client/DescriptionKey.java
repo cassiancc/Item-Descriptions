@@ -169,4 +169,8 @@ public class DescriptionKey {
         if (ModClient.CONFIG.developerOptions.showUntranslated.value()) return true;
         return I18n.exists(toString());
     }
+
+    public boolean hasEmptyTranslation() {
+        return hasTranslation() && I18n.get(toString()).trim().isEmpty();
+    }
 }
