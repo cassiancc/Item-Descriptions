@@ -182,7 +182,7 @@ dependencies {
         implementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
         compileOnly("thedarkcolour:kotlinforforge-neoforge:5.10.0")
     } else {
-        compileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-neoforge")
+        compileOnly("dev.isxander:yet-another-config-lib:3.8.0+1.21.9-neoforge")
     }
     // Cloth Config
     if (hasProperty("deps.cloth_version")) {
