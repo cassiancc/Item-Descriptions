@@ -7,7 +7,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.Font;
-//? if >1.20
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-//? if (=1.21.1 && neoforge) || forge {
+//? if (=1.21.1 && neoforge) {
 /*import org.violetmoon.quark.addons.oddities.client.screen.MatrixEnchantingScreen;
 import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix;
 *///?} else {
@@ -28,13 +27,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Pseudo
-//? if (=1.21.1 && neoforge) || forge {
+//? if (=1.21.1 && neoforge) {
 /*@Mixin(MatrixEnchantingScreen.class)
 *///?} else {
 @Mixin(EnchantmentScreen.class)
 //?}
 public class MatrixEnchantmentScreenMixin {
-    //? if (=1.21.1 && neoforge) || forge {
+    //? if (=1.21.1 && neoforge) {
     /*@Shadow protected EnchantmentMatrix.Piece hoveredPiece;
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))

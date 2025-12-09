@@ -42,24 +42,6 @@ import java.util.Optional;
 /*@Mixin(EffectRenderingInventoryScreen.class)*/
 public abstract class StatusEffectsDisplayMixin {
 
-    //? if =1.21.5 || =1.21.4 {
-    /*@Shadow protected abstract void renderLabels(GuiGraphics context, int x, int height, Iterable<MobEffectInstance> statusEffects);
-
-
-    @Inject(method = "renderEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screens/inventory/EffectsInInventory;renderIcons(Lnet/minecraft/client/gui/GuiGraphics;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(GuiGraphics context, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<MobEffectInstance> collection, @Local Iterable<MobEffectInstance> iterable) {
-        if (booleanRef.get()) {
-            int k = 33;
-            if (collection.size() > 5) {
-                k = 132 / (collection.size() - 1);
-            }
-            this.renderLabels(context, i, k, iterable);
-        }
-        booleanRef.set(false);
-    }
-
-    *///?}
-
     //? if >1.21.10 {
     /*@WrapOperation(method = "renderText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics instance, Font font, List<Component> lines, Optional<TooltipComponent> tooltipImage, int x, int y, Operation<Void> original) {
@@ -99,7 +81,7 @@ public abstract class StatusEffectsDisplayMixin {
         List<Component> tooltipText = ModHelpers.createEffectDescription(text);
         context.renderTooltip(textRenderer, tooltipText, Optional.empty(), mouseX, mouseY);
     }
-    *///?} else if >1.20 {
+    *///?} else {
     /*@Redirect(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics context, Font textRenderer, List<Component> text, Optional data, int mouseX, int mouseY) {
         List<Component> tooltipText = ModHelpers.createEffectDescription(text);
@@ -115,26 +97,6 @@ public abstract class StatusEffectsDisplayMixin {
                 k = 132 / (collection.size() - 1);
             }
             this.renderLabels(context, i, k, iterable);
-        }
-        booleanRef.set(false);
-    }
-    *///?} else {
-    /*@Shadow protected abstract void renderLabels(PoseStack matrices, int x, int height, Iterable<MobEffectInstance> statusEffects);
-
-    @Redirect(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"))
-    private void renderEffects(EffectRenderingInventoryScreen instance, PoseStack stack, List<Component> text, Optional optional, int mouseX, int mouseY) {
-        List<Component> tooltipText = ModHelpers.createEffectDescription(text);
-        instance.renderTooltip(stack, tooltipText, Optional.empty(), mouseX, mouseY);
-    }
-
-    @Inject(method = "renderEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderIcons(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;Z)V"))
-    private void forceShowDescriptions(PoseStack matrices, int mouseX, int mouseY, CallbackInfo ci, @Local LocalBooleanRef booleanRef, @Local(ordinal = 2) int i, @Local Collection<MobEffectInstance> collection, @Local Iterable<MobEffectInstance> iterable) {
-        if (booleanRef.get()) {
-            int k = 33;
-            if (collection.size() > 5) {
-                k = 132 / (collection.size() - 1);
-            }
-            this.renderLabels(matrices, i, k, iterable);
         }
         booleanRef.set(false);
     }

@@ -10,8 +10,6 @@ import java.nio.file.Path;
 //? neoforge {
 /*import cc.cassian.item_descriptions.client.neoforge.NeoforgePlatformImpl;
 *///?}
-//? forge
-/*import cc.cassian.item_descriptions.client.forge.ForgePlatformImpl;*/
 
 public interface Platform {
 
@@ -21,10 +19,6 @@ public interface Platform {
     //? neoforge {
     /*Platform INSTANCE = new NeoforgePlatformImpl();
     *///?}
-    //? forge {
-    /*Platform INSTANCE = new ForgePlatformImpl();
-     *///?}
-
 
     boolean isLoaded(String modid);
     boolean isLoadingLoaded(String mod);

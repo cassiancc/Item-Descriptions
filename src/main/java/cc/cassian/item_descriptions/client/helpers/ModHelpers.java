@@ -4,8 +4,6 @@ import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
-//? if fabric
-import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
@@ -25,19 +23,12 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.entity.decoration.Painting;
 //?}
 import net.minecraft.world.effect.MobEffect;
-//? if >1.21 {
 import net.minecraft.core.component.DataComponentType;
-//? if fabric
+//? if fabric {
+import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
+//?}
 import net.minecraft.core.component.DataComponents;
-//?} else if >1.20.5 {
-/*import net.minecraft.component.DataComponentType;
-import net.minecraft.component.DataComponentTypes;
-*///?} else {
-/*import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-*///?}
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.Entity;
@@ -48,16 +39,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-//? if >1.21 {
-
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Holder;
-//?} else if >1.20 {
-
-/*import net.minecraft.core.registries.BuiltInRegistries;
-*///?} else {
-
-//?}
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.*;
@@ -87,11 +70,7 @@ public class ModHelpers {
     }
 
     public static ResourceLocation of(String namespace, String path) {
-        //? if >=1.21 {
         return ResourceLocation.fromNamespaceAndPath(namespace, path);
-        //?} else {
-        /*return new ResourceLocation(namespace, path);
-        *///?}
     }
 
     /**
@@ -266,73 +245,56 @@ public class ModHelpers {
             return DescriptionKey.empty();
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
-        //? if >1.21 && fabric {
+        //? if fabric {
         if (PolymerHelpers.getServerResourceLocation(stack) != null) {
             return new DescriptionKey(PolymerHelpers.getServerResourceLocation(stack));
         }
         //?}
-        //? if >1.20.5 {
-            //Ensure items with Custom Models get a custom key instead of a vanilla one.
-            //? if >1.21.2 {
-            if (hasComponent(stack, DataComponents.ITEM_MODEL))  {
-                ResourceLocation data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
-                DescriptionKey modelKey = new DescriptionKey(data);
-                if (modelKey.hasTranslation()) {
-                    return modelKey;
-                }
-            } else
+        //Ensure items with Custom Models get a custom key instead of a vanilla one.
+        //? if >1.21.2 {
+        if (hasComponent(stack, DataComponents.ITEM_MODEL))  {
+            ResourceLocation data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
+            DescriptionKey modelKey = new DescriptionKey(data);
+            if (modelKey.hasTranslation()) {
+                return modelKey;
+            }
+        } else
+        //?}
+        //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
+        if (hasComponent(stack, DataComponents.CUSTOM_MODEL_DATA)) {
+            var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.CUSTOM_MODEL_DATA));
+            //? if <1.21.4 {
+             /*var dataValue = data.value();
+            *///?} else {
+            var dataValue = data.getString(0);
             //?}
-            //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
-            if (hasComponent(stack, DataComponents.CUSTOM_MODEL_DATA)) {
-                var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.CUSTOM_MODEL_DATA));
-                //? if <1.21.4 {
-                 /*var dataValue = data.value();
-                *///?} else {
-                var dataValue = data.getString(0);
-                //?}
-                DescriptionKey key = getDescriptionKey(stack);
-                DescriptionKey modelKey = key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack);
-                modelKey.setSuffix(".custommodeldata." + dataValue);
-                if (modelKey.hasTranslation()) {
-                    return modelKey;
-                }
+            DescriptionKey key = getDescriptionKey(stack);
+            DescriptionKey modelKey = key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack);
+            modelKey.setSuffix(".custommodeldata." + dataValue);
+            if (modelKey.hasTranslation()) {
+                return modelKey;
             }
-            //Ensure Paintings get a custom key instead of a vanilla one.
-            else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
-                var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
-                //? if >1.21.8 {
-                var variant = toTranslationKey(data.copyTagWithoutId().getStringOr("variant", ""));
-                //?} else if >=1.21.5 {
-                /*var variant = toTranslationKey(data.copyTag().getString("variant").orElse(""));
-                *///?} else {
-                /*var variant = toTranslationKey(data.copyTag().getString("variant"));
-                *///?}
-                var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
-                if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) return paintingKey;
+        }
+        //Ensure Paintings get a custom key instead of a vanilla one.
+        else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
+            var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
+            //? if >1.21.8 {
+            var variant = toTranslationKey(data.copyTagWithoutId().getStringOr("variant", ""));
+            //?} else if >=1.21.5 {
+            /*var variant = toTranslationKey(data.copyTag().getString("variant").orElse(""));
+            *///?} else {
+            /*var variant = toTranslationKey(data.copyTag().getString("variant"));
+            *///?}
+            var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
+            if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) return paintingKey;
+        }
+        //Ensure player heads with Profile components get a custom key instead of a vanilla one.
+        else if (hasComponent(stack, DataComponents.PROFILE)) {
+            DescriptionKey profileKey = getProfile(stack);
+            if (profileKey.hasTranslation()) {
+                return profileKey;
             }
-            //Ensure player heads with Profile components get a custom key instead of a vanilla one.
-            else if (hasComponent(stack, DataComponents.PROFILE)) {
-                DescriptionKey profileKey = getProfile(stack);
-                if (profileKey.hasTranslation()) {
-                    return profileKey;
-                }
-            }
-        //?} else {
-        /*CompoundTag s = stack.getTag();
-            if (s != null) {
-                if (s.contains("CUSTOM_MODEL_DATA", Tag.TAG_ANY_NUMERIC)) {
-                    DescriptionKey descKey = getDescriptionKey(stack);
-                    DescriptionKey key = descKey.hasTranslation() ? descKey : TagHelpers.checkGenericTagList(stack);
-                    key.setSuffix("custommodeldata." + Objects.requireNonNull(s.get("CUSTOM_MODEL_DATA")));
-                }
-                else if (s.contains("SkullOwner", Tag.STRING_SIZE)) {
-                    DescriptionKey profileKey = getProfile(stack);
-                    if (profileKey.hasTranslation()) {
-                        return profileKey;
-                    }
-                }
-            }
-        *///?}
+        }
         DescriptionKey name = getModdedNameMatch(stack);
         if (name.hasTranslation()) {
             return name;
@@ -363,7 +325,7 @@ public class ModHelpers {
     public static DescriptionKey createBlockDescription(Block block, Level world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         DescriptionKey loreKey = findLoreKey(block);
-        //? if >1.21 && fabric {
+        //? if fabric {
         if (isLoaded("polymer-bundled"))
             if (pos != null && PolymerHelpers.isPolymerBlock(pos)) {
                 loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockResourceLocation(pos));
@@ -413,13 +375,11 @@ public class ModHelpers {
         if (entity instanceof ItemFrame itemFrameEntity && !itemFrameEntity.getItem().isEmpty()) {
             return createTooltip(name, findLoreKey(itemFrameEntity.getItem()));
         }
-        //? if >1.21 {
         else if (entity instanceof Painting painting && painting.getVariant().isBound()) {
             var loreKey = new DescriptionKey("lore", "minecraft", "painting", toTranslationKey(painting.getVariant().getRegisteredName()));
             if (loreKey.hasTranslation())
                 return createTooltip(name, loreKey);
         }
-        //?}
         return createTooltip(name, findLoreKey(entity));
     }
 
@@ -428,30 +388,12 @@ public class ModHelpers {
         if (ModClient.CONFIG.enchantmentDescriptions.enable.value() && showEnchantmentDescriptions()) {
             if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
-            //? if >1.21 {
             final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
-             //?} else if >1.20.5 {
-            /*final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).entrySet());
-            *///?} else {
-            /*final var enchantments = EnchantmentHelper.getEnchantments(stack).keySet();
-            *///?}
             if (enchantments.isEmpty()) return false;
             for (var enchantmentEntry : enchantments) {
-                //? if >1.21 {
-                     var enchantment = enchantmentEntry.value();
-                //?} else {
-                /*var enchantment = enchantmentEntry;
-                *///?}
+                var enchantment = enchantmentEntry.value();
                 for (int i = 0; i < lines.size(); i++) {
-                    //? if >1.21 {
                     if (!lines.get(i).getContents().equals(enchantment.description().getContents())) continue;
-                     //?} else if >1.20.5 {
-                    /*if (!(lines.get(i).getContent() instanceof TranslatableContents text)) continue;
-                    if (!text.getKey().equals(enchantment.value().getTranslationKey())) continue;
-                    *///?} else {
-                    /*if (!(lines.get(i).getContents() instanceof TranslatableContents text)) continue;
-                    if (!text.getKey().equals(enchantment.getDescriptionId())) continue;
-                    *///?}
                     ComponentContents description = lines.get(i).getContents();
                     if (description instanceof TranslatableContents translatableTextContent) {
                         var descriptionKey = new DescriptionKey(translatableTextContent.getKey());
@@ -481,11 +423,7 @@ public class ModHelpers {
             if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return;
 
-            //? if >1.20.5 {
             final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
-            //?} else {
-            /*final var enchantments = EnchantmentHelper.getEnchantments(stack).keySet();
-             *///?}
 
             if (enchantments.isEmpty())
                 return;
@@ -497,7 +435,7 @@ public class ModHelpers {
                     if (newLines.isEmpty())
                         continue;
                     // To avoid warnings, we don't remove from lines and instead modify the initial line to the first line.
-                    lines.set(i, newLines.get(0));
+                    lines.set(i, newLines.getFirst());
                     // Add the remaining lines.
                     if (newLines.size() > 1) {
                         lines.addAll(i+1, newLines.subList(1, newLines.size()));
@@ -522,13 +460,7 @@ public class ModHelpers {
             // Check whether the translation exists, and if the key is either an enchantment.*.*.description/desc or lore.*.* key.
             if (hasTranslation(content.getKey()) && (split.length == 4 && split[0].equals("enchantment") && (split[3].equals("description") || split[3].equals("desc")) || split.length == 3 && split[0].equals("lore"))) {
                 // Whether the namespace and path maps to an enchantment on this item. If so, return true.
-                //? if >1.21 {
                 return enchantments.stream().anyMatch(entry -> ((Holder<Enchantment>)(Object)entry).is(ModHelpers.of(namespace, path)));
-                //?} else if >1.20 {
-                /*return enchantments.stream().anyMatch(entry -> BuiltInRegistries.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
-                 *///?} else {
-                /*return enchantments.stream().anyMatch(entry -> Registry.ENCHANTMENT.getKey((Enchantment)(Object)entry).equals(ModHelpers.of(namespace, path)));
-                 *///?}
             }
             return false;
         });
@@ -616,7 +548,7 @@ public class ModHelpers {
                 // Check if any of the tooltips' content matches the current line's content.
                 if (tooltip.stream().anyMatch(text -> text.getContents().equals(lines.get(finalI).getContents()))) {
                     var newLines = createTooltip(stack.getDisplayName(), lines.get(i), useInternalWrapper());
-                    lines.set(i, newLines.get(0));
+                    lines.set(i, newLines.getFirst());
                     if (newLines.size() > 1) {
                         lines.addAll(i+1, newLines.subList(1, newLines.size()));
                     }
@@ -629,30 +561,15 @@ public class ModHelpers {
     /**
      * Check if an Item Stack has a particular component.
      */
-    //? if =1.20.6 {
-    /*public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
-        return stack.getComponents().contains(type);
-    }
-    *///?}
-
-    /**
-     * Check if an Item Stack has a particular component.
-     */
-    //? if >1.21 {
     public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
         return stack.getComponents().has(type);
     }
-    //?}
 
     /**
      * Find a profile name in a Player Head Item Stack.
      */
     public static DescriptionKey getProfile(ItemStack stack) {
-        //? if >1.20.5 {
         var optionalProfileName = Objects.requireNonNull(Objects.requireNonNull(stack.getComponents().get(DataComponents.PROFILE)).name()).orElse("");
-        //?} else {
-        /*var optionalProfileName = Objects.requireNonNull(stack.getTag().get("CUSTOM_MODEL_DATA")).toString();
-         *///?}
         if (!optionalProfileName.isEmpty()) {
             DescriptionKey key = getDescriptionKey(stack);
             DescriptionKey profileKey = key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack);
@@ -670,10 +587,7 @@ public class ModHelpers {
     public static DescriptionKey getProfile(BlockEntity blockEntity, DescriptionKey loreKey) {
         String optionalProfileName;
         try {
-            //? if >1.20.5 {
             optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwnerProfile()).name().orElse("");
-            //?} else
-            /*optionalProfileName = Objects.requireNonNull(((SkullBlockEntity) blockEntity).getOwnerProfile()).getName();*/
         }
         catch (NullPointerException nullPointerException) {
             return loreKey;
@@ -716,7 +630,7 @@ public class ModHelpers {
 
     public static void createDescriptionsFromItemStack(ItemStack stack, List<Component> lines) {
         if (ModClient.CONFIG.developerOptions.hideOtherTooltips.value() || ModLists.hidden_items.contains(stack.getItem())) {
-            var first = lines.get(0);
+            var first = lines.getFirst();
             lines.clear();
             lines.add(first);
         }
@@ -743,18 +657,10 @@ public class ModHelpers {
     }
 
     public static MutableComponent translatableWithFallback(String translatable, String fallback) {
-        //? if >1.20 {
         return Component.translatableWithFallback(translatable, fallback);
-         //?} else {
-        /*if (ModHelpers.hasTranslation(translatable)) {
-            return Component.translatable(translatable);
-        }
-        return Component.literal(fallback);
-        *///?}
     }
 
     private static boolean checkForEffectDescription(ItemStack stack) {
-        //? if >1.20.5 {
         if (hasComponent(stack, DataComponents.POTION_CONTENTS)) {
             var contents = stack.getComponents().get(DataComponents.POTION_CONTENTS);
             if (contents == null) return false;
@@ -765,13 +671,6 @@ public class ModHelpers {
                 }
             }
         }
-        //?} else {
-        /*if (stack.hasTag()) {
-            assert stack.getTag() != null;
-            String potion = stack.getTag().getString("Potion");
-            return new DescriptionKey("effect", new ResourceLocation(potion)).hasTranslation();
-        }
-        *///?}
         return false;
     }
 
@@ -794,13 +693,6 @@ public class ModHelpers {
         } else {
             return "";
         }
-    }
-
-    /**
-     * Consistency feature for 1.20.
-     */
-    public static String getProfileName(String optionalProfileName) {
-        return optionalProfileName;
     }
 
     /**
@@ -1039,7 +931,7 @@ public class ModHelpers {
                     //Any additional tooltip less than XX pixels should be merged and shortened.
                     if (!lines.isEmpty() && lines.size() > 1 && textRenderer.width(lines.get(lines.size() - 1)) + textRenderer.width(translated) < maxLength && translated.getString().contains(" ")) {
                         // Remove the previous text...
-                        Component oldText = lines.remove(lines.size() - 1);
+                        Component oldText = lines.removeLast();
                         // And merge it into the new one.
                         Component newText = oldText.copy().append(translated);
                         // Create a new line with the merged text object.
@@ -1167,11 +1059,7 @@ public class ModHelpers {
             var id = key.location();
             //?}
             if (description.isEmpty()) {
-                //? if >=1.21 {
-                 LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), id);
-                 //?} else {
-                /*LOGGER.warn("[Item Descriptions] Couldn't get lore key for: {}!", id);
-                *///?}
+                LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), id);
             } else if (keys.stream().noneMatch(I18n::exists)) {
                 keys.remove(description.asLoreTranslation());
                 if (value instanceof ItemStack stack) keys.remove(getModdedNameMatch(stack).asLoreTranslation()); // Ugly

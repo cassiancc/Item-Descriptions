@@ -19,11 +19,7 @@ public class ModLists {
     public static ArrayList<Item> hidden_items = new ArrayList<>();
 
     public static void loadLists() {
-        //? if >1.20 {
         var registry = BuiltInRegistries.ITEM;
-        //?} else {
-        /*var registry = Registry.ITEM;
-         *///?}
         hidden_items = new ArrayList<>();
         for (String disabledItem : ModClient.CONFIG.developerOptions.itemsWithTooltipsToHide.value()) {
             Optional<Item> item = registry.getOptional(ResourceLocation.tryParse(disabledItem));

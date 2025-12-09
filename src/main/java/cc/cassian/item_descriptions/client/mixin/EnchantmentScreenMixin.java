@@ -8,11 +8,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.Font;
-//? if >1.20 {
 import net.minecraft.client.gui.GuiGraphics;
-//?} else {
-/*import com.mojang.blaze3d.vertex.PoseStack;
-*///?}
 import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -28,34 +24,14 @@ import java.util.Optional;
 public class EnchantmentScreenMixin {
     //? if >1.21.5 {
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setComponentTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
-       //?} else if >1.20 {
-       /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
-   *///?} else {
-    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EnchantmentScreen;renderComponentTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;II)V"))
-     *///?}
-    private void addEnchantmentDescriptions(
-            //? if >1.20 {
-            GuiGraphics instance, Font textRenderer
-            //?} else {
-            /*EnchantmentScreen instance, PoseStack textRenderer
-            *///?}
-            , List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local
-    //? if >=1.21 {
-     Optional<Holder.Reference<Enchantment>> optional
-       //?} else {
-       /*Enchantment enchantment
-       *///?}
+    //?} else {
+    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
+   *///?}
+    private void addEnchantmentDescriptions(GuiGraphics instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local Optional<Holder.Reference<Enchantment>> optional
     ) {
-        if (//? if >=1.21 {
-             optional.isPresent() &&
-             //?}
-         ModHelpers.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
+        if (optional.isPresent() && ModHelpers.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
             Component name =
-            //? if >=1.21 {
-             Enchantment.getFullname(optional.get(), 1);
-            //?} else {
-            /*enchantment.getFullname(1);
-            *///?}
+            Enchantment.getFullname(optional.get(), 1);
             if (name.getContents() instanceof TranslatableContents content) {
                 List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
                 components.addAll(tooltip);

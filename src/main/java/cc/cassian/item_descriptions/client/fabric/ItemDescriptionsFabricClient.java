@@ -25,10 +25,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
     }
 
     public void addTooltips() {
-        //? if >1.20.5 {
         ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
-            //?} else
-            /*ItemTooltipCallback.EVENT.register((stack, context, lines) -> {*/
             //Only show tooltip if key is pressed or "always on" is enabled.
             createDescriptionsFromItemStack(stack, lines);
         });
@@ -43,10 +40,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
             ));
         }
         ItemTooltipCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, FABRIC_EVENT_PHASE);
-        //? if >1.20.5 {
         ItemTooltipCallback.EVENT.register(FABRIC_EVENT_PHASE, (stack, context, type, lines) -> {
-            //?} else
-            /*ItemTooltipCallback.EVENT.register((stack, context, lines) -> {*/
             // Fix tooltips.
             fixItemStackDescriptionTooltip(stack, lines);
         });

@@ -7,7 +7,7 @@ import com.brokenkeyboard.usefulspyglass.api.event.LivingTooltipCallback;
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
-//? if >1.20 && (neoforge || forge) {
+//? if neoforge {
 /*import com.brokenkeyboard.usefulspyglass.api.event.BlockTooltipEvent;
 import com.brokenkeyboard.usefulspyglass.api.event.LivingTooltipEvent;
 *///?}
@@ -28,7 +28,7 @@ public class UsefulSpyglassHelpers {
         //?}
     }
 
-    //? if (neoforge || forge) && >1.20 {
+    //? if neoforge {
     /*public static void registerBlockEvent(BlockTooltipEvent event) {
         addBlockTooltip(event.getBlockState(), event.getBlockPos(), event.getTooltipList());
     }
