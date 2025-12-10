@@ -134,7 +134,7 @@ dependencies {
         isTransitive = false
     }
     compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit_version")}")
-    compileOnly("maven.modrinth:jade:19.3.1+neoforge")
+    compileOnly("maven.modrinth:jade:21.0.1+neoforge")
     compileOnly("maven.modrinth:fast-item-frames:gAkkWcSn")
     compileOnly("maven.modrinth:puzzles-lib:W4cWteM4")
 

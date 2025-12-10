@@ -179,7 +179,7 @@ dependencies {
 
     // YACL
     if (hasProperty("deps.yacl")) {
-        implementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
+        compileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
         compileOnly("thedarkcolour:kotlinforforge-neoforge:5.10.0")
     } else {
         compileOnly("dev.isxander:yet-another-config-lib:3.8.0+1.21.9-neoforge")
@@ -212,9 +212,11 @@ dependencies {
     }
     // Jade
     if (hasProperty("deps.jade")) {
+        compileOnly("maven.modrinth:jade:${property("deps.jade")}")
         runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
+    } else {
+        compileOnly("maven.modrinth:jade:19.3.1+neoforge")
     }
-    compileOnly("maven.modrinth:jade:19.3.1+neoforge")
     // WTHIT
     compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit_version")}")
     if (hasProperty("deps.badpackets_version")) {

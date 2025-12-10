@@ -47,13 +47,13 @@ public final class ItemDescriptionsNeoForge {
 
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
-    public void onItemTooltipEvent(ItemTooltipEvent event) {
+    public static void onItemTooltipEvent(ItemTooltipEvent event) {
         createDescriptionsFromItemStack(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
     // Fix item descriptions
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onItemTooltipEventLowestPriority(ItemTooltipEvent event) {
+    public static void onItemTooltipEventLowestPriority(ItemTooltipEvent event) {
         fixItemStackDescriptionTooltip(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
