@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client;
 
-//? fabric || unobf {
+//? fabric {
 import cc.cassian.item_descriptions.client.fabric.FabricPlatformImpl;
 
 //?}
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 
 public interface Platform {
 
-    //? fabric || unobf {
+    //? fabric {
     Platform INSTANCE = new FabricPlatformImpl();
     //?}
     //? neoforge {

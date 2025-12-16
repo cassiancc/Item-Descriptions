@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.helpers.compat;
 
-//? if >1.20 && fabric {
+//? if <26 && fabric {
 import com.brokenkeyboard.usefulspyglass.api.event.BlockTooltipCallback;
 import com.brokenkeyboard.usefulspyglass.api.event.LivingTooltipCallback;
 //?}
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class UsefulSpyglassHelpers {
     public static void register() {
-        //? if >1.20 && fabric {
+        //? if <26 && fabric {
         BlockTooltipCallback.EVENT.register(UsefulSpyglassHelpers::addBlockTooltip);
         LivingTooltipCallback.EVENT.register(UsefulSpyglassHelpers::addLivingTooltip);
         //?}

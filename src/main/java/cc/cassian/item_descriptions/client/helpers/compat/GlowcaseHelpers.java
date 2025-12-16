@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.helpers.compat;
 
-//? if fabric {
+//? if fabric && <26 {
 import dev.hephaestus.glowcase.block.entity.ItemDisplayBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;

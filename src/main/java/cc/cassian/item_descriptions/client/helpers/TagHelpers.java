@@ -3,7 +3,9 @@ package cc.cassian.item_descriptions.client.helpers;
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
+//? if <1.21.9 {
+/*import net.minecraft.client.gui.screens.Screen;
+*///?}
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -52,7 +55,7 @@ public class TagHelpers {
             return new DescriptionKey("tag", "c", "spawn_egg");
         }
         final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        stack.getTags().forEach(itemTagKey -> {
+        getTags(stack).forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             if (checkMatch(returnedKey, loreKey)) {
                 returnedKey[0] = loreKey;
@@ -61,7 +64,7 @@ public class TagHelpers {
         // If untagged, check if it is a Block Item and if a Block Tag matches.
         if (returnedKey[0] == null) {
             if ((item instanceof BlockItem blockItem)) {
-                blockItem.getBlock().defaultBlockState().getTags().forEach(itemTagKey -> {
+                getTags(blockItem.getBlock().defaultBlockState()).forEach(itemTagKey -> {
                     DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                     if (checkMatch(returnedKey, loreKey)) {
                         returnedKey[0] = loreKey;
@@ -74,7 +77,7 @@ public class TagHelpers {
 
     public static DescriptionKey checkGenericTagList(BlockState state) {
         final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        state.getTags().forEach(tagKey -> {
+        getTags(state).forEach(tagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(tagKey);
             if (checkMatch(returnedKey, loreKey)) {
                 returnedKey[0] = loreKey;
@@ -93,7 +96,7 @@ public class TagHelpers {
 
     public static DescriptionKey checkGenericTagList(EntityType<?> type) {
         final DescriptionKey[] returnedKey = new DescriptionKey[1];
-        type.builtInRegistryHolder().tags().forEach(tagKey -> {
+        getTags(type).forEach(tagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(tagKey);
             if (checkMatch(returnedKey, loreKey)) {
                 returnedKey[0] = loreKey;
@@ -129,13 +132,13 @@ public class TagHelpers {
         if (item instanceof SpawnEggItem) {
             addSafe(tags, new DescriptionKey("tag", "c", "spawn_egg"));
         }
-        itemStack.getTags().forEach(itemTagKey -> {
+        getTags(itemStack).forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
         });
         // If untagged, check if it is a Block Item and if a Block Tag matches.
         if ((item instanceof BlockItem blockItem)) {
-            blockItem.getBlock().defaultBlockState().getTags().forEach(itemTagKey -> {
+            getTags(blockItem.getBlock().defaultBlockState()).forEach(itemTagKey -> {
                 DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
                 addSafe(tags, loreKey);
             });
@@ -147,7 +150,7 @@ public class TagHelpers {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
         addSafe(tags, getDescriptionKey(state));
         addSafe(tags, findLoreKey(state));
-        state.getTags().forEach(itemTagKey -> {
+        getTags(state).forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
         });
@@ -166,7 +169,7 @@ public class TagHelpers {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
         addSafe(tags, getDescriptionKey(type));
         addSafe(tags, findLoreKey(type));
-        type.builtInRegistryHolder().tags().forEach(itemTagKey -> {
+        getTags(type).forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
         });
@@ -190,5 +193,25 @@ public class TagHelpers {
      */
     private static DescriptionKey tagKeyToGenericKey(TagKey<?> key) {
         return new DescriptionKey("tag", key.location());
+    }
+
+    private static Stream<TagKey<Item>> getTags(ItemStack stack) {
+        //? if >26 {
+        /*return stack.tags();
+        *///?} else {
+        return stack.getTags();
+        //?}
+    }
+
+    private static Stream<TagKey<Block>> getTags(BlockState state) {
+        //? if >26 {
+        /*return state.tags();
+        *///?} else {
+        return state.getTags();
+        //?}
+    }
+
+    private static Stream<TagKey<EntityType<?>>> getTags(EntityType<?> type) {
+        return type.builtInRegistryHolder().tags();
     }
 }

@@ -3,7 +3,7 @@ package cc.cassian.item_descriptions.client.helpers;
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
-import cc.cassian.item_descriptions.client.helpers.compat.FastItemFramesHelpers;
+import cc.cassian.item_descriptions.client.helpers.compat.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
@@ -25,10 +25,6 @@ import net.minecraft.world.entity.decoration.Painting;
 //?}
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.core.component.DataComponentType;
-//? if fabric {
-import cc.cassian.item_descriptions.client.helpers.compat.GlowcaseHelpers;
-import cc.cassian.item_descriptions.client.helpers.compat.PolymerHelpers;
-//?}
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -245,7 +241,7 @@ public class ModHelpers {
             return DescriptionKey.empty();
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
-        //? if fabric {
+        //? if fabric && <26 {
         if (PolymerHelpers.getServerResourceLocation(stack) != null) {
             return new DescriptionKey(PolymerHelpers.getServerResourceLocation(stack));
         }
@@ -325,7 +321,7 @@ public class ModHelpers {
     public static DescriptionKey createBlockDescription(Block block, Level world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         DescriptionKey loreKey = findLoreKey(block);
-        //? if fabric {
+        //? if fabric && <26 {
         if (isLoaded("polymer-bundled"))
             if (pos != null && PolymerHelpers.isPolymerBlock(pos)) {
                 loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockResourceLocation(pos));
@@ -346,7 +342,7 @@ public class ModHelpers {
                     return findLoreKey(contents);
             }
         }
-        //? if fabric {
+        //? if fabric && <26 {
         if (isLoaded("glowcase")) {
             if (GlowcaseHelpers.isItemDisplay(blockEntity)) {
                 var contents = GlowcaseHelpers.getItemDisplayContents(blockEntity);

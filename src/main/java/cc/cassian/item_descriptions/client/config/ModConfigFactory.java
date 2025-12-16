@@ -3,7 +3,7 @@ package cc.cassian.item_descriptions.client.config;
 
 import cc.cassian.item_descriptions.client.config.ClothConfigFactory;
 import cc.cassian.item_descriptions.client.config.YetAnotherConfigFactory;
-//? if fabric
+//? if fabric && <26
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class ModConfigFactory
         //? if neoforge
         /*implements IConfigScreenFactory*/
-        //? if fabric
+        //? if fabric && <26
         implements ConfigScreenFactory<Screen>
 {
 
@@ -26,7 +26,7 @@ public class ModConfigFactory
         this.loadedMod = s;
     }
 
-    //? if fabric || unobf
+    //? if fabric
     public Screen create(Screen parent) {
     //? if neoforge
     /*public @NotNull Screen createScreen(@NotNull ModContainer modContainer, @NotNull Screen parent) {*/
