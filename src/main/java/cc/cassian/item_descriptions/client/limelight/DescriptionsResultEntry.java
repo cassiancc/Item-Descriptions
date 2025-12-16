@@ -2,7 +2,9 @@ package cc.cassian.item_descriptions.client.limelight;
 
 //? if fabric {
 //? if 1.21.1 || 1.21.5 {
-/*import cc.cassian.item_descriptions.client.ModClient;
+/*import cc.cassian.item_descriptions.client.DescriptionKey;
+import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.descriptions.EffectDescriptions;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import io.wispforest.limelight.api.entry.InvokeResultEntry;
 import io.wispforest.limelight.api.extension.LimelightExtension;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.Objects;
 
+import static cc.cassian.item_descriptions.client.descriptions.ItemDescriptions.findLoreKey;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class DescriptionsResultEntry implements InvokeResultEntry {
@@ -78,10 +81,10 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
                     ^///?}
                     (ModHelpers.of(namespace, item)).getDescriptionId();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
-                if (item.equals("pig")) return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
+                if (item.equals("pig")) return createMultilineTranslation(DescriptionKey.ofTranslationKey(mobRegistry).toString());
             }
             else
-                return createMultilineTranslation(convertToLoreKey(mobRegistry).toString());
+                return createMultilineTranslation(DescriptionKey.ofTranslationKey(mobRegistry).toString());
         }
         // If a namespace match is not found, iterate through block and item registries for a name match.
         if (ModClient.CONFIG.itemDescriptions.value()) {
@@ -112,7 +115,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             }
             else return;
             if (lowerS.equals(I18n.get(registryKey).toLowerCase())) {
-                returnedKey[0] = createMultilineTranslation(convertToLoreKey(registryKey).toString());
+                returnedKey[0] = createMultilineTranslation(DescriptionKey.ofTranslationKey(registryKey).toString());
             }
         });
         return returnedKey[0];

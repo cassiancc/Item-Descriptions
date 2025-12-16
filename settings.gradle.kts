@@ -21,7 +21,7 @@ stonecutter {
         fun match(version: String, vararg loaders: String) = loaders
             .forEach {
                 if (it == "fabric" && stonecutter.eval(version, ">1.21.11"))
-                    version("$version-$it", version).buildscript = "build.unobf.gradle.kts"
+                    version("$version-$it", version).buildscript = "build.fabric_noremap.gradle.kts"
                 else
                     version("$version-$it", version).buildscript = "build.$it.gradle.kts"
             }

@@ -186,8 +186,6 @@ dependencies {
     } else {
         modCompileOnly("maven.modrinth:jade:19.3.2+fabric")
     }
-    // Glowcase
-    modCompileOnly("maven.modrinth:glowcase:${property("deps.glowcase")}")
     // Polymer
     if (stonecutter.eval(mcVersion, ">1.21")) {
         modCompileOnly("eu.pb4:polymer-core:${property("deps.polymer")}")

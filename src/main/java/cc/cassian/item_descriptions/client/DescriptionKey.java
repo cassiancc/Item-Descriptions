@@ -4,8 +4,8 @@ import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class DescriptionKey {
@@ -54,6 +54,39 @@ public class DescriptionKey {
         this.namespace = resourceLocation.getNamespace();
         this.path = resourceLocation.getPath();
         this.suffix = "";
+    }
+
+    /**
+     * Check if a lore key exists or if a generic tooltip should be used.
+     */
+    public static DescriptionKey checkLoreKey(DescriptionKey loreKey) {
+        //Check if the tooltip translation key exists. If so, use the provided tooltip.
+        if (loreKey != null && loreKey.hasTranslation()) return loreKey;
+        else return empty();
+    }
+
+    /**
+     * Convert block/item/entity translation keys to lore translation keys.
+     */
+    public static @NotNull DescriptionKey ofTranslationKey(String translationKey) {
+        DescriptionKey loreKey;
+        //Find the translation key for blocks.
+        if (translationKey.contains("block.")) loreKey = new DescriptionKey(translationKey);
+        //Find the translation key for items.
+        else if ((translationKey.contains("item."))) loreKey = new DescriptionKey(translationKey);
+        //Find the translation key for entities.
+        else if ((translationKey.contains("entity."))) {
+            //Entity descriptions use a different format as to avoiding colliding with items of the same name.
+            loreKey = new DescriptionKey(translationKey);
+            //Tropical fish have 20 different variants and their description should be the same.
+            if (translationKey.contains("tropical_fish")) {
+                loreKey = new DescriptionKey("entity", "minecraft", "tropical_fish");
+            }
+            //In case an entity tooltip is misconfigured, try checking for an "old style" key.
+            else if (loreKey.hasTranslation()) return loreKey;
+        }
+        else return empty();
+        return loreKey;
     }
 
     public String getNamespace() {

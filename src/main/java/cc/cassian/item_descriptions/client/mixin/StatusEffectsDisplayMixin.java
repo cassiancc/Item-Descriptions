@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.mixin;
 
+import cc.cassian.item_descriptions.client.descriptions.EffectDescriptions;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -12,19 +13,10 @@ import net.minecraft.client.gui.screens.inventory.EffectsInInventory;
 //?} else {
 /*import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 *///?}
-//? if >1.21 {
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-//?}
-//? if >1.20 {
 import net.minecraft.client.gui.GuiGraphics;
- //?}
-//? if =1.19.2 {
-/*import com.mojang.blaze3d.vertex.PoseStack;
-*///?}
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.effect.MobEffectInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,7 +37,7 @@ public abstract class StatusEffectsDisplayMixin {
     //? if >1.21.10 && neoforge {
     /*@WrapOperation(method = "renderText(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;IIIIIILnet/minecraft/world/effect/MobEffectInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics instance, Font font, List<Component> lines, Optional<TooltipComponent> tooltipImage, int x, int y, Operation<Void> original) {
-        List<Component> tooltipText = ModHelpers.createEffectDescription(lines);
+        List<Component> tooltipText = EffectDescriptions.createEffectDescription(lines);
         original.call(instance, font, tooltipText, tooltipImage, x, y);
     }
 
@@ -58,7 +50,7 @@ public abstract class StatusEffectsDisplayMixin {
     *///?} else if >1.21.10 {
     /*@WrapOperation(method = "renderText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics instance, Font font, List<Component> lines, Optional<TooltipComponent> tooltipImage, int x, int y, Operation<Void> original) {
-        List<Component> tooltipText = ModHelpers.createEffectDescription(lines);
+        List<Component> tooltipText = EffectDescriptions.createEffectDescription(lines);
         original.call(instance, font, tooltipText, tooltipImage, x, y);
     }
 
@@ -73,7 +65,7 @@ public abstract class StatusEffectsDisplayMixin {
 
     @Redirect(method = "renderTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics context, Font textRenderer, List<Component> text, Optional<TooltipComponent> data, int mouseX, int mouseY) {
-        List<Component> tooltipText = ModHelpers.createEffectDescription(text);
+        List<Component> tooltipText = EffectDescriptions.createEffectDescription(text);
         context.setComponentTooltipForNextFrame(textRenderer, tooltipText, mouseX, mouseY);
     }
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/screens/inventory/EffectsInInventory;renderIcons(Lnet/minecraft/client/gui/GuiGraphics;IILjava/lang/Iterable;Z)V"))
@@ -91,13 +83,13 @@ public abstract class StatusEffectsDisplayMixin {
     //?} else if >1.21.1 {
     /*@Redirect(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics context, Font textRenderer, List<Component> text, Optional<TooltipComponent> data, int mouseX, int mouseY) {
-        List<Component> tooltipText = ModHelpers.createEffectDescription(text);
+        List<Component> tooltipText = EffectDescriptions.createEffectDescription(text);
         context.renderTooltip(textRenderer, tooltipText, Optional.empty(), mouseX, mouseY);
     }
     *///?} else {
-    /*@Redirect(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
-    private void renderEffects(GuiGraphics context, Font textRenderer, List<Component> text, Optional data, int mouseX, int mouseY) {
-        List<Component> tooltipText = ModHelpers.createEffectDescription(text);
+    /*@WrapOperation(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
+    private void renderEffects(GuiGraphics context, Font textRenderer, List<Component> text, Optional<TooltipComponent> visualTooltipComponent, int mouseX, int mouseY, Operation<Void> original) {
+        List<Component> tooltipText = EffectDescriptions.createEffectDescription(text);
         context.renderTooltip(textRenderer, tooltipText, Optional.empty(), mouseX, mouseY);
     }
     @Shadow protected abstract void renderLabels(GuiGraphics context, int x, int height, Iterable<MobEffectInstance> statusEffects);

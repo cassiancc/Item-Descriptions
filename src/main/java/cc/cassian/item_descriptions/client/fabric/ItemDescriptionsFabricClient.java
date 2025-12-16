@@ -4,6 +4,7 @@ package cc.cassian.item_descriptions.client.fabric;
 
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
+import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
 import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
@@ -26,7 +27,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
 
     public void addTooltips() {
         //Only show tooltip if key is pressed or "always on" is enabled.
-        ItemTooltipCallback.EVENT.register(ModHelpers::createDescriptionsFromItemStack);
+        ItemTooltipCallback.EVENT.register(ItemDescriptions::createDescriptionsFromItemStack);
         if (ModClient.CONFIG.developerOptions.generateMissing.value()) {
             CommonLifecycleEvents.TAGS_LOADED.register(ModHelpers.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
                     //? if >=1.21.2 {
@@ -38,7 +39,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         }
         ItemTooltipCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, FABRIC_EVENT_PHASE);
         // Fix tooltips.
-        ItemTooltipCallback.EVENT.register(FABRIC_EVENT_PHASE, ModHelpers::fixItemStackDescriptionTooltip);
+        ItemTooltipCallback.EVENT.register(FABRIC_EVENT_PHASE, ItemDescriptions::fixItemStackDescriptionTooltip);
         ClientLifecycleEvents.CLIENT_STARTED.register((client -> {
             ModLists.loadLists();
         }));

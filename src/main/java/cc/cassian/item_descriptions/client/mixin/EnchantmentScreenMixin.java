@@ -4,6 +4,7 @@ import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModStyle;
+import cc.cassian.item_descriptions.client.descriptions.EnchantmentDescriptions;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -29,7 +30,7 @@ public class EnchantmentScreenMixin {
    *///?}
     private void addEnchantmentDescriptions(GuiGraphics instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local Optional<Holder.Reference<Enchantment>> optional
     ) {
-        if (optional.isPresent() && ModHelpers.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
+        if (optional.isPresent() && EnchantmentDescriptions.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
             Component name =
             Enchantment.getFullname(optional.get(), 1);
             if (name.getContents() instanceof TranslatableContents content) {

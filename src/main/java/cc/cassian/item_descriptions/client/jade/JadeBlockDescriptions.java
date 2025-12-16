@@ -1,6 +1,7 @@
 package cc.cassian.item_descriptions.client.jade;
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.descriptions.BlockDescriptions;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -19,14 +20,14 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
     @Override
     public void appendTooltip(ITooltip lines, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         //Check if block descriptions are enabled in mod config.
-        if (showBlockDescriptions()) {
+        if (BlockDescriptions.showBlockDescriptions()) {
             //Create and add tooltip.
             List<Component> tooltip;
             if (ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
-                tooltip = createTooltip(blockAccessor.getBlock().getName(), createBlockDescription(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
+                tooltip = createTooltip(blockAccessor.getBlock().getName(), BlockDescriptions.createBlockDescription(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
             }
             for (Component text : tooltip) {
                 lines.add(text);

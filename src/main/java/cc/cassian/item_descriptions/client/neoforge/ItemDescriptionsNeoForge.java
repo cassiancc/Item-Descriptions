@@ -5,6 +5,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 /*import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
+import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
 import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
 import net.neoforged.api.distmarker.Dist;
@@ -48,13 +49,13 @@ public final class ItemDescriptionsNeoForge {
     //Add Item Descriptions to item tooltips.
     @SubscribeEvent
     public static void onItemTooltipEvent(ItemTooltipEvent event) {
-        createDescriptionsFromItemStack(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
+        ItemDescriptions.createDescriptionsFromItemStack(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
     // Fix item descriptions
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onItemTooltipEventLowestPriority(ItemTooltipEvent event) {
-        fixItemStackDescriptionTooltip(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
+        ItemDescriptions.fixItemStackDescriptionTooltip(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.

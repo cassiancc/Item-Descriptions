@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.helpers;
 
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.descriptions.*;
 import net.minecraft.client.Minecraft;
 //? if <1.21.9 {
 /*import net.minecraft.client.gui.screens.Screen;
@@ -23,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 public class TagHelpers {
 
@@ -49,7 +48,7 @@ public class TagHelpers {
                         *///?}
                         stack
                 );
-                var key = ModHelpers.getDescriptionKey(entityType);
+                var key = EntityDescriptions.getDescriptionKey(entityType);
                 if (key.hasTranslation()) return key;
             }
             return new DescriptionKey("tag", "c", "spawn_egg");
@@ -124,9 +123,9 @@ public class TagHelpers {
 
     public static List<Component> findAllPotentialKeys(ItemStack itemStack) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        addSafe(tags, ModHelpers.findLoreKey(itemStack));
-        addSafe(tags, getDescriptionKey(itemStack));
-        addSafe(tags, getModdedNameMatch(itemStack));
+        addSafe(tags, ItemDescriptions.findLoreKey(itemStack));
+        addSafe(tags, ItemDescriptions.getDescriptionKey(itemStack));
+        addSafe(tags, ItemDescriptions.getModdedNameMatch(itemStack));
         final Item item = itemStack.getItem();
         //Temporary - Spawn Eggs do not yet have a tag.
         if (item instanceof SpawnEggItem) {
@@ -148,8 +147,8 @@ public class TagHelpers {
 
     public static List<Component> findAllPotentialKeys(BlockState state) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        addSafe(tags, getDescriptionKey(state));
-        addSafe(tags, findLoreKey(state));
+        addSafe(tags, BlockDescriptions.getDescriptionKey(state));
+        addSafe(tags, BlockDescriptions.findLoreKey(state));
         getTags(state).forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
@@ -167,8 +166,8 @@ public class TagHelpers {
 
     public static List<Component> findAllPotentialKeys(EntityType<?> type) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        addSafe(tags, getDescriptionKey(type));
-        addSafe(tags, findLoreKey(type));
+        addSafe(tags, EntityDescriptions.getDescriptionKey(type));
+        addSafe(tags, EntityDescriptions.findLoreKey(type));
         getTags(type).forEach(itemTagKey -> {
             DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
             addSafe(tags, loreKey);
@@ -178,13 +177,13 @@ public class TagHelpers {
 
     public static List<Component> findAllPotentialKeys(Enchantment enchantment) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        addSafe(tags, getDescriptionKey(enchantment));
+        addSafe(tags, EnchantmentDescriptions.getDescriptionKey(enchantment));
         return tags;
     }
 
     public static List<Component> findAllPotentialKeys(MobEffect mobEffect) {
         ArrayList<Component> tags = new ArrayList<>(); // Create an ArrayList object
-        addSafe(tags, getDescriptionKey(mobEffect));
+        addSafe(tags, EffectDescriptions.getDescriptionKey(mobEffect));
         return tags;
     }
 
