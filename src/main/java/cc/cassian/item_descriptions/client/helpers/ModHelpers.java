@@ -56,6 +56,15 @@ public class ModHelpers {
     }
 
     /**
+     * Fallback method to prevent crashes until Enchiridion updates.
+     * Moved to {@link EnchantmentDescriptions#useInternalEnchantmentDescriptions}.
+     */
+    @Deprecated(forRemoval = true)
+    public static boolean useInternalEnchantmentDescriptions() {
+        return EnchantmentDescriptions.useInternalEnchantmentDescriptions();
+    }
+
+    /**
      * Check if a mod is loaded
      */
     public static boolean isLoaded(String mod) {
