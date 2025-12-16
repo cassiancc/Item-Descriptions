@@ -138,9 +138,9 @@ public class ModHelpers {
             sb.append(": ");
         }
         if (config.keybinds.invert.value())
-            sb.append(I18n.get("hint.item-descriptions.hint_inverted"));
+            sb.append(I18n.get("hint.item_descriptions.hint_inverted"));
         else
-            sb.append(I18n.get("hint.item-descriptions.hint"));
+            sb.append(I18n.get("hint.item_descriptions.hint"));
         return Component.literal(sb.toString());
     }
 
@@ -1083,7 +1083,7 @@ public class ModHelpers {
         addMissingTranslations((Registry<MobEffect>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","mob_effect"))).orElse(null), namespaces, Function.identity(), ModHelpers::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         Map<String, String> combined = new TreeMap<>();
         namespaces.values().forEach(combined::putAll);
-        namespaces.put(ModClient.MOD_ID_NEO, combined);
+        namespaces.put(ModClient.MOD_ID, combined);
         for (Map.Entry<String, Map<String, String>> entry : namespaces.entrySet()) {
             String namespace = entry.getKey();
             Map<String, String> map = entry.getValue();

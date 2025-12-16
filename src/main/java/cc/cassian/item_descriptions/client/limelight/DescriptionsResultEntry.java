@@ -133,7 +133,7 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
     }
 
     public String entryId() {
-        return "item-descriptions:item_descriptions";
+        return "item_descriptions:item_descriptions";
     }
 
     @Override

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "item-descriptions",
+  "id": "item_descriptions",
   "version": "${version}",
   "name": "Item Descriptions",
   "description": "This mod adds unique descriptions for all blocks, items, enchantments, effects, and mobs - built in a way that makes it easy to add modded content.",
@@ -28,7 +28,7 @@
   "license": "MIT",
   "icon": "icon.png",
   "environment": "client",
-  "mixins": ["item-descriptions.mixins.json"],
+  "mixins": ["item_descriptions.mixins.json"],
   "entrypoints": {
     "client": [
       "cc.cassian.item_descriptions.client.fabric.ItemDescriptionsFabricClient"

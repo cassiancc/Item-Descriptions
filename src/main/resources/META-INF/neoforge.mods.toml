@@ -31,4 +31,4 @@ ordering = "NONE"
 side = "CLIENT"
 
 [[mixins]]
-config = "item-descriptions.mixins.json"
+config = "item_descriptions.mixins.json"

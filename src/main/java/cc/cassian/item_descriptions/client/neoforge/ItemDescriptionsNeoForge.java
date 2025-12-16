@@ -25,8 +25,8 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import static cc.cassian.item_descriptions.client.ModClient.*;
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
-@Mod(value = MOD_ID_NEO, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = MOD_ID_NEO)
+@Mod(value = MOD_ID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = MOD_ID)
 public final class ItemDescriptionsNeoForge {
     public ItemDescriptionsNeoForge(IEventBus eventBus, ModContainer modContainer) {
         // Load config.

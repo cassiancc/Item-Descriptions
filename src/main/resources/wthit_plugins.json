@@ -1,5 +1,5 @@
 {
-  "item-descriptions:block_descriptions": {
+  "item_descriptions:block_descriptions": {
     "initializer": "cc.cassian.item_descriptions.client.wthit.WTHITIntegration",
     "side": "client"
   }

@@ -29,7 +29,7 @@ public class YetAnotherConfigFactory {
             } else {
                 sectionKey += "_";
             }
-            ConfigCategory.Builder category = ConfigCategory.createBuilder().name(Component.translatable("config.item-descriptions.%stitle".formatted(sectionKey)));
+            ConfigCategory.Builder category = ConfigCategory.createBuilder().name(Component.translatable("config.item_descriptions.%stitle".formatted(sectionKey)));
             categories.put(section, category);
             return category;
         }
@@ -37,7 +37,7 @@ public class YetAnotherConfigFactory {
 
     public static Screen create(Screen parent) {
         final YetAnotherConfigLib.Builder builder = YetAnotherConfigLib.createBuilder()
-                .title(Component.translatable("modmenu.nameTranslation.item-descriptions"));
+                .title(Component.translatable("modmenu.nameTranslation.item_descriptions"));
         LinkedHashMap<String, ConfigCategory.Builder> categories = new LinkedHashMap<>();
         addEntries(ModClient.CONFIG.values(), categories);
         for (ConfigCategory.Builder s : categories.values()) {

@@ -18,13 +18,13 @@ public class ClothConfigFactory {
         } else {
             section += "_";
         }
-        return builder.getOrCreateCategory(Component.translatable("config.item-descriptions.%stitle".formatted(section)));
+        return builder.getOrCreateCategory(Component.translatable("config.item_descriptions.%stitle".formatted(section)));
     }
 
     public static Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Component.translatable("modmenu.nameTranslation.item-descriptions"));
+                .setTitle(Component.translatable("modmenu.nameTranslation.item_descriptions"));
 
         addEntries(ModClient.CONFIG.values(), builder);
 
