@@ -53,6 +53,9 @@
     "cloth-config": "*",
     "modmenu": "*"
   },
+  "provides": [
+    "item-descriptions"
+  ],
   "suggests": {
     "jade": "*"
   }
