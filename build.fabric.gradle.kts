@@ -270,11 +270,7 @@ publishMods {
     modrinth {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
-        if (!stonecutter.eval(mcVersion, ">1.21.11")) {
-            minecraftVersions.add(stonecutter.current.version)
-        } else {
-            minecraftVersions.add(property("deps.minecraft").toString())
-        }
+        minecraftVersions.add(property("deps.minecraft").toString())
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
         optional("cloth-config")

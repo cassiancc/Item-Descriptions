@@ -185,6 +185,7 @@ val additionalVersions: List<String> = additionalVersionsStr
 
 publishMods {
     file = tasks.jar.map { it.archiveFile.get() }
+    additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
 
     // one of BETA, ALPHA, STABLE
     type = STABLE
@@ -196,11 +197,7 @@ publishMods {
     modrinth {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
-        if (!stonecutter.eval(mcVersion, ">1.21.11")) {
-            minecraftVersions.add(stonecutter.current.version)
-        } else {
-            minecraftVersions.add(property("deps.minecraft").toString())
-        }
+        minecraftVersions.add(property("deps.minecraft").toString())
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
         optional("cloth-config")
