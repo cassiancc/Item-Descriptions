@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.*;
 import net.minecraft.ChatFormatting;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 
 import java.io.File;
@@ -38,14 +38,14 @@ import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 
 public class ModHelpers {
-    public static final ResourceLocation FABRIC_EVENT_PHASE = of("description_tooltip");
+    public static final Identifier FABRIC_EVENT_PHASE = of("description_tooltip");
 
-    public static ResourceLocation of(String path) {
+    public static Identifier of(String path) {
         return ModHelpers.of(MOD_ID, path);
     }
 
-    public static ResourceLocation of(String namespace, String path) {
-        return ResourceLocation.fromNamespaceAndPath(namespace, path);
+    public static Identifier of(String namespace, String path) {
+        return Identifier.fromNamespaceAndPath(namespace, path);
     }
 
     /**
@@ -480,11 +480,11 @@ public class ModHelpers {
             *///?}
             DescriptionKey description = descGetter.apply(value);
             List<String> keys = new ArrayList<>(potentialKeys.apply(value).stream().map(Component::getString).toList());
-            //? if >1.21.10 {
-            /*var id = key.identifier();
-            *///?} else {
-            var id = key.location();
-            //?}
+            //? if >1.21.10 || fabric {
+            var id = key.identifier();
+            //?} else {
+            /*var id = key.location();
+            *///?}
             if (description.isEmpty()) {
                 LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), id);
             } else if (keys.stream().noneMatch(I18n::exists)) {

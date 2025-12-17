@@ -118,6 +118,13 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    maven {
+        name = "Gegy"
+        url = uri("https://maven.gegy.dev/releases/")
+        content {
+            includeGroupAndSubgroups("dev.lambdaurora")
+        }
+    }
 }
 
 dependencies {
@@ -126,6 +133,8 @@ dependencies {
         officialMojangMappings()
         if (hasProperty("deps.parchment"))
             parchment("org.parchmentmc.data:parchment-${property("deps.parchment")}@zip")
+        if (hasProperty("deps.mojbackward"))
+            mappings("dev.lambdaurora:yalmm-mojbackward:${property("deps.minecraft")}+build.${property("deps.mojbackward")}")
     })
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
@@ -216,7 +225,7 @@ configurations.all {
 
 stonecutter {
     replacements.string {
-        direction = eval(current.version, ">1.21.10")
+        direction = eval(current.version, ">1.21")
         replace("ResourceLocation", "Identifier")
     }
 }

@@ -148,7 +148,7 @@ configurations.all {
 
 stonecutter {
     replacements.string {
-        direction = eval(current.version, ">1.21.10")
+        direction = eval(current.version, ">1.21")
         replace("ResourceLocation", "Identifier")
     }
 }

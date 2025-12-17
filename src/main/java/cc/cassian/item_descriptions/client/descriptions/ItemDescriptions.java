@@ -12,7 +12,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,14 +33,14 @@ public class ItemDescriptions {
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
         //? if fabric && <26 {
-        if (PolymerHelpers.getServerResourceLocation(stack) != null) {
-            return new DescriptionKey(PolymerHelpers.getServerResourceLocation(stack));
+        if (PolymerHelpers.getServerIdentifier(stack) != null) {
+            return new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
         }
         //?}
         //Ensure items with Custom Models get a custom key instead of a vanilla one.
         //? if >1.21.2 {
         if (hasComponent(stack, DataComponents.ITEM_MODEL)) {
-            ResourceLocation data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
+            Identifier data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
             DescriptionKey modelKey = new DescriptionKey(data);
             if (modelKey.hasTranslation()) {
                 return modelKey;

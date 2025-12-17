@@ -8,11 +8,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ItemFrame;
-//? if >1.21.10 {
-/*import net.minecraft.world.entity.decoration.painting.Painting;
- *///?} else {
-import net.minecraft.world.entity.decoration.Painting;
-//?}
+//? if >1.21.10 || fabric {
+import net.minecraft.world.entity.decoration.painting.Painting;
+ //?} else {
+/*import net.minecraft.world.entity.decoration.Painting;
+*///?}
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 

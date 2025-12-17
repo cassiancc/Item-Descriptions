@@ -25,7 +25,7 @@ public class BlockDescriptions {
         //? if fabric && <26 {
         if (ModHelpers.isLoaded("polymer-bundled"))
             if (pos != null && PolymerHelpers.isPolymerBlock(pos)) {
-                loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockResourceLocation(pos));
+                loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockIdentifier(pos));
             }
         //?}
         //Custom handling of Player Heads so custom profiles give custom descriptions.

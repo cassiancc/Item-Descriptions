@@ -4,7 +4,7 @@ import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.descriptions.BlockDescriptions;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -36,7 +36,7 @@ public enum JadeBlockDescriptions implements IBlockComponentProvider {
     }
 
     @Override
-    public ResourceLocation getUid() {
+    public Identifier getUid() {
         return ModClient.BLOCK_DESCRIPTIONS;
     }
 }

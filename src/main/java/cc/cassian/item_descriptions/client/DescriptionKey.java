@@ -3,7 +3,7 @@ package cc.cassian.item_descriptions.client;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class DescriptionKey {
         this.suffix = suffix;
     }
 
-    public DescriptionKey(ResourceLocation resourceLocation) {
+    public DescriptionKey(Identifier resourceLocation) {
         this.type = "lore";
         this.namespace = resourceLocation.getNamespace();
         this.path = resourceLocation.getPath();
@@ -49,7 +49,7 @@ public class DescriptionKey {
         this.suffix = "";
     }
 
-    public DescriptionKey(String type, ResourceLocation resourceLocation) {
+    public DescriptionKey(String type, Identifier resourceLocation) {
         this.type = type;
         this.namespace = resourceLocation.getNamespace();
         this.path = resourceLocation.getPath();
