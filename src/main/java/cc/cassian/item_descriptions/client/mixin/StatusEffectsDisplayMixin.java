@@ -47,7 +47,7 @@ public abstract class StatusEffectsDisplayMixin {
     }
 
     *///?} else if >1.21.10 {
-    /*@WrapOperation(method = "renderText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
+    @WrapOperation(method = "renderText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics instance, Font font, List<Component> lines, Optional<TooltipComponent> tooltipImage, int x, int y, Operation<Void> original) {
         List<Component> tooltipText = EffectDescriptions.createEffectDescription(lines);
         original.call(instance, font, tooltipText, tooltipImage, x, y);
@@ -59,8 +59,8 @@ public abstract class StatusEffectsDisplayMixin {
             bl.set(true);
     }
 
-    *///?} else if >1.21.5 {
-    @Shadow protected abstract void renderLabels(GuiGraphics context, int x, int height, Iterable<MobEffectInstance> statusEffects);
+    //?} else if >1.21.5 {
+    /*@Shadow protected abstract void renderLabels(GuiGraphics context, int x, int height, Iterable<MobEffectInstance> statusEffects);
 
     @WrapOperation(method = "renderTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics context, Font textRenderer, List<Component> text, Optional<TooltipComponent> data, int mouseX, int mouseY, Operation<Void> original) {
@@ -79,7 +79,7 @@ public abstract class StatusEffectsDisplayMixin {
         booleanRef.set(false);
     }
 
-    //?} else {
+    *///?} else {
     /*@WrapOperation(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
     private void renderEffects(GuiGraphics context, Font textRenderer, List<Component> text, Optional<TooltipComponent> visualTooltipComponent, int mouseX, int mouseY, Operation<Void> original) {
         List<Component> tooltipText = EffectDescriptions.createEffectDescription(text);
