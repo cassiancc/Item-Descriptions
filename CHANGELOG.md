@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0]
+
+### Added
+- English (Upside Down) translation.
+- Support for 26.1-snapshot-1.
+
+### Changed
+- On Fabric, the mod's namespace has been changed to `item_descriptions` to match NeoForge. The old namespace is still provided to prevent two copies of the mod from being loaded.
+
+### Fixed
+- Crash from attempting to wrap text while the game is lagging.
+
+### Removed
+- Glowcase compatibility, as newer versions of Glowcase do not show blocks in WTHIT.
+
 ## [2.5.9]
 
 ### Fixed

@@ -134,6 +134,7 @@ public class ItemDescriptions {
                 // Check if any of the tooltips' content matches the current line's content.
                 if (tooltip.stream().anyMatch(text -> text.getContents().equals(lines.get(finalI).getContents()))) {
                     var newLines = ModHelpers.createTooltip(stack.getDisplayName(), lines.get(i), ModHelpers.useInternalWrapper());
+                    if (newLines.isEmpty()) {return;}
                     lines.set(i, newLines.getFirst());
                     if (newLines.size() > 1) {
                         lines.addAll(i + 1, newLines.subList(1, newLines.size()));
