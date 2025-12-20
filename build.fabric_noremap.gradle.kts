@@ -129,15 +129,49 @@ dependencies {
     implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
     include("folk.sisby:kaleido-config:${property("deps.kaleido")}")
 
-    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
-    compileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-neoforge") {
-        isTransitive = false
+    // YACL
+    if (hasProperty("deps.yacl")) {
+        compileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
+    } else {
+        compileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-neoforge") {
+            isTransitive = false
+        }
     }
-    compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit_version")}")
-    compileOnly("maven.modrinth:jade:21.0.1+neoforge")
+    // Cloth Config
+    if (hasProperty("deps.cloth_version")) {
+        compileOnly("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
+    } else {
+        compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
+    }
+    // Useful Spyglass
+    if (hasProperty("deps.useful_spyglass")) {
+        implementation("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
+    } else {
+        compileOnly("maven.modrinth:useful-spyglass:e5CW6qWZ")
+    }
     compileOnly("maven.modrinth:fast-item-frames:gAkkWcSn")
-    compileOnly("maven.modrinth:puzzles-lib:W4cWteM4")
-
+    if (hasProperty("deps.puzzles_lib")) {
+        compileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+        runtimeOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+    } else {
+        compileOnly("maven.modrinth:puzzles-lib:W4cWteM4")
+    }
+    if (hasProperty("deps.forge_config_api_port")) {
+        runtimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-neoforge:${property("deps.forge_config_api_port")}")
+    }
+    // Jade
+    if (hasProperty("deps.jade")) {
+        compileOnly("maven.modrinth:jade:${property("deps.jade")}")
+        runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
+    } else {
+        compileOnly("maven.modrinth:jade:21.0.1+neoforge")
+    }
+    // WTHIT
+    compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit_version")}")
+    if (hasProperty("deps.badpackets_version")) {
+        runtimeOnly("mcp.mobius.waila:wthit:neo-${property("deps.wthit_version")}")
+        runtimeOnly("lol.bai:badpackets:neo-${property("deps.badpackets_version")}")
+    }
 }
 
 configurations.all {

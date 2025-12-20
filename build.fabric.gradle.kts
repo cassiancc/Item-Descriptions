@@ -145,25 +145,29 @@ dependencies {
 
     // YACL
     if (hasProperty("deps.yacl")) {
-        modApi("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
+        modCompileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
+        modLocalRuntime("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
     } else {
         modCompileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-fabric")
     }
     // Cloth Config
     if (hasProperty("deps.cloth_version")) {
-        modApi("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
+        modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
+        modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
     } else {
         modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:19.0.147")
     }
     // Mod Menu
-    if (hasProperty("deps.modmenu_version"))
-        modApi("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
-    else {
+    if (hasProperty("deps.modmenu_version")) {
+        modCompileOnly("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
+        modLocalRuntime("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
+    } else {
         modCompileOnly("com.terraformersmc:modmenu:15.0.0-beta.3")
     }
     // Useful Spyglass
     if (hasProperty("deps.useful_spyglass")) {
-        modImplementation("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
+        modCompileOnly("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
+        modLocalRuntime("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
     } else {
         modCompileOnly("maven.modrinth:useful-spyglass:nX9apSkX")
     }
@@ -181,12 +185,7 @@ dependencies {
         modCompileOnly("maven.modrinth:puzzles-lib:g7qeFvxG")
     }
     if (hasProperty("deps.forge_config_api_port")) {
-        if (stonecutter.eval(mcVersion, "=1.19.2")) {
-            modLocalRuntime("net.minecraftforge:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
-        }
-        else {
-            modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
-        }
+        modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
     }
     // Jade
     if (hasProperty("deps.jade")) {
