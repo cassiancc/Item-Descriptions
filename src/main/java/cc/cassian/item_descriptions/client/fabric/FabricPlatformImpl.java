@@ -46,14 +46,7 @@ public class FabricPlatformImpl implements Platform {
 
     @Override
     public String getModName(ItemStack stack) {
-        String namespace =
-                //? if >=1.21.8 || =1.21.4 || =1.21.5 || =1.21.1 {
-                stack.getCreatorNamespace();
-        //?} else if >1.20 {
-        /*BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();
-         *///?} else {
-        /*Registry.ITEM.getKey(stack.getItem()).getNamespace();
-        *///?}
+        String namespace = stack.getCreatorNamespace();
         String key = "modmenu.nameTranslation."+namespace;
         Optional<ModContainer> modContainer = FabricLoader.getInstance().getModContainer(namespace);
         if (modContainer.isPresent()) {

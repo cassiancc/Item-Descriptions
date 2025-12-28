@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.config.fabric;
 
-//? fabric && <26 {
+//? fabric {
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;

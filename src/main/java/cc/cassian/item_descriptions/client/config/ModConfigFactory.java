@@ -3,7 +3,7 @@ package cc.cassian.item_descriptions.client.config;
 
 import cc.cassian.item_descriptions.client.config.ClothConfigFactory;
 import cc.cassian.item_descriptions.client.config.YetAnotherConfigFactory;
-//? if fabric && <26
+//? if fabric
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class ModConfigFactory
         //? if neoforge
         /*implements IConfigScreenFactory*/
-        //? if fabric && <26
+        //? if fabric
         implements ConfigScreenFactory<Screen>
 {
 

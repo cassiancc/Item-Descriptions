@@ -143,6 +143,13 @@ dependencies {
     } else {
         compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
     }
+    // Mod Menu
+    if (hasProperty("deps.modmenu_version")) {
+        compileOnly("maven.modrinth:modmenu:${property("deps.modmenu_version")}")
+        runtimeOnly("maven.modrinth:modmenu:${property("deps.modmenu_version")}")
+    } else {
+        compileOnly("com.terraformersmc:modmenu:18.0.0-alpha.3")
+    }
     // Useful Spyglass
     if (hasProperty("deps.useful_spyglass")) {
         implementation("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
@@ -206,8 +213,8 @@ loom.runs.named("server") {
 
 java {
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 val additionalVersionsStr = findProperty("publish.additionalVersions") as String?

@@ -56,15 +56,6 @@ public class ModHelpers {
     }
 
     /**
-     * Fallback method to prevent crashes until Enchiridion updates.
-     * Moved to {@link EnchantmentDescriptions#useInternalEnchantmentDescriptions}.
-     */
-    @Deprecated(forRemoval = true)
-    public static boolean useInternalEnchantmentDescriptions() {
-        return EnchantmentDescriptions.useInternalEnchantmentDescriptions();
-    }
-
-    /**
      * Check if a mod is loaded
      */
     public static boolean isLoaded(String mod) {
@@ -120,27 +111,27 @@ public class ModHelpers {
     public static TextColor getColour(String colour) {
         int length = colour.length();
         if (length == 1) {
-            return TextColor.fromLegacyFormat(ChatFormatting.getByCode(colour.charAt(0)));
+            return TextColor.fromLegacyFormat(Objects.requireNonNull(ChatFormatting.getByCode(colour.charAt(0))));
         }
         else {
             try {
                 return TextColor.fromRgb(Integer.parseInt(colour));
             } catch (NumberFormatException ignored) {}
             String replacedColour = colour.toLowerCase().replace(" ", "_");
-            return switch (replacedColour) {
+            return TextColor.fromLegacyFormat(Objects.requireNonNull(switch (replacedColour) {
                 case "black", "dark_blue", "dark_green", "dark_red", "dark_purple",
                      "blue", "green", "aqua", "red", "yellow", "white" ->
-                        TextColor.fromLegacyFormat(ChatFormatting.getByName(colour));
+                        ChatFormatting.getByName(colour);
                 case "pink", "light_purple" ->
-                        TextColor.fromLegacyFormat(ChatFormatting.getByName("light_purple"));
+                        ChatFormatting.getByName("light_purple");
                 case "dark_gray", "dark_grey" ->
-                        TextColor.fromLegacyFormat(ChatFormatting.getByName("dark_gray"));
+                        ChatFormatting.getByName("dark_gray");
                 case "cyan", "dark_aqua" ->
-                        TextColor.fromLegacyFormat(ChatFormatting.getByName("dark_aqua"));
+                        ChatFormatting.getByName("dark_aqua");
                 case "orange", "gold", "dark_yellow" ->
-                        TextColor.fromLegacyFormat(ChatFormatting.getByName("gold"));
-                default -> TextColor.fromLegacyFormat(ChatFormatting.getByName("gray"));
-            };
+                        ChatFormatting.getByName("gold");
+                default -> ChatFormatting.getByName("gray");
+            }));
         }
     }
 
