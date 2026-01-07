@@ -18,5 +18,6 @@ public class ModClient {
 
     public static void init() {
         ModStyle.updateStyles();
+
     }
 }

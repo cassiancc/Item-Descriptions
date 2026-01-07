@@ -146,7 +146,7 @@ dependencies {
     // Mod Menu
     if (hasProperty("deps.modmenu_version")) {
         compileOnly("maven.modrinth:modmenu:${property("deps.modmenu_version")}")
-        runtimeOnly("maven.modrinth:modmenu:${property("deps.modmenu_version")}")
+//        runtimeOnly("maven.modrinth:modmenu:${property("deps.modmenu_version")}")
     } else {
         compileOnly("com.terraformersmc:modmenu:18.0.0-alpha.3")
     }

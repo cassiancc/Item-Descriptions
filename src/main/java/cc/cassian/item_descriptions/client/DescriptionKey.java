@@ -13,6 +13,7 @@ public class DescriptionKey {
     private final String path;
     private final String type;
     private String suffix;
+    private Boolean hasEmptyTranslation;
 
     public DescriptionKey(String type, String namespace, String path) {
         this.type = type;
@@ -204,6 +205,9 @@ public class DescriptionKey {
     }
 
     public boolean hasEmptyTranslation() {
-        return hasTranslation() && I18n.get(toString()).trim().isEmpty();
-    }
+        if (hasEmptyTranslation == null) {
+            hasEmptyTranslation = hasTranslation() && I18n.get(toString()).trim().isEmpty();
+		}
+		return hasEmptyTranslation;
+	}
 }

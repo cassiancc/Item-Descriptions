@@ -6,6 +6,7 @@
   "client": [
     "EnchantmentScreenMixin",
     "MatrixEnchantmentScreenMixin",
+    "MinecraftMixin",
     "PotionContentsComponentMixin",
     "StatusEffectsDisplayMixin"
   ],
