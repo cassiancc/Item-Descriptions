@@ -26,11 +26,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.resources.Identifier;
 
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -65,8 +67,8 @@ public class ModHelpers {
     /**
      * Used in Config to change the tooltip's formatting.
      */
-    public static Style getStyle(String colour) {
-        return Style.EMPTY.withColor(getColour(colour)).withItalic(ModClient.CONFIG.style.italics.value()).withBold(ModClient.CONFIG.style.bold.getDefaultValue());
+    public static Style getStyle(int colour) {
+        return Style.EMPTY.withColor(colour).withItalic(ModClient.CONFIG.style.italics.value()).withBold(ModClient.CONFIG.style.bold.getDefaultValue());
     }
 
     /**
@@ -103,36 +105,6 @@ public class ModHelpers {
         else
             sb.append(I18n.get("hint.item_descriptions.hint"));
         return Component.literal(sb.toString());
-    }
-
-    /**
-     * Used to check what colour a tooltip should be.
-     */
-    public static TextColor getColour(String colour) {
-        int length = colour.length();
-        if (length == 1) {
-            return TextColor.fromLegacyFormat(Objects.requireNonNull(ChatFormatting.getByCode(colour.charAt(0))));
-        }
-        else {
-            try {
-                return TextColor.fromRgb(Integer.parseInt(colour));
-            } catch (NumberFormatException ignored) {}
-            String replacedColour = colour.toLowerCase().replace(" ", "_");
-            return TextColor.fromLegacyFormat(Objects.requireNonNull(switch (replacedColour) {
-                case "black", "dark_blue", "dark_green", "dark_red", "dark_purple",
-                     "blue", "green", "aqua", "red", "yellow", "white" ->
-                        ChatFormatting.getByName(colour);
-                case "pink", "light_purple" ->
-                        ChatFormatting.getByName("light_purple");
-                case "dark_gray", "dark_grey" ->
-                        ChatFormatting.getByName("dark_gray");
-                case "cyan", "dark_aqua" ->
-                        ChatFormatting.getByName("dark_aqua");
-                case "orange", "gold", "dark_yellow" ->
-                        ChatFormatting.getByName("gold");
-                default -> ChatFormatting.getByName("gray");
-            }));
-        }
     }
 
     /**
@@ -461,6 +433,9 @@ public class ModHelpers {
     }
     public static void fieldSetter(String instance, TrackedValue<String> field) {
         field.setValue(instance);
+    }
+    public static void fieldSetter(Color instance, TrackedValue<Integer> field) {
+        field.setValue(instance.getRGB());
     }
 
     private static <T, V> void addMissingTranslations(Registry<T> registry, Map<String, Map<String, String>> namespaces, Function<T, V> valueTransform, Function<V, DescriptionKey> descGetter, Function<V, List<Component>> potentialKeys) {

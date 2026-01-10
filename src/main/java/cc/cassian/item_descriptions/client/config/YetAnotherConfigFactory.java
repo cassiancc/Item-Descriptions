@@ -2,18 +2,25 @@ package cc.cassian.item_descriptions.client.config;
 
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.helpers.ModStyle;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.YetAnotherConfigLib;
+import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import dev.isxander.yacl3.gui.controllers.ColorController;
+import dev.isxander.yacl3.gui.controllers.ColorPickerWidget;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
+import me.shedaniel.clothconfig2.impl.builders.ColorFieldBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
+import java.awt.*;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -45,7 +52,10 @@ public class YetAnotherConfigFactory {
         }
 
 
-        builder.save(ModClient.CONFIG::save);
+        builder.save(() -> {
+            ModClient.CONFIG.save();
+            ModStyle.updateStyles();
+        });
         return builder.build().generateScreen(parent);
     }
 
@@ -85,16 +95,31 @@ public class YetAnotherConfigFactory {
                         .build());
             }
             else if (field.value().getClass() == Integer.class) {
-                category.option(Option.<Integer>createBuilder()
-                        .name(fieldName(field))
-                        .description(OptionDescription.of(fieldTooltip(field, false)))
-                        .binding(
-                                (Integer) field.getDefaultValue(),
-                                ()-> (Integer) field.value(),
-                                (value)->fieldSetter(value, (TrackedValue<Integer>) field)
-                        )
-                        .controller(IntegerFieldControllerBuilder::create)
-                        .build());
+                if (field.key().toString().toLowerCase(Locale.ROOT).contains("colour")) {
+                    category.option(Option.<Color>createBuilder()
+                            .name(fieldName(field))
+                            .description(OptionDescription.of(fieldTooltip(field, false)))
+                            .binding(
+                                    new Color((Integer) field.getDefaultValue()),
+                                    ()-> new Color((Integer) field.value()),
+                                    (value)->fieldSetter(value, (TrackedValue<Integer>) field)
+                            )
+                            .controller(ColorControllerBuilder::create)
+                            .build());
+
+                } else {
+                    category.option(Option.<Integer>createBuilder()
+                            .name(fieldName(field))
+                            .description(OptionDescription.of(fieldTooltip(field, false)))
+                            .binding(
+                                    (Integer) field.getDefaultValue(),
+                                    ()-> (Integer) field.value(),
+                                    (value)->fieldSetter(value, (TrackedValue<Integer>) field)
+                            )
+                            .controller(IntegerFieldControllerBuilder::create)
+                            .build());
+                }
+
             }
         }
     }
