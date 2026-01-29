@@ -314,61 +314,65 @@ public class ModHelpers {
         indentationText = null;
     }
 
+
+    private static void wrapTooltip(Component name, List<Component> lines, List<Component> keys) {
+        Minecraft.getInstance().execute(() -> wrapTooltipInternal(name, lines, keys));
+    }
+
     /**
      * An internal method for wrapping this tooltip.
      * @param lines The lines for the final tooltip.
      * @param keys Any contents that make up this text object. Obtained through {@link Component#getSiblings()}.
      */
-    private static void wrapTooltip(Component name, List<Component> lines, List<Component> keys) {
-        Minecraft.getInstance().execute(()->{
-            Font textRenderer = Minecraft.getInstance().font;
-            if (textRenderer != null && ModClient.CONFIG.style.length.value() != 0) {
-                int maxLength = Math.max(ModClient.CONFIG.style.length.value(), textRenderer.width(name));
-                for (Component originalText : keys) {
-                    // Get the text without siblings, as they're individually handled after the initial content.
-                    Component translated = originalText.plainCopy().setStyle(originalText.getStyle());
-                    if (translated.getContents() instanceof TranslatableContents translatable)
-                        translated = Component.literal(I18n.get(translatable.getKey())).setStyle(translated.getStyle());
+    private static void wrapTooltipInternal(Component name, List<Component> lines, List<Component> keys) {
 
-                    if (shouldIndent && translated.getString().isBlank() && !translated.getString().isEmpty()) {
-                        indentationText = originalText.plainCopy();
-                        // Before moving onto the next bit of text, handle any siblings of the original text.
-                        wrapTooltip(name, lines, originalText.getSiblings());
-                        shouldIndent = false;
-                        continue;
-                    }
-                    shouldIndent = false;
-                    //Any tooltip longer than XX pixels should be shortened.
-                    while (lineTextWidth + textRenderer.width(translated) >= maxLength && translated.getString().contains(" ")) {
-                        // Reset the line width.
-                        lineTextWidth = 0;
-                        // Remove the line substring from the start of the remaining string. Repeat.
-                        translated = createNewLine(lines, translated, textRenderer, maxLength);
-                    }
-                    //Add the remainder of this tooltip text.
-                    if (!translated.getString().isEmpty()) {
-                        //Any additional tooltip less than XX pixels should be merged and shortened.
-                        if (!lines.isEmpty() && lines.size() > 1 && textRenderer.width(lines.get(lines.size() - 1)) + textRenderer.width(translated) < maxLength && translated.getString().contains(" ")) {
-                            // Remove the previous text...
-                            Component oldText = lines.removeLast();
-                            // And merge it into the new one.
-                            Component newText = oldText.copy().append(translated);
-                            // Create a new line with the merged text object.
-                            createNewLine(lines, newText, textRenderer, maxLength);
-                            // Set the text line width
-                            lineTextWidth = 0;
-                        } else {
-                            // Set the text line width
-                            lineTextWidth = textRenderer.width(translated);
-                            createNewLine(lines, translated, textRenderer, maxLength);
-                        }
-                    }
+        Font textRenderer = Minecraft.getInstance().font;
+        if (textRenderer != null && ModClient.CONFIG.style.length.value() != 0) {
+            int maxLength = Math.max(ModClient.CONFIG.style.length.value(), textRenderer.width(name));
+            for (Component originalText : keys) {
+                // Get the text without siblings, as they're individually handled after the initial content.
+                Component translated = originalText.plainCopy().setStyle(originalText.getStyle());
+                if (translated.getContents() instanceof TranslatableContents translatable)
+                    translated = Component.literal(I18n.get(translatable.getKey())).setStyle(translated.getStyle());
 
+                if (shouldIndent && translated.getString().isBlank() && !translated.getString().isEmpty()) {
+                    indentationText = originalText.plainCopy();
                     // Before moving onto the next bit of text, handle any siblings of the original text.
-                    wrapTooltip(name, lines, originalText.getSiblings());
+                    wrapTooltipInternal(name, lines, originalText.getSiblings());
+                    shouldIndent = false;
+                    continue;
                 }
+                shouldIndent = false;
+                //Any tooltip longer than XX pixels should be shortened.
+                while (lineTextWidth + textRenderer.width(translated) >= maxLength && translated.getString().contains(" ")) {
+                    // Reset the line width.
+                    lineTextWidth = 0;
+                    // Remove the line substring from the start of the remaining string. Repeat.
+                    translated = createNewLine(lines, translated, textRenderer, maxLength);
+                }
+                //Add the remainder of this tooltip text.
+                if (!translated.getString().isEmpty()) {
+                    //Any additional tooltip less than XX pixels should be merged and shortened.
+                    if (!lines.isEmpty() && lines.size() > 1 && textRenderer.width(lines.get(lines.size() - 1)) + textRenderer.width(translated) < maxLength && translated.getString().contains(" ")) {
+                        // Remove the previous text...
+                        Component oldText = lines.removeLast();
+                        // And merge it into the new one.
+                        Component newText = oldText.copy().append(translated);
+                        // Create a new line with the merged text object.
+                        createNewLine(lines, newText, textRenderer, maxLength);
+                        // Set the text line width
+                        lineTextWidth = 0;
+                    } else {
+                        // Set the text line width
+                        lineTextWidth = textRenderer.width(translated);
+                        createNewLine(lines, translated, textRenderer, maxLength);
+                    }
+                }
+
+                // Before moving onto the next bit of text, handle any siblings of the original text.
+                wrapTooltipInternal(name, lines, originalText.getSiblings());
             }
-        });
+        }
     }
 
     private static Component createNewLine(List<Component> lines, Component text, Font textRenderer, int maxLength) {

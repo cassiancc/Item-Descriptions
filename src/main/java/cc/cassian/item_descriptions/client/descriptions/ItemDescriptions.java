@@ -8,6 +8,7 @@ import cc.cassian.item_descriptions.client.helpers.ModLists;
 import cc.cassian.item_descriptions.client.helpers.ModStyle;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import cc.cassian.item_descriptions.client.helpers.compat.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -134,7 +135,9 @@ public class ItemDescriptions {
                 // Check if any of the tooltips' content matches the current line's content.
                 if (tooltip.stream().anyMatch(text -> text.getContents().equals(lines.get(finalI).getContents()))) {
                     var newLines = ModHelpers.createTooltip(stack.getDisplayName(), lines.get(i), ModHelpers.useInternalWrapper());
-                    if (newLines.isEmpty()) {return;}
+                    if (newLines.isEmpty()) {
+                        return;
+                    }
                     lines.set(i, newLines.getFirst());
                     if (newLines.size() > 1) {
                         lines.addAll(i + 1, newLines.subList(1, newLines.size()));
