@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-//? if fabric {
-//? if 1.21.1 || 1.21.5 {
+//? if fabric && (1.21.1 || 1.21.5) {
 /*import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import io.wispforest.limelight.api.builtin.bangs.BangDefinition;
 import io.wispforest.limelight.api.builtin.bangs.BangsProvider;
@@ -44,4 +43,3 @@ public class DescriptionsExtension implements LimelightExtension, BangsProvider 
     }
 }
 *///?}
-//?}

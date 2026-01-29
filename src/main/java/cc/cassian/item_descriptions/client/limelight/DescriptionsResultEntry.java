@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-//? if fabric {
-//? if 1.21.1 || 1.21.5 {
+//? if fabric && (1.21.1 || 1.21.5) {
 /*import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.descriptions.EffectDescriptions;
@@ -145,4 +144,3 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
     }
 }
 *///?}
-//?}

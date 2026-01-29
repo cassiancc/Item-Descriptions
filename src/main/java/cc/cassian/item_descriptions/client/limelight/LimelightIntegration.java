@@ -1,7 +1,6 @@
 package cc.cassian.item_descriptions.client.limelight;
 
-//? if fabric {
-//? if 1.21.1 || 1.21.5 {
+//? if fabric && (1.21.1 || 1.21.5) {
 /*import io.wispforest.limelight.api.LimelightEntrypoint;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 
@@ -15,4 +14,3 @@ public class LimelightIntegration implements LimelightEntrypoint {
     }
 }
 *///?}
-//?}

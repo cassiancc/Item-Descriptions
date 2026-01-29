@@ -118,6 +118,7 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -131,7 +132,7 @@ dependencies {
 
     // YACL
     if (hasProperty("deps.yacl")) {
-        compileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-neoforge")
+        compileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
     } else {
         compileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-neoforge") {
             isTransitive = false

@@ -113,6 +113,7 @@ repositories {
         }
     }
     flatDir { dirs("libs") }
+    mavenCentral()
 }
 
 stonecutter {

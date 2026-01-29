@@ -125,6 +125,7 @@ repositories {
             includeGroupAndSubgroups("dev.lambdaurora")
         }
     }
+    mavenCentral()
 }
 
 dependencies {
