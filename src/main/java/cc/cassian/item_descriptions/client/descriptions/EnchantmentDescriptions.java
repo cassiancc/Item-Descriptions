@@ -6,6 +6,8 @@ import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -34,7 +37,7 @@ public class EnchantmentDescriptions {
         if (ModClient.CONFIG.enchantmentDescriptions.enable.value() && showEnchantmentDescriptions()) {
             if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return false;
-            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
+            final var enchantments = new HashSet<>(getEnchantments(stack).keySet());
             if (enchantments.isEmpty()) return false;
             for (var enchantmentEntry : enchantments) {
                 var enchantment = enchantmentEntry.value();
@@ -51,12 +54,25 @@ public class EnchantmentDescriptions {
         return descriptionFound;
     }
 
+    /**
+	 * Check for enchantments on an ItemStack. `getEnchantmentsForCrafting` is not used directly to allow for modded items with
+	 * stored enchantments to be correctly displayed.
+	 */
+	private static ItemEnchantments getEnchantments(ItemStack stack) {
+        if (stack.has(DataComponents.STORED_ENCHANTMENTS)) {
+            return stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+        } else if (stack.has(DataComponents.ENCHANTMENTS)) {
+            return stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+        }
+		return EnchantmentHelper.getEnchantmentsForCrafting(stack);
+	}
+
     public static void fixEnchantmentDescription(ItemStack stack, List<Component> lines) {
         if (ModClient.CONFIG.enchantmentDescriptions.enable.value() && useInternalEnchantmentDescriptions()) {
             if (ModClient.CONFIG.enchantmentDescriptions.onlyShowOnBooks.value() && !stack.getItem().equals(Items.ENCHANTED_BOOK))
                 return;
 
-            final var enchantments = new HashSet<>(EnchantmentHelper.getEnchantmentsForCrafting(stack).keySet());
+            final var enchantments = new HashSet<>(getEnchantments(stack).keySet());
 
             if (enchantments.isEmpty())
                 return;
@@ -111,9 +127,6 @@ public class EnchantmentDescriptions {
     }
 
     public static DescriptionKey getEnchantmentDescriptionKey(Enchantment enchantment) {
-        //? if >1.21 {
         return enchantment.description().getContents() instanceof TranslatableContents translatable ? new DescriptionKey(translatable.getKey()) : DescriptionKey.empty();
-        //?} else
-        /*return new DescriptionKey(enchantment.getDescriptionId());*/
     }
 }
