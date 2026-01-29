@@ -20,22 +20,31 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class ItemDescriptions {
+    public static LinkedHashMap<Integer, DescriptionKey> cachedDescriptions = new LinkedHashMap<>();
+
     /**
      * Create an item's lore key based off data from its Item Stack.
      */
     public static DescriptionKey findLoreKey(ItemStack stack) {
+        if (cachedDescriptions.containsKey(stack.hashCode())) {
+            return cachedDescriptions.get(stack.hashCode());
+        }
         // Disable Item Descriptions on Enchanted Books
         if (ModClient.CONFIG.enchantmentDescriptions.onlyEnchantmentDescriptionsOnBooks.value() && stack.is(Items.ENCHANTED_BOOK)) {
+            cachedDescriptions.put(stack.hashCode(), DescriptionKey.empty());
             return DescriptionKey.empty();
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
         //? if fabric && <26 {
         if (PolymerHelpers.getServerIdentifier(stack) != null) {
-            return new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
+            DescriptionKey descriptionKey = new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
+            cachedDescriptions.put(stack.hashCode(), descriptionKey);
+            return descriptionKey;
         }
         //?}
         //Ensure items with Custom Models get a custom key instead of a vanilla one.
@@ -44,6 +53,7 @@ public class ItemDescriptions {
             Identifier data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
             DescriptionKey modelKey = new DescriptionKey(data);
             if (modelKey.hasTranslation()) {
+                cachedDescriptions.put(stack.hashCode(), modelKey);
                 return modelKey;
             }
         } else
@@ -60,6 +70,7 @@ public class ItemDescriptions {
                 DescriptionKey modelKey = key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack);
                 modelKey.setSuffix(".custommodeldata." + dataValue);
                 if (modelKey.hasTranslation()) {
+                    cachedDescriptions.put(stack.hashCode(), modelKey);
                     return modelKey;
                 }
             }
@@ -74,24 +85,35 @@ public class ItemDescriptions {
                 /*var variant = ModHelpers.toTranslationKey(data.copyTag().getString("variant"));
                  *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
-                if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value())
-                    return paintingKey;
+                if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
+                    cachedDescriptions.put(stack.hashCode(), paintingKey);
+					return paintingKey;
+				}
             }
             //Ensure player heads with Profile components get a custom key instead of a vanilla one.
             else if (hasComponent(stack, DataComponents.PROFILE)) {
                 DescriptionKey profileKey = getProfile(stack);
                 if (profileKey.hasTranslation()) {
+                    cachedDescriptions.put(stack.hashCode(), profileKey);
                     return profileKey;
                 }
             }
         DescriptionKey name = getModdedNameMatch(stack);
         if (name.hasTranslation()) {
+            cachedDescriptions.put(stack.hashCode(), name);
             return name;
         }
         //Find the tooltip translation key for the provided item stack.
         DescriptionKey key = getDescriptionKey(stack);
-        return DescriptionKey.checkLoreKey(key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack));
-    }
+		if (key.hasTranslation()) {
+            DescriptionKey descriptionKey = DescriptionKey.checkLoreKey(key);
+            cachedDescriptions.put(stack.hashCode(), descriptionKey);
+            return descriptionKey;
+		}
+        DescriptionKey genericTagKey = DescriptionKey.checkLoreKey(TagHelpers.checkGenericTagList(stack));
+        cachedDescriptions.put(stack.hashCode(), genericTagKey);
+        return genericTagKey;
+	}
 
     public static DescriptionKey getModdedNameMatch(ItemStack stack) {
         var key = getDescriptionKey(stack);
@@ -100,7 +122,7 @@ public class ItemDescriptions {
     }
 
     public static boolean createItemDescription(ItemStack stack, List<Component> lines) {
-        if (ModClient.CONFIG.itemDescriptions.value()) {
+        if (ModClient.CONFIG.itemDescriptions.value() && showItemDescriptions()) {
             //Create and add tooltip.
             List<Component> tooltip;
             DescriptionKey descriptionKey = findLoreKey(stack);

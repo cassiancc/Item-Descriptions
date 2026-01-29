@@ -2,11 +2,15 @@ package cc.cassian.item_descriptions.client.config;
 
 
 import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.helpers.ModStyle;
+import folk.sisby.kaleido.lib.quiltconfig.api.metadata.MetadataType;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+
+import java.util.Locale;
 
 import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
@@ -28,13 +32,16 @@ public class ClothConfigFactory {
 
         addEntries(ModClient.CONFIG.values(), builder);
 
-        builder.setSavingRunnable(ModClient.CONFIG::save);
+        builder.setSavingRunnable(() -> {
+            ModClient.CONFIG.save();
+            ModStyle.updateStyles();
+        });
         return builder.build();
     }
 
     private static void addEntries(Iterable<TrackedValue<?>> fields, ConfigBuilder builder) {
         var entryBuilder = builder.entryBuilder();
-        for (var field : fields) {
+        for (TrackedValue<?> field : fields) {
             String categoryName = field.key().toString();
             if (categoryName.contains(".")) {
                 categoryName = toSnakeCase(categoryName.split("\\.")[0]);
@@ -56,10 +63,18 @@ public class ClothConfigFactory {
                         .setDefaultValue((String) field.getDefaultValue()).build());
             }
             else if (field.value().getClass() == Integer.class) {
-                category.addEntry(entryBuilder.startIntField(fieldName(field), (int) field.value())
-                        .setSaveConsumer((o)-> fieldSetter(o, (TrackedValue<Integer>) field))
-                        .setTooltip(fieldTooltip(field, true))
-                        .setDefaultValue((int) field.getDefaultValue()).build());
+                if (field.key().toString().toLowerCase(Locale.ROOT).contains("colour")) {
+                    category.addEntry(entryBuilder.startColorField(fieldName(field), (int) field.value())
+                            .setSaveConsumer((o)-> fieldSetter(o, (TrackedValue<Integer>) field))
+                            .setTooltip(fieldTooltip(field, true))
+                            .setDefaultValue((int) field.getDefaultValue()).build());
+                } else {
+                    category.addEntry(entryBuilder.startIntField(fieldName(field), (int) field.value())
+                            .setSaveConsumer((o)-> fieldSetter(o, (TrackedValue<Integer>) field))
+                            .setTooltip(fieldTooltip(field, true))
+                            .setDefaultValue((int) field.getDefaultValue()).build());
+                }
+
             }
 //            else if (field.getType() == List.class) {
 //                category.addEntry(entryBuilder.startStrList(fieldName(field, categoryName), fieldGet(config, field))

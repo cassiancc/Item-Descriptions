@@ -215,7 +215,7 @@ dependencies {
         compileOnly("maven.modrinth:jade:${property("deps.jade")}")
         runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
     } else {
-        compileOnly("maven.modrinth:jade:19.3.1+neoforge")
+        compileOnly("maven.modrinth:jade:21.0.1+neoforge")
     }
     // WTHIT
     compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit_version")}")

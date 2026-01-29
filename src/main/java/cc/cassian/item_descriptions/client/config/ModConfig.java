@@ -43,8 +43,8 @@ public class ModConfig extends ReflectiveConfig {
         @Comment("Show keybinds in hint text.")
         public final TrackedValue<Boolean> showKeybinds = this.value(true);
 
-        @Comment("This setting changes what Minecraft colour is used for hint tooltips, either by colour code or name.")
-        public final TrackedValue<String> color = this.value("Gray");
+        @Comment("This setting changes what colour code is used for hint tooltips.")
+        public final TrackedValue<Integer> colour = this.value(11184810);
 
         @Comment("Italicize Hints")
         public final TrackedValue<Boolean> italics = this.value(false);
@@ -59,8 +59,8 @@ public class ModConfig extends ReflectiveConfig {
     public final Style style = new Style();
     public static class Style extends Section {
 
-        @Comment("This setting changes what Minecraft colour is used for block, item, and entity tooltips, either by colour code or name.")
-        public final TrackedValue<String> color = this.value("Gray");
+        @Comment("This setting changes what colour code is used for block, item, and entity tooltips.")
+        public final TrackedValue<Integer> colour = this.value(11184810);
 
         @Comment("This setting changes whether block, item, and entity tooltips are italicized.")
         public final TrackedValue<Boolean> italics = this.value(false);
@@ -71,9 +71,9 @@ public class ModConfig extends ReflectiveConfig {
         @Comment("Changes the minimum width of multi-line tooltip. Expands for longer item names. Ignored when ToolTipFix is present.")
         public final TrackedValue<Integer> length = this.value(160);
 
-        @SerializedName("mod_name_color")
-        @Comment("Color of the mod name tooltip")
-        public final TrackedValue<String> modNameColor = this.value("Blue");
+        @SerializedName("mod_name_colour")
+        @Comment("Colour of the mod name tooltip")
+        public final TrackedValue<Integer> modNameColour = this.value(5592575);
 
         @SerializedName("mod_name_italics")
         @Comment("Whether to italicize the mod name tooltip")
@@ -153,9 +153,9 @@ public class ModConfig extends ReflectiveConfig {
          */
     //    public final TrackedValue<Boolean> hideItemDescriptionIfEnchantmentDescriptionPresent = this.value(false);
 
-        @SerializedName("color")
-        @Comment("This setting changes what Minecraft colour is used for enchantment tooltips, either by colour code or name.")
-        public final TrackedValue<String> color = this.value("Dark Gray");
+        @SerializedName("colour")
+        @Comment("This setting changes what colour code is used for enchantment tooltips.")
+        public final TrackedValue<Integer> colour = this.value(5592405);
 
         @Comment("Italicize Enchantment Descriptions")
         public final TrackedValue<Boolean> italics = this.value(false);
@@ -175,8 +175,8 @@ public class ModConfig extends ReflectiveConfig {
         @Comment("Always show Effect Descriptions, not just when a key is held.")
         public final TrackedValue<Boolean> displayAlways = this.value(false);
 
-        @Comment("This setting changes what Minecraft colour is used for effect tooltips, either by colour code or name.")
-        public final TrackedValue<String> color = this.value("Dark Gray");
+        @Comment("This setting changes what colour code is used for effect tooltips.")
+        public final TrackedValue<Integer> colour = this.value(5592405);
 
         @SerializedName("only_show_effect_descriptions")
         @Comment("Replace Item Descriptions with Effect Descriptions when present.")
