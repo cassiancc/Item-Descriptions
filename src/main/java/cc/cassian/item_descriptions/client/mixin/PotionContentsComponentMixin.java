@@ -20,20 +20,10 @@ public class PotionContentsComponentMixin {
     private static void mixin(Iterable<MobEffectInstance> effects, Consumer<Component> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
         EffectDescriptions.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), textConsumer, statusEffectInstance);
     }
-    //?} else if >1.20.5 {
+    //?} else if >1.21 {
     /*@Inject(method = "addPotionTooltip(Ljava/lang/Iterable;Ljava/util/function/Consumer;FF)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))
     private static void mixin(Iterable<MobEffectInstance> effects, Consumer<Component> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
         EffectDescriptions.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), textConsumer, statusEffectInstance);
-    }
-    *///?} else if >1.20 {
-    /*@Inject(method = "addPotionTooltip(Ljava/util/List;Ljava/util/List;F)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))
-    private static void mixin(List<MobEffectInstance> effects, List<Component> list, float durationFactor, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
-        EffectDescriptions.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), list, statusEffectInstance);
-    }
-    *///?} else {
-    /*@Inject(method = "addPotionTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))
-    private static void mixin(ItemStack stack, List<Component> list, float durationMultiplier, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
-        EffectDescriptions.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), list, statusEffectInstance);
     }
     *///?}
 }

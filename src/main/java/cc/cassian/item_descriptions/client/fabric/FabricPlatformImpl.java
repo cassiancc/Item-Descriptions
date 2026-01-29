@@ -6,11 +6,7 @@ import cc.cassian.item_descriptions.client.Platform;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.resources.language.I18n;
-//? if >1.20 {
 import net.minecraft.core.registries.BuiltInRegistries;
-//?} else {
-/*import net.minecraft.core.Registry;
-*///?}
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 

@@ -61,7 +61,7 @@ public final class ItemDescriptionsNeoForge {
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.
     public void registerModsPage() {
         //Display Cloth Config/YACL screen if mod present, else error.
-        if (ModList.get().isLoaded("cloth_config") && !ModClient.CONFIG.developerOptions.configScreen.equals("yacl")) {
+        if (ModList.get().isLoaded("cloth_config") && !ModClient.CONFIG.developerOptions.configScreen.value().equals("yacl")) {
             ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new ModConfigFactory("cloth-config"));
         } else if (ModList.get().isLoaded("yet_another_config_lib_v3")) {
             ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new ModConfigFactory("yacl"));

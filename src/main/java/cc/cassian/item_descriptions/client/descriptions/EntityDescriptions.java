@@ -64,10 +64,7 @@ public class EntityDescriptions {
     public static String getEntityTranslationKey(Entity entity) {
         //Allow for custom player descriptions
         if (entity instanceof Player) {
-            //? if >1.21 {
             String playerKey = "entity.minecraft.player.%s".formatted(entity.getName().tryCollapseToString());
-            //?} else
-            /*String playerKey = "entity.minecraft.player." + entity.getName().getString();;*/
             //Check if a custom player description exists.
             if (ModHelpers.hasTranslation(playerKey)) return playerKey;
                 //If not, use the default one.

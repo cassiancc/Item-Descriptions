@@ -59,13 +59,7 @@ public class EffectDescriptions {
     }
 
     public static void createEffectDescription(Component name, List<Component> textConsumer, MobEffectInstance statusEffectInstance) {
-        if (ModClient.CONFIG.effectDescriptions.enable.value() && showEffectDescriptions()) {
-            var key = new DescriptionKey(statusEffectInstance.getDescriptionId());
-            List<Component> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
-            if (showEffectDescriptions()) {
-                textConsumer.addAll(tooltip);
-            }
-        }
+        createEffectDescription(name, textConsumer::add, statusEffectInstance);
     }
 
     /**
