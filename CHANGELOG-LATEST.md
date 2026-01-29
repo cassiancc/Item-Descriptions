@@ -1,3 +1,6 @@
+### Added
+- Support for 26.1-snapshot-5 and descriptions for its content.
+
 ### Changed
 - Text colors are now handled via color codes rather than legacy formatting code names.
 
