@@ -1,4 +1,5 @@
 package cc.cassian.item_descriptions.client.mixin;
+
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.descriptions.EnchantmentDescriptions;
@@ -41,8 +42,7 @@ public class MatrixEnchantmentScreenMixin {
     private void addEnchantmentDescriptions(GuiGraphics instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original) {
         Holder<Enchantment> enchant = this.hoveredPiece.enchant;
         if (EnchantmentDescriptions.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
-            Component name =
-            Enchantment.getFullname(enchant, 1);
+            Component name = Enchantment.getFullname(enchant, 1);
             if (name.getContents() instanceof TranslatableContents content) {
                 List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
                 components.addAll(tooltip);

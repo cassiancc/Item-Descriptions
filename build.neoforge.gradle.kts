@@ -225,7 +225,10 @@ dependencies {
         runtimeOnly("lol.bai:badpackets:neo-${property("deps.badpackets_version")}")
     }
     if (stonecutter.eval(mcVersion, "=1.21.1")) {
-        compileOnly("maven.local:quark:4.0-463")
+        compileOnly("maven.modrinth:quark:${property("deps.quark")}")
+        runtimeOnly("maven.modrinth:quark:${property("deps.quark")}")
+        runtimeOnly("maven.modrinth:zeta:${property("deps.zeta")}")
+
     }
 
 }
@@ -270,7 +273,7 @@ publishMods {
     curseforge {
         projectId = property("publish.curseforge") as String
         accessToken = env.CURSEFORGE_API_KEY.orNull()
-        minecraftVersions.add(property("publish.curseforge").toString())
+        minecraftVersions.add(property("publish.curseforge_minecraft_version").toString())
         minecraftVersions.addAll(additionalVersions)
     }
 }
