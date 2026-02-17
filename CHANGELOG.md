@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0]
+
+### Added
+- Support for 26.1-snapshot-5 and descriptions for its content.
+
+### Changed
+- Text colors are now handled via color codes rather than legacy formatting code names.
+
+### Fixed
+- Performance issues rendering a large number of items.
+- Visual issues with icon image (thanks @3ABRAiNS4GAMES!)
+- Tooltip style is now properly live reloaded.
+- Text wrapping issue with Enchiridon (thanks @ChrysanthCow!)
+- Modded items with the Stored Enchantments data component now show Enchantment Descriptions.
+
 ## [2.6.1] - 2025-12-19
 
 ### Fixed

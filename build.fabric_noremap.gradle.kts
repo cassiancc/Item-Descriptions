@@ -170,7 +170,7 @@ dependencies {
     // Jade
     if (hasProperty("deps.jade")) {
         compileOnly("maven.modrinth:jade:${property("deps.jade")}")
-        runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
+//        runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
     } else {
         compileOnly("maven.modrinth:jade:21.0.1+neoforge")
     }

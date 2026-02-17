@@ -122,7 +122,7 @@ public class ItemDescriptions {
     }
 
     public static boolean createItemDescription(ItemStack stack, List<Component> lines) {
-        if (ModClient.CONFIG.itemDescriptions.value() && showItemDescriptions()) {
+        if (ModClient.CONFIG.itemDescriptions.value() && (showItemDescriptions() || ModClient.CONFIG.hint.enabled.value())) {
             //Create and add tooltip.
             List<Component> tooltip;
             DescriptionKey descriptionKey = findLoreKey(stack);
