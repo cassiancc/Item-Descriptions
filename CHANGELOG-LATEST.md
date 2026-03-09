@@ -1,2 +1,5 @@
+### Added
+- Simplified and Traditional Chinese translations (@Bali)
+
 ### Fixed
-- Hints not displaying correctly.
+- Updated English Upside Down translation.

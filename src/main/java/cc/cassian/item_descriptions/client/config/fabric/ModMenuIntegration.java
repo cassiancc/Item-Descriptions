@@ -18,7 +18,7 @@ public class ModMenuIntegration implements ModMenuApi {
         } else if (FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3")) {
             return new ModConfigFactory("yacl");
         } else {
-            ModClient.LOGGER.warn("Item Description requires Cloth Config or YACL for an ingame config!");
+            ModClient.LOGGER.warn("Item Descriptions requires Cloth Config or YACL for an ingame config!");
             return parent -> null;
         }
     }
