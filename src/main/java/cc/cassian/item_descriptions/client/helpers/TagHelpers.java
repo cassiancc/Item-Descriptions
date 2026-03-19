@@ -196,18 +196,18 @@ public class TagHelpers {
 
     private static Stream<TagKey<Item>> getTags(ItemStack stack) {
         //? if >26 {
-        /*return stack.tags();
-        *///?} else {
-        return stack.getTags();
-        //?}
+        return stack.tags();
+        //?} else {
+        /*return stack.getTags();
+        *///?}
     }
 
     private static Stream<TagKey<Block>> getTags(BlockState state) {
         //? if >26 {
-        /*return state.tags();
-        *///?} else {
-        return state.getTags();
-        //?}
+        return state.tags();
+        //?} else {
+        /*return state.getTags();
+        *///?}
     }
 
     private static Stream<TagKey<EntityType<?>>> getTags(EntityType<?> type) {

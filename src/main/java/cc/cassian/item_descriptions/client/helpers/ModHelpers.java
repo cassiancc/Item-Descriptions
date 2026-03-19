@@ -196,19 +196,6 @@ public class ModHelpers {
     }
 
     /**
-     * Find a profile name
-     */
-    public static String getProfileName(Optional<String> optionalProfileName) {
-        String profileName;
-        if (optionalProfileName.isPresent()) {
-            profileName = optionalProfileName.get();
-            return profileName;
-        } else {
-            return "";
-        }
-    }
-
-    /**
      * Create a custom multi-line tooltip.
      *
      * @param loreKey The translation key that will be translated and wrapped.
@@ -296,6 +283,7 @@ public class ModHelpers {
      * @param lines The lines for the final tooltip.
      * @param keys Any contents that make up this text object. Obtained through {@link Component#getSiblings()}.
      */
+    @SuppressWarnings("all")
     private static void wrapTooltipInternal(Component name, List<Component> lines, List<Component> keys) {
 
         Font textRenderer = Minecraft.getInstance().font;

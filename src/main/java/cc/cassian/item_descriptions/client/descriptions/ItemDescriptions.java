@@ -41,12 +41,12 @@ public class ItemDescriptions {
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
         //? if fabric && <26 {
-        if (PolymerHelpers.getServerIdentifier(stack) != null) {
+        /*if (PolymerHelpers.getServerIdentifier(stack) != null) {
             DescriptionKey descriptionKey = new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
             cachedDescriptions.put(stack.hashCode(), descriptionKey);
             return descriptionKey;
         }
-        //?}
+        *///?}
         //Ensure items with Custom Models get a custom key instead of a vanilla one.
         //? if >1.21.2 {
         if (hasComponent(stack, DataComponents.ITEM_MODEL)) {

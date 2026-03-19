@@ -5,9 +5,9 @@ import cc.cassian.item_descriptions.client.descriptions.EntityDescriptions;
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 //? if <26 && fabric {
-import com.brokenkeyboard.usefulspyglass.api.event.BlockTooltipCallback;
+/*import com.brokenkeyboard.usefulspyglass.api.event.BlockTooltipCallback;
 import com.brokenkeyboard.usefulspyglass.api.event.LivingTooltipCallback;
-//?}
+*///?}
 //? if neoforge {
 /*import com.brokenkeyboard.usefulspyglass.api.event.BlockTooltipEvent;
 import com.brokenkeyboard.usefulspyglass.api.event.LivingTooltipEvent;
@@ -24,9 +24,9 @@ import java.util.List;
 public class UsefulSpyglassHelpers {
     public static void register() {
         //? if <26 && fabric {
-        BlockTooltipCallback.EVENT.register(UsefulSpyglassHelpers::addBlockTooltip);
+        /*BlockTooltipCallback.EVENT.register(UsefulSpyglassHelpers::addBlockTooltip);
         LivingTooltipCallback.EVENT.register(UsefulSpyglassHelpers::addLivingTooltip);
-        //?}
+        *///?}
     }
 
     //? if neoforge {
@@ -39,6 +39,7 @@ public class UsefulSpyglassHelpers {
     }
     *///?}
 
+    @SuppressWarnings("unused")
     public static void addBlockTooltip(BlockState blockState, BlockPos blockPos, List<ClientTooltipComponent> list) {
         if (BlockDescriptions.showBlockDescriptions()) {
             var level = Minecraft.getInstance().level;
@@ -52,6 +53,7 @@ public class UsefulSpyglassHelpers {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void addLivingTooltip(Entity entity, List<ClientTooltipComponent> list) {
         if (EntityDescriptions.showEntityDescriptions()) {
             EntityDescriptions.createEntityDescription(entity).forEach((component -> {

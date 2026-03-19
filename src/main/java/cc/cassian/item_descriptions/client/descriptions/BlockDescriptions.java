@@ -23,11 +23,11 @@ public class BlockDescriptions {
         //Convert block translation key to lore translation key.
         DescriptionKey loreKey = findLoreKey(block);
         //? if fabric && <26 {
-        if (ModHelpers.isLoaded("polymer-bundled"))
+        /*if (ModHelpers.isLoaded("polymer-bundled"))
             if (pos != null && PolymerHelpers.isPolymerBlock(pos)) {
                 loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockIdentifier(pos));
             }
-        //?}
+        *///?}
         //Custom handling of Player Heads so custom profiles give custom descriptions.
         if (blockEntity instanceof SkullBlockEntity) {
             DescriptionKey profileKey = getProfile(blockEntity, loreKey);

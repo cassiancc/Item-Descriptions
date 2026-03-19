@@ -9,7 +9,11 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+//? if >26 {
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?} else {
+/*import net.minecraft.client.gui.GuiGraphics;
+ *///?}
 import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -23,13 +27,17 @@ import java.util.Optional;
 
 @Mixin(EnchantmentScreen.class)
 public class EnchantmentScreenMixin {
-    //? if >1.21.5 {
-    @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setComponentTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
-    //?} else {
+    //? if >26 {
+    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setComponentTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
+    private void addEnchantmentDescriptions(GuiGraphicsExtractor
+    //?} else if >1.21.5 {
+    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setComponentTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
+    private void addEnchantmentDescriptions(GuiGraphics
+    *///?} else {
     /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
+    private void addEnchantmentDescriptions(GuiGraphics
    *///?}
-    private void addEnchantmentDescriptions(GuiGraphics instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local Optional<Holder.Reference<Enchantment>> optional
-    ) {
+    instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local Optional<Holder.Reference<Enchantment>> optional) {
         if (optional.isPresent() && EnchantmentDescriptions.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
             Component name =
             Enchantment.getFullname(optional.get(), 1);
