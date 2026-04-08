@@ -27,25 +27,10 @@ import java.util.Optional;
 
 @Mixin(EnchantmentScreen.class)
 public class EnchantmentScreenMixin {
-    //? if >26 {
     @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setComponentTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
     private void addEnchantmentDescriptions(GuiGraphicsExtractor
-    //?} else if >1.21.5 {
-    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;setComponentTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
-    private void addEnchantmentDescriptions(GuiGraphics
-    *///?} else {
-    /*@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
-    private void addEnchantmentDescriptions(GuiGraphics
-   *///?}
     instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local Optional<Holder.Reference<Enchantment>> optional) {
-        if (optional.isPresent() && EnchantmentDescriptions.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
-            Component name =
-            Enchantment.getFullname(optional.get(), 1);
-            if (name.getContents() instanceof TranslatableContents content) {
-                List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
-                components.addAll(tooltip);
-            }
-        }
+        optional.ifPresent(enchantmentReference -> EnchantmentDescriptions.addEnchantmentDescription(components, enchantmentReference));
         original.call(instance, textRenderer, components, mouseX, mouseY);
     }
 }

@@ -1,5 +1,6 @@
 package cc.cassian.item_descriptions.client.mixin;
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,6 +9,13 @@ import org.spongepowered.asm.mixin.injection.At;
 /*import org.violetmoon.quark.addons.oddities.client.screen.MatrixEnchantingScreen;
 import org.violetmoon.quark.addons.oddities.inventory.EnchantmentMatrix;
 import net.minecraft.client.gui.GuiGraphics;
+*///?} else {
+import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
+ //?}
+//? if 26.1 && fabric {
+import spookipup.matrixenchanting.client.screen.MatrixEnchantingScreen;
+import spookipup.matrixenchanting.enchanting.EnchantmentMatrix;
+//?}
 import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.descriptions.EnchantmentDescriptions;
@@ -21,19 +29,16 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.item.enchantment.Enchantment;
-*///?} else {
-import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
- //?}
 
 import java.util.List;
 import java.util.Optional;
 
 @Pseudo
-//? if (=1.21.1 && neoforge) {
-/*@Mixin(MatrixEnchantingScreen.class)
-*///?} else {
-@Mixin(EnchantmentScreen.class)
-//?}
+//? if (=1.21.1 && neoforge) || (26.1 && fabric) {
+@Mixin(MatrixEnchantingScreen.class)
+//?} else {
+/*@Mixin(EnchantmentScreen.class)
+*///?}
 public class MatrixEnchantmentScreenMixin {
     //? if (=1.21.1 && neoforge) {
     /*@Shadow protected EnchantmentMatrix.Piece hoveredPiece;
@@ -41,14 +46,19 @@ public class MatrixEnchantmentScreenMixin {
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
     private void addEnchantmentDescriptions(GuiGraphics instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original) {
         Holder<Enchantment> enchant = this.hoveredPiece.enchant;
-        if (EnchantmentDescriptions.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
-            Component name = Enchantment.getFullname(enchant, 1);
-            if (name.getContents() instanceof TranslatableContents content) {
-                List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
-                components.addAll(tooltip);
-            }
-        }
+        EnchantmentDescriptions.addEnchantmentDescription(components, enchant);
         original.call(instance, textRenderer, components, mouseX, mouseY);
     }
     *///?}
+
+    //? if (=26.1 && fabric) {
+    @WrapOperation(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setComponentTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"))
+    private void addEnchantmentDescriptions(GuiGraphicsExtractor instance, Font textRenderer, List<Component> components, int mouseX, int mouseY, Operation<Void> original, @Local(name = "piece") EnchantmentMatrix.Piece piece) {
+        Holder<Enchantment> enchant = piece.enchant;
+        EnchantmentDescriptions.addEnchantmentDescription(components, enchant);
+        original.call(instance, textRenderer, components, mouseX, mouseY);
+    }
+
+
+    //?}
 }

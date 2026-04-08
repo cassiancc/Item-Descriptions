@@ -24,12 +24,7 @@ public class NeoforgePlatformImpl implements Platform {
     }
 
     public boolean isLoadingLoaded(String mod) {
-        //? if >1.21.9 {
-        return FMLLoader.getCurrent().getLoadingModList()
-        //?} else {
-        /^return LoadingModList.get()
-        ^///?}
-        .getModFileById(mod) != null;
+        return FMLLoader.getCurrent().getLoadingModList().getModFileById(mod) != null;
     }
 
     @Override
@@ -50,11 +45,7 @@ public class NeoforgePlatformImpl implements Platform {
     public String getModName(ItemStack stack) {
         String namespace = "minecraft";
         if (Minecraft.getInstance().level != null) {
-            namespace = stack.getItem().getCreatorModId(
-                    //? if >=1.21.2 {
-                    Minecraft.getInstance().level.registryAccess(),
-                    //?}
-                    stack);
+            namespace = stack.getItem().getCreatorModId(Minecraft.getInstance().level.registryAccess(), stack);
         }
         String key = "modmenu.nameTranslation."+namespace;
         Optional<? extends ModContainer> modContainer = ModList.get().getModContainerById(namespace);

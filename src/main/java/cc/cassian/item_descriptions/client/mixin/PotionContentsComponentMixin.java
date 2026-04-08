@@ -15,15 +15,8 @@ import java.util.function.Consumer;
 @Mixin(PotionContents.class)
 public class PotionContentsComponentMixin {
 
-    //? if >=1.21.5 {
     @Inject(method = "addPotionTooltip", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))
     private static void mixin(Iterable<MobEffectInstance> effects, Consumer<Component> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
         EffectDescriptions.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), textConsumer, statusEffectInstance);
     }
-    //?} else if >1.21 {
-    /*@Inject(method = "addPotionTooltip(Ljava/lang/Iterable;Ljava/util/function/Consumer;FF)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V", ordinal = 0))
-    private static void mixin(Iterable<MobEffectInstance> effects, Consumer<Component> textConsumer, float durationMultiplier, float tickRate, CallbackInfo ci, @Local MobEffectInstance statusEffectInstance) {
-        EffectDescriptions.createEffectDescription(Component.translatable(statusEffectInstance.getDescriptionId()), textConsumer, statusEffectInstance);
-    }
-    *///?}
 }

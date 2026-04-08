@@ -21,10 +21,10 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
     public void register(IRegistrar registrar) {
         //Register Block Descriptions plugin.
         registrar.addConfig( BLOCK_DESCRIPTIONS, true );
-        registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.BODY, Block.class, 2000 );
+        registrar.body((IBlockComponentProvider) this, Block.class, 2000 );
         //Register Entity Descriptions plugin.
         registrar.addConfig( ENTITY_DESCRIPTIONS, true );
-        registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, Entity.class, 2000 );
+        registrar.body((IEntityComponentProvider) this, Entity.class, 2000 );
     }
 
     @Override
@@ -37,7 +37,7 @@ public class WTHITIntegration implements IWailaPlugin, IBlockComponentProvider, 
                 tooltip = TagHelpers.findAllPotentialKeys(blockAccessor.getBlockState());
             }
             else {
-                tooltip = createTooltip(blockAccessor.getBlock().getName(), BlockDescriptions.createBlockDescription(blockAccessor.getBlock(), blockAccessor.getWorld(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
+                tooltip = createTooltip(blockAccessor.getBlock().getName(), BlockDescriptions.createBlockDescription(blockAccessor.getBlock(), blockAccessor.getLevel(), blockAccessor.getPosition(), blockAccessor.getBlockState(), blockAccessor.getBlockEntity()));
             }
             for (Component text : tooltip) {
                 lines.addLine(text);

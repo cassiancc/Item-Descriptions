@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ModConfigFactory
         //? if neoforge
-        /*implements IConfigScreenFactory*/
+        //implements IConfigScreenFactory
         //? if fabric
         implements ConfigScreenFactory<Screen>
 {
@@ -29,7 +29,7 @@ public class ModConfigFactory
     //? if fabric
     public Screen create(Screen parent) {
     //? if neoforge
-    /*public @NotNull Screen createScreen(@NotNull ModContainer modContainer, @NotNull Screen parent) {*/
+    //public @NotNull Screen createScreen(@NotNull ModContainer modContainer, @NotNull Screen parent) {
         if (loadedMod.equals("cloth-config")) {
             return ClothConfigFactory.create(parent);
         } else if (loadedMod.equals("yacl")) {

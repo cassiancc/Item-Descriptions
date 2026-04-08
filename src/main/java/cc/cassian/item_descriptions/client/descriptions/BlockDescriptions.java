@@ -22,12 +22,12 @@ public class BlockDescriptions {
     public static DescriptionKey createBlockDescription(Block block, Level world, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         //Convert block translation key to lore translation key.
         DescriptionKey loreKey = findLoreKey(block);
-        //? if fabric && <26 {
-        /*if (ModHelpers.isLoaded("polymer-bundled"))
+        //? if fabric {
+        if (ModHelpers.isLoaded("polymer-bundled"))
             if (pos != null && PolymerHelpers.isPolymerBlock(pos)) {
                 loreKey = new DescriptionKey(PolymerHelpers.findPolymerBlockIdentifier(pos));
             }
-        *///?}
+        //?}
         //Custom handling of Player Heads so custom profiles give custom descriptions.
         if (blockEntity instanceof SkullBlockEntity) {
             DescriptionKey profileKey = getProfile(blockEntity, loreKey);
@@ -46,9 +46,6 @@ public class BlockDescriptions {
         //Check if translation exists. If not, see if an item exists for it - e.g. seeds.
         if (!loreKey.hasTranslation()) {
             if (pos == null) return ItemDescriptions.findLoreKey(block.asItem().getDefaultInstance());
-            //? if <1.21.2 {
-            /*return ItemDescriptions.findLoreKey(block.getCloneItemStack(world, pos, state));
-             *///?} else
             return ItemDescriptions.findLoreKey(state.getCloneItemStack(world, pos, true));
         }
         return loreKey;

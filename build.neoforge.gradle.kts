@@ -186,8 +186,8 @@ dependencies {
         compileOnly("dev.isxander:yet-another-config-lib:3.8.0+1.21.9-neoforge")
     }
     // Cloth Config
-    if (hasProperty("deps.cloth_version")) {
-        compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${property("deps.cloth_version")}")
+    if (hasProperty("deps.cloth")) {
+        compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${property("deps.cloth")}")
     } else {
         compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
     }
@@ -235,11 +235,7 @@ dependencies {
 
 java {
     withSourcesJar()
-    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">26")) {
-        JavaVersion.VERSION_25
-    } else {
-        JavaVersion.VERSION_21
-    }
+    val javaCompat = JavaVersion.VERSION_25
     sourceCompatibility = javaCompat
     targetCompatibility = javaCompat
 }

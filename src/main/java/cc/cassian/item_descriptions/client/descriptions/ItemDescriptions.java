@@ -40,15 +40,14 @@ public class ItemDescriptions {
             return DescriptionKey.empty();
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
-        //? if fabric && <26 {
-        /*if (PolymerHelpers.getServerIdentifier(stack) != null) {
+        //? if fabric {
+        if (PolymerHelpers.getServerIdentifier(stack) != null) {
             DescriptionKey descriptionKey = new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
             cachedDescriptions.put(stack.hashCode(), descriptionKey);
             return descriptionKey;
         }
-        *///?}
+        //?}
         //Ensure items with Custom Models get a custom key instead of a vanilla one.
-        //? if >1.21.2 {
         if (hasComponent(stack, DataComponents.ITEM_MODEL)) {
             Identifier data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
             DescriptionKey modelKey = new DescriptionKey(data);
@@ -57,15 +56,10 @@ public class ItemDescriptions {
                 return modelKey;
             }
         } else
-            //?}
             //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
             if (hasComponent(stack, DataComponents.CUSTOM_MODEL_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.CUSTOM_MODEL_DATA));
-                //? if <1.21.4 {
-                /*var dataValue = data.value();
-                 *///?} else {
                 var dataValue = data.getString(0);
-                //?}
                 DescriptionKey key = getDescriptionKey(stack);
                 DescriptionKey modelKey = key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack);
                 modelKey.setSuffix(".custommodeldata." + dataValue);
@@ -77,13 +71,7 @@ public class ItemDescriptions {
             //Ensure Paintings get a custom key instead of a vanilla one.
             else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
                 var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
-                //? if >1.21.8 {
                 var variant = ModHelpers.toTranslationKey(data.copyTagWithoutId().getStringOr("variant", ""));
-                //?} else if >=1.21.5 {
-                /*var variant = ModHelpers.toTranslationKey(data.copyTag().getString("variant").orElse(""));
-                 *///?} else {
-                /*var variant = ModHelpers.toTranslationKey(data.copyTag().getString("variant"));
-                 *///?}
                 var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
                 if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
                     cachedDescriptions.put(stack.hashCode(), paintingKey);

@@ -166,8 +166,7 @@ permanent authorization for you to choose that version for the
 Library.
  */
 //? if fabric {
-//? if <26 {
-/*package cc.cassian.item_descriptions.client.helpers.compat;
+package cc.cassian.item_descriptions.client.helpers.compat;
 
 import com.mojang.serialization.MapCodec;
 import eu.pb4.polymer.core.api.client.ClientPolymerBlock;
@@ -178,20 +177,20 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 
-/^*
+/**
  * Contains helper methods from Polymer, licensed under the above LGPL license.
  * This is an abridged version used only to support Polymer's custom serverside items
  * through Item Descriptions.
- ^/
+ */
 public class PolymerHelpers {
     private static final String POLYMC_STACK = "PolyMcOriginal";
     public static final String POLYMER_STACK = "$polymer:stack";
     public static final MapCodec<Identifier> POLYMER_STACK_ID_CODEC = Identifier.CODEC.fieldOf("id").fieldOf(POLYMER_STACK);
     private static final MapCodec<Identifier> POLYMC_STACK_ID_CODEC = Identifier.CODEC.fieldOf("id").fieldOf(POLYMC_STACK);
 
-    /^*
+    /**
      * Returns stored Identifier of Polymer/other supported server mod ItemStack. If it's invalid, null is returned instead.
-     ^/
+     */
     public static Identifier getServerIdentifier(ItemStack itemStack) {
         return getServerIdentifier(itemStack.get(DataComponents.CUSTOM_DATA));
     }
@@ -216,7 +215,7 @@ public class PolymerHelpers {
                         .copyTag()
                         .read(POLYMC_STACK_ID_CODEC)
                         //? if <1.21.9
-                        /^.result()^/
+                        /*.result()*/
                         .orElse(null);
             } catch (Throwable ignored) {
 
@@ -228,7 +227,6 @@ public class PolymerHelpers {
     }
 
     public static Identifier getPolymerIdentifier(CustomData custom) {
-        //? if >=1.21.1 {
         if (custom != null && custom
                 //? if >1.21.8
                 .copyTag()
@@ -239,13 +237,12 @@ public class PolymerHelpers {
                         .copyTag()
                         .read(POLYMER_STACK_ID_CODEC)
                         //? if <1.21.9
-                        /^.result()^/
+                        /*.result()*/
                         .orElse(null);
             } catch (Throwable ignored) {
 
             }
         }
-        //?}
 
         return null;
     }
@@ -261,5 +258,4 @@ public class PolymerHelpers {
     }
 
 }
-*///?}
 //?}

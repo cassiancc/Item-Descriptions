@@ -78,7 +78,7 @@ public class EnchantmentDescriptions {
                 return;
 
             for (int i = 0; i < lines.size(); ++i) {
-                if (isEnchantmentDescription(lines.get(i), (Set) enchantments)) {
+                if (isEnchantmentDescription(lines.get(i), enchantments)) {
                     // Create the tooltip.
                     var newLines = ModHelpers.createTooltip(stack.getDisplayName(), lines.get(i), ModHelpers.useInternalWrapper());
                     if (newLines.isEmpty())
@@ -94,7 +94,7 @@ public class EnchantmentDescriptions {
         }
     }
 
-    private static boolean isEnchantmentDescription(Component text, Set<Object> enchantments) {
+    private static boolean isEnchantmentDescription(Component text, Set<Holder<Enchantment>> enchantments) {
         // If the Minecraft world is null, we cannot check if this is an enchantment key.
         if (Minecraft.getInstance().level == null)
             return false;
@@ -109,10 +109,20 @@ public class EnchantmentDescriptions {
             // Check whether the translation exists, and if the key is either an enchantment.*.*.description/desc or lore.*.* key.
             if (ModHelpers.hasTranslation(content.getKey()) && (split.length == 4 && split[0].equals("enchantment") && (split[3].equals("description") || split[3].equals("desc")) || split.length == 3 && split[0].equals("lore"))) {
                 // Whether the namespace and path maps to an enchantment on this item. If so, return true.
-                return enchantments.stream().anyMatch(entry -> ((Holder<Enchantment>) (Object) entry).is(ModHelpers.of(namespace, path)));
+                return enchantments.stream().anyMatch(entry -> (entry).is(ModHelpers.of(namespace, path)));
             }
             return false;
         });
+    }
+
+    public static void addEnchantmentDescription(List<Component> components, Holder<Enchantment> enchant) {
+        if (EnchantmentDescriptions.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
+            Component name = Enchantment.getFullname(enchant, 1);
+            if (name.getContents() instanceof TranslatableContents content) {
+                List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
+                components.addAll(tooltip);
+            }
+        }
     }
 
     /**
