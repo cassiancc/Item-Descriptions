@@ -37,19 +37,11 @@ public class TagHelpers {
         //Temporary - Spawn Eggs do not yet have a tag.
         if (item instanceof SpawnEggItem spawnEggItem) {
             if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
-                //? if =1.21.8 {
-                /*var level = Minecraft.getInstance().level;
-                if (level == null)
-                    return new DescriptionKey("tag", "c", "spawn_egg");
-                *///?}
-                EntityType<?> entityType = spawnEggItem.getType(
-                        //? if =1.21.8 {
-                        /*level.registryAccess(),
-                        *///?}
-                        stack
-                );
-                var key = EntityDescriptions.getDescriptionKey(entityType);
-                if (key.hasTranslation()) return key;
+                EntityType<?> entityType = SpawnEggItem.getType(stack);
+                if (entityType != null) {
+                    var key = EntityDescriptions.getDescriptionKey(entityType);
+                    if (key.hasTranslation()) return key;
+                }
             }
             return new DescriptionKey("tag", "c", "spawn_egg");
         }
@@ -63,12 +55,16 @@ public class TagHelpers {
         // If untagged, check if it is a Block Item and if a Block Tag matches.
         if (returnedKey[0] == null) {
             if ((item instanceof BlockItem blockItem)) {
-                getTags(blockItem.getBlock().defaultBlockState()).forEach(itemTagKey -> {
-                    DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                    if (checkMatch(returnedKey, loreKey)) {
-                        returnedKey[0] = loreKey;
-                    }
-                });
+                if (blockItem.getBlock() != null) {
+                    getTags(blockItem.getBlock().defaultBlockState()).forEach(itemTagKey -> {
+                        DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                        if (checkMatch(returnedKey, loreKey)) {
+                            returnedKey[0] = loreKey;
+                        }
+                    });
+                } else {
+                    ModClient.LOGGER.warn("BlockItem for {} is null!", blockItem);
+                }
             }
         }
         return Objects.requireNonNullElse(returnedKey[0], DescriptionKey.empty());
@@ -137,10 +133,14 @@ public class TagHelpers {
         });
         // If untagged, check if it is a Block Item and if a Block Tag matches.
         if ((item instanceof BlockItem blockItem)) {
-            getTags(blockItem.getBlock().defaultBlockState()).forEach(itemTagKey -> {
-                DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
-                addSafe(tags, loreKey);
-            });
+            if (blockItem.getBlock() != null) {
+                getTags(blockItem.getBlock().defaultBlockState()).forEach(itemTagKey -> {
+                    DescriptionKey loreKey = tagKeyToGenericKey(itemTagKey);
+                    addSafe(tags, loreKey);
+                });
+            } else {
+                ModClient.LOGGER.warn("BlockItem for {} is null!", blockItem);
+            }
         }
         return tags;
     }
