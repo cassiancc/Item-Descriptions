@@ -2,10 +2,12 @@ package cc.cassian.item_descriptions.client.mixin;
 
 import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.concurrent.CompletableFuture;
@@ -24,4 +26,9 @@ public class MinecraftMixin {
 		ItemDescriptions.cachedDescriptions.clear();
 	}
 	//?}
+
+	@Inject(method = "disconnectFromWorld", at = @At(value = "RETURN"))
+	private void clearCached(Component message, CallbackInfo ci) {
+		ItemDescriptions.cachedDescriptions.clear();
+	}
 }
