@@ -188,6 +188,7 @@ dependencies {
     // Cloth Config
     if (hasProperty("deps.cloth")) {
         compileOnly("me.shedaniel.cloth:cloth-config-neoforge:${property("deps.cloth")}")
+        runtimeOnly("me.shedaniel.cloth:cloth-config-neoforge:${property("deps.cloth")}")
     } else {
         compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
     }
