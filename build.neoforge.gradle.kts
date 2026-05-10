@@ -76,13 +76,6 @@ repositories {
         }
     }
     maven {
-        name = "Parchment Mappings"
-        url = uri("https://maven.parchmentmc.org")
-        content {
-            includeGroupAndSubgroups("org.parchmentmc")
-        }
-    }
-    maven {
         name = "Xander Maven"
         url = uri("https://maven.isxander.dev/releases")
         content {
@@ -116,22 +109,9 @@ repositories {
     mavenCentral()
 }
 
-stonecutter {
-    replacements.string {
-        direction = eval(current.version, ">1.21.10")
-        replace("ResourceLocation", "Identifier")
-    }
-}
-
 neoForge {
     version = property("deps.neoforge") as String
     validateAccessTransformers = true
-
-    if (hasProperty("deps.parchment")) parchment {
-        val (mc, ver) = (property("deps.parchment") as String).split(':')
-        mappingsVersion = ver
-        minecraftVersion = mc
-    }
 
     runs {
         register("client") {
@@ -199,10 +179,10 @@ dependencies {
         compileOnly("maven.modrinth:useful-spyglass:e5CW6qWZ")
     }
     // Fast Item Frames
-//    if (hasProperty("deps.fast_item_frames")) {
-//        runtimeOnly("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
-//    }
-    compileOnly("maven.modrinth:fast-item-frames:gAkkWcSn")
+    if (hasProperty("deps.fast_item_frames")) {
+        compileOnly("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
+        runtimeOnly("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
+    }
     if (hasProperty("deps.puzzles_lib")) {
         compileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
         runtimeOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
@@ -220,9 +200,9 @@ dependencies {
         compileOnly("maven.modrinth:jade:21.0.1+neoforge")
     }
     // WTHIT
-    compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit_version")}")
+    compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit")}")
     if (hasProperty("deps.badpackets_version")) {
-        runtimeOnly("mcp.mobius.waila:wthit:neo-${property("deps.wthit_version")}")
+        runtimeOnly("mcp.mobius.waila:wthit:neo-${property("deps.wthit")}")
         runtimeOnly("lol.bai:badpackets:neo-${property("deps.badpackets_version")}")
     }
     if (stonecutter.eval(mcVersion, "=1.21.1")) {
@@ -263,7 +243,7 @@ publishMods {
         accessToken = env.MODRINTH_API_KEY.orNull()
         minecraftVersions.add(property("deps.minecraft").toString())
         minecraftVersions.addAll(additionalVersions)
-        optional("cloth-config")
+        optional("yacl")
         optional("jade")
     }
 

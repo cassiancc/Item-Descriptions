@@ -50,7 +50,7 @@
     "fabric-lifecycle-events-v1": "*"
   },
   "recommends": {
-    "cloth-config": "*",
+    "yet_another_config_lib_v3": "*",
     "modmenu": "*"
   },
   "provides": [

@@ -1,3 +1,5 @@
+### Changed
+- Item Descriptions now recommends YACL rather than Cloth Config. Cloth Config support still exists for those that prefer it.
+
 ### Fixed
-- Cached descriptions are now cleared when the player disconnects from a world.
-- NeoForge compatibility for 26.1.2.
+- Fast Item Frames Support

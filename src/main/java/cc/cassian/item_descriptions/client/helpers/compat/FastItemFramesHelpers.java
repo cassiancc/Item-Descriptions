@@ -1,6 +1,6 @@
 package cc.cassian.item_descriptions.client.helpers.compat;
 
-import fuzs.fastitemframes.world.level.block.entity.ItemFrameBlockEntity;
+import fuzs.fastitemframes.common.world.level.block.entity.ItemFrameBlockEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
