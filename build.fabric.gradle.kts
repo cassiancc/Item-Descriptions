@@ -96,13 +96,6 @@ repositories {
         }
     }
     maven {
-        name = "Parchment Mappings"
-        url = uri("https://maven.parchmentmc.org")
-        content {
-            includeGroupAndSubgroups("org.parchmentmc")
-        }
-    }
-    maven {
         name = "Xander Maven"
         url = uri("https://maven.isxander.dev/releases")
         content {
@@ -140,6 +133,7 @@ dependencies {
     // YACL
     if (hasProperty("deps.yacl")) {
         compileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
+        localRuntime("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
     } else {
         compileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-neoforge") {
             isTransitive = false
@@ -152,11 +146,11 @@ dependencies {
         compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
     }
     // Mod Menu
-    if (hasProperty("deps.modmenu_version")) {
-        compileOnly("maven.modrinth:modmenu:${property("deps.modmenu_version")}")
-//        runtimeOnly("maven.modrinth:modmenu:${property("deps.modmenu_version")}")
+    if (hasProperty("deps.modmenu")) {
+        compileOnly("maven.modrinth:modmenu:${property("deps.modmenu")}")
+        localRuntime("maven.modrinth:modmenu:${property("deps.modmenu")}")
     } else {
-        compileOnly("com.terraformersmc:modmenu:18.0.0-alpha.3")
+        compileOnly("com.terraformersmc:modmenu:18.0.0-alpha.8")
     }
     // Useful Spyglass
     if (hasProperty("deps.useful_spyglass")) {
@@ -164,43 +158,36 @@ dependencies {
     } else {
         compileOnly("maven.modrinth:useful-spyglass:e5CW6qWZ")
     }
-    compileOnly("maven.modrinth:fast-item-frames:gAkkWcSn")
+    compileOnly("maven.modrinth:fast-item-frames:IFa0xZno")
     if (hasProperty("deps.puzzles_lib")) {
         compileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
-        runtimeOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+        localRuntime("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
     } else {
-        compileOnly("maven.modrinth:puzzles-lib:W4cWteM4")
+        compileOnly("maven.modrinth:puzzles-lib:3OADGa7L")
     }
     if (hasProperty("deps.forge_config_api_port")) {
-        runtimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-neoforge:${property("deps.forge_config_api_port")}")
+        localRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
     }
     // Jade
     if (hasProperty("deps.jade")) {
         compileOnly("maven.modrinth:jade:${property("deps.jade")}")
-//        runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
+//        localRuntime("maven.modrinth:jade:${property("deps.jade")}")
     } else {
         compileOnly("maven.modrinth:jade:21.0.1+neoforge")
     }
     compileOnly("curse.maven:matrix-enchanting-1505679:7881482")
     compileOnly("eu.pb4:polymer-core:${property("deps.polymer")}")
     // WTHIT
-    compileOnly("mcp.mobius.waila:wthit-api:neo-${property("deps.wthit_version")}")
+    compileOnly("mcp.mobius.waila:wthit-api:fabric-${property("deps.wthit")}")
     if (hasProperty("deps.badpackets")) {
-        runtimeOnly("mcp.mobius.waila:wthit:fabric-${property("deps.wthit_version")}")
-        runtimeOnly("lol.bai:badpackets:fabric-${property("deps.badpackets")}")
+        localRuntime("mcp.mobius.waila:wthit:fabric-${property("deps.wthit")}")
+        localRuntime("lol.bai:badpackets:fabric-${property("deps.badpackets")}")
     }
 }
 
 configurations.all {
     resolutionStrategy {
         force("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
-    }
-}
-
-stonecutter {
-    replacements.string {
-        direction = eval(current.version, ">1.21")
-        replace("ResourceLocation", "Identifier")
     }
 }
 
@@ -251,7 +238,7 @@ publishMods {
         minecraftVersions.add(property("deps.minecraft").toString())
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
-        optional("cloth-config")
+        optional("yacl")
         optional("jade")
         optional("modmenu")
     }
