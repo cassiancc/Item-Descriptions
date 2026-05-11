@@ -21,17 +21,19 @@ repositories {
 }
 ```
 
-## Adding the mod
+## Adding the mod (`build.gradle`)
 ```groovy
-// Fabric (26.1 and above)
-implementation "cc.cassian.item_descriptions:item-descriptions-fabric:${item_descriptions_version}+${minecraft_version}"
-
-// Fabric (1.21.11 and below)
-modImplementation "cc.cassian.item_descriptions:item-descriptions-fabric:${item_descriptions_version}+${minecraft_version}"
-
-// NeoForge
-implementation "cc.cassian.item-descriptions:item-descriptions-neoforge:${item_descriptions_version}+${minecraft_version}"
-
-// Forge (1.20.1 and below)
-implementation(fg.deobf("cc.cassian.item-descriptions:item-descriptions-forge:${item_descriptions_version}+${minecraft_version}"))
+dependencies {
+    // Fabric (26.1 and above)
+    implementation("cc.cassian.item_descriptions:item-descriptions-fabric:${item_descriptions_version}+${minecraft_version}")
+    
+    // Fabric (1.21.11 and below)
+    modImplementation("cc.cassian.item_descriptions:item-descriptions-fabric:${item_descriptions_version}+${minecraft_version}")
+    
+    // NeoForge
+    implementation("cc.cassian.item-descriptions:item-descriptions-neoforge:${item_descriptions_version}+${minecraft_version}")
+    
+    // Forge (1.20.1 and below)
+    implementation(fg.deobf("cc.cassian.item-descriptions:item-descriptions-forge:${item_descriptions_version}+${minecraft_version}"))
+}
 ```
