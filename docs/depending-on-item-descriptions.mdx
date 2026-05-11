@@ -4,30 +4,34 @@ While Item Descriptions is entirely handled via resource packs, mod developers m
 
 ## gradle.properties
 ```groovy
-item_descriptions_version = 2.5.1
+item_descriptions_version = 2.7.6
 ```
 
 ## Adding the maven (`build.gradle`)
 ```groovy
 repositories {
     maven {
-        name = "cassian's maven"
-        url = "https://maven.cassian.cc"
+        name = "Cassian's Maven"
+        url = uri("https://maven.cassian.cc/")
+        content {
+            includeGroup("cc.cassian.item_descriptions") // Item Descriptions
+            includeGroup("folk.sisby") // Kaleido Config
+        }
     }
 }
 ```
 
-## Fabric Loom/Architectury Loom
+## Adding the mod
 ```groovy
+// Fabric (26.1 and above)
+implementation "cc.cassian.item_descriptions:item-descriptions-fabric:${item_descriptions_version}+${minecraft_version}"
+
+// Fabric (1.21.11 and below)
 modImplementation "cc.cassian.item_descriptions:item-descriptions-fabric:${item_descriptions_version}+${minecraft_version}"
-```
 
-## NeoForge/ModDevGradle
-```groovy
+// NeoForge
 implementation "cc.cassian.item-descriptions:item-descriptions-neoforge:${item_descriptions_version}+${minecraft_version}"
-```
 
-## Forge
-```groovy
+// Forge (1.20.1 and below)
 implementation(fg.deobf("cc.cassian.item-descriptions:item-descriptions-forge:${item_descriptions_version}+${minecraft_version}"))
 ```
