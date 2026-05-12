@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client;
 
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -201,7 +202,7 @@ public class DescriptionKey {
 
     public boolean hasTranslation() {
         if (ModClient.CONFIG.developerOptions.showUntranslated.value()) return true;
-        return I18n.exists(toString());
+        return Language.getInstance().has(toString());
     }
 
     public boolean hasEmptyTranslation() {

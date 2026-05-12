@@ -1,5 +1,6 @@
-### Changed
-- Item Descriptions now recommends YACL rather than Cloth Config. Cloth Config support still exists for those that prefer it.
+### Added
+- 26.2-snapshot-7 support and Bounce description.
 
-### Fixed
-- Fast Item Frames Support
+### Changed
+- YACL is now prioritized over Cloth Config.
+- Language checks have been made 26.2-snapshot-7 compatible.

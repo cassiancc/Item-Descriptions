@@ -7,6 +7,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.locale.Language;
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -47,7 +48,7 @@ public class FabricPlatformImpl implements Platform {
         Optional<ModContainer> modContainer = FabricLoader.getInstance().getModContainer(namespace);
         if (modContainer.isPresent()) {
             return modContainer.get().getMetadata().getName();
-        } else if (I18n.exists(key)) {
+        } else if (Language.getInstance().has(key)) {
             return I18n.get(key);
         } else {
             return WordUtils.capitalize(namespace);

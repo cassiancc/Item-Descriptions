@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.level.block.Block;
@@ -171,7 +172,7 @@ public class ModHelpers {
 
     public static boolean hasTranslation(String key) {
         if (ModClient.CONFIG.developerOptions.showUntranslated.value()) return true;
-        return I18n.exists(key);
+        return Language.getInstance().has(key);
     }
 
     public static boolean checkTranslatableText(Component text, Predicate<TranslatableContents> predicate) {
@@ -447,7 +448,7 @@ public class ModHelpers {
             *///?}
             if (description.isEmpty()) {
                 LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), id);
-            } else if (keys.stream().noneMatch(I18n::exists)) {
+            } else if (keys.stream().noneMatch(elementId -> Language.getInstance().has(elementId))) {
                 keys.remove(description.asLoreTranslation());
                 if (value instanceof ItemStack stack) keys.remove(ItemDescriptions.getModdedNameMatch(stack).asLoreTranslation()); // Ugly
                 namespaces.computeIfAbsent(id.getNamespace(), k -> new TreeMap<>()).compute(value instanceof Block || value instanceof Item ? description.asLoreTranslation() : description.asDescriptionTranslation(), (k, v) -> Objects.requireNonNullElse(v, " ??? ") + String.join(", ", keys));
