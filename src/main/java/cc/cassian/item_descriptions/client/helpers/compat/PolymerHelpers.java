@@ -166,56 +166,56 @@ permanent authorization for you to choose that version for the
 Library.
  */
 //? if fabric {
-package cc.cassian.item_descriptions.client.helpers.compat;
+/*package cc.cassian.item_descriptions.client.helpers.compat;
 
 import com.mojang.serialization.MapCodec;
 import eu.pb4.polymer.core.api.client.ClientPolymerBlock;
 import eu.pb4.polymer.core.impl.client.InternalClientRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 
-/**
+/^*
  * Contains helper methods from Polymer, licensed under the above LGPL license.
  * This is an abridged version used only to support Polymer's custom serverside items
  * through Item Descriptions.
- */
+ ^/
 public class PolymerHelpers {
     private static final String POLYMC_STACK = "PolyMcOriginal";
     public static final String POLYMER_STACK = "$polymer:stack";
-    public static final MapCodec<Identifier> POLYMER_STACK_ID_CODEC = Identifier.CODEC.fieldOf("id").fieldOf(POLYMER_STACK);
-    private static final MapCodec<Identifier> POLYMC_STACK_ID_CODEC = Identifier.CODEC.fieldOf("id").fieldOf(POLYMC_STACK);
+    public static final MapCodec<ResourceLocation> POLYMER_STACK_ID_CODEC = ResourceLocation.CODEC.fieldOf("id").fieldOf(POLYMER_STACK);
+    private static final MapCodec<ResourceLocation> POLYMC_STACK_ID_CODEC = ResourceLocation.CODEC.fieldOf("id").fieldOf(POLYMC_STACK);
 
-    /**
-     * Returns stored Identifier of Polymer/other supported server mod ItemStack. If it's invalid, null is returned instead.
-     */
-    public static Identifier getServerIdentifier(ItemStack itemStack) {
-        return getServerIdentifier(itemStack.get(DataComponents.CUSTOM_DATA));
+    /^*
+     * Returns stored ResourceLocation of Polymer/other supported server mod ItemStack. If it's invalid, null is returned instead.
+     ^/
+    public static ResourceLocation getServerResourceLocation(ItemStack itemStack) {
+        return getServerResourceLocation(itemStack.get(DataComponents.CUSTOM_DATA));
     }
 
-    public static Identifier getServerIdentifier(CustomData nbtData) {
+    public static ResourceLocation getServerResourceLocation(CustomData nbtData) {
         //? if >=1.21.1 {
         if (nbtData == null) {
             return null;
         }
-        var x = getPolymerIdentifier(nbtData);
+        var x = getPolymerResourceLocation(nbtData);
         if (x != null) {
             return x;
         }
 
         if (nbtData
                 //? if >1.21.8
-                .copyTag()
+                //.copyTag()
                 .contains(POLYMC_STACK)) {
             try {
                 return nbtData
                         //? if >1.21.8
-                        .copyTag()
+                        //.copyTag()
                         .read(POLYMC_STACK_ID_CODEC)
                         //? if <1.21.9
-                        /*.result()*/
+                        .result()
                         .orElse(null);
             } catch (Throwable ignored) {
 
@@ -226,18 +226,18 @@ public class PolymerHelpers {
         return null;
     }
 
-    public static Identifier getPolymerIdentifier(CustomData custom) {
+    public static ResourceLocation getPolymerResourceLocation(CustomData custom) {
         if (custom != null && custom
                 //? if >1.21.8
-                .copyTag()
+                //.copyTag()
                 .contains(POLYMER_STACK)) {
             try {
                 return custom
                         //? if >1.21.8
-                        .copyTag()
+                        //.copyTag()
                         .read(POLYMER_STACK_ID_CODEC)
                         //? if <1.21.9
-                        /*.result()*/
+                        .result()
                         .orElse(null);
             } catch (Throwable ignored) {
 
@@ -247,7 +247,7 @@ public class PolymerHelpers {
         return null;
     }
 
-    public static Identifier findPolymerBlockIdentifier(BlockPos pos) {
+    public static ResourceLocation findPolymerBlockResourceLocation(BlockPos pos) {
         var block = InternalClientRegistry.getBlockAt(pos);
         return block.block().identifier();
     }
@@ -258,4 +258,4 @@ public class PolymerHelpers {
     }
 
 }
-//?}
+*///?}

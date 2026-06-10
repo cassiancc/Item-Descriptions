@@ -2,7 +2,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 
 //? neoforge {
 
-/*import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
 import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
@@ -78,4 +78,4 @@ public final class ItemDescriptionsNeoForge {
         }
     }
 }
-*///?}
+//?}

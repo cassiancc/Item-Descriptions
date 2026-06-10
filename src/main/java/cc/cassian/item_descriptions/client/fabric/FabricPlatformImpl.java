@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.fabric;
 
 //? fabric {
-import cc.cassian.item_descriptions.client.ModClient;
+/*import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
@@ -56,4 +56,4 @@ public class FabricPlatformImpl implements Platform {
     }
 
 }
-//?}
+*///?}

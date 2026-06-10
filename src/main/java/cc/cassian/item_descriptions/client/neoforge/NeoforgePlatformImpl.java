@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.neoforge;
 
 //? neoforge {
-/*import cc.cassian.item_descriptions.client.ModClient;
+import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
@@ -24,7 +24,7 @@ public class NeoforgePlatformImpl implements Platform {
     }
 
     public boolean isLoadingLoaded(String mod) {
-        return FMLLoader.getCurrent().getLoadingModList().getModFileById(mod) != null;
+        return FMLLoader.getLoadingModList().getModFileById(mod) != null;
     }
 
     @Override
@@ -43,10 +43,7 @@ public class NeoforgePlatformImpl implements Platform {
     }
 
     public String getModName(ItemStack stack) {
-        String namespace = "minecraft";
-        if (Minecraft.getInstance().level != null) {
-            namespace = stack.getItem().getCreatorModId(Minecraft.getInstance().level.registryAccess(), stack);
-        }
+        String namespace = stack.getItem().getCreatorModId(stack);
         String key = "modmenu.nameTranslation."+namespace;
         Optional<? extends ModContainer> modContainer = ModList.get().getModContainerById(namespace);
         if (modContainer.isPresent()) {
@@ -59,4 +56,4 @@ public class NeoforgePlatformImpl implements Platform {
     }
 
 }
-*///?}
+//?}

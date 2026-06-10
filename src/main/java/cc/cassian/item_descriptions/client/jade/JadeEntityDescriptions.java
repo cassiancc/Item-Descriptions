@@ -4,7 +4,7 @@ import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.descriptions.EntityDescriptions;
 import cc.cassian.item_descriptions.client.helpers.TagHelpers;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -33,7 +33,7 @@ public enum JadeEntityDescriptions implements IEntityComponentProvider {
     }
 
     @Override
-    public Identifier getUid() {
+    public ResourceLocation getUid() {
         return ModClient.ENTITY_DESCRIPTIONS;
     }
 

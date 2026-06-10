@@ -7,6 +7,7 @@ import cc.cassian.item_descriptions.client.descriptions.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
@@ -21,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.*;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 
 import java.awt.*;
@@ -38,14 +39,14 @@ import static cc.cassian.item_descriptions.client.ModClient.LOGGER;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 
 public class ModHelpers {
-    public static final Identifier FABRIC_EVENT_PHASE = of("description_tooltip");
+    public static final ResourceLocation FABRIC_EVENT_PHASE = of("description_tooltip");
 
-    public static Identifier of(String path) {
+    public static ResourceLocation of(String path) {
         return ModHelpers.of(MOD_ID, path);
     }
 
-    public static Identifier of(String namespace, String path) {
-        return Identifier.fromNamespaceAndPath(namespace, path);
+    public static ResourceLocation of(String namespace, String path) {
+        return ResourceLocation.fromNamespaceAndPath(namespace, path);
     }
 
     /**
@@ -125,24 +126,24 @@ public class ModHelpers {
     public static boolean tooltipKeyPressed() {
         var ctrl =
             //? if >1.21.8 {
-            Minecraft.getInstance()
-            //?} else {
-            /*Screen
-            *///?}
+            /*Minecraft.getInstance()
+            *///?} else {
+            Screen
+            //?}
             .hasControlDown();
         var alt =
             //? if >1.21.8 {
-            Minecraft.getInstance()
-            //?} else {
-            /*Screen
-            *///?}
+            /*Minecraft.getInstance()
+            *///?} else {
+            Screen
+            //?}
             .hasAltDown();
         var shift =
             //? if >1.21.8 {
-            Minecraft.getInstance()
-            //?} else {
-            /*Screen
-            *///?}
+            /*Minecraft.getInstance()
+            *///?} else {
+            Screen
+            //?}
             .hasShiftDown();
         if (ModClient.CONFIG.keybinds.displayWhenCtrlIsHeld.value() && ctrl) return checkKey(ctrl);
         else if (ModClient.CONFIG.keybinds.displayWhenShiftIsHeld.value() && shift) return checkKey(shift);
@@ -436,17 +437,17 @@ public class ModHelpers {
         for (ResourceKey<T> key : registry.registryKeySet()) {
             V value = valueTransform.apply
             //? if >=1.21.2 {
-            (registry.getValue(key));
-            //?} else {
-            /*(registry.get(key));
-            *///?}
+            /*(registry.getValue(key));
+            *///?} else {
+            (registry.get(key));
+            //?}
             DescriptionKey description = descGetter.apply(value);
             List<String> keys = new ArrayList<>(potentialKeys.apply(value).stream().map(Component::getString).toList());
-            //? if >1.21.10 || fabric {
-            var id = key.identifier();
-            //?} else {
-            /*var id = key.location();
-            *///?}
+            //? if >1.21.10 {
+            /*var id = key.identifier();
+            *///?} else {
+            var id = key.location();
+            //?}
             if (description.isEmpty()) {
                 LOGGER.warn("[Item Descriptions] Couldn't get lore key for {}: {}!", registry.getAny().get(), id);
             } else if (keys.stream().noneMatch(elementId -> Language.getInstance().has(elementId))) {
@@ -470,7 +471,7 @@ public class ModHelpers {
         addMissingTranslations(BuiltInRegistries.ENTITY_TYPE, namespaces, Function.identity(), EntityDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         addMissingTranslations(BuiltInRegistries.ITEM, namespaces, Item::getDefaultInstance, ItemDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         //? fabric
-        addMissingTranslations(registryGetter.get(Registries.ENCHANTMENT).orElse(null), namespaces, Function.identity(), EnchantmentDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        //addMissingTranslations(registryGetter.get(Registries.ENCHANTMENT).orElse(null), namespaces, Function.identity(), EnchantmentDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         addMissingTranslations(BuiltInRegistries.BLOCK, namespaces, Block::defaultBlockState, BlockDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys); // Blocks will overwrite items
         addMissingTranslations(BuiltInRegistries.MOB_EFFECT, namespaces, Function.identity(), EffectDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         Map<String, String> combined = new TreeMap<>();

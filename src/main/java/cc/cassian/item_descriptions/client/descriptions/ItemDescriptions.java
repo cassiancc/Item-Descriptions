@@ -13,13 +13,13 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,51 +42,41 @@ public class ItemDescriptions {
         }
         //Ensure items from Polymer get the correct key instead of a vanilla one.
         //? if fabric {
-        if (PolymerHelpers.getServerIdentifier(stack) != null) {
-            DescriptionKey descriptionKey = new DescriptionKey(PolymerHelpers.getServerIdentifier(stack));
+        /*if (PolymerHelpers.getServerResourceLocation(stack) != null) {
+            DescriptionKey descriptionKey = new DescriptionKey(PolymerHelpers.getServerResourceLocation(stack));
             cachedDescriptions.put(stack.hashCode(), descriptionKey);
             return descriptionKey;
         }
-        //?}
+        *///?}
         //Ensure items with Custom Models get a custom key instead of a vanilla one.
-        if (hasComponent(stack, DataComponents.ITEM_MODEL)) {
-            Identifier data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ITEM_MODEL));
-            DescriptionKey modelKey = new DescriptionKey(data);
-            if (modelKey.hasTranslation()) {
-                cachedDescriptions.put(stack.hashCode(), modelKey);
-                return modelKey;
-            }
-        } else
-            //Ensure items with Custom Model Data get a custom key instead of a vanilla one.
-            if (hasComponent(stack, DataComponents.CUSTOM_MODEL_DATA)) {
-                var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.CUSTOM_MODEL_DATA));
-                var dataValue = data.getString(0);
-                DescriptionKey key = getDescriptionKey(stack);
-                DescriptionKey modelKey = key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack);
-                modelKey.setSuffix(".custommodeldata." + dataValue);
-                if (modelKey.hasTranslation()) {
-                    cachedDescriptions.put(stack.hashCode(), modelKey);
-                    return modelKey;
-                }
-            }
-            //Ensure Paintings get a custom key instead of a vanilla one.
-            else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
-                var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
-                var variant = ModHelpers.toTranslationKey(data.copyTagWithoutId().getStringOr("variant", ""));
-                var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
-                if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
-                    cachedDescriptions.put(stack.hashCode(), paintingKey);
-					return paintingKey;
-				}
-            }
-            //Ensure player heads with Profile components get a custom key instead of a vanilla one.
-            else if (hasComponent(stack, DataComponents.PROFILE)) {
-                DescriptionKey profileKey = getProfile(stack);
-                if (profileKey.hasTranslation()) {
-                    cachedDescriptions.put(stack.hashCode(), profileKey);
-                    return profileKey;
-                }
-            }
+		if (hasComponent(stack, DataComponents.CUSTOM_MODEL_DATA)) {
+			var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.CUSTOM_MODEL_DATA));
+			DescriptionKey key = getDescriptionKey(stack);
+			DescriptionKey modelKey = key.hasTranslation() ? key : TagHelpers.checkGenericTagList(stack);
+			modelKey.setSuffix(".custommodeldata." + data);
+			if (modelKey.hasTranslation()) {
+				cachedDescriptions.put(stack.hashCode(), modelKey);
+				return modelKey;
+			}
+		}
+		//Ensure Paintings get a custom key instead of a vanilla one.
+		else if (stack.is(Items.PAINTING) && hasComponent(stack, DataComponents.ENTITY_DATA)) {
+			var data = Objects.requireNonNull(stack.getComponents().get(DataComponents.ENTITY_DATA));
+			var variant = ModHelpers.toTranslationKey(data.copyTag().getString("variant"));
+			var paintingKey = new DescriptionKey("lore", "minecraft", "painting", variant);
+			if (paintingKey.hasTranslation() || ModClient.CONFIG.developerOptions.showAllPotentialKeys.value()) {
+				cachedDescriptions.put(stack.hashCode(), paintingKey);
+				return paintingKey;
+			}
+		}
+		//Ensure player heads with Profile components get a custom key instead of a vanilla one.
+		else if (hasComponent(stack, DataComponents.PROFILE)) {
+			DescriptionKey profileKey = getProfile(stack);
+			if (profileKey.hasTranslation()) {
+				cachedDescriptions.put(stack.hashCode(), profileKey);
+				return profileKey;
+			}
+		}
         DescriptionKey name = getModdedNameMatch(stack);
         if (name.hasTranslation()) {
             cachedDescriptions.put(stack.hashCode(), name);

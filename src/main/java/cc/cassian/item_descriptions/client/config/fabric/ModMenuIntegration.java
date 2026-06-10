@@ -1,7 +1,7 @@
 package cc.cassian.item_descriptions.client.config.fabric;
 
 //? fabric {
-import cc.cassian.item_descriptions.client.ModClient;
+/*import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
@@ -23,4 +23,4 @@ public class ModMenuIntegration implements ModMenuApi {
         }
     }
 }
-//?}
+*///?}

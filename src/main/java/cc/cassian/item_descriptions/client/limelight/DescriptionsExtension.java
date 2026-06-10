@@ -8,7 +8,7 @@ import io.wispforest.limelight.api.entry.ResultEntry;
 import io.wispforest.limelight.api.entry.ResultGatherContext;
 import io.wispforest.limelight.api.extension.LimelightExtension;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,11 +17,11 @@ import java.util.function.Consumer;
 import static cc.cassian.item_descriptions.client.ModClient.MOD_ID;
 
 public class DescriptionsExtension implements LimelightExtension, BangsProvider {
-    public static final Identifier ID = ModHelpers.of("item_descriptions");
+    public static final ResourceLocation ID = ModHelpers.of("item_descriptions");
     public static final DescriptionsExtension INSTANCE = new DescriptionsExtension();
 
     @Override
-    public Identifier id() {
+    public ResourceLocation id() {
         return ID;
     }
 

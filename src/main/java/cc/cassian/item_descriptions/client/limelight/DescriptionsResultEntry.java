@@ -58,26 +58,26 @@ public class DescriptionsResultEntry implements InvokeResultEntry {
             namespace = splitS[0];
             item = splitS[1];
         }
-        //Check to see if that namespaced Identifier matches an item. If so, return that item's lore key.
+        //Check to see if that namespaced ResourceLocation matches an item. If so, return that item's lore key.
         if (ModClient.CONFIG.itemDescriptions.value()) {
             var itemStack = createMultilineTranslation(findLoreKey(BuiltInRegistries.ITEM
                     //? if >=1.21.2 {
-                    .getValue
-                     //?} else {
-                    /^.get
-                    ^///?}
+                    /^.getValue
+                     ^///?} else {
+                    .get
+                    //?}
                     (ModHelpers.of(namespace, item)).getDefaultInstance()).toString());
             if (!Objects.requireNonNull(itemStack.tryCollapseToString()).isEmpty()) return itemStack;
         }
-        //Check to see if that namespaced Identifier matches a mob. If so, return that item's lore key.
+        //Check to see if that namespaced ResourceLocation matches a mob. If so, return that item's lore key.
         //This seems to return a Pig if it isn't matched correctly, so that is ignored if "pig" isn't actually typed in.
         if (ModClient.CONFIG.entityDescriptions.enable.value()) {
             var mobRegistry = BuiltInRegistries.ENTITY_TYPE
                     //? if >=1.21.2 {
-                    .getValue
-                     //?} else {
-                    /^.get
-                    ^///?}
+                    /^.getValue
+                     ^///?} else {
+                    .get
+                    //?}
                     (ModHelpers.of(namespace, item)).getDescriptionId();
             if (Objects.equals(mobRegistry, "entity.minecraft.pig") ) {
                 if (item.equals("pig")) return createMultilineTranslation(DescriptionKey.ofTranslationKey(mobRegistry).toString());

@@ -2,6 +2,7 @@ package cc.cassian.item_descriptions.client.mixin;
 
 import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,8 +28,8 @@ public class MinecraftMixin {
 	}
 	//?}
 
-	@Inject(method = "disconnectFromWorld", at = @At(value = "RETURN"))
-	private void clearCached(Component message, CallbackInfo ci) {
+	@Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V", at = @At(value = "RETURN"))
+	private void clearCached(Screen nextScreen, boolean keepResourcePacks, CallbackInfo ci) {
 		ItemDescriptions.cachedDescriptions.clear();
 	}
 }

@@ -211,13 +211,12 @@ dependencies {
         runtimeOnly("maven.modrinth:zeta:${property("deps.zeta")}")
 
     }
-    implementation("cc.cassian.rrv:reliable-recipe-viewer-neoforge:${property("deps.rrv")}")
-
+    implementation("maven.modrinth:emi:${property("deps.emi")}+${property("deps.minecraft")}+neoforge")
 }
 
 java {
     withSourcesJar()
-    val javaCompat = JavaVersion.VERSION_25
+    val javaCompat = JavaVersion.VERSION_21
     sourceCompatibility = javaCompat
     targetCompatibility = javaCompat
 }

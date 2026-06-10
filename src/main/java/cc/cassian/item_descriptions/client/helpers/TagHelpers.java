@@ -5,8 +5,8 @@ import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.descriptions.*;
 import net.minecraft.client.Minecraft;
 //? if <1.21.9 {
-/*import net.minecraft.client.gui.screens.Screen;
-*///?}
+import net.minecraft.client.gui.screens.Screen;
+//?}
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +37,7 @@ public class TagHelpers {
         //Temporary - Spawn Eggs do not yet have a tag.
         if (item instanceof SpawnEggItem spawnEggItem) {
             if (ModClient.CONFIG.spawnEggsShowEntity.value()) {
-                EntityType<?> entityType = SpawnEggItem.getType(stack);
+                EntityType<?> entityType = spawnEggItem.getType(stack);
                 if (entityType != null) {
                     var key = EntityDescriptions.getDescriptionKey(entityType);
                     if (key.hasTranslation()) return key;
@@ -104,10 +104,10 @@ public class TagHelpers {
         Component newText;
         if (
         //? if >1.21.8 {
-        Minecraft.getInstance()
-        //?} else {
-        /*Screen
-        *///?}
+        /*Minecraft.getInstance()
+        *///?} else {
+        Screen
+        //?}
         .hasAltDown())
             newText = newAdd.toText();
         else {
@@ -196,18 +196,18 @@ public class TagHelpers {
 
     private static Stream<TagKey<Item>> getTags(ItemStack stack) {
         //? if >26 {
-        return stack.tags();
-        //?} else {
-        /*return stack.getTags();
-        *///?}
+        /*return stack.tags();
+        *///?} else {
+        return stack.getTags();
+        //?}
     }
 
     private static Stream<TagKey<Block>> getTags(BlockState state) {
         //? if >26 {
-        return state.tags();
-        //?} else {
-        /*return state.getTags();
-        *///?}
+        /*return state.tags();
+        *///?} else {
+        return state.getTags();
+        //?}
     }
 
     private static Stream<TagKey<EntityType<?>>> getTags(EntityType<?> type) {

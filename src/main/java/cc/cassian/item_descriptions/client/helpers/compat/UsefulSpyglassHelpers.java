@@ -9,9 +9,9 @@ import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import com.brokenkeyboard.usefulspyglass.api.event.LivingTooltipCallback;
 *///?}
 //? if neoforge {
-/*import com.brokenkeyboard.usefulspyglass.api.event.BlockTooltipEvent;
+import com.brokenkeyboard.usefulspyglass.api.event.BlockTooltipEvent;
 import com.brokenkeyboard.usefulspyglass.api.event.LivingTooltipEvent;
-*///?}
+//?}
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.BlockPos;
@@ -30,14 +30,14 @@ public class UsefulSpyglassHelpers {
     }
 
     //? if neoforge {
-    /*public static void registerBlockEvent(BlockTooltipEvent event) {
+    public static void registerBlockEvent(BlockTooltipEvent event) {
         addBlockTooltip(event.getBlockState(), event.getBlockPos(), event.getTooltipList());
     }
 
     public static void registerEntityEvent(LivingTooltipEvent event) {
         addLivingTooltip(event.getEntity(), event.getTooltipList());
     }
-    *///?}
+    //?}
 
     @SuppressWarnings("unused")
     public static void addBlockTooltip(BlockState blockState, BlockPos blockPos, List<ClientTooltipComponent> list) {

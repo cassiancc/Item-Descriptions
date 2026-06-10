@@ -2,7 +2,7 @@ package cc.cassian.item_descriptions.client.fabric;
 
 //? fabric {
 
-import cc.cassian.item_descriptions.client.ModClient;
+/*import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
@@ -29,7 +29,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         //Only show tooltip if key is pressed or "always on" is enabled.
         ItemTooltipCallback.EVENT.register(ItemDescriptions::createDescriptionsFromItemStack);
         if (ModClient.CONFIG.developerOptions.generateMissing.value()) {
-            CommonLifecycleEvents.TAGS_LOADED.register(ModHelpers.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(manager::lookup));
+            CommonLifecycleEvents.TAGS_LOADED.register(ModHelpers.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(manager::registry));
         }
         ItemTooltipCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, FABRIC_EVENT_PHASE);
         // Fix tooltips.
@@ -42,4 +42,4 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         }
     }
 }
-//?}
+*///?}

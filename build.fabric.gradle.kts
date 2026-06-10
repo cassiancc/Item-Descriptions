@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("net.fabricmc.fabric-loom")
+    id("net.fabricmc.fabric-loom-remap")
     id("dev.kikugie.postprocess.jsonlang")
     id("me.modmuss50.mod-publish-plugin")
     id("maven-publish")
@@ -96,6 +96,13 @@ repositories {
         }
     }
     maven {
+        name = "Parchment Mappings"
+        url = uri("https://maven.parchmentmc.org")
+        content {
+            includeGroupAndSubgroups("org.parchmentmc")
+        }
+    }
+    maven {
         name = "Xander Maven"
         url = uri("https://maven.isxander.dev/releases")
         content {
@@ -118,77 +125,115 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    maven {
+        name = "Gegy"
+        url = uri("https://maven.gegy.dev/releases/")
+        content {
+            includeGroupAndSubgroups("dev.lambdaurora")
+        }
+    }
     mavenCentral()
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${property("deps.minecraft")}")
-    implementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
-
-    implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
+    mappings(loom.layered {
+        officialMojangMappings()
+        if (hasProperty("deps.parchment"))
+            parchment("org.parchmentmc.data:parchment-${property("deps.parchment")}@zip")
+   })
+    modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
 
     implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
     include("folk.sisby:kaleido-config:${property("deps.kaleido")}")
 
+
     // YACL
     if (hasProperty("deps.yacl")) {
-        compileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
-        localRuntime("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
+        modCompileOnly("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
+        modLocalRuntime("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
     } else {
-        compileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-neoforge") {
-            isTransitive = false
-        }
+        modCompileOnly("dev.isxander:yet-another-config-lib:3.7.1+1.21.6-fabric")
     }
     // Cloth Config
-    if (hasProperty("deps.cloth")) {
-        compileOnly("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth")}")
+    if (hasProperty("deps.cloth_version")) {
+        modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
+        modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
     } else {
-        compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
+        modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:19.0.147")
     }
     // Mod Menu
-    if (hasProperty("deps.modmenu")) {
-        compileOnly("maven.modrinth:modmenu:${property("deps.modmenu")}")
-        localRuntime("maven.modrinth:modmenu:${property("deps.modmenu")}")
+    if (hasProperty("deps.modmenu_version")) {
+        modCompileOnly("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
+        modLocalRuntime("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
     } else {
-        compileOnly("com.terraformersmc:modmenu:18.0.0-alpha.8")
+        modCompileOnly("com.terraformersmc:modmenu:15.0.0-beta.3")
     }
     // Useful Spyglass
     if (hasProperty("deps.useful_spyglass")) {
-        implementation("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
+        modCompileOnly("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
+        modLocalRuntime("maven.modrinth:useful-spyglass:${property("deps.useful_spyglass")}")
     } else {
-        compileOnly("maven.modrinth:useful-spyglass:e5CW6qWZ")
+        modCompileOnly("maven.modrinth:useful-spyglass:nX9apSkX")
     }
-    compileOnly("maven.modrinth:fast-item-frames:IFa0xZno")
-    if (hasProperty("deps.puzzles_lib")) {
-        compileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
-        localRuntime("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+    // Fast Item Frames
+    if (hasProperty("deps.fast_item_frames")) {
+        modCompileOnly("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
+        modLocalRuntime("maven.modrinth:fast-item-frames:${property("deps.fast_item_frames")}")
     } else {
-        compileOnly("maven.modrinth:puzzles-lib:3OADGa7L")
+        modCompileOnly("maven.modrinth:fast-item-frames:7Km4n5kj")
+    }
+    if (hasProperty("deps.puzzles_lib")) {
+        modCompileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+        modLocalRuntime("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+    } else {
+        modCompileOnly("maven.modrinth:puzzles-lib:g7qeFvxG")
     }
     if (hasProperty("deps.forge_config_api_port")) {
-        localRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
+        modLocalRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
     }
     // Jade
     if (hasProperty("deps.jade")) {
-        compileOnly("maven.modrinth:jade:${property("deps.jade")}")
-//        localRuntime("maven.modrinth:jade:${property("deps.jade")}")
+        modCompileOnly("maven.modrinth:jade:${property("deps.jade")}")
+        modLocalRuntime("maven.modrinth:jade:${property("deps.jade")}")
     } else {
-        compileOnly("maven.modrinth:jade:21.0.1+neoforge")
+        modCompileOnly("maven.modrinth:jade:19.3.2+fabric")
     }
-    compileOnly("curse.maven:matrix-enchanting-1505679:7881482")
-    compileOnly("eu.pb4:polymer-core:${property("deps.polymer")}")
+    // Polymer
+    if (stonecutter.eval(mcVersion, ">1.21")) {
+        modCompileOnly("eu.pb4:polymer-core:${property("deps.polymer")}")
+    }
     // WTHIT
-    compileOnly("mcp.mobius.waila:wthit-api:fabric-${property("deps.wthit")}")
-    if (hasProperty("deps.badpackets")) {
-        localRuntime("mcp.mobius.waila:wthit:fabric-${property("deps.wthit")}")
-        localRuntime("lol.bai:badpackets:fabric-${property("deps.badpackets")}")
+    modCompileOnly("mcp.mobius.waila:wthit-api:fabric-${property("deps.wthit_version")}")
+    if (hasProperty("deps.badpackets_version")) {
+        modLocalRuntime("mcp.mobius.waila:wthit:fabric-${property("deps.wthit_version")}")
+        modLocalRuntime("lol.bai:badpackets:fabric-${property("deps.badpackets_version")}")
     }
-    implementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${property("deps.rrv")}")
+    // Limelight
+    if (hasProperty("deps.owo_version")) {
+        modCompileOnly("io.wispforest:owo-lib:${property("deps.owo_version")}") // Limelight dependency
+        modLocalRuntime("io.wispforest:owo-lib:${property("deps.owo_version")}") // Limelight dependency
+    }
+    if (hasProperty("deps.limelight")) {
+        modCompileOnly("io.wispforest:limelight:${property("deps.limelight")}") // Limelight "API"
+        modLocalRuntime("io.wispforest:limelight:${property("deps.limelight")}") // Limelight
+    }
+    modCompileOnly("maven.modrinth:emi:${property("deps.emi")}+${property("deps.minecraft")}+fabric")
+    modLocalRuntime("maven.modrinth:emi:${property("deps.emi")}+${property("deps.minecraft")}+fabric")
+
 }
 
 configurations.all {
     resolutionStrategy {
         force("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
+    }
+}
+
+stonecutter {
+    replacements.string {
+        direction = eval(current.version, ">1.21.10")
+        replace("ResourceLocation", "Identifier")
     }
 }
 
@@ -199,7 +244,7 @@ tasks {
 
     register<Copy>("buildAndCollect") {
         group = "build"
-        from(jar.map { it.archiveFile })
+        from(remapJar.map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
         dependsOn("build")
     }
@@ -211,8 +256,8 @@ loom.runs.named("server") {
 
 java {
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 val additionalVersionsStr = findProperty("publish.additionalVersions") as String?
@@ -223,8 +268,8 @@ val additionalVersions: List<String> = additionalVersionsStr
     ?: emptyList()
 
 publishMods {
-    file = tasks.jar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
+    file = tasks.remapJar.map { it.archiveFile.get() }
+    additionalFiles.from(tasks.remapSourcesJar.map { it.archiveFile.get() })
 
     // one of BETA, ALPHA, STABLE
     type = STABLE
