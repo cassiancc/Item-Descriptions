@@ -18,6 +18,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -58,14 +59,16 @@ public class RRVDescriptionPlugin implements ReliableRecipeViewerClientPlugin {
 			if (ModClient.CONFIG.enchantmentDescriptions.addToRecipeViewers.value()) {
 				Registry<Enchantment> enchantmentRegistry = Minecraft.getInstance().level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 				enchantmentRegistry.entrySet().forEach((entry) -> {
-					var key = entry.getKey();
+					var enchantmentId = entry.getKey().identifier();
 					var enchantment = entry.getValue();
-					for (int i = enchantment.getMinLevel(); i <= enchantment.getMaxLevel(); i++) {
-						var enchantmentHolder = enchantmentRegistry.wrapAsHolder(enchantment);
-						if (!enchantmentHolder.is(CommonTags.EXCLUDED_ENCHANTMENTS) && !ItemView.getExcludedEnchantments().contains(key)) {
-							ItemStack enchantedBook = EnchantmentHelper.createBook(new EnchantmentInstance(enchantmentHolder, i));
-							var itemId = enchantmentHolder.unwrapKey().orElseThrow().identifier();
-							recipeList.add(new InfoClientRecipe(Identifier.fromNamespaceAndPath(ModClient.MOD_ID, itemId.getNamespace() + "/" + itemId.getPath()  + "_" + i), SlotContent.of(enchantedBook), EnchantmentDescriptions.getDescriptionKey(enchantment).toText()));
+					DescriptionKey descriptionKey = EnchantmentDescriptions.getDescriptionKey(enchantment);
+					if (descriptionKey.hasTranslation() && !descriptionKey.hasEmptyTranslation()) {
+						for (int i = enchantment.getMinLevel(); i <= enchantment.getMaxLevel(); i++) {
+							var enchantmentHolder = enchantmentRegistry.wrapAsHolder(enchantment);
+							if (!enchantmentHolder.is(CommonTags.EXCLUDED_ENCHANTMENTS) && !ItemView.getExcludedEnchantments().contains(enchantmentId)) {
+								ItemStack enchantedBook = EnchantmentHelper.createBook(new EnchantmentInstance(enchantmentHolder, i));
+								recipeList.add(new InfoClientRecipe(Identifier.fromNamespaceAndPath(ModClient.MOD_ID, enchantmentId.getNamespace() + "/" + enchantmentId.getPath()  + "_" + i), SlotContent.of(enchantedBook), EnchantmentDescriptions.getDescriptionKey(enchantment).toText()));
+							}
 						}
 					}
 				});
@@ -78,12 +81,18 @@ public class RRVDescriptionPlugin implements ReliableRecipeViewerClientPlugin {
 
 					if (!ItemView.isExcludedPotion(potionHolder)) {
 						for (MobEffectInstance effect : potion.getEffects()) {
-							addPotionRecipe(PotionContents.createItemStack(Items.POTION, potionHolder), effect, recipeList);
-							addPotionRecipe(PotionContents.createItemStack(Items.SPLASH_POTION, potionHolder), effect, recipeList);
-							addPotionRecipe(PotionContents.createItemStack(Items.LINGERING_POTION, potionHolder), effect, recipeList);
-							ItemStack tipped = new ItemStack(Items.TIPPED_ARROW);
-							tipped.set(DataComponents.POTION_CONTENTS, new PotionContents(potionHolder));
-							addPotionRecipe(tipped, effect, recipeList);
+							var key = EffectDescriptions.getDescriptionKey(effect);
+							if (key.hasTranslation() && !key.hasEmptyTranslation()) {
+								var text = key.toText();
+								potionHolder.unwrapKey().map(ResourceKey::identifier).ifPresent(potionId->{
+									addPotionRecipe(PotionContents.createItemStack(Items.POTION, potionHolder), effect, recipeList, potionId, text);
+									addPotionRecipe(PotionContents.createItemStack(Items.SPLASH_POTION, potionHolder), effect, recipeList, potionId, text);
+									addPotionRecipe(PotionContents.createItemStack(Items.LINGERING_POTION, potionHolder), effect, recipeList, potionId, text);
+									ItemStack tipped = new ItemStack(Items.TIPPED_ARROW);
+									tipped.set(DataComponents.POTION_CONTENTS, new PotionContents(potionHolder));
+									addPotionRecipe(tipped, effect, recipeList, potionId, text);
+								});
+							}
 						}
 					}
 				});
@@ -91,9 +100,10 @@ public class RRVDescriptionPlugin implements ReliableRecipeViewerClientPlugin {
 		});
 	}
 
-	private void addPotionRecipe(ItemStack itemStack, MobEffectInstance effect, List<ReliableClientRecipe> recipeList) {
+
+	private void addPotionRecipe(ItemStack itemStack, MobEffectInstance effect, List<ReliableClientRecipe> recipeList, Identifier potionId, MutableComponent text) {
 		var effectId = BuiltInRegistries.MOB_EFFECT.getKey(effect.getEffect().value());
 		var itemId = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
-		recipeList.add(new InfoClientRecipe(Identifier.fromNamespaceAndPath(ModClient.MOD_ID, effectId.getNamespace() + "/" + effectId.getPath()  + "_" + itemId.getPath()), SlotContent.of(itemStack), EffectDescriptions.getDescriptionKey(effect).toText()));
+		recipeList.add(new InfoClientRecipe(Identifier.fromNamespaceAndPath(ModClient.MOD_ID, "/"+effectId.getNamespace() + "/" + effectId.getPath() + "_" + potionId.getPath() + "_" + itemId.getPath()), SlotContent.of(itemStack), text));
 	}
 }
