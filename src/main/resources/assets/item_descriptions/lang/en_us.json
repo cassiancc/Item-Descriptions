@@ -20,7 +20,7 @@
   "config.item_descriptions.developer_options.show_all_potential_keys.tooltip": "Replaces the description with a list of translation keys that can be used to match that item. Hold Alt to view their translations.",
   "config.item_descriptions.developer_options.show_untranslated": "Show lore tags on untranslated items",
   "config.item_descriptions.developer_options.show_untranslated.tooltip": "This includes items meant to have generic descriptions! Disable after testing.",
-  "config.item_descriptions.developer_options.generate_missing": "Generate missing description datapack",
+  "config.item_descriptions.developer_options.generate_missing": "Generate missing description resource pack",
   "config.item_descriptions.developer_options.generate_missing.tooltip": "Creates placeholder en_us language files per-namespace in the minecraft/data/item_descriptions/missing folder.",
   "config.item_descriptions.developer_options.config_screen": "Override config screen backend",
   "config.item_descriptions.developer_options.config_screen.tooltip": "Override the config screen, either to 'cloth-config' or 'yacl'",

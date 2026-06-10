@@ -6,8 +6,10 @@ package cc.cassian.item_descriptions.client.neoforge;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
 import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
+import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
 import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
+import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -21,10 +23,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 import static cc.cassian.item_descriptions.client.ModClient.*;
-import static cc.cassian.item_descriptions.client.helpers.ModHelpers.*;
 
 @Mod(value = MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = MOD_ID)
@@ -58,13 +60,23 @@ public final class ItemDescriptionsNeoForge {
         ItemDescriptions.fixItemStackDescriptionTooltip(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
+    @SubscribeEvent
+    public static void generateMissing(TagsUpdatedEvent event) {
+        if (ModClient.CONFIG.developerOptions.generateMissing.value() && event.getUpdateCause().equals(TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)) {
+            Minecraft.getInstance().execute(()->{
+                ModHelpers.generateMissingTranslations(null);
+            });
+        }
+    }
+
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.
     public void registerModsPage() {
         //Display Cloth Config/YACL screen if mod present, else error.
-        if (ModList.get().isLoaded("cloth_config") && !ModClient.CONFIG.developerOptions.configScreen.value().equals("yacl")) {
-            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new ModConfigFactory("cloth-config"));
-        } else if (ModList.get().isLoaded("yet_another_config_lib_v3")) {
+        if (ModList.get().isLoaded("yet_another_config_lib_v3")) {
             ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new ModConfigFactory("yacl"));
+        }
+        else if (ModList.get().isLoaded("cloth_config") && !ModClient.CONFIG.developerOptions.configScreen.value().equals("yacl")) {
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> new ModConfigFactory("cloth-config"));
         }
     }
 }

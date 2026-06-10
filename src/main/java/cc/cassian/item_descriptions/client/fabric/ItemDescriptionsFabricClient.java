@@ -29,13 +29,7 @@ public final class ItemDescriptionsFabricClient implements ClientModInitializer 
         //Only show tooltip if key is pressed or "always on" is enabled.
         ItemTooltipCallback.EVENT.register(ItemDescriptions::createDescriptionsFromItemStack);
         if (ModClient.CONFIG.developerOptions.generateMissing.value()) {
-            CommonLifecycleEvents.TAGS_LOADED.register(ModHelpers.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(
-                    //? if >=1.21.2 {
-                    manager::lookup
-                    //?} else {
-                    /*manager::registry
-                     *///?}
-            ));
+            CommonLifecycleEvents.TAGS_LOADED.register(ModHelpers.of("missing"), (manager, b) -> ModHelpers.generateMissingTranslations(manager::lookup));
         }
         ItemTooltipCallback.EVENT.addPhaseOrdering(Event.DEFAULT_PHASE, FABRIC_EVENT_PHASE);
         // Fix tooltips.

@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.7]
+
+### Added
+- 26.2-snapshot-7 support and Bounce description.
+
+### Changed
+- YACL is now prioritized over Cloth Config.
+- Language checks have been made 26.2-snapshot-7 compatible.
+
 ## [2.7.6]
 
 ### Changed

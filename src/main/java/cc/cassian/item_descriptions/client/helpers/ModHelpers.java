@@ -8,6 +8,9 @@ import net.minecraft.client.gui.screens.Screen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
@@ -432,6 +435,10 @@ public class ModHelpers {
     }
 
     private static <T, V> void addMissingTranslations(Registry<T> registry, Map<String, Map<String, String>> namespaces, Function<T, V> valueTransform, Function<V, DescriptionKey> descGetter, Function<V, List<Component>> potentialKeys) {
+        if (registry == null) {
+            LOGGER.error("Registry is null!");
+			return;
+        }
         for (ResourceKey<T> key : registry.registryKeySet()) {
             V value = valueTransform.apply
             //? if >=1.21.2 {
@@ -466,11 +473,12 @@ public class ModHelpers {
         File folder = Platform.INSTANCE.getMissingTranslationsPath();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Map<String, Map<String, String>> namespaces = new HashMap<>();
-        addMissingTranslations((Registry<EntityType<?>>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","entity_type"))).orElse(null), namespaces, Function.identity(), EntityDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
-        addMissingTranslations((Registry<Item>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft", "item"))).orElse(null), namespaces, Item::getDefaultInstance, ItemDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
-        addMissingTranslations((Registry<Enchantment>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","enchantment"))).orElse(null), namespaces, Function.identity(), EnchantmentDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
-        addMissingTranslations((Registry<Block>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","block"))).orElse(null), namespaces, Block::defaultBlockState, BlockDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys); // Blocks will overwrite items
-        addMissingTranslations((Registry<MobEffect>) (Object) registryGetter.get(ResourceKey.createRegistryKey(ModHelpers.of("minecraft","mob_effect"))).orElse(null), namespaces, Function.identity(), EffectDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        addMissingTranslations(BuiltInRegistries.ENTITY_TYPE, namespaces, Function.identity(), EntityDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        addMissingTranslations(BuiltInRegistries.ITEM, namespaces, Item::getDefaultInstance, ItemDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        //? fabric
+        addMissingTranslations(registryGetter.get(Registries.ENCHANTMENT).orElse(null), namespaces, Function.identity(), EnchantmentDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
+        addMissingTranslations(BuiltInRegistries.BLOCK, namespaces, Block::defaultBlockState, BlockDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys); // Blocks will overwrite items
+        addMissingTranslations(BuiltInRegistries.MOB_EFFECT, namespaces, Function.identity(), EffectDescriptions::getDescriptionKey, TagHelpers::findAllPotentialKeys);
         Map<String, String> combined = new TreeMap<>();
         namespaces.values().forEach(combined::putAll);
         namespaces.put(ModClient.MOD_ID, combined);
