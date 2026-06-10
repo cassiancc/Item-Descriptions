@@ -183,6 +183,7 @@ dependencies {
         localRuntime("mcp.mobius.waila:wthit:fabric-${property("deps.wthit")}")
         localRuntime("lol.bai:badpackets:fabric-${property("deps.badpackets")}")
     }
+    implementation("cc.cassian.rrv:reliable-recipe-viewer-fabric:${property("deps.rrv")}")
 }
 
 configurations.all {

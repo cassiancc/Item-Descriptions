@@ -29,6 +29,9 @@ public class ModConfig extends ReflectiveConfig {
     @Comment("When Item Descriptions are being displayed, also display the mod name.")
     public final TrackedValue<Boolean> showModName = this.value(false);
 
+    @Comment("Add Item Descriptions Info Recipes to Enchanted Books when using Reliable Recipe Viewer")
+    public final TrackedValue<Boolean> addToRecipeViewers = this.value(false);
+
 
     /**
      * Hint settings.
@@ -159,6 +162,9 @@ public class ModConfig extends ReflectiveConfig {
 
         @Comment("Italicize Enchantment Descriptions")
         public final TrackedValue<Boolean> italics = this.value(false);
+
+        @Comment("Add Enchantment Descriptions Info Recipes to Enchanted Books when using Reliable Recipe Viewer")
+        public final TrackedValue<Boolean> addToRecipeViewers = this.value(true);
     }
 
     /**
@@ -181,6 +187,9 @@ public class ModConfig extends ReflectiveConfig {
         @SerializedName("only_show_effect_descriptions")
         @Comment("Replace Item Descriptions with Effect Descriptions when present.")
         public final TrackedValue<Boolean> onlyShowEffectDescriptions = this.value(false);
+
+        @Comment("Add Effect Descriptions Info Recipes to Potions when using Reliable Recipe Viewer")
+        public final TrackedValue<Boolean> addToRecipeViewers = this.value(true);
     }
 
     //Developer settings

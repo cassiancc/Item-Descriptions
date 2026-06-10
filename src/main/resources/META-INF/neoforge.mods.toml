@@ -14,7 +14,7 @@ logoFile = "icon.png"
 issueTrackerURL = "https://github.com/cassiancc/Item-Descriptions/issues"
 displayURL="https://moddedmc.wiki/en/project/item-descriptions/"
 modURL="https://moddedmc.wiki/en/project/item-descriptions/"
-
+rrv_client="cc.cassian.item_descriptions.client.compat.RRVDescriptionPlugin"
 
 [[dependencies.item_descriptions]]
 modId = "neoforge"

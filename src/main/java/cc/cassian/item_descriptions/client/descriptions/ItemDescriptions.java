@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -188,7 +189,7 @@ public class ItemDescriptions {
         return ModClient.CONFIG.itemDescriptions.value() && (ModHelpers.tooltipKeyPressed() || ModClient.CONFIG.displayAlways.value());
     }
 
-    public static void createDescriptionsFromItemStack(ItemStack stack, Item.TooltipContext context, TooltipFlag type, List<Component> lines) {
+    public static void createDescriptionsFromItemStack(ItemStack stack, Item.@Nullable TooltipContext context, @Nullable TooltipFlag type, List<Component> lines) {
         if (ModClient.CONFIG.developerOptions.hideOtherTooltips.value() || ModLists.hidden_items.contains(stack.getItem())) {
             var first = lines.getFirst();
             lines.clear();

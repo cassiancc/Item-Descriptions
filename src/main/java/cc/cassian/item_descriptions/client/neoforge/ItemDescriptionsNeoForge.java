@@ -63,9 +63,7 @@ public final class ItemDescriptionsNeoForge {
     @SubscribeEvent
     public static void generateMissing(TagsUpdatedEvent event) {
         if (ModClient.CONFIG.developerOptions.generateMissing.value() && event.getUpdateCause().equals(TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)) {
-            Minecraft.getInstance().execute(()->{
-                ModHelpers.generateMissingTranslations(null);
-            });
+            Minecraft.getInstance().execute(() -> ModHelpers.generateMissingTranslations(null));
         }
     }
 

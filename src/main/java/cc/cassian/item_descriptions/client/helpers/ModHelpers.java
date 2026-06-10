@@ -4,11 +4,9 @@ import cc.cassian.item_descriptions.client.DescriptionKey;
 import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.descriptions.*;
-import net.minecraft.client.gui.screens.Screen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import folk.sisby.kaleido.lib.quiltconfig.api.values.TrackedValue;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
@@ -18,15 +16,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.*;
-import net.minecraft.ChatFormatting;
 import net.minecraft.resources.Identifier;
 
 
@@ -462,7 +456,7 @@ public class ModHelpers {
             }
         }
     }
-    
+
     public interface RegistryGetter {
         <E> Optional<? extends Registry<E>> get(ResourceKey<? extends Registry<? extends E>> key);
     }

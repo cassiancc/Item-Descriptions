@@ -41,6 +41,9 @@
     ],
     "limelight": [
       "cc.cassian.item_descriptions.client.limelight.LimelightIntegration"
+    ],
+    "rrv_client": [
+      "cc.cassian.item_descriptions.client.compat.RRVDescriptionPlugin"
     ]
   },
   "depends": {

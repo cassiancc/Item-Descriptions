@@ -211,6 +211,7 @@ dependencies {
         runtimeOnly("maven.modrinth:zeta:${property("deps.zeta")}")
 
     }
+    implementation("cc.cassian.rrv:reliable-recipe-viewer-neoforge:${property("deps.rrv")}")
 
 }
 

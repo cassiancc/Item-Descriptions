@@ -48,7 +48,7 @@ public class EffectDescriptions {
 
     public static void createEffectDescription(Component name, Consumer<Component> textConsumer, MobEffectInstance statusEffectInstance) {
         if (ModClient.CONFIG.effectDescriptions.enable.value() && showEffectDescriptions()) {
-            var key = new DescriptionKey(statusEffectInstance.getDescriptionId());
+            var key = getDescriptionKey(statusEffectInstance);
             List<Component> tooltip = ModHelpers.createTooltip(name, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
             if (showEffectDescriptions()) {
                 for (Component line : tooltip) {
@@ -74,7 +74,7 @@ public class EffectDescriptions {
             var contents = stack.getComponents().get(DataComponents.POTION_CONTENTS);
             if (contents == null) return false;
             for (MobEffectInstance effect : contents.getAllEffects()) {
-                var key = new DescriptionKey(effect.getDescriptionId());
+                var key = getDescriptionKey(effect);
                 if (key.hasTranslation()) {
                     return true;
                 }
@@ -84,6 +84,10 @@ public class EffectDescriptions {
     }
 
     public static @NotNull DescriptionKey getDescriptionKey(MobEffect effect) {
+        return new DescriptionKey(effect.getDescriptionId());
+    }
+
+    public static @NotNull DescriptionKey getDescriptionKey(MobEffectInstance effect) {
         return new DescriptionKey(effect.getDescriptionId());
     }
 }
