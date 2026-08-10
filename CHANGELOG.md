@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.1]
+
+### Added
+- Support for NeoForge 26.2.
+
+### Fixed
+- Crash on release 26.2.
+
+## [2.8.0]
+
+### Added
+- 'Generate Missing' feature now works on NeoForge. Enchantments are not yet supported on that platform due to level loading issues.
+- When using Reliable Recipe Viewer, items (disabled by default), effects on Potions, and enchantments on Enchanted Books now show Item, Effect, and Enchantment Descriptions via RRV Info Recipes.
+
 ## [2.7.7]
 
 ### Added

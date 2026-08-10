@@ -5,6 +5,7 @@ package cc.cassian.item_descriptions.client.neoforge;
 import cc.cassian.item_descriptions.client.Platform;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
@@ -51,7 +52,7 @@ public class NeoforgePlatformImpl implements Platform {
         Optional<? extends ModContainer> modContainer = ModList.get().getModContainerById(namespace);
         if (modContainer.isPresent()) {
             return modContainer.get().getModInfo().getDisplayName();
-        } else if (I18n.exists(key)) {
+        } else if (Language.getInstance().has(key)) {
             return I18n.get(key);
         } else {
             return WordUtils.capitalize(namespace);

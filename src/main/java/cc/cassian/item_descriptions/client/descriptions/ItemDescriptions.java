@@ -163,7 +163,7 @@ public class ItemDescriptions {
      * Check if an Item Stack has a particular component.
      */
     public static boolean hasComponent(ItemStack stack, DataComponentType<?> type) {
-        return stack.getComponents().has(type);
+        return stack.hasNonDefault(type);
     }
 
     /**
