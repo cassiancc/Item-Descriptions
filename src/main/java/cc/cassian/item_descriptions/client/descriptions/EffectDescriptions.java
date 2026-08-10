@@ -32,7 +32,7 @@ public class EffectDescriptions {
             for (Component text1 : text) {
                 if (text1.getContents() instanceof TranslatableContents translatableTextContent) {
                     if (!translatableTextContent.getKey().startsWith("effect.duration")) {
-                        var key = new DescriptionKey(translatableTextContent.getKey());
+                        var key = new DescriptionKey("effect", translatableTextContent.getKey());
                         List<Component> tooltip = ModHelpers.createTooltip(text1, key.toString(), true, ModStyle.EFFECT_DESCRIPTIONS);
                         if (showEffectDescriptions()) {
                             lines.addAll(tooltip);
@@ -84,10 +84,10 @@ public class EffectDescriptions {
     }
 
     public static @NotNull DescriptionKey getDescriptionKey(MobEffect effect) {
-        return new DescriptionKey(effect.getDescriptionId());
+        return new DescriptionKey("effect", effect.getDescriptionId());
     }
 
     public static @NotNull DescriptionKey getDescriptionKey(MobEffectInstance effect) {
-        return new DescriptionKey(effect.getDescriptionId());
+        return new DescriptionKey("effect", effect.getDescriptionId());
     }
 }

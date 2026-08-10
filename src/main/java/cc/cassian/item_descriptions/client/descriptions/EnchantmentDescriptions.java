@@ -45,7 +45,7 @@ public class EnchantmentDescriptions {
                     if (!lines.get(i).getContents().equals(enchantment.description().getContents())) continue;
                     ComponentContents description = lines.get(i).getContents();
                     if (description instanceof TranslatableContents translatableTextContent) {
-                        var descriptionKey = new DescriptionKey(translatableTextContent.getKey());
+                        var descriptionKey = new DescriptionKey("enchantment", translatableTextContent.getKey());
                         lines.add(i + 1, descriptionKey.toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS));
                     }
                 }
@@ -119,7 +119,7 @@ public class EnchantmentDescriptions {
         if (EnchantmentDescriptions.showEnchantmentDescriptions() && ModClient.CONFIG.enchantmentDescriptions.enchantingTable.value()) {
             Component name = Enchantment.getFullname(enchant, 1);
             if (name.getContents() instanceof TranslatableContents content) {
-                List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey(content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
+                List<Component> tooltip = ModHelpers.createTooltip(name, new DescriptionKey("enchantment", content.getKey()).toText().setStyle(ModStyle.ENCHANTMENT_DESCRIPTIONS), true);
                 components.addAll(tooltip);
             }
         }
@@ -137,6 +137,8 @@ public class EnchantmentDescriptions {
     }
 
     public static DescriptionKey getEnchantmentDescriptionKey(Enchantment enchantment) {
-        return enchantment.description().getContents() instanceof TranslatableContents translatable ? new DescriptionKey(translatable.getKey()) : DescriptionKey.empty();
-    }
+		if (enchantment.description().getContents() instanceof TranslatableContents translatable)
+			return new DescriptionKey("enchantment", translatable.getKey());
+		return DescriptionKey.empty();
+	}
 }

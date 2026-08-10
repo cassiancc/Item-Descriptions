@@ -30,31 +30,48 @@ public class DescriptionKey {
         this.suffix = suffix;
     }
 
-    public DescriptionKey(Identifier resourceLocation) {
+    public DescriptionKey(Identifier id) {
         this.type = "lore";
-        this.namespace = resourceLocation.getNamespace();
-        this.path = resourceLocation.getPath();
+        this.namespace = id.getNamespace();
+        this.path = id.getPath();
         this.suffix = "";
     }
 
-    public DescriptionKey(String resourceLocation) {
-        var id = resourceLocation.split("\\.");
-        if (id.length>2) {
-            this.type = id[0];
-            this.namespace = id[1];
-            this.path = id[2];
-        } else {
-            this.type = id[0];
-            this.namespace = "minecraft";
+    public DescriptionKey(String key) {
+        this("lore", key);
+    }
+
+    public DescriptionKey(String type, String key) {
+        if (key.contains(".")) {
+            var id = key.split("\\.");
+            if (id.length>2) {
+                this.type = id[0];
+                this.namespace = id[1];
+                this.path = id[2];
+            } else {
+                this.type = id[0];
+                this.namespace = "minecraft";
+                this.path = id[1];
+            }
+            this.suffix = "";
+        } else if (key.contains(":")) {
+            var id = key.split(":");
+            this.namespace = id[0];
             this.path = id[1];
+            this.suffix = "";
+            this.type = type;
+        } else {
+            this.namespace = "minecraft";
+            this.suffix = "";
+            this.path = key;
+            this.type = type;
         }
-        this.suffix = "";
     }
 
-    public DescriptionKey(String type, Identifier resourceLocation) {
+    public DescriptionKey(String type, Identifier id) {
         this.type = type;
-        this.namespace = resourceLocation.getNamespace();
-        this.path = resourceLocation.getPath();
+        this.namespace = id.getNamespace();
+        this.path = id.getPath();
         this.suffix = "";
     }
 
@@ -73,13 +90,13 @@ public class DescriptionKey {
     public static @NotNull DescriptionKey ofTranslationKey(String translationKey) {
         DescriptionKey loreKey;
         //Find the translation key for blocks.
-        if (translationKey.contains("block.")) loreKey = new DescriptionKey(translationKey);
+        if (translationKey.contains("block.")) loreKey = new DescriptionKey("block", translationKey);
         //Find the translation key for items.
-        else if ((translationKey.contains("item."))) loreKey = new DescriptionKey(translationKey);
+        else if ((translationKey.contains("item."))) loreKey = new DescriptionKey("item", translationKey);
         //Find the translation key for entities.
         else if ((translationKey.contains("entity."))) {
             //Entity descriptions use a different format as to avoiding colliding with items of the same name.
-            loreKey = new DescriptionKey(translationKey);
+            loreKey = new DescriptionKey("entity", translationKey);
             //Tropical fish have 20 different variants and their description should be the same.
             if (translationKey.contains("tropical_fish")) {
                 loreKey = new DescriptionKey("entity", "minecraft", "tropical_fish");
@@ -97,7 +114,7 @@ public class DescriptionKey {
 
     public int getNamespacePrecision() {
         return switch (namespace) {
-            case "c", "forge" -> 0;
+            case "c", "fabric", "forge" -> 0;
             case "minecraft" -> 1;
             case "item_descriptions" -> 3;
             default -> 2;

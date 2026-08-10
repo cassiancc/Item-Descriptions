@@ -1,2 +1,2 @@
-### Added
-- Support for 26.3, including descriptions for cushions and shelf mushrooms.
+### Fixed
+- Crash from mods not properly creating translatable text.
