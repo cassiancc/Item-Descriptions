@@ -5,11 +5,13 @@ package cc.cassian.item_descriptions.client.neoforge;
 /*import cc.cassian.item_descriptions.client.ModClient;
 import cc.cassian.item_descriptions.client.Platform;
 import cc.cassian.item_descriptions.client.config.ModConfigFactory;
+import cc.cassian.item_descriptions.client.descriptions.EffectDescriptions;
 import cc.cassian.item_descriptions.client.descriptions.ItemDescriptions;
 import cc.cassian.item_descriptions.client.helpers.ModHelpers;
 import cc.cassian.item_descriptions.client.helpers.ModLists;
 import cc.cassian.item_descriptions.client.helpers.compat.UsefulSpyglassHelpers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -21,15 +23,17 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.client.event.GatherEffectScreenTooltipsEvent;import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
+import java.util.List;
+
 import static cc.cassian.item_descriptions.client.ModClient.*;
 
 @Mod(value = MOD_ID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = MOD_ID)
+@EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
 public final class ItemDescriptionsNeoForge {
     public ItemDescriptionsNeoForge(IEventBus eventBus, ModContainer modContainer) {
         // Load config.
@@ -54,6 +58,12 @@ public final class ItemDescriptionsNeoForge {
         ItemDescriptions.createDescriptionsFromItemStack(event.getItemStack(), event.getContext(), event.getFlags(), event.getToolTip());
     }
 
+    //Add Effect Descriptions to effect tooltips.
+    @SubscribeEvent
+    public static void onEffectTooltipEvent(GatherEffectScreenTooltipsEvent event) {
+        EffectDescriptions.createEffectDescription(Component.translatable(event.getEffectInstance().getDescriptionId()), event.getTooltip()::add, event.getEffectInstance());
+    }
+
     // Fix item descriptions
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onItemTooltipEventLowestPriority(ItemTooltipEvent event) {
@@ -61,8 +71,8 @@ public final class ItemDescriptionsNeoForge {
     }
 
     @SubscribeEvent
-    public static void generateMissing(TagsUpdatedEvent event) {
-        if (ModClient.CONFIG.developerOptions.generateMissing.value() && event.getUpdateCause().equals(TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)) {
+    public static void generateMissing(TagsUpdatedEvent.ClientPacketReceived event) {
+        if (ModClient.CONFIG.developerOptions.generateMissing.value()) {
             Minecraft.getInstance().execute(() -> ModHelpers.generateMissingTranslations(null));
         }
     }

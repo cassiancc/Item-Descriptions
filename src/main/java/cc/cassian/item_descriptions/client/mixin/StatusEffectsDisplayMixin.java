@@ -40,31 +40,5 @@ public abstract class StatusEffectsDisplayMixin {
             bl.set(true);
     }
 
-    //?} else if neoforge && <26.2 {
-    /*@WrapOperation(method = "extractText(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;IIIIIILnet/minecraft/world/effect/MobEffectInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
-    private void renderEffects(GuiGraphicsExtractor instance, Font font, List<Component> lines, Optional<TooltipComponent> tooltipImage, int x, int y, Operation<Void> original) {
-        List<Component> tooltipText = EffectDescriptions.createEffectDescription(lines);
-        original.call(instance, font, tooltipText, tooltipImage, x, y);
-    }
-
-    @Inject(method = "extractText(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/Component;Lnet/minecraft/client/gui/Font;IIIIIILnet/minecraft/world/effect/MobEffectInstance;)V", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
-    private void forceShowDescriptions(GuiGraphicsExtractor graphics, Component effectText, Component duration, Font font, int x0, int y0, int textureWidth, int yStep, int mouseX, int mouseY, MobEffectInstance effectInstance, CallbackInfo ci, @Local LocalBooleanRef bl) {
-        if (!bl.get())
-            bl.set(true);
-    }
-
-    *///?} else {
-
-    /*@WrapOperation(method = "renderText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))
-    private void renderEffects(GuiGraphicsExtractor instance, Font font, List<Component> lines, Optional<TooltipComponent> tooltipImage, int x, int y, Operation<Void> original) {
-        List<Component> tooltipText = EffectDescriptions.createEffectDescription(lines);
-        original.call(instance, font, tooltipText, tooltipImage, x, y);
-    }
-
-    @Inject(method = "renderText", at = @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
-    private void forceShowDescriptions(GuiGraphicsExtractor graphics, Component effectText, Component duration, Font font, int x0, int y0, int textureWidth, int yStep, int mouseX, int mouseY, MobEffectInstance effectInstance, CallbackInfo ci, @Local LocalBooleanRef bl) {
-        if (!bl.get())
-            bl.set(true);
-    }
-    *///?}
+    //?}
 }
