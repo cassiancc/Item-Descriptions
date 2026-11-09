@@ -169,10 +169,12 @@ public class DescriptionKey {
         StringBuilder sb = new StringBuilder();
         for (String arg : args) {
             arg = ModHelpers.toTranslationKey(arg);
-            if (!arg.isEmpty())
-                sb.append(".").append(arg);
+            if (!arg.isEmpty()) {
+                if (sb.length() != 0) sb.append('.');
+                sb.append(arg);
+            }
         }
-        return sb.toString().replaceFirst(".", "");
+        return sb.toString();
     }
 
     /**
@@ -202,6 +204,9 @@ public class DescriptionKey {
 
     @Override
     public String toString() {
+        // Preserve the call sequence of subclasses overriding the candidate builders.
+        if (getClass() == DescriptionKey.class) return resolveTranslationKey();
+
         if (type.equals("tag") || ModHelpers.hasTranslation(asDescriptionTranslation())) {
             return asDescriptionTranslation();
         } else if (type.equals("item") && ModHelpers.hasTranslation(asLoreTranslation())) {
@@ -210,6 +215,20 @@ public class DescriptionKey {
             return asDescTranslation();
         }
         else return asLoreTranslation();
+    }
+
+    private String resolveTranslationKey() {
+        if (type.equals("tag")) return asDescriptionTranslation();
+        String candidate = asDescriptionTranslation();
+        if (ModHelpers.hasTranslation(candidate)) return candidate;
+        if (type.equals("item")) {
+            candidate = asLoreTranslation();
+            if (ModHelpers.hasTranslation(candidate)) return candidate;
+            return asLoreTranslation();
+        }
+        candidate = asDescTranslation();
+        if (ModHelpers.hasTranslation(candidate)) return candidate;
+        return asLoreTranslation();
     }
 
     public MutableComponent toText() {

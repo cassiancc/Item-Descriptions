@@ -164,7 +164,7 @@ public class ModHelpers {
     }
 
     public static String toTranslationKey(String string) {
-        return string.toLowerCase().replaceAll("\"", "").replaceAll(" ", "_").replaceAll("[/:]", ".");
+        return string.toLowerCase().replace("\"", "").replace(' ', '_').replace('/', '.').replace(':', '.');
     }
 
     public static boolean hasTranslation(String key) {
